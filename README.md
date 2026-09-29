@@ -20,7 +20,7 @@ Se configuran en [`config/productos.yaml`](config/productos.yaml):
 | Categoría | Ejemplos |
 |---|---|
 | Mascotas | alimento de perro y gato, juguetes para mascotas |
-| Niños | juguetes, ropa de niña **talla 2**, ropa de niño **talla 6**, calzado ergonómico tipo Uma Baby |
+| Niños | juguetes, ropa de niña **talla 2**, ropa de niño **talla 6**, trajes de baño (niña T2, niño T6), crema de cuerpo para niños, calzado ergonómico tipo Uma Baby |
 | Colaciones | compotas, cajitas de jugo sin azúcar, cereales para 2 años, barritas tipo Mizo, galletas |
 | Mujer | zapatillas y calzado |
 | Hogar | muebles y organización, robot de cocina, café de grano, cafeteras tipo profesional |

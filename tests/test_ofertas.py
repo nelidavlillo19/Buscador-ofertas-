@@ -87,3 +87,15 @@ def test_alerta_no_se_repite_al_dia_siguiente(tmp_path):
         db.guardar(con, Producto("t", "a", "Barrita", "u", precio, precio_lista=1000), dia)
     nuevas = [[a.nueva for a in alertas.detectar(con, d, 30, 60)] for d in ("2026-09-28", "2026-09-29", "2026-09-30")]
     assert nuevas == [[True], [False], [True]]  # vuelve a avisar sólo si baja más
+
+
+def test_traje_bano_exige_tipo_y_genero_y_talla():
+    import yaml
+    cats = yaml.safe_load(open("config/productos.yaml", encoding="utf-8"))["categorias"]
+    traje = Producto("t", "1", "Traje de Baño UV Niña Flores", "u", 9990,
+                     variantes=[Variante("2", 9990), Variante("4", 8990)])
+    assert clasificar(traje, cats, None) == "traje_bano_nina_t2"
+    polera = Producto("t", "2", "Polera niña manga corta", "u", 5990, variantes=[Variante("2", 5990)])
+    assert clasificar(polera, cats, None) == "ropa_nina_t2"
+    crema = Producto("t", "3", "Crema hidratante corporal infantil 400 ml", "u", 5990)
+    assert clasificar(crema, cats, None) == "crema_cuerpo_ninos"

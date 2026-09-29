@@ -25,6 +25,8 @@ def aplicar_filtro(producto: Producto, categoria: dict) -> Producto | None:
     nombre = normalizar(f"{producto.nombre} {producto.marca}")
     if categoria.get("incluir") and not _contiene(nombre, categoria["incluir"]):
         return None
+    if categoria.get("incluir_tambien") and not _contiene(nombre, categoria["incluir_tambien"]):
+        return None
     if categoria.get("excluir") and _contiene(nombre, categoria["excluir"]):
         return None
 

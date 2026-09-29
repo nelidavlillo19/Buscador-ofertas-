@@ -18,14 +18,16 @@ tiendas:
     url: https://www.pichintun.cl
     plataforma: auto
     catalogo_completo: true
-    categorias: [ropa_nina_t2, ropa_nino_t6, calzado_ergonomico, juguetes_ninos]
+    categorias: [traje_bano_nina_t2, traje_bano_nino_t6, ropa_nina_t2, ropa_nino_t6, calzado_ergonomico,
+                 juguetes_ninos]
 
   - id: colloky
     nombre: Colloky
     url: https://www.colloky.cl
     plataforma: auto
     catalogo_completo: false
-    categorias: [ropa_nina_t2, ropa_nino_t6, calzado_ergonomico, juguetes_ninos]
+    categorias: [traje_bano_nina_t2, traje_bano_nino_t6, ropa_nina_t2, ropa_nino_t6, calzado_ergonomico,
+                 juguetes_ninos]
 
   - id: umababy
     nombre: Uma Baby
@@ -53,21 +55,21 @@ tiendas:
     url: https://www.jumbo.cl
     plataforma: auto
     categorias: [compotas, jugos_sin_azucar, cereales_infantiles, barritas, galletas_colacion,
-                 cafe_grano, alimento_mascotas]
+                 cafe_grano, alimento_mascotas, crema_cuerpo_ninos]
 
   - id: santaisabel
     nombre: Santa Isabel
     url: https://www.santaisabel.cl
     plataforma: auto
     categorias: [compotas, jugos_sin_azucar, cereales_infantiles, barritas, galletas_colacion,
-                 cafe_grano, alimento_mascotas]
+                 cafe_grano, alimento_mascotas, crema_cuerpo_ninos]
 
   - id: unimarc
     nombre: Unimarc
     url: https://www.unimarc.cl
     plataforma: auto
     categorias: [compotas, jugos_sin_azucar, cereales_infantiles, barritas, galletas_colacion,
-                 cafe_grano, alimento_mascotas]
+                 cafe_grano, alimento_mascotas, crema_cuerpo_ninos]
 
   - id: lider
     nombre: Líder
@@ -76,4 +78,4 @@ tiendas:
     # Líder tiene protección anti-bots fuerte; se deja pausada hasta probarla.
     activa: false
     categorias: [compotas, jugos_sin_azucar, cereales_infantiles, barritas, galletas_colacion,
-                 cafe_grano, alimento_mascotas]
+                 cafe_grano, alimento_mascotas, crema_cuerpo_ninos]

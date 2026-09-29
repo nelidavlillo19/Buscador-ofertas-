@@ -3,6 +3,7 @@
 # Cada categoría tiene:
 #   buscar:   términos que se consultan en el buscador de cada tienda
 #   incluir:  el nombre del producto debe contener AL MENOS UNA de estas palabras
+#   incluir_tambien: (opcional) y además AL MENOS UNA de estas otras
 #   excluir:  si el nombre contiene alguna de estas palabras, se descarta
 #   tallas:   (opcional) sólo se consideran variantes con alguna de estas tallas
 #
@@ -62,6 +63,21 @@ categorias:
     incluir: [mujer, dama]
     # tallas: ["37", "38"]   # descomenta y ajusta tu talla
 
+  # Los trajes de baño van antes que la ropa para que no se mezclen con ella.
+  traje_bano_nina_t2:
+    nombre: Traje de baño niña talla 2
+    buscar: [traje de baño niña, traje de baño uv niña, bikini niña, polera uv niña]
+    incluir: [traje de bano, traje bano, bikini, enteriza, uv, bañador, banador, swim]
+    incluir_tambien: [niña, nina, girl]
+    tallas: ["2", "2A", "2 años", "24M", "18-24M", "2T"]
+
+  traje_bano_nino_t6:
+    nombre: Traje de baño niño talla 6
+    buscar: [traje de baño niño, short de baño niño, polera uv niño]
+    incluir: [traje de bano, traje bano, short de bano, bañador, banador, uv, swim]
+    incluir_tambien: [niño, nino, boy]
+    tallas: ["6", "6A", "6 años", "6T"]
+
   ropa_nina_t2:
     nombre: Ropa de niña talla 2
     buscar: [polera niña, pantalon niña, vestido niña, poleron niña, pijama niña]
@@ -73,6 +89,13 @@ categorias:
     buscar: [polera niño, pantalon niño, poleron niño, pijama niño, short niño]
     incluir: [niño, nino, boy]
     tallas: ["6", "6A", "6 años", "6T"]
+
+  crema_cuerpo_ninos:
+    nombre: Crema de cuerpo para niños
+    buscar: [crema corporal niños, crema hidratante infantil, locion corporal bebe, crema corporal bebe]
+    incluir: [crema, locion, hidratante, emulsion]
+    incluir_tambien: [niño, nino, niña, nina, infantil, bebe, baby, kids]
+    excluir: [coceduras, pañal, panal, dental]
 
   calzado_ergonomico:
     nombre: Calzado ergonómico infantil (tipo Uma Baby)

@@ -1,0 +1,102 @@
+# Productos de interés para la familia.
+#
+# Cada categoría tiene:
+#   buscar:   términos que se consultan en el buscador de cada tienda
+#   incluir:  el nombre del producto debe contener AL MENOS UNA de estas palabras
+#   excluir:  si el nombre contiene alguna de estas palabras, se descarta
+#   tallas:   (opcional) sólo se consideran variantes con alguna de estas tallas
+#
+# Las comparaciones ignoran mayúsculas y tildes.
+# Para agregar productos nuevos, copia un bloque y ajusta los términos.
+
+umbral_descuento: 30        # % mínimo para generar alerta
+dias_historial: 60          # ventana para calcular el "precio habitual"
+
+categorias:
+  alimento_mascotas:
+    nombre: Alimento de mascotas
+    buscar: [alimento perro, alimento gato, pellet perro, pellet gato]
+    incluir: [alimento, pellet, croqueta, adult, puppy, kitten, cachorro]
+    excluir: [plato, comedero, dispensador]
+
+  juguetes_mascotas:
+    nombre: Juguetes para mascotas
+    buscar: [juguete perro, juguete gato, pelota perro, rascador]
+    incluir: [juguete, pelota, peluche, rascador, mordedor, cuerda, kong]
+
+  juguetes_ninos:
+    nombre: Juguetes para niños
+    buscar: [juguete, juguete didactico, bloques, puzzle infantil]
+    incluir: [juguete, didactic, bloque, puzzle, rompecabeza, muñeca, peluche, encaje]
+    excluir: [perro, gato, mascota]
+
+  compotas:
+    nombre: Compotas
+    buscar: [compota, colado fruta, pouch fruta]
+    incluir: [compota, colado, pouch, pure de fruta]
+
+  jugos_sin_azucar:
+    nombre: Cajitas de jugo sin azúcar
+    buscar: [jugo sin azucar, jugo cajita, nectar sin azucar]
+    incluir: [sin azucar, zero, 0% azucar, light]
+    excluir: [polvo, sobre]
+
+  cereales_infantiles:
+    nombre: Cereales para niños (2 años)
+    buscar: [cereal infantil, cereal niños, cereal sin azucar, avena infantil]
+    incluir: [cereal, avena, granola, papilla]
+
+  barritas:
+    nombre: Barritas saludables (tipo Mizo)
+    buscar: [mizo, barra cereal, barrita fruta, barra de fruta]
+    incluir: [barra, barrita, mizo]
+
+  galletas_colacion:
+    nombre: Galletas para colaciones
+    buscar: [galletas colacion, galletas integrales, galletas arroz, galletas avena]
+    incluir: [galleta]
+
+  calzado_mujer:
+    nombre: Zapatillas y calzado de mujer
+    buscar: [zapatillas mujer, calzado mujer, botines mujer, sandalias mujer]
+    incluir: [mujer, dama]
+    # tallas: ["37", "38"]   # descomenta y ajusta tu talla
+
+  ropa_nina_t2:
+    nombre: Ropa de niña talla 2
+    buscar: [polera niña, pantalon niña, vestido niña, poleron niña, pijama niña]
+    incluir: [niña, nina, girl]
+    tallas: ["2", "2A", "2 años", "24M", "18-24M", "2T"]
+
+  ropa_nino_t6:
+    nombre: Ropa de niño talla 6
+    buscar: [polera niño, pantalon niño, poleron niño, pijama niño, short niño]
+    incluir: [niño, nino, boy]
+    tallas: ["6", "6A", "6 años", "6T"]
+
+  calzado_ergonomico:
+    nombre: Calzado ergonómico infantil (tipo Uma Baby)
+    buscar: [zapato ergonomico, zapatilla barefoot, calzado respetuoso, zapato infantil]
+    incluir: [zapat, bota, sandalia, barefoot, ergonom]
+
+  organizacion_hogar:
+    nombre: Muebles y organización del hogar
+    buscar: [organizador, repisa, estante, cajonera, canasto organizador, zapatero]
+    incluir: [organizador, repisa, estante, cajonera, canasto, zapatero, rack, mueble, caja]
+
+  robot_cocina:
+    nombre: Robot de cocina
+    buscar: [robot de cocina, thermomix, procesador de alimentos, robot cocina]
+    incluir: [robot, procesador, thermomix, multicooker]
+
+  cafe_grano:
+    nombre: Café de grano
+    buscar: [cafe grano, cafe en grano]
+    incluir: [grano]
+    excluir: [molido, capsula, instantaneo]
+
+  cafeteras:
+    nombre: Cafeteras (tipo profesional para el hogar)
+    buscar: [cafetera espresso, maquina de cafe, cafetera superautomatica, cafetera expresso]
+    incluir: [cafetera, espresso, expresso, maquina de cafe, barista]
+    excluir: [capsulas para, filtro de papel]

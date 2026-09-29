@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buscador de Ofertas</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f6f5f2; --surface: #fcfcfb; --border: #e3e1dc; --grid: #ecebe7;
+  --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #7a7974;
+  --series-1: #2a78d6; --series-2: #eb6834;
+  --good: #0ca30c; --good-text: #006300; --critical: #d03b3b; --accent-bg: #e8f1fc;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #121211; --surface: #1a1a19; --border: #2e2e2b; --grid: #262624;
+    --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #8f8e86;
+    --series-1: #3987e5; --series-2: #d95926; --good-text: #3fbf3f; --accent-bg: #1c2a3b;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121211; --surface: #1a1a19; --border: #2e2e2b; --grid: #262624;
+  --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #8f8e86;
+  --series-1: #3987e5; --series-2: #d95926; --good-text: #3fbf3f; --accent-bg: #1c2a3b;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text-primary);
+  font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 1180px; margin: 0 auto; padding: 20px 16px 60px; }
+header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; }
+h1 { font-size: 24px; margin: 0; }
+h2 { font-size: 17px; margin: 28px 0 12px; }
+.sub { color: var(--text-secondary); font-size: 13px; }
+.demo { background: #fab219; color: #0b0b0b; padding: 8px 12px; border-radius: 8px; margin: 12px 0; font-weight: 600; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-top: 16px; }
+.kpi, .card, .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+.kpi { padding: 14px 16px; }
+.kpi .v { font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.kpi .l { color: var(--text-secondary); font-size: 13px; }
+.filtros { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.filtros select, .filtros input { font: inherit; padding: 8px 10px; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text-primary); min-width: 0; }
+.filtros input[type=search] { flex: 1 1 200px; }
+.filtros label { display: flex; align-items: center; gap: 6px; color: var(--text-secondary); font-size: 14px; }
+.ofertas { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.card { padding: 12px; display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: inherit; }
+.card:hover { border-color: var(--series-1); }
+.card img { width: 100%; height: 140px; object-fit: contain; background: #fff; border-radius: 8px; }
+.card .n { font-weight: 600; font-size: 14px; }
+.badge { align-self: flex-start; background: var(--critical); color: #fff; font-weight: 700;
+  padding: 2px 8px; border-radius: 999px; font-size: 13px; }
+.precio { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.antes { color: var(--text-muted); text-decoration: line-through; font-size: 13px; margin-left: 6px; font-weight: 400; }
+.meta { color: var(--text-secondary); font-size: 12px; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; }
+.panel { padding: 14px 16px; }
+.panel h3 { margin: 0 0 8px; font-size: 14px; color: var(--text-secondary); font-weight: 600; }
+.chart { position: relative; height: 260px; }
+.tabla-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+td.nombre { white-space: normal; min-width: 220px; }
+th { color: var(--text-secondary); font-weight: 600; font-size: 12px; cursor: pointer; user-select: none; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+tbody tr { cursor: pointer; }
+tbody tr:hover, tbody tr.sel { background: var(--accent-bg); }
+.baja { color: var(--good-text); font-weight: 600; }
+.alza { color: var(--critical); }
+.vacio { color: var(--text-muted); padding: 20px; text-align: center; }
+#detalle { display: none; }
+#detalle a { color: var(--series-1); }
+.mas { margin-top: 10px; font: inherit; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text-primary); cursor: pointer; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>🛒 Buscador de Ofertas</h1>
+    <span class="sub" id="actualizado"></span>
+  </header>
+  <div id="aviso-demo" class="demo" hidden>Datos de demostración: los precios son simulados.</div>
+
+  <section class="kpis" id="kpis"></section>
+
+  <div class="filtros">
+    <select id="f-cat"><option value="">Todas las categorías</option></select>
+    <select id="f-tienda"><option value="">Todas las tiendas</option></select>
+    <input type="search" id="f-texto" placeholder="Buscar producto…">
+    <label><input type="checkbox" id="f-ofertas"> Sólo ofertas</label>
+  </div>
+
+  <h2 id="t-ofertas">Ofertas de hoy</h2>
+  <section class="ofertas" id="ofertas"></section>
+
+  <section class="panel" id="detalle" style="margin-top:16px">
+    <h3 id="det-titulo"></h3>
+    <div class="sub" id="det-meta"></div>
+    <div class="chart" style="height:300px;margin-top:8px"><canvas id="g-detalle" aria-label="Historial de precio"></canvas></div>
+  </section>
+
+  <h2>Estadísticas</h2>
+  <div class="grid2">
+    <div class="panel">
+      <h3>Productos en oferta por día</h3>
+      <div class="chart"><canvas id="g-dias" aria-label="Productos en oferta por día"></canvas></div>
+    </div>
+    <div class="panel">
+      <h3>Precio de hoy vs. precio habitual, por categoría (%)</h3>
+      <div class="chart"><canvas id="g-cat" aria-label="Variación por categoría"></canvas></div>
+    </div>
+  </div>
+
+  <h2>Todos los productos seguidos</h2>
+  <div class="panel tabla-wrap">
+    <table>
+      <thead><tr>
+        <th data-k="n">Producto</th><th data-k="t">Tienda</th>
+        <th class="num" data-k="p">Hoy</th><th class="num" data-k="med">Habitual</th>
+        <th class="num" data-k="min">Mínimo</th><th class="num" data-k="var">Variación</th>
+      </tr></thead>
+      <tbody id="tabla"></tbody>
+    </table>
+    <button class="mas" id="mas" hidden>Ver más</button>
+  </div>
+</main>
+
+<script>
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const clp = v => v == null ? "–" : "$" + Math.round(v).toLocaleString("es-CL");
+const pct = v => (v > 0 ? "+" : "") + v.toFixed(0) + "%";
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const $ = id => document.getElementById(id);
+
+let D, graficos = {}, orden = {k: "var", asc: true}, limite = 100;
+
+fetch("data.json").then(r => r.json()).then(datos => {
+  D = datos;
+  D.productos.forEach(p => { p.var = p.med ? 100 * (p.p / p.med - 1) : 0; });
+  $("actualizado").textContent = `Precios del ${D.fecha} · generado ${D.generado.replace("T", " ")}`;
+  $("aviso-demo").hidden = !D.demo;
+  for (const [id, n] of Object.entries(D.categorias)) $("f-cat").add(new Option(n, id));
+  for (const [id, n] of Object.entries(D.tiendas)) $("f-tienda").add(new Option(n, id));
+  ["f-cat", "f-tienda", "f-texto", "f-ofertas"].forEach(id => $(id).addEventListener("input", () => { limite = 100; pintar(); }));
+  document.querySelectorAll("th[data-k]").forEach(th => th.onclick = () => {
+    orden = {k: th.dataset.k, asc: orden.k === th.dataset.k ? !orden.asc : true}; pintarTabla();
+  });
+  $("mas").onclick = () => { limite += 100; pintarTabla(); };
+  pintar();
+}).catch(() => { $("ofertas").innerHTML = '<p class="vacio">No se encontró data.json. Ejecuta <code>python -m ofertas rastrear</code>.</p>'; });
+
+function filtro(x) {
+  const c = $("f-cat").value, t = $("f-tienda").value, q = $("f-texto").value.toLowerCase();
+  return (!c || x.c === c || x.categoria === c) && (!t || x.t === t || x.tienda === t)
+    && (!q || (x.n || x.nombre || "").toLowerCase().includes(q));
+}
+
+function alertasHoy() {
+  // una tarjeta por producto, con el mayor descuento entre los dos tipos de alerta
+  const mejor = {};
+  D.alertas.filter(a => a.fecha === D.fecha && filtro(a)).forEach(a => {
+    if (!mejor[a.producto_id] || a.descuento > mejor[a.producto_id].descuento) mejor[a.producto_id] = a;
+  });
+  return Object.values(mejor).sort((a, b) => b.descuento - a.descuento);
+}
+
+function pintar() { pintarKpis(); pintarOfertas(); pintarDias(); pintarCategorias(); pintarTabla(); }
+
+function pintarKpis() {
+  const prods = D.productos.filter(p => p.vigente && filtro(p)), al = alertasHoy();
+  const bajas = prods.filter(p => p.var <= -5).length;
+  const kpis = [
+    [prods.length.toLocaleString("es-CL"), "productos seguidos hoy"],
+    [al.length, `ofertas de ${D.umbral}% o más`],
+    [al.length ? "-" + al[0].descuento.toFixed(0) + "%" : "–", "mayor descuento de hoy"],
+    [bajas, "bajo su precio habitual (5%+)"],
+  ];
+  $("kpis").innerHTML = kpis.map(([v, l]) => `<div class="kpi"><div class="v">${v}</div><div class="l">${l}</div></div>`).join("");
+}
+
+function pintarOfertas() {
+  const al = alertasHoy();
+  $("t-ofertas").textContent = `Ofertas de hoy (${D.umbral}% o más): ${al.length}`;
+  if (!al.length) { $("ofertas").innerHTML = '<p class="vacio">Hoy no hay ofertas que cumplan el mínimo con estos filtros.</p>'; return; }
+  const tipo = {declarado: "según la tienda", historico: "vs. su precio habitual"};
+  $("ofertas").innerHTML = al.slice(0, 60).map(a => `
+    <a class="card" href="${esc(a.url)}" target="_blank" rel="noopener">
+      ${a.imagen ? `<img src="${esc(a.imagen)}" alt="" loading="lazy">` : ""}
+      <span class="badge">-${a.descuento.toFixed(0)}%</span>
+      <span class="n">${esc(a.nombre)}</span>
+      <span class="precio">${clp(a.precio)}<span class="antes">${clp(a.referencia)}</span></span>
+      <span class="meta">${esc(D.tiendas[a.tienda] || a.tienda)} · ${esc(D.categorias[a.categoria] || "")} · ${tipo[a.tipo]}</span>
+    </a>`).join("");
+}
+
+const baseOpts = () => ({
+  responsive: true, maintainAspectRatio: false, animation: false,
+  interaction: {mode: "index", intersect: false},
+  plugins: {legend: {display: false}},
+  scales: {
+    x: {grid: {display: false}, ticks: {color: css("--text-secondary"), maxRotation: 0, autoSkipPadding: 16}, border: {color: css("--border")}},
+    y: {grid: {color: css("--grid")}, ticks: {color: css("--text-secondary")}, border: {display: false}},
+  },
+});
+
+function grafico(id, config) {
+  graficos[id]?.destroy();
+  graficos[id] = new Chart($(id), config);
+}
+
+function pintarDias() {
+  // cuenta productos en oferta por día respetando los filtros
+  const porDia = {};
+  D.alertas.filter(filtro).forEach(a => (porDia[a.fecha] ??= new Set()).add(a.producto_id));
+  const fechas = Object.keys(porDia).sort();
+  const opts = baseOpts();
+  opts.scales.y.ticks.precision = 0;
+  opts.plugins.tooltip = {callbacks: {label: c => ` ${c.parsed.y} productos en oferta`}};
+  grafico("g-dias", {type: "bar", data: {labels: fechas.map(f => f.slice(5)),
+    datasets: [{data: fechas.map(f => porDia[f].size), backgroundColor: css("--series-1"),
+      borderRadius: {topLeft: 4, topRight: 4}, maxBarThickness: 18}]}, options: opts});
+}
+
+function pintarCategorias() {
+  const grupos = {};
+  D.productos.filter(p => p.vigente && filtro(p)).forEach(p => (grupos[p.c] ??= []).push(p.var));
+  const filas = Object.entries(grupos).map(([c, v]) => [D.categorias[c] || c, v.reduce((a, b) => a + b, 0) / v.length, v.length])
+    .sort((a, b) => a[1] - b[1]);
+  const opts = baseOpts();
+  opts.indexAxis = "y";
+  opts.interaction = {mode: "nearest", axis: "y", intersect: false};
+  opts.scales.x.grid = {color: css("--grid")};
+  opts.scales.y.grid = {display: false};
+  opts.scales.x.ticks.callback = v => v + "%";
+  opts.plugins.tooltip = {callbacks: {label: c => ` ${pct(c.parsed.x)} promedio (${filas[c.dataIndex][2]} productos)`}};
+  grafico("g-cat", {type: "bar", data: {labels: filas.map(f => f[0]),
+    datasets: [{data: filas.map(f => +f[1].toFixed(1)),
+      backgroundColor: filas.map(f => f[1] < 0 ? css("--series-1") : css("--series-2")), borderRadius: 4, maxBarThickness: 16}]},
+    options: opts});
+}
+
+function pintarTabla() {
+  let prods = D.productos.filter(filtro);
+  if ($("f-ofertas").checked) {
+    const ids = new Set(alertasHoy().map(a => a.producto_id));
+    prods = prods.filter(p => ids.has(p.id));
+  }
+  const k = orden.k, s = orden.asc ? 1 : -1;
+  prods.sort((a, b) => (typeof a[k] === "string" ? a[k].localeCompare(b[k]) : a[k] - b[k]) * s);
+  $("tabla").innerHTML = prods.length ? prods.slice(0, limite).map(p => `
+    <tr data-id="${esc(p.id)}">
+      <td class="nombre">${esc(p.n)}${p.vigente ? "" : ` <span class="meta">(sin precio desde ${p.f})</span>`}</td>
+      <td>${esc(D.tiendas[p.t] || p.t)}</td>
+      <td class="num">${clp(p.p)}</td><td class="num">${clp(p.med)}</td><td class="num">${clp(p.min)}</td>
+      <td class="num ${p.var <= -1 ? "baja" : p.var >= 1 ? "alza" : ""}">${p.var <= -1 ? "▼ " : p.var >= 1 ? "▲ " : ""}${pct(p.var)}</td>
+    </tr>`).join("") : '<tr><td colspan="6" class="vacio">Sin productos con estos filtros.</td></tr>';
+  $("mas").hidden = prods.length <= limite;
+  $("tabla").querySelectorAll("tr[data-id]").forEach(tr => tr.onclick = () => verDetalle(tr.dataset.id));
+}
+
+function verDetalle(id) {
+  const p = D.productos.find(x => x.id === id);
+  document.querySelectorAll("#tabla tr").forEach(tr => tr.classList.toggle("sel", tr.dataset.id === id));
+  $("detalle").style.display = "block";
+  $("det-titulo").textContent = p.n;
+  $("det-meta").innerHTML = `${esc(D.tiendas[p.t] || p.t)} · hoy ${clp(p.p)} · habitual ${clp(p.med)} · mínimo ${clp(p.min)} · máximo ${clp(p.max)} · <a href="${esc(p.u)}" target="_blank" rel="noopener">ver en la tienda</a>`;
+  const opts = baseOpts();
+  opts.plugins.legend = {display: true, labels: {color: css("--text-secondary"), boxWidth: 12, boxHeight: 2}};
+  opts.plugins.tooltip = {callbacks: {label: c => ` ${c.dataset.label}: ${clp(c.parsed.y)}`}};
+  opts.scales.y.ticks.callback = v => clp(v);
+  grafico("g-detalle", {type: "line", data: {labels: p.h.map(h => h[0]), datasets: [
+    {label: "Precio", data: p.h.map(h => h[1]), borderColor: css("--series-1"), backgroundColor: css("--series-1"),
+      borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, stepped: true},
+    {label: "Precio habitual", data: p.h.map(() => p.med), borderColor: css("--text-muted"),
+      borderWidth: 1, borderDash: [4, 4], pointRadius: 0},
+  ]}, options: opts});
+  $("detalle").scrollIntoView({behavior: "smooth", block: "nearest"});
+}
+
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => D && pintar());
+</script>
+</body>
+</html>

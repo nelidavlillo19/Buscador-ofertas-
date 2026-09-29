@@ -1,0 +1,79 @@
+# Tiendas a revisar.
+#
+# plataforma:
+#   auto     -> detecta sola si la tienda es Shopify, VTEX o usa datos schema.org (recomendado)
+#   shopify  -> tiendas Shopify (usa /products.json y /search/suggest.json)
+#   vtex     -> tiendas VTEX (API pública de catálogo)
+#   jsonld   -> cualquier web con datos de producto schema.org en la página de búsqueda
+#
+# catalogo_completo: true  -> descarga todo el catálogo (útil en marcas pequeñas)
+#                    false -> sólo busca los términos de cada categoría de interés
+# categorias: limita qué categorías de interés se buscan en esa tienda (vacío = todas)
+# activa: false para pausar una tienda sin borrarla
+
+tiendas:
+  # ---------- Marcas infantiles ----------
+  - id: pichintun
+    nombre: Pichintun
+    url: https://www.pichintun.cl
+    plataforma: auto
+    catalogo_completo: true
+    categorias: [ropa_nina_t2, ropa_nino_t6, calzado_ergonomico, juguetes_ninos]
+
+  - id: colloky
+    nombre: Colloky
+    url: https://www.colloky.cl
+    plataforma: auto
+    catalogo_completo: false
+    categorias: [ropa_nina_t2, ropa_nino_t6, calzado_ergonomico, juguetes_ninos]
+
+  - id: umababy
+    nombre: Uma Baby
+    url: https://www.umababy.cl
+    plataforma: auto
+    catalogo_completo: true
+    categorias: [calzado_ergonomico]
+
+  - id: casaideas
+    nombre: Casa Ideas
+    url: https://www.casaideas.com
+    plataforma: auto
+    categorias: [juguetes_ninos, organizacion_hogar, cafeteras, robot_cocina]
+
+  # ---------- Mascotas ----------
+  - id: superzoo
+    nombre: SuperZoo
+    url: https://www.superzoo.cl
+    plataforma: auto
+    categorias: [alimento_mascotas, juguetes_mascotas]
+
+  # ---------- Supermercados ----------
+  - id: jumbo
+    nombre: Jumbo
+    url: https://www.jumbo.cl
+    plataforma: auto
+    categorias: [compotas, jugos_sin_azucar, cereales_infantiles, barritas, galletas_colacion,
+                 cafe_grano, alimento_mascotas]
+
+  - id: santaisabel
+    nombre: Santa Isabel
+    url: https://www.santaisabel.cl
+    plataforma: auto
+    categorias: [compotas, jugos_sin_azucar, cereales_infantiles, barritas, galletas_colacion,
+                 cafe_grano, alimento_mascotas]
+
+  - id: unimarc
+    nombre: Unimarc
+    url: https://www.unimarc.cl
+    plataforma: auto
+    categorias: [compotas, jugos_sin_azucar, cereales_infantiles, barritas, galletas_colacion,
+                 cafe_grano, alimento_mascotas]
+
+  - id: lider
+    nombre: Líder
+    url: https://www.lider.cl
+    plataforma: auto
+    # Líder tiene protección anti-bots fuerte; se deja pausada hasta probarla.
+    activa: false
+    categorias: [compotas, jugos_sin_azucar, cereales_infantiles, barritas, galletas_colacion,
+                 cafe_grano, alimento_mascotas]

@@ -1,0 +1,65 @@
+name: Rastreo diario de precios
+
+on:
+  schedule:
+    - cron: "17 10 * * *"   # todos los días ~7:17 hora de Chile (10:17 UTC)
+  workflow_dispatch:         # botón "Run workflow" para ejecutarlo a mano
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: rastreo
+  cancel-in-progress: false
+
+jobs:
+  rastrear:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+
+      - run: python -m pytest -q tests
+
+      - name: Revisar tiendas, generar alertas, respaldo y panel
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          SMTP_SERVIDOR: ${{ secrets.SMTP_SERVIDOR }}
+          SMTP_PUERTO: ${{ secrets.SMTP_PUERTO }}
+          SMTP_USUARIO: ${{ secrets.SMTP_USUARIO }}
+          SMTP_CLAVE: ${{ secrets.SMTP_CLAVE }}
+          CORREO_DESTINO: ${{ secrets.CORREO_DESTINO }}
+          URL_PANEL: ${{ vars.URL_PANEL }}
+        run: python -m ofertas rastrear
+
+      - name: Guardar historial en el repositorio (respaldo diario)
+        run: |
+          git config user.name "buscador-ofertas"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/
+          git diff --cached --quiet || git commit -m "Precios del $(TZ=America/Santiago date +%F)"
+          git push
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: sitio
+
+  publicar:
+    needs: rastrear
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

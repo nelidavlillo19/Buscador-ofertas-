@@ -5,13 +5,19 @@ import logging
 
 from ..red import Cliente
 from .base import Adaptador
+from .cencosud import Cencosud
+from .falabella import Falabella
 from .jsonld import JsonLd
+from .sfcc import Sfcc
 from .shopify import Shopify
 from .vtex import Vtex
 
 log = logging.getLogger(__name__)
 
-PLATAFORMAS: dict[str, type[Adaptador]] = {"shopify": Shopify, "vtex": Vtex, "jsonld": JsonLd}
+PLATAFORMAS: dict[str, type[Adaptador]] = {
+    "shopify": Shopify, "vtex": Vtex, "jsonld": JsonLd,
+    "sfcc": Sfcc, "falabella": Falabella, "cencosud": Cencosud,
+}
 
 
 def crear(tienda: dict, cliente: Cliente) -> Adaptador | None:

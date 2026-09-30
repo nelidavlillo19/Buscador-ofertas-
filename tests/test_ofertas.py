@@ -130,3 +130,39 @@ def test_aviso_limita_por_categoria_y_un_aviso_por_producto():
                alertas.Alerta("t:x", "historico", 45, 1, 2, categoria="cafe")]
     elegidas = alertas.seleccionar_para_aviso(muchas)
     assert len(elegidas) == 6 and [a.tipo for a in elegidas if a.producto_id == "t:x"] == ["historico"]
+
+
+def test_sfcc_superzoo_oferta_y_rango():
+    from ofertas.adapters.sfcc import extraer
+    tarjeta = '''<div class="product" data-pid="{pid}" data-url="x"><div class="product-tile">
+      <img class="tile-image" src="/img.jpg"/><span class="product-brand text-micro">Marca</span>
+      <div class="pdp-link"><a class="link" href="/p/{pid}.html"><h2 class="text-base">Alimento perro {pid}</h2></a></div>
+      <div class="price">{precio}</div><!-- END_dwmarker -->'''
+    oferta = ('<span><del><span class="strike-through list"><span class="value" content="64990">$64.990</span>'
+              '</span></del><span class="sales"><span class="value" content="39990">$39.990</span></span></span>')
+    rango = ('<span class="range"><span class="sales"><span class="value" content="26341"></span></span> - '
+             '<span class="sales"><span class="value" content="59990"></span></span></span>')
+    a, b = extraer(tarjeta.format(pid="A", precio=oferta) + tarjeta.format(pid="B", precio=rango), "sz", "https://s.cl")
+    assert (a.precio, a.precio_lista, a.url) == (39990, 64990, "https://s.cl/p/A.html")
+    assert (b.precio, b.precio_lista) == (26341, None)
+
+
+def test_falabella_next_data_ignora_precio_cmr():
+    import json
+    from ofertas.adapters.falabella import extraer
+    datos = {"props": {"pageProps": {"results": [{
+        "skuId": "9", "displayName": "Pack de 20 Film Instax Mini", "url": "https://f/9", "brand": "FUJIFILM",
+        "sellerName": "Dust2", "mediaUrls": ["https://img"],
+        "prices": [{"type": "cmrPrice", "price": ["19.990"], "crossed": False},
+                   {"type": "eventPrice", "price": ["21.990"], "crossed": False},
+                   {"type": "normalPrice", "price": ["29.490"], "crossed": True}]}]}}}
+    [p] = extraer(f'<script id="__NEXT_DATA__" type="application/json">{json.dumps(datos)}</script>', "falabella")
+    assert (p.precio, p.precio_lista, p.nombre) == (21990, 29490, "Pack de 20 Film Instax Mini (vende Dust2)")
+
+
+def test_cencosud_render_data():
+    import json
+    from ofertas.adapters.cencosud import productos_render
+    datos = {"plp": {"plp_products": {"products": [{"productId": "1", "productName": "Compota"}]}}}
+    pagina = f"<script>window.__renderData = {json.dumps(json.dumps(datos))};</script>"
+    assert productos_render(pagina)[0]["productName"] == "Compota"

@@ -1,6 +1,7 @@
 # Tiendas a revisar.
 #
 # plataforma:
+#   sfcc / falabella / cencosud -> lectores especiales (SuperZoo, Falabella, Santa Isabel)
 #   auto     -> detecta sola si la tienda es Shopify, VTEX o usa datos schema.org (recomendado)
 #   shopify  -> tiendas Shopify (usa /products.json y /search/suggest.json)
 #   vtex     -> tiendas VTEX (API pública de catálogo)
@@ -40,13 +41,15 @@ tiendas:
     nombre: Casa Ideas
     url: https://www.casaideas.com
     plataforma: auto
+    # La página se arma sólo con JavaScript; falta un lector especial.
+    activa: false
     categorias: [juguetes_ninos, organizacion_hogar, cafeteras, robot_cocina, pelicula_instax_mini]
 
   # ---------- Mascotas ----------
   - id: superzoo
     nombre: SuperZoo
     url: https://www.superzoo.cl
-    plataforma: auto
+    plataforma: sfcc
     categorias: [alimento_mascotas, juguetes_mascotas]
 
   # ---------- Fotografía / tecnología (película Instax Mini) ----------
@@ -62,6 +65,8 @@ tiendas:
     nombre: PC Factory
     url: https://www.pcfactory.cl
     plataforma: auto
+    # La página se arma sólo con JavaScript (api.pcfactory.cl); falta un lector especial.
+    activa: false
     categorias: [pelicula_instax_mini]
 
   - id: paris
@@ -83,7 +88,7 @@ tiendas:
   - id: falabella
     nombre: Falabella
     url: https://www.falabella.com/falabella-cl
-    plataforma: auto
+    plataforma: falabella
     categorias: [pelicula_instax_mini]
 
   # ---------- Supermercados ----------
@@ -97,7 +102,7 @@ tiendas:
   - id: santaisabel
     nombre: Santa Isabel
     url: https://www.santaisabel.cl
-    plataforma: auto
+    plataforma: cencosud
     categorias: [compotas, jugos_sin_azucar, cereales_infantiles, barritas, galletas_colacion,
                  cafe_grano, alimento_mascotas, crema_cuerpo_ninos]
 

@@ -54,6 +54,8 @@ tiendas:
     nombre: Reifschneider
     url: https://www.reifschneider.cl
     plataforma: auto
+    # La tienda online redirige a una página cerrada con clave (aufbau.cl/password).
+    activa: false
     categorias: [pelicula_instax_mini]
 
   - id: pcfactory
@@ -66,12 +68,16 @@ tiendas:
     nombre: Paris
     url: https://www.paris.cl
     plataforma: auto
+    # Bloquea a los programas automáticos (responde 403).
+    activa: false
     categorias: [pelicula_instax_mini]
 
   - id: ripley
     nombre: Ripley
     url: https://simple.ripley.cl
     plataforma: auto
+    # Bloquea a los programas automáticos (desafío de Cloudflare, 403).
+    activa: false
     categorias: [pelicula_instax_mini]
 
   - id: falabella
@@ -99,6 +105,8 @@ tiendas:
     nombre: Unimarc
     url: https://www.unimarc.cl
     plataforma: auto
+    # Bloquea a los programas automáticos (responde 403).
+    activa: false
     categorias: [compotas, jugos_sin_azucar, cereales_infantiles, barritas, galletas_colacion,
                  cafe_grano, alimento_mascotas, crema_cuerpo_ninos]
 

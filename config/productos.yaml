@@ -21,7 +21,7 @@ categorias:
     buscar: [instax mini film, pelicula instax mini, instax mini, papel fotografico instax]
     incluir: [instax]
     incluir_tambien: [film, pelicula, papel, pack, hojas, fotos]
-    excluir: [camara, cámara, camera, kit, album, álbum, funda, estuche, marco, liplay, link, evo, impresora]
+    excluir: [camara, cámara, camera, kit, square, wide, con pelicula, con película, album, álbum, funda, estuche, marco, liplay, link, evo, impresora]
 
   alimento_mascotas:
     nombre: Alimento de mascotas

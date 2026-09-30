@@ -1,0 +1,7 @@
+00 200 305148 https://www.superzoo.cl/buscar?q=alimento%20perro
+01 200 441494 https://www.santaisabel.cl/busqueda?ft=compota
+02 200 1829981 https://www.falabella.com/falabella-cl/search?Ntt=instax%20mini%20film
+03 200 223793 https://www.pcfactory.cl/busqueda?ft=instax%20mini%20film
+04 200 3212 https://www.casaideas.com/
+05 404 694024 https://www.jumbo.cl/api/catalog_system/pub/products/search?ft=compota&_from=0&_to=1
+06 200 1219691 https://www.jumbo.cl/busqueda?ft=instax%20mini

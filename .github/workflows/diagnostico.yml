@@ -1,0 +1,29 @@
+name: Diagnóstico de tiendas
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["diagnostico/tiendas.txt", "ofertas/diagnostico.py", ".github/workflows/diagnostico.yml"]
+
+permissions:
+  contents: write
+
+jobs:
+  diagnosticar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - run: python -m ofertas.diagnostico $(grep -v '^#' diagnostico/tiendas.txt)
+      - run: |
+          git config user.name "buscador-ofertas"
+          git config user.email "actions@users.noreply.github.com"
+          git add diagnostico/resultado.txt
+          git diff --cached --quiet || git commit -m "Resultado del diagnóstico de tiendas"
+          git pull --rebase -q origin main
+          git push

@@ -68,8 +68,8 @@ def detectar(con: sqlite3.Connection, fecha: str, umbral: float, dias_historial:
             if descuento <= 0 or descuento < minimo:
                 continue
             ya_avisada = con.execute(
-                "SELECT 1 FROM alertas WHERE producto_id=? AND tipo=? AND fecha=? AND precio<=?",
-                (f["id"], tipo, ayer, f["precio"]),
+                "SELECT 1 FROM alertas WHERE producto_id=? AND tipo=? AND fecha BETWEEN ? AND ? AND precio<=?",
+                (f["id"], tipo, ayer, fecha, f["precio"]),
             ).fetchone()
             alertas.append(Alerta(f["id"], tipo, descuento, f["precio"], referencia, f["nombre"],
                                   f["tienda"], f["url"], f["categoria"], nueva=not ya_avisada))
@@ -100,6 +100,23 @@ def resumen_markdown(alertas: list[Alerta], fecha: str, categorias: dict) -> str
     return "\n".join(lineas) + "\n"
 
 
+MAX_POR_CATEGORIA = 5
+
+
+def seleccionar_para_aviso(alertas: list[Alerta]) -> list[Alerta]:
+    """Alertas nuevas, una por producto, y como máximo las 5 mejores por categoría
+    (el resto se ve en el panel) para que el correo no sea eterno."""
+    mejor: dict[str, Alerta] = {}
+    for a in alertas:
+        if a.nueva and (a.producto_id not in mejor or a.descuento > mejor[a.producto_id].descuento):
+            mejor[a.producto_id] = a
+    por_cat: dict[str, list[Alerta]] = {}
+    for a in sorted(mejor.values(), key=lambda a: -a.descuento):
+        por_cat.setdefault(a.categoria, []).append(a)
+    elegidas = [a for lista in por_cat.values() for a in lista[:MAX_POR_CATEGORIA]]
+    return sorted(elegidas, key=lambda a: -a.descuento)
+
+
 def resumen_html(alertas: list[Alerta], fecha: str, categorias: dict, url_panel: str = "") -> str:
     """Correo legible: una fila por oferta, con botón para ver el producto."""
     etiquetas = {"declarado": "descuento de la tienda", "historico": "más barato que lo habitual"}
@@ -124,7 +141,7 @@ def resumen_html(alertas: list[Alerta], fecha: str, categorias: dict, url_panel:
 
 def notificar(alertas: list[Alerta], fecha: str, categorias: dict, url_panel: str = "") -> None:
     """Envía sólo las alertas nuevas por Telegram y/o correo, si están configurados."""
-    nuevas = [a for a in alertas if a.nueva]
+    nuevas = seleccionar_para_aviso(alertas)
     if not nuevas:
         log.info("Sin alertas nuevas que notificar")
         return

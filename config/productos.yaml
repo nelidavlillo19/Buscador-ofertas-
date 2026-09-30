@@ -91,25 +91,28 @@ categorias:
     nombre: Ropa de niña talla 2
     buscar: [polera niña, pantalon niña, vestido niña, poleron niña, pijama niña]
     incluir: [niña, nina, girl]
+    excluir: [zapat, calzado, bota, sandalia]
     tallas: ["2", "2A", "2 años", "24M", "18-24M", "2T"]
 
   ropa_nino_t6:
     nombre: Ropa de niño talla 6
     buscar: [polera niño, pantalon niño, poleron niño, pijama niño, short niño]
     incluir: [niño, nino, boy]
+    excluir: [zapat, calzado, bota, sandalia]
     tallas: ["6", "6A", "6 años", "6T"]
 
   crema_cuerpo_ninos:
     nombre: Crema de cuerpo para niños
     buscar: [crema corporal niños, crema hidratante infantil, locion corporal bebe, crema corporal bebe]
-    incluir: [crema, locion, hidratante, emulsion]
+    incluir: [corporal, cuerpo, emulsion, body, locion]
     incluir_tambien: [niño, nino, niña, nina, infantil, bebe, baby, kids]
-    excluir: [coceduras, pañal, panal, dental]
+    excluir: [coceduras, rozadura, pañal, panal, dental, facial, solar, fps, protectora]
 
   calzado_ergonomico:
     nombre: Calzado ergonómico infantil (tipo Uma Baby)
     buscar: [zapato ergonomico, zapatilla barefoot, calzado respetuoso, zapato infantil]
     incluir: [zapat, bota, sandalia, barefoot, ergonom]
+    excluir: [bag, bolso, mochila, calcetin, gift card]
 
   organizacion_hogar:
     nombre: Muebles y organización del hogar

@@ -115,3 +115,18 @@ def test_instax_avisa_cualquier_oferta(tmp_path):
                "2026-09-30")
     res = alertas.detectar(con, "2026-09-30", 30, 60, cats)
     assert [(a.producto_id, a.descuento) for a in res] == [("t:f", 5.9)]  # galletas -10% no alcanza el 30%
+
+
+def test_talla_no_confunde_meses_con_anios():
+    from ofertas.filtros import _talla_coincide
+    seis = ["6", "6A", "6 años", "6T"]
+    assert _talla_coincide("5-6A", seis) and _talla_coincide("6-7A", seis) and _talla_coincide("6 años", seis)
+    assert not _talla_coincide("6-9M", seis) and not _talla_coincide("3-6M", seis) and not _talla_coincide("6M", seis)
+
+
+def test_aviso_limita_por_categoria_y_un_aviso_por_producto():
+    muchas = [alertas.Alerta(f"t:{i}", "declarado", 50, 1, 2, categoria="calzado") for i in range(20)]
+    muchas += [alertas.Alerta("t:x", "declarado", 40, 1, 2, categoria="cafe"),
+               alertas.Alerta("t:x", "historico", 45, 1, 2, categoria="cafe")]
+    elegidas = alertas.seleccionar_para_aviso(muchas)
+    assert len(elegidas) == 6 and [a.tipo for a in elegidas if a.producto_id == "t:x"] == ["historico"]

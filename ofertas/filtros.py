@@ -14,9 +14,10 @@ def _talla_coincide(nombre_variante: str, tallas: list[str]) -> bool:
     texto = normalizar(nombre_variante)
     for talla in tallas:
         t = re.escape(normalizar(talla))
-        # "2" no debe coincidir con "12" ni con "24M"
-        if re.search(rf"(?<![0-9a-z]){t}(?![0-9])", texto):
-            return True
+        # "2" no debe coincidir con "12" ni con "24M"; "6" tampoco con "6-9M" o "3-6M" (meses)
+        for m in re.finditer(rf"(?<![0-9a-z]){t}(?![0-9])", texto):
+            if not re.match(r"\s*(-\s*\d+)?\s*m(?![a-z]*a)", texto[m.end():]):
+                return True
     return False
 
 

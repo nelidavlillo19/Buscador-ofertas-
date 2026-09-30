@@ -23,6 +23,8 @@ jobs:
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main   # siempre la última versión del historial, no la del cambio que lanzó la revisión
 
       - uses: actions/setup-python@v5
         with:

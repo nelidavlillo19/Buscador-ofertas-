@@ -104,7 +104,10 @@ def cmd_rastrear(args) -> int:
     (carpeta_alertas / "ULTIMAS.md").write_text(texto, encoding="utf-8")
 
     if not args.sin_avisos:
-        alertas.notificar(lista, fecha, categorias, os.environ.get("URL_PANEL", ""))
+        try:
+            alertas.notificar(lista, fecha, categorias, os.environ.get("URL_PANEL", ""))
+        except Exception:  # noqa: BLE001 - un aviso fallido no debe impedir el respaldo
+            log.exception("No se pudieron enviar los avisos (revisa GMAIL_USUARIO / GMAIL_CLAVE_APP)")
     respaldo.respaldar(con, DATOS / "respaldos", fecha)
     panel.exportar(con, fecha, config, SITIO)
 

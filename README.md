@@ -77,8 +77,8 @@ a las ~7:17 de Chile, guarda los datos en el repositorio y publica el panel en G
    (Si el repositorio es privado, Pages requiere un plan pagado; el panel igual se puede ver en local.)
 3. Opcional, en **Settings → Secrets and variables → Actions**, agrega los avisos:
    - Telegram: `TELEGRAM_BOT_TOKEN` (créalo con @BotFather) y `TELEGRAM_CHAT_ID`.
-   - Correo: `SMTP_SERVIDOR` (p. ej. `smtp.gmail.com`), `SMTP_PUERTO` (`587`), `SMTP_USUARIO`,
-     `SMTP_CLAVE` (en Gmail, una *contraseña de aplicación*) y `CORREO_DESTINO`.
+   - Correo (Gmail): `GMAIL_USUARIO` (tu correo) y `GMAIL_CLAVE_APP` (una *contraseña de aplicación*
+     de Google). Opcional: `CORREO_DESTINO` si quieres recibir las alertas en otro correo.
    - Variable `URL_PANEL` con la dirección del panel para incluirla en los avisos.
 4. En **Actions → Rastreo diario de precios → Run workflow** puedes lanzarlo a mano la primera vez.
 

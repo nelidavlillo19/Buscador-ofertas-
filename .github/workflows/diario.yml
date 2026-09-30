@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: "17 10 * * *"   # todos los días ~7:17 hora de Chile (10:17 UTC)
   workflow_dispatch:         # botón "Run workflow" para ejecutarlo a mano
+  push:                      # también corre al cambiar productos, tiendas o el programa
+    branches: [main]
+    paths: ["config/**", "ofertas/**", "web/**", ".github/workflows/**"]
 
 permissions:
   contents: write
@@ -34,12 +37,11 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          SMTP_SERVIDOR: ${{ secrets.SMTP_SERVIDOR }}
-          SMTP_PUERTO: ${{ secrets.SMTP_PUERTO }}
-          SMTP_USUARIO: ${{ secrets.SMTP_USUARIO }}
-          SMTP_CLAVE: ${{ secrets.SMTP_CLAVE }}
+          # Gmail: basta con GMAIL_USUARIO y GMAIL_CLAVE_APP (clave de aplicación de Google)
+          GMAIL_USUARIO: ${{ secrets.GMAIL_USUARIO }}
+          GMAIL_CLAVE_APP: ${{ secrets.GMAIL_CLAVE_APP }}
           CORREO_DESTINO: ${{ secrets.CORREO_DESTINO }}
-          URL_PANEL: ${{ vars.URL_PANEL }}
+          URL_PANEL: ${{ vars.URL_PANEL || format('https://{0}.github.io/{1}/', github.repository_owner, github.event.repository.name) }}
         run: python -m ofertas rastrear
 
       - name: Guardar historial en el repositorio (respaldo diario)
@@ -48,6 +50,7 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add data/
           git diff --cached --quiet || git commit -m "Precios del $(TZ=America/Santiago date +%F)"
+          git pull --rebase -q origin main
           git push
 
       - uses: actions/upload-pages-artifact@v3

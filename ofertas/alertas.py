@@ -143,16 +143,20 @@ def notificar(alertas: list[Alerta], fecha: str, categorias: dict, url_panel: st
             })
         log.info("Enviadas %d alertas por Telegram", len(nuevas))
 
-    servidor = os.environ.get("SMTP_SERVIDOR")
-    if servidor and os.environ.get("CORREO_DESTINO"):
+    # Gmail simple (GMAIL_USUARIO + GMAIL_CLAVE_APP) o un servidor SMTP cualquiera
+    usuario = os.environ.get("GMAIL_USUARIO") or os.environ.get("SMTP_USUARIO")
+    clave = os.environ.get("GMAIL_CLAVE_APP") or os.environ.get("SMTP_CLAVE")
+    if usuario and clave:
+        servidor = os.environ.get("SMTP_SERVIDOR") or "smtp.gmail.com"
+        destino = os.environ.get("CORREO_DESTINO") or usuario
         msg = EmailMessage()
         msg["Subject"] = f"🛒 {len(nuevas)} ofertas nuevas ({fecha})"
-        msg["From"] = os.environ.get("SMTP_USUARIO", "")
-        msg["To"] = os.environ["CORREO_DESTINO"]
+        msg["From"] = usuario
+        msg["To"] = destino
         msg.set_content(texto)
         msg.add_alternative(resumen_html(nuevas, fecha, categorias, url_panel), subtype="html")
-        with smtplib.SMTP(servidor, int(os.environ.get("SMTP_PUERTO", "587"))) as s:
+        with smtplib.SMTP(servidor, int(os.environ.get("SMTP_PUERTO") or 587)) as s:
             s.starttls()
-            s.login(os.environ["SMTP_USUARIO"], os.environ["SMTP_CLAVE"])
+            s.login(usuario, clave.replace(" ", ""))
             s.send_message(msg)
         log.info("Enviadas %d alertas por correo", len(nuevas))

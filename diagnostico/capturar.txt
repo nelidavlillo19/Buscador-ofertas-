@@ -1,0 +1,8 @@
+# Páginas a guardar para estudiarlas (una URL por línea)
+https://www.superzoo.cl/buscar?q=alimento%20perro
+https://www.santaisabel.cl/busqueda?ft=compota
+https://www.falabella.com/falabella-cl/search?Ntt=instax%20mini%20film
+https://www.pcfactory.cl/busqueda?ft=instax%20mini%20film
+https://www.casaideas.com/
+https://www.jumbo.cl/api/catalog_system/pub/products/search?ft=compota&_from=0&_to=1
+https://www.jumbo.cl/busqueda?ft=instax%20mini

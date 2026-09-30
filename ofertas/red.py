@@ -41,7 +41,7 @@ class Cliente:
         except requests.RequestException as e:
             log.warning("Error de red en %s: %s", url, e)
             return None
-        if r.status_code != 200:
+        if not 200 <= r.status_code < 300:  # VTEX responde 206 en búsquedas paginadas
             log.debug("HTTP %s en %s", r.status_code, url)
             return None
         return r

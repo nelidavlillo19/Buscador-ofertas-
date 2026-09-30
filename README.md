@@ -19,6 +19,7 @@ Se configuran en [`config/productos.yaml`](config/productos.yaml):
 
 | Categoría | Ejemplos |
 |---|---|
+| Fotografía | película Instax Mini (**avisa cualquier oferta**, no sólo desde 30%) |
 | Mascotas | alimento de perro y gato, juguetes para mascotas |
 | Niños | juguetes, ropa de niña **talla 2**, ropa de niño **talla 6**, trajes de baño (niña T2, niño T6), crema de cuerpo para niños, calzado ergonómico tipo Uma Baby |
 | Colaciones | compotas, cajitas de jugo sin azúcar, cereales para 2 años, barritas tipo Mizo, galletas |

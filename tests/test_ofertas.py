@@ -99,3 +99,19 @@ def test_traje_bano_exige_tipo_y_genero_y_talla():
     assert clasificar(polera, cats, None) == "ropa_nina_t2"
     crema = Producto("t", "3", "Crema hidratante corporal infantil 400 ml", "u", 5990)
     assert clasificar(crema, cats, None) == "crema_cuerpo_ninos"
+
+
+def test_instax_avisa_cualquier_oferta(tmp_path):
+    import yaml
+    cats = yaml.safe_load(open("config/productos.yaml", encoding="utf-8"))["categorias"]
+    film = Producto("t", "f", "Fujifilm Instax Mini Film Pack 20 fotos", "u", 15990, precio_lista=16990)
+    camara = Producto("t", "c", "Cámara Instax Mini 12", "u", 69990)
+    assert clasificar(film, cats, None) == "pelicula_instax_mini"
+    assert clasificar(camara, cats, None) is None
+    con = db.conectar(tmp_path / "x.sqlite")
+    film.categoria = "pelicula_instax_mini"
+    db.guardar(con, film, "2026-09-30")
+    db.guardar(con, Producto("t", "g", "Galletas", "u", 900, precio_lista=1000, categoria="galletas_colacion"),
+               "2026-09-30")
+    res = alertas.detectar(con, "2026-09-30", 30, 60, cats)
+    assert [(a.producto_id, a.descuento) for a in res] == [("t:f", 5.9)]  # galletas -10% no alcanza el 30%

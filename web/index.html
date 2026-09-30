@@ -175,7 +175,7 @@ function pintarKpis() {
   const bajas = prods.filter(p => p.var <= -5).length;
   const kpis = [
     [prods.length.toLocaleString("es-CL"), "productos seguidos hoy"],
-    [al.length, `ofertas de ${D.umbral}% o más`],
+    [al.length, `ofertas de hoy`],
     [al.length ? "-" + al[0].descuento.toFixed(0) + "%" : "–", "mayor descuento de hoy"],
     [bajas, "bajo su precio habitual (5%+)"],
   ];
@@ -184,7 +184,7 @@ function pintarKpis() {
 
 function pintarOfertas() {
   const al = alertasHoy();
-  $("t-ofertas").textContent = `Ofertas de hoy (${D.umbral}% o más): ${al.length}`;
+  $("t-ofertas").textContent = `Ofertas de hoy: ${al.length}`;
   if (!al.length) { $("ofertas").innerHTML = '<p class="vacio">Hoy no hay ofertas que cumplan el mínimo con estos filtros.</p>'; return; }
   const tipo = {declarado: "según la tienda", historico: "vs. su precio habitual"};
   $("ofertas").innerHTML = al.slice(0, 60).map(a => `

@@ -40,7 +40,7 @@ tiendas:
     nombre: Casa Ideas
     url: https://www.casaideas.com
     plataforma: auto
-    categorias: [juguetes_ninos, organizacion_hogar, cafeteras, robot_cocina]
+    categorias: [juguetes_ninos, organizacion_hogar, cafeteras, robot_cocina, pelicula_instax_mini]
 
   # ---------- Mascotas ----------
   - id: superzoo
@@ -48,6 +48,37 @@ tiendas:
     url: https://www.superzoo.cl
     plataforma: auto
     categorias: [alimento_mascotas, juguetes_mascotas]
+
+  # ---------- Fotografía / tecnología (película Instax Mini) ----------
+  - id: reifschneider
+    nombre: Reifschneider
+    url: https://www.reifschneider.cl
+    plataforma: auto
+    categorias: [pelicula_instax_mini]
+
+  - id: pcfactory
+    nombre: PC Factory
+    url: https://www.pcfactory.cl
+    plataforma: auto
+    categorias: [pelicula_instax_mini]
+
+  - id: paris
+    nombre: Paris
+    url: https://www.paris.cl
+    plataforma: auto
+    categorias: [pelicula_instax_mini]
+
+  - id: ripley
+    nombre: Ripley
+    url: https://simple.ripley.cl
+    plataforma: auto
+    categorias: [pelicula_instax_mini]
+
+  - id: falabella
+    nombre: Falabella
+    url: https://www.falabella.com/falabella-cl
+    plataforma: auto
+    categorias: [pelicula_instax_mini]
 
   # ---------- Supermercados ----------
   - id: jumbo

@@ -9,6 +9,7 @@ from . import db
 from .modelos import Producto
 
 EJEMPLOS = {
+    "pelicula_instax_mini": [("Película Instax Mini pack 20 fotos", 16990), ("Película Instax Mini 10 fotos", 8990)],
     "alimento_mascotas": [("Alimento perro adulto 15 kg", 42990), ("Alimento gato adulto 7,5 kg", 32990)],
     "juguetes_mascotas": [("Pelota de goma para perro", 5990), ("Rascador para gato 60 cm", 24990)],
     "juguetes_ninos": [("Bloques de madera 50 piezas", 15990), ("Puzzle encaje animales", 8990)],

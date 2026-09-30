@@ -33,13 +33,16 @@ class Alerta:
     nueva: bool = True
 
 
-def detectar(con: sqlite3.Connection, fecha: str, umbral: float, dias_historial: int) -> list[Alerta]:
+def detectar(con: sqlite3.Connection, fecha: str, umbral: float, dias_historial: int,
+            categorias: dict | None = None) -> list[Alerta]:
     """Dos tipos de alerta:
 
     * declarado: la tienda muestra precio normal y precio oferta con >= umbral % de diferencia.
     * historico: el precio de hoy es >= umbral % más bajo que la mediana de los últimos
       `dias_historial` días. Detecta ofertas reales aunque la tienda no las anuncie, y
       evita caer en "precios normales" inflados.
+
+    Una categoría puede fijar su propio `umbral_descuento` (p. ej. 1 = avisar cualquier oferta).
     """
     hoy = date.fromisoformat(fecha)
     desde = (hoy - timedelta(days=dias_historial)).isoformat()
@@ -61,7 +64,8 @@ def detectar(con: sqlite3.Connection, fecha: str, umbral: float, dias_historial:
             candidatos.append(("historico", statistics.median(previos)))
         for tipo, referencia in candidatos:
             descuento = round(100 * (1 - f["precio"] / referencia), 1)
-            if descuento < umbral:
+            minimo = (categorias or {}).get(f["categoria"], {}).get("umbral_descuento", umbral)
+            if descuento <= 0 or descuento < minimo:
                 continue
             ya_avisada = con.execute(
                 "SELECT 1 FROM alertas WHERE producto_id=? AND tipo=? AND fecha=? AND precio<=?",
@@ -114,7 +118,7 @@ def resumen_html(alertas: list[Alerta], fecha: str, categorias: dict, url_panel:
     boton = (f'<p><a href="{escape(url_panel)}" style="background:#2a78d6;color:#fff;padding:10px 16px;'
              f'border-radius:8px;text-decoration:none">Ver panel con gráficos</a></p>') if url_panel else ""
     return (f'<div style="font-family:Arial,sans-serif;max-width:600px">'
-            f'<h2>🛒 Ofertas de 30% o más — {fecha}</h2>'
+            f'<h2>🛒 Ofertas del {fecha}</h2>'
             f'<table style="border-collapse:collapse;width:100%">{"".join(filas)}</table>{boton}</div>')
 
 
@@ -142,7 +146,7 @@ def notificar(alertas: list[Alerta], fecha: str, categorias: dict, url_panel: st
     servidor = os.environ.get("SMTP_SERVIDOR")
     if servidor and os.environ.get("CORREO_DESTINO"):
         msg = EmailMessage()
-        msg["Subject"] = f"🛒 {len(nuevas)} ofertas nuevas de 30% o más ({fecha})"
+        msg["Subject"] = f"🛒 {len(nuevas)} ofertas nuevas ({fecha})"
         msg["From"] = os.environ.get("SMTP_USUARIO", "")
         msg["To"] = os.environ["CORREO_DESTINO"]
         msg.set_content(texto)

@@ -6,6 +6,7 @@
 #   incluir_tambien: (opcional) y además AL MENOS UNA de estas otras
 #   excluir:  si el nombre contiene alguna de estas palabras, se descarta
 #   tallas:   (opcional) sólo se consideran variantes con alguna de estas tallas
+#   umbral_descuento: (opcional) % mínimo propio de esa categoría (1 = avisar cualquier oferta)
 #
 # Las comparaciones ignoran mayúsculas y tildes.
 # Para agregar productos nuevos, copia un bloque y ajusta los términos.
@@ -14,6 +15,14 @@ umbral_descuento: 30        # % mínimo para generar alerta
 dias_historial: 60          # ventana para calcular el "precio habitual"
 
 categorias:
+  pelicula_instax_mini:
+    nombre: Película Instax Mini
+    umbral_descuento: 1       # avisar CUALQUIER oferta, aunque sea pequeña
+    buscar: [instax mini film, pelicula instax mini, instax mini, papel fotografico instax]
+    incluir: [instax]
+    incluir_tambien: [film, pelicula, papel, pack, hojas, fotos]
+    excluir: [camara, cámara, album, álbum, funda, estuche, marco, liplay, link, evo, impresora]
+
   alimento_mascotas:
     nombre: Alimento de mascotas
     buscar: [alimento perro, alimento gato, pellet perro, pellet gato]

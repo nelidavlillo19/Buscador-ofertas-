@@ -16,6 +16,12 @@ umbral_descuento: 30        # % mínimo para generar alerta
 dias_historial: 60          # ventana para calcular el "precio habitual"
 
 categorias:
+  cargador_portatil:
+    nombre: Cargador portátil de celular (power bank)
+    buscar: [power bank, cargador portatil, bateria portatil, bateria externa celular]
+    incluir: [power bank, powerbank, bateria portatil, bateria externa, cargador portatil, banco de energia]
+    excluir: [funda, auto, vehiculo, notebook, solar panel, estacion de energia]
+
   peluches:
     nombre: ⭐ Peluches
     destacar: true

@@ -1,6 +1,0 @@
-00 200 81677 https://sik.search.blue.cdtapps.com/cl/es/search-result-page?q=peluche&size=24&types=PRODUCT
-01 200 82464 https://sik.search.blue.cdtapps.com/cl/es/search-result-page?q=peluche
-02 200 784411 https://www.ikea.com/cl/es/search/?q=peluche
-03 404 79192 https://www.casaideas.cl/3228171000026-rompecabezas-hilando-tarjetas/
-04 200 134323 https://www.casaideas.cl/producto/3228171000026-rompecabezas-hilando-tarjetas
-05 404 79192 https://www.casaideas.cl/3228171000026-rompecabezas-hilando-tarjetas.html

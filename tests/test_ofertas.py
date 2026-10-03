@@ -182,3 +182,13 @@ def test_ikea_avisa_productos_bajo_10000_y_peluches_primero(tmp_path):
     res = alertas.detectar(con, "2026-10-03", 30, 60, cats, {"ikea": {"alerta_precio_maximo": 10000}})
     assert sorted((a.producto_id, a.tipo) for a in res) == [("ikea:c", "precio_bajo"), ("ikea:p", "precio_bajo")]
     assert alertas.seleccionar_para_aviso(res, cats)[0].producto_id == "ikea:p"
+
+
+def test_ikea_api():
+    from ofertas.adapters.ikea import extraer
+    datos = {"searchResultPage": {"products": {"main": {"items": [{"product": {
+        "itemNo": "00402808", "name": "DJUNGELSKOG", "typeName": "Peluche", "pipUrl": "https://ikea/p/1",
+        "allProductImage": [{"altText": "DJUNGELSKOG Peluche, orangután"}], "onlineSellable": True,
+        "salesPrice": {"numeral": 12990.0, "previous": {"wholeNumber": "16.990"}}}}]}}}}
+    [p] = extraer(datos, "ikea")
+    assert (p.nombre, p.precio, p.precio_lista) == ("DJUNGELSKOG Peluche, orangután", 12990, 16990)

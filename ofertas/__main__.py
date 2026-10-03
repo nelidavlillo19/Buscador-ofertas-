@@ -71,6 +71,16 @@ def recolectar(tienda: dict, categorias: dict, cliente: Cliente) -> list[Product
     return list(encontrados.values())
 
 
+def escribir_estado(fecha: str, resumen: dict, lista: list, aviso: str) -> None:
+    """data/ESTADO.md: resumen legible de la última revisión (tiendas, ofertas y avisos)."""
+    lineas = [f"# Última revisión: {fecha}", "", f"- Hora: {datetime.now(ZoneInfo('America/Santiago')):%H:%M} (Chile)",
+              f"- Ofertas encontradas: {len({a.producto_id for a in lista})} "
+              f"({len({a.producto_id for a in lista if a.nueva})} nuevas)",
+              f"- Avisos: {aviso}", "", "| Tienda | Productos |", "|---|---|"]
+    lineas += [f"| {n} | {c}{' ⚠️' if c == 0 else ''} |" for n, c in resumen.items()]
+    (DATOS / "ESTADO.md").write_text("\n".join(lineas) + "\n", encoding="utf-8")
+
+
 def cmd_rastrear(args) -> int:
     config = cargar_config()
     categorias = config["productos"]["categorias"]
@@ -105,9 +115,13 @@ def cmd_rastrear(args) -> int:
 
     if not args.sin_avisos:
         try:
-            alertas.notificar(lista, fecha, categorias, os.environ.get("URL_PANEL", ""))
-        except Exception:  # noqa: BLE001 - un aviso fallido no debe impedir el respaldo
+            aviso = alertas.notificar(lista, fecha, categorias, os.environ.get("URL_PANEL", ""))
+        except Exception as e:  # noqa: BLE001 - un aviso fallido no debe impedir el respaldo
             log.exception("No se pudieron enviar los avisos (revisa GMAIL_USUARIO / GMAIL_CLAVE_APP)")
+            aviso = f"ERROR al enviar: {type(e).__name__}: {str(e)[:200]}"
+    else:
+        aviso = "avisos desactivados en esta ejecución"
+    escribir_estado(fecha, resumen, lista, aviso)
     respaldo.respaldar(con, DATOS / "respaldos", fecha)
     panel.exportar(con, fecha, config, SITIO)
 
@@ -138,6 +152,28 @@ def cmd_probar(args) -> int:
         desc = f"  -{p.descuento_declarado:.0f}%" if p.descuento_declarado else ""
         print(f"  ${p.precio:>10,.0f}{desc}  {p.nombre[:70]}")
     return 0 if resultados else 2
+
+
+def cmd_correo_prueba(args) -> int:
+    """Envía las mejores ofertas vigentes (aunque no sean nuevas) para comprobar el correo."""
+    config = cargar_config()
+    categorias = config["productos"]["categorias"]
+    con = db.conectar(RUTA_DB)
+    fecha = con.execute("SELECT MAX(fecha) FROM alertas").fetchone()[0] or hoy()
+    lista = [alertas.Alerta(f["producto_id"], f["tipo"], f["descuento"], f["precio"], f["referencia"],
+                            f["nombre"], f["tienda"], f["url"], f["categoria"])
+             for f in con.execute("""SELECT a.*, p.nombre, p.tienda, p.url, p.categoria FROM alertas a
+                                     JOIN productos p ON p.id = a.producto_id WHERE a.fecha = ?""", (fecha,))]
+    try:
+        resultado = alertas.notificar(lista, f"{fecha} (correo de prueba)", categorias,
+                                      os.environ.get("URL_PANEL", ""))
+    except Exception as e:  # noqa: BLE001
+        resultado = f"ERROR al enviar: {type(e).__name__}: {str(e)[:300]}"
+    salida = RAIZ / "diagnostico" / "correo_resultado.txt"
+    salida.parent.mkdir(exist_ok=True)
+    salida.write_text(f"{datetime.now(ZoneInfo('America/Santiago')):%Y-%m-%d %H:%M} {resultado}\n", encoding="utf-8")
+    print(resultado)
+    return 0
 
 
 def cmd_panel(args) -> int:
@@ -182,6 +218,7 @@ def main(argv=None) -> int:
     p.set_defaults(func=cmd_probar)
 
     sub.add_parser("panel").set_defaults(func=cmd_panel)
+    sub.add_parser("correo-prueba").set_defaults(func=cmd_correo_prueba)
 
     p = sub.add_parser("demo")
     p.add_argument("--dias", type=int, default=90)

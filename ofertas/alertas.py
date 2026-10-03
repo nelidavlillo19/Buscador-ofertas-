@@ -139,12 +139,13 @@ def resumen_html(alertas: list[Alerta], fecha: str, categorias: dict, url_panel:
             f'<table style="border-collapse:collapse;width:100%">{"".join(filas)}</table>{boton}</div>')
 
 
-def notificar(alertas: list[Alerta], fecha: str, categorias: dict, url_panel: str = "") -> None:
+def notificar(alertas: list[Alerta], fecha: str, categorias: dict, url_panel: str = "") -> str:
     """Envía sólo las alertas nuevas por Telegram y/o correo, si están configurados."""
     nuevas = seleccionar_para_aviso(alertas)
     if not nuevas:
         log.info("Sin alertas nuevas que notificar")
-        return
+        return "sin ofertas nuevas que avisar"
+    estado = []
     texto = resumen_markdown(nuevas, fecha, categorias)
     if url_panel:
         texto += f"\nPanel: {url_panel}\n"
@@ -159,6 +160,7 @@ def notificar(alertas: list[Alerta], fecha: str, categorias: dict, url_panel: st
                 "disable_web_page_preview": "true",
             })
         log.info("Enviadas %d alertas por Telegram", len(nuevas))
+        estado.append(f"Telegram enviado ({len(nuevas)} ofertas)")
 
     # Gmail simple (GMAIL_USUARIO + GMAIL_CLAVE_APP) o un servidor SMTP cualquiera
     usuario = os.environ.get("GMAIL_USUARIO") or os.environ.get("SMTP_USUARIO")
@@ -177,3 +179,5 @@ def notificar(alertas: list[Alerta], fecha: str, categorias: dict, url_panel: st
             s.login(usuario, clave.replace(" ", ""))
             s.send_message(msg)
         log.info("Enviadas %d alertas por correo", len(nuevas))
+        estado.append(f"correo enviado ({len(nuevas)} ofertas)")
+    return ", ".join(estado) or "correo NO configurado (faltan GMAIL_USUARIO y GMAIL_CLAVE_APP)"

@@ -2,7 +2,9 @@ name: Rastreo diario de precios
 
 on:
   schedule:
-    - cron: "17 10 * * *"   # todos los días ~7:17 hora de Chile (10:17 UTC)
+    # 4:17 de Chile (07:17 UTC). GitHub suele atrasar estas ejecuciones varias horas,
+    # así que se programa temprano para que los datos estén listos en la mañana.
+    - cron: "17 7 * * *"
   workflow_dispatch:         # botón "Run workflow" para ejecutarlo a mano
   push:                      # también corre al cambiar productos, tiendas o el programa
     branches: [main]

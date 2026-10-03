@@ -1,6 +1,0 @@
-00 200 1340 https://headless.casaideas.cl/graphql?query=%7Bproducts(search%3A%22puzzle%22%2CpageSize%3A3)%7Btotal_count%20items%7Bsku%20name%20url_key%20url_suffix%20stock_status%20small_image%7Burl%7D%20price_range%7Bminimum_price%7Bregular_price%7Bvalue%7D%20final_price%7Bvalue%7D%7D%7D%7D%7D%7D
-01 404 79192 https://www.casaideas.cl/graphql?query=%7Bproducts(search%3A%22puzzle%22%2CpageSize%3A3)%7Btotal_count%20items%7Bsku%20name%20url_key%7D%7D%7D
-02 200 953067 https://www.ikea.cl/
-03 404 463865 https://www.ikea.cl/es/search/?q=peluche
-04 200 315181 https://www.sodimac.cl/sodimac-cl/search?Ntt=pintura%20antihongos
-05 403 919 https://www.easy.cl/busqueda?ft=pintura%20antihongos

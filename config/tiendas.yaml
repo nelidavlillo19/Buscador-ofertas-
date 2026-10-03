@@ -1,7 +1,8 @@
 # Tiendas a revisar.
 #
 # plataforma:
-#   sfcc / falabella / cencosud -> lectores especiales (SuperZoo, Falabella, Santa Isabel)
+#   sfcc / falabella / cencosud / magento -> lectores especiales (SuperZoo, Falabella y Sodimac,
+#                                            Santa Isabel, Casa Ideas)
 #   auto     -> detecta sola si la tienda es Shopify, VTEX o usa datos schema.org (recomendado)
 #   shopify  -> tiendas Shopify (usa /products.json y /search/suggest.json)
 #   vtex     -> tiendas VTEX (API pública de catálogo)
@@ -41,7 +42,8 @@ tiendas:
   - id: casaideas
     nombre: Casa Ideas
     url: https://www.casaideas.cl
-    plataforma: auto
+    plataforma: magento
+    api: https://headless.casaideas.cl/graphql
     categorias: [peluches, rompecabezas, libros_actividades, dinosaurios, juguetes_ninos, organizacion_hogar,
                  cafeteras, robot_cocina, pelicula_instax_mini]
 
@@ -110,6 +112,8 @@ tiendas:
     nombre: Easy
     url: https://www.easy.cl
     plataforma: auto
+    # Bloquea a los programas automáticos (responde 403).
+    activa: false
     categorias: [pintura_antihongos]
 
   # ---------- Supermercados ----------

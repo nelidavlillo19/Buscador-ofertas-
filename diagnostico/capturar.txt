@@ -1,7 +1,7 @@
 # Páginas a guardar para estudiarlas (una URL por línea)
-https://headless.casaideas.cl/graphql?query=%7Bproducts(search%3A%22puzzle%22%2CpageSize%3A3)%7Btotal_count%20items%7Bsku%20name%20url_key%20url_suffix%20stock_status%20small_image%7Burl%7D%20price_range%7Bminimum_price%7Bregular_price%7Bvalue%7D%20final_price%7Bvalue%7D%7D%7D%7D%7D%7D
-https://www.casaideas.cl/graphql?query=%7Bproducts(search%3A%22puzzle%22%2CpageSize%3A3)%7Btotal_count%20items%7Bsku%20name%20url_key%7D%7D%7D
-https://www.ikea.cl/
-https://www.ikea.cl/es/search/?q=peluche
-https://www.sodimac.cl/sodimac-cl/search?Ntt=pintura%20antihongos
-https://www.easy.cl/busqueda?ft=pintura%20antihongos
+https://sik.search.blue.cdtapps.com/cl/es/search-result-page?q=peluche&size=24&types=PRODUCT
+https://sik.search.blue.cdtapps.com/cl/es/search-result-page?q=peluche
+https://www.ikea.com/cl/es/search/?q=peluche
+https://www.casaideas.cl/3228171000026-rompecabezas-hilando-tarjetas/
+https://www.casaideas.cl/producto/3228171000026-rompecabezas-hilando-tarjetas
+https://www.casaideas.cl/3228171000026-rompecabezas-hilando-tarjetas.html

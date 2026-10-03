@@ -19,6 +19,9 @@ Se configuran en [`config/productos.yaml`](config/productos.yaml):
 
 | Categoría | Ejemplos |
 |---|---|
+| IKEA | ofertas de 30%+ **y todo lo que cueste $10.000 o menos**; ⭐ peluches destacados |
+| Casa Ideas | juguetes, rompecabezas/puzzles, libros de actividades, dinosaurios, organización |
+| Hogar | pintura antihongos (Sodimac, Easy) |
 | Fotografía | película Instax Mini (**avisa cualquier oferta**, no sólo desde 30%) |
 | Mascotas | alimento de perro y gato, juguetes para mascotas |
 | Niños | juguetes, ropa de niña **talla 2**, ropa de niño **talla 6**, trajes de baño (niña T2, niño T6), crema de cuerpo para niños, calzado ergonómico tipo Uma Baby |

@@ -34,7 +34,7 @@ class Alerta:
 
 
 def detectar(con: sqlite3.Connection, fecha: str, umbral: float, dias_historial: int,
-            categorias: dict | None = None) -> list[Alerta]:
+            categorias: dict | None = None, tiendas: dict | None = None) -> list[Alerta]:
     """Dos tipos de alerta:
 
     * declarado: la tienda muestra precio normal y precio oferta con >= umbral % de diferencia.
@@ -43,6 +43,9 @@ def detectar(con: sqlite3.Connection, fecha: str, umbral: float, dias_historial:
       evita caer en "precios normales" inflados.
 
     Una categoría puede fijar su propio `umbral_descuento` (p. ej. 1 = avisar cualquier oferta).
+
+    * precio_bajo: la tienda tiene `alerta_precio_maximo` (p. ej. IKEA 10000) y el producto
+      cuesta eso o menos, tenga o no descuento.
     """
     hoy = date.fromisoformat(fecha)
     desde = (hoy - timedelta(days=dias_historial)).isoformat()
@@ -62,10 +65,13 @@ def detectar(con: sqlite3.Connection, fecha: str, umbral: float, dias_historial:
         previos = db.historial(con, f["id"], desde, fecha)
         if len(previos) >= MIN_DIAS_HISTORIAL:
             candidatos.append(("historico", statistics.median(previos)))
+        limite = (tiendas or {}).get(f["tienda"], {}).get("alerta_precio_maximo")
+        if limite and f["precio"] <= limite:
+            candidatos.append(("precio_bajo", max(f["precio_lista"] or 0, f["precio"])))
         for tipo, referencia in candidatos:
             descuento = round(100 * (1 - f["precio"] / referencia), 1)
             minimo = (categorias or {}).get(f["categoria"], {}).get("umbral_descuento", umbral)
-            if descuento <= 0 or descuento < minimo:
+            if tipo != "precio_bajo" and (descuento <= 0 or descuento < minimo):
                 continue
             ya_avisada = con.execute(
                 "SELECT 1 FROM alertas WHERE producto_id=? AND tipo=? AND fecha BETWEEN ? AND ? AND precio<=?",
@@ -86,7 +92,7 @@ def _clp(valor: float) -> str:
 
 
 def resumen_markdown(alertas: list[Alerta], fecha: str, categorias: dict) -> str:
-    etiquetas = {"declarado": "desc. tienda", "historico": "vs. precio habitual"}
+    etiquetas = {"declarado": "desc. tienda", "historico": "vs. precio habitual", "precio_bajo": "precio bajo"}
     lineas = [f"# Ofertas del {fecha}", ""]
     if not alertas:
         return "\n".join(lineas + ["Hoy no hubo productos con el descuento mínimo."])
@@ -94,7 +100,7 @@ def resumen_markdown(alertas: list[Alerta], fecha: str, categorias: dict) -> str
         cat = categorias.get(a.categoria, {}).get("nombre", a.categoria)
         marca_nueva = "🆕 " if a.nueva else ""
         lineas.append(
-            f"- {marca_nueva}**-{a.descuento:.0f}%** ({etiquetas[a.tipo]}) [{a.nombre}]({a.url}) — "
+            f"- {marca_nueva}**{f'-{a.descuento:.0f}%' if a.descuento >= 1 else 'precio bajo'}** ({etiquetas[a.tipo]}) [{a.nombre}]({a.url}) — "
             f"{_clp(a.precio)} (antes {_clp(a.referencia)}) · {a.tienda} · {cat}"
         )
     return "\n".join(lineas) + "\n"
@@ -103,7 +109,7 @@ def resumen_markdown(alertas: list[Alerta], fecha: str, categorias: dict) -> str
 MAX_POR_CATEGORIA = 5
 
 
-def seleccionar_para_aviso(alertas: list[Alerta]) -> list[Alerta]:
+def seleccionar_para_aviso(alertas: list[Alerta], categorias: dict | None = None) -> list[Alerta]:
     """Alertas nuevas, una por producto, y como máximo las 5 mejores por categoría
     (el resto se ve en el panel) para que el correo no sea eterno."""
     mejor: dict[str, Alerta] = {}
@@ -114,18 +120,21 @@ def seleccionar_para_aviso(alertas: list[Alerta]) -> list[Alerta]:
     for a in sorted(mejor.values(), key=lambda a: -a.descuento):
         por_cat.setdefault(a.categoria, []).append(a)
     elegidas = [a for lista in por_cat.values() for a in lista[:MAX_POR_CATEGORIA]]
-    return sorted(elegidas, key=lambda a: -a.descuento)
+    # categorías con `destacar: true` (p. ej. peluches) van primero
+    destacar = lambda a: not (categorias or {}).get(a.categoria, {}).get("destacar", False)  # noqa: E731
+    return sorted(elegidas, key=lambda a: (destacar(a), -a.descuento))
 
 
 def resumen_html(alertas: list[Alerta], fecha: str, categorias: dict, url_panel: str = "") -> str:
     """Correo legible: una fila por oferta, con botón para ver el producto."""
-    etiquetas = {"declarado": "descuento de la tienda", "historico": "más barato que lo habitual"}
+    etiquetas = {"declarado": "descuento de la tienda", "historico": "más barato que lo habitual",
+                 "precio_bajo": "precio bajo"}
     filas = []
     for a in alertas:
         cat = categorias.get(a.categoria, {}).get("nombre", a.categoria)
         filas.append(f"""
 <tr><td style="padding:12px 8px;border-bottom:1px solid #e3e1dc;vertical-align:top">
-  <span style="background:#d03b3b;color:#fff;font-weight:bold;padding:3px 8px;border-radius:10px">-{a.descuento:.0f}%</span>
+  <span style="background:#d03b3b;color:#fff;font-weight:bold;padding:3px 8px;border-radius:10px">{f"-{a.descuento:.0f}%" if a.descuento >= 1 else "precio bajo"}</span>
 </td><td style="padding:12px 8px;border-bottom:1px solid #e3e1dc">
   <a href="{escape(a.url)}" style="color:#0b0b0b;font-weight:bold;text-decoration:none">{escape(a.nombre)}</a><br>
   <span style="font-size:18px;font-weight:bold">{_clp(a.precio)}</span>
@@ -141,7 +150,7 @@ def resumen_html(alertas: list[Alerta], fecha: str, categorias: dict, url_panel:
 
 def notificar(alertas: list[Alerta], fecha: str, categorias: dict, url_panel: str = "") -> str:
     """Envía sólo las alertas nuevas por Telegram y/o correo, si están configurados."""
-    nuevas = seleccionar_para_aviso(alertas)
+    nuevas = seleccionar_para_aviso(alertas, categorias)
     if not nuevas:
         log.info("Sin alertas nuevas que notificar")
         return "sin ofertas nuevas que avisar"

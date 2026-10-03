@@ -1,5 +1,7 @@
 # Páginas a guardar para estudiarlas (una URL por línea)
-https://www.casaideas.cl/
-https://www.casaideas.cl/search?q=organizador
-https://www.pcfactory.cl/assets/manager-919c043f745b15d0acb67bdc6a6c055719ae5a2b629342b7d7b99b117d99e15d.js
-https://www.pcfactory.cl/busqueda?ft=instax%20mini
+https://headless.casaideas.cl/graphql?query=%7Bproducts(search%3A%22puzzle%22%2CpageSize%3A3)%7Btotal_count%20items%7Bsku%20name%20url_key%20url_suffix%20stock_status%20small_image%7Burl%7D%20price_range%7Bminimum_price%7Bregular_price%7Bvalue%7D%20final_price%7Bvalue%7D%7D%7D%7D%7D%7D
+https://www.casaideas.cl/graphql?query=%7Bproducts(search%3A%22puzzle%22%2CpageSize%3A3)%7Btotal_count%20items%7Bsku%20name%20url_key%7D%7D%7D
+https://www.ikea.cl/
+https://www.ikea.cl/es/search/?q=peluche
+https://www.sodimac.cl/sodimac-cl/search?Ntt=pintura%20antihongos
+https://www.easy.cl/busqueda?ft=pintura%20antihongos

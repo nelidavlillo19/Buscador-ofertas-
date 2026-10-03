@@ -166,3 +166,19 @@ def test_cencosud_render_data():
     datos = {"plp": {"plp_products": {"products": [{"productId": "1", "productName": "Compota"}]}}}
     pagina = f"<script>window.__renderData = {json.dumps(json.dumps(datos))};</script>"
     assert productos_render(pagina)[0]["productName"] == "Compota"
+
+
+def test_ikea_avisa_productos_bajo_10000_y_peluches_primero(tmp_path):
+    import yaml
+    cats = yaml.safe_load(open("config/productos.yaml", encoding="utf-8"))["categorias"]
+    con = db.conectar(tmp_path / "x.sqlite")
+    peluche = Producto("ikea", "p", "DJUNGELSKOG Peluche oso", "u", 9990)
+    caja = Producto("ikea", "c", "Caja organizadora", "u", 4990)
+    mueble = Producto("ikea", "m", "Estante", "u", 59990)
+    assert clasificar(peluche, cats, None) == "peluches"
+    peluche.categoria, caja.categoria, mueble.categoria = "peluches", "organizacion_hogar", "organizacion_hogar"
+    for p in (caja, peluche, mueble):
+        db.guardar(con, p, "2026-10-03")
+    res = alertas.detectar(con, "2026-10-03", 30, 60, cats, {"ikea": {"alerta_precio_maximo": 10000}})
+    assert sorted((a.producto_id, a.tipo) for a in res) == [("ikea:c", "precio_bajo"), ("ikea:p", "precio_bajo")]
+    assert alertas.seleccionar_para_aviso(res, cats)[0].producto_id == "ikea:p"

@@ -105,7 +105,8 @@ def cmd_rastrear(args) -> int:
         log.info("%s: %d productos de interés", tienda["nombre"], len(productos))
 
     lista = alertas.detectar(con, fecha, config["productos"].get("umbral_descuento", 30),
-                             config["productos"].get("dias_historial", 60), categorias)
+                             config["productos"].get("dias_historial", 60), categorias,
+                             {t["id"]: t for t in config["tiendas"]})
     con.commit()
     carpeta_alertas = DATOS / "alertas"
     carpeta_alertas.mkdir(parents=True, exist_ok=True)
@@ -194,7 +195,8 @@ def cmd_demo(args) -> int:
     categorias = config["productos"]["categorias"]
     for dia in sorted({f[0] for f in con.execute("SELECT DISTINCT fecha FROM precios")})[-args.dias:]:
         alertas.detectar(con, dia, config["productos"].get("umbral_descuento", 30),
-                         config["productos"].get("dias_historial", 60), categorias)
+                         config["productos"].get("dias_historial", 60), categorias,
+                             {t["id"]: t for t in config["tiendas"]})
     con.commit()
     print(panel.exportar(con, fecha, config, RAIZ / "sitio-demo", demo=True))
     return 0

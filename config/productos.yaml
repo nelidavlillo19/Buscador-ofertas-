@@ -7,6 +7,7 @@
 #   excluir:  si el nombre contiene alguna de estas palabras, se descarta
 #   tallas:   (opcional) sólo se consideran variantes con alguna de estas tallas
 #   umbral_descuento: (opcional) % mínimo propio de esa categoría (1 = avisar cualquier oferta)
+#   destacar: true    (opcional) aparece primero en el correo y con ⭐ en el panel
 #
 # Las comparaciones ignoran mayúsculas y tildes.
 # Para agregar productos nuevos, copia un bloque y ajusta los términos.
@@ -15,6 +16,37 @@ umbral_descuento: 30        # % mínimo para generar alerta
 dias_historial: 60          # ventana para calcular el "precio habitual"
 
 categorias:
+  peluches:
+    nombre: ⭐ Peluches
+    destacar: true
+    buscar: [peluche, peluches, muñeco de peluche]
+    incluir: [peluche, peluches, soft toy, gosig, djungelskog, blåhaj, blahaj]
+    excluir: [perro, gato, mascota]
+
+  pintura_antihongos:
+    nombre: Pintura antihongos
+    buscar: [pintura antihongos, pintura anti hongos, pintura antihumedad, pintura antimoho]
+    incluir: [pintura, esmalte, latex, látex, oleo, óleo]
+    incluir_tambien: [hongo, moho, antihumedad, anti humedad, fungicida, banos, baños]
+
+  rompecabezas:
+    nombre: Rompecabezas y puzzles
+    buscar: [rompecabezas, puzzle, puzzle infantil, rompecabezas niños]
+    incluir: [rompecabeza, puzzle]
+    excluir: [perro, gato, mascota]
+
+  libros_actividades:
+    nombre: Libros de actividades
+    buscar: [libro de actividades, libro para colorear, libro stickers, libro infantil]
+    incluir: [libro, cuaderno de actividades, para colorear, stickers]
+    incluir_tambien: [actividad, colorear, sticker, pintar, infantil, niño, nino, niña, nina, kids]
+
+  dinosaurios:
+    nombre: Dinosaurios
+    buscar: [dinosaurio, dinosaurios, juguete dinosaurio]
+    incluir: [dinosaurio, dino, t-rex, trex, tiranosaurio, jurassic]
+    excluir: [pijama, polera, poleron, pantalon]
+
   pelicula_instax_mini:
     nombre: Película Instax Mini
     umbral_descuento: 1       # avisar CUALQUIER oferta, aunque sea pequeña
@@ -36,7 +68,7 @@ categorias:
 
   juguetes_ninos:
     nombre: Juguetes para niños
-    buscar: [juguete, juguete didactico, bloques, puzzle infantil]
+    buscar: [juguete, juguete didactico, bloques, juguete de madera]
     incluir: [juguete, didactic, bloque, puzzle, rompecabeza, muñeca, peluche, encaje]
     excluir: [perro, gato, mascota]
 

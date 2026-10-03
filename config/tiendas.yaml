@@ -10,6 +10,7 @@
 # catalogo_completo: true  -> descarga todo el catálogo (útil en marcas pequeñas)
 #                    false -> sólo busca los términos de cada categoría de interés
 # categorias: limita qué categorías de interés se buscan en esa tienda (vacío = todas)
+# alerta_precio_maximo: avisa todo producto de esa tienda que cueste esto o menos (p. ej. 10000)
 # activa: false para pausar una tienda sin borrarla
 
 tiendas:
@@ -41,7 +42,16 @@ tiendas:
     nombre: Casa Ideas
     url: https://www.casaideas.cl
     plataforma: auto
-    categorias: [juguetes_ninos, organizacion_hogar, cafeteras, robot_cocina, pelicula_instax_mini]
+    categorias: [peluches, rompecabezas, libros_actividades, dinosaurios, juguetes_ninos, organizacion_hogar,
+                 cafeteras, robot_cocina, pelicula_instax_mini]
+
+  - id: ikea
+    nombre: IKEA
+    url: https://www.ikea.cl
+    plataforma: auto
+    # Además de las ofertas de 30%+, avisa todo lo que cueste $10.000 o menos (peluches destacados)
+    alerta_precio_maximo: 10000
+    categorias: [peluches, rompecabezas, dinosaurios, juguetes_ninos, organizacion_hogar]
 
   # ---------- Mascotas ----------
   - id: superzoo
@@ -88,6 +98,19 @@ tiendas:
     url: https://www.falabella.com/falabella-cl
     plataforma: falabella
     categorias: [pelicula_instax_mini]
+
+  # ---------- Construcción / pinturas ----------
+  - id: sodimac
+    nombre: Sodimac
+    url: https://www.sodimac.cl/sodimac-cl
+    plataforma: falabella
+    categorias: [pintura_antihongos]
+
+  - id: easy
+    nombre: Easy
+    url: https://www.easy.cl
+    plataforma: auto
+    categorias: [pintura_antihongos]
 
   # ---------- Supermercados ----------
   - id: jumbo

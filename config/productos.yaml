@@ -21,7 +21,7 @@ categorias:
     destacar: true
     buscar: [peluche, peluches, muñeco de peluche]
     incluir: [peluche, peluches, soft toy, gosig, djungelskog, blåhaj, blahaj]
-    excluir: [perro, gato, mascota]
+    excluir: [para perro, para gato, mascota]   # un peluche con forma de perro sí sirve
 
   pintura_antihongos:
     nombre: Pintura antihongos

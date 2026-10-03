@@ -1,2 +1,2 @@
-# Tiendas a diagnosticar (una por línea). Cambiar este archivo lanza el diagnóstico en GitHub.
-casaideas superzoo santaisabel unimarc reifschneider pcfactory paris ripley falabella colloky
+casaideas pcfactory
+casaideas pcfactory

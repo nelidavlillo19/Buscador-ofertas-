@@ -1,8 +1,5 @@
 # Páginas a guardar para estudiarlas (una URL por línea)
-https://www.superzoo.cl/buscar?q=alimento%20perro
-https://www.santaisabel.cl/busqueda?ft=compota
-https://www.falabella.com/falabella-cl/search?Ntt=instax%20mini%20film
-https://www.pcfactory.cl/busqueda?ft=instax%20mini%20film
-https://www.casaideas.com/
-https://www.jumbo.cl/api/catalog_system/pub/products/search?ft=compota&_from=0&_to=1
-https://www.jumbo.cl/busqueda?ft=instax%20mini
+https://www.casaideas.cl/
+https://www.casaideas.cl/search?q=organizador
+https://www.pcfactory.cl/assets/manager-919c043f745b15d0acb67bdc6a6c055719ae5a2b629342b7d7b99b117d99e15d.js
+https://www.pcfactory.cl/busqueda?ft=instax%20mini

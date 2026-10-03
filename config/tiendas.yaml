@@ -39,10 +39,8 @@ tiendas:
 
   - id: casaideas
     nombre: Casa Ideas
-    url: https://www.casaideas.com
+    url: https://www.casaideas.cl
     plataforma: auto
-    # La página se arma sólo con JavaScript; falta un lector especial.
-    activa: false
     categorias: [juguetes_ninos, organizacion_hogar, cafeteras, robot_cocina, pelicula_instax_mini]
 
   # ---------- Mascotas ----------

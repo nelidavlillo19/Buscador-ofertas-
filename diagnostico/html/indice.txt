@@ -1,2 +1,0 @@
-00 200 41474 https://www.pichintun.cl/products.json?limit=2
-01 200 1076565 https://www.pichintun.cl/

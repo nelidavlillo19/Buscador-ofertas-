@@ -18,7 +18,7 @@ tiendas:
   # ---------- Marcas infantiles ----------
   - id: pichintun
     nombre: Pichintun
-    url: https://www.pichintun.cl
+    url: https://www.pichintun.com
     plataforma: auto
     catalogo_completo: true
     categorias: [traje_bano_nina_t2, traje_bano_nino_t6, ropa_nina_t2, ropa_nino_t6, calzado_ergonomico,

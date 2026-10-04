@@ -1,7 +1,3 @@
 # Páginas a guardar para estudiarlas (una URL por línea)
-https://sik.search.blue.cdtapps.com/cl/es/search-result-page?q=peluche&size=24&types=PRODUCT
-https://sik.search.blue.cdtapps.com/cl/es/search-result-page?q=peluche
-https://www.ikea.com/cl/es/search/?q=peluche
-https://www.casaideas.cl/3228171000026-rompecabezas-hilando-tarjetas/
-https://www.casaideas.cl/producto/3228171000026-rompecabezas-hilando-tarjetas
-https://www.casaideas.cl/3228171000026-rompecabezas-hilando-tarjetas.html
+https://www.pichintun.cl/products.json?limit=2
+https://www.pichintun.cl/

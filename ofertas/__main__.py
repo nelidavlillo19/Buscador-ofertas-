@@ -116,7 +116,9 @@ def cmd_rastrear(args) -> int:
 
     if not args.sin_avisos:
         try:
-            aviso = alertas.notificar(lista, fecha, categorias, os.environ.get("URL_PANEL", ""))
+            nombres = {t["nombre"]: t["id"] for t in config["tiendas"]}
+            revisadas = {nombres[n]: (n, c) for n, c in resumen.items()}
+            aviso = alertas.notificar(lista, fecha, categorias, os.environ.get("URL_PANEL", ""), revisadas)
         except Exception as e:  # noqa: BLE001 - un aviso fallido no debe impedir el respaldo
             log.exception("No se pudieron enviar los avisos (revisa GMAIL_USUARIO / GMAIL_CLAVE_APP)")
             aviso = f"ERROR al enviar: {type(e).__name__}: {str(e)[:200]}"
@@ -162,12 +164,16 @@ def cmd_correo_prueba(args) -> int:
     con = db.conectar(RUTA_DB)
     fecha = con.execute("SELECT MAX(fecha) FROM alertas").fetchone()[0] or hoy()
     lista = [alertas.Alerta(f["producto_id"], f["tipo"], f["descuento"], f["precio"], f["referencia"],
-                            f["nombre"], f["tienda"], f["url"], f["categoria"])
+                            f["nombre"], f["tienda"], f["url"], f["categoria"], nueva=False)
              for f in con.execute("""SELECT a.*, p.nombre, p.tienda, p.url, p.categoria FROM alertas a
                                      JOIN productos p ON p.id = a.producto_id WHERE a.fecha = ?""", (fecha,))]
     try:
+        nombres = {t["id"]: t["nombre"] for t in config["tiendas"]}
+        revisadas = {f["tienda"]: (nombres.get(f["tienda"], f["tienda"]), f["n"]) for f in con.execute(
+            """SELECT p.tienda, COUNT(*) AS n FROM precios pr JOIN productos p ON p.id = pr.producto_id
+               WHERE pr.fecha = ? GROUP BY p.tienda ORDER BY n DESC""", (fecha,))}
         resultado = alertas.notificar(lista, f"{fecha} (correo de prueba)", categorias,
-                                      os.environ.get("URL_PANEL", ""))
+                                      os.environ.get("URL_PANEL", ""), revisadas)
     except Exception as e:  # noqa: BLE001
         resultado = f"ERROR al enviar: {type(e).__name__}: {str(e)[:300]}"
     salida = RAIZ / "diagnostico" / "correo_resultado.txt"

@@ -114,7 +114,8 @@ def test_instax_avisa_cualquier_oferta(tmp_path):
     db.guardar(con, Producto("t", "g", "Galletas", "u", 900, precio_lista=1000, categoria="galletas_colacion"),
                "2026-09-30")
     res = alertas.detectar(con, "2026-09-30", 30, 60, cats)
-    assert [(a.producto_id, a.descuento) for a in res] == [("t:f", 5.9)]  # galletas -10% no alcanza el 30%
+    # galletas -10% no alcanza el 30%; la película avisa por la oferta y por costar $800 por foto
+    assert sorted((a.producto_id, a.tipo) for a in res) == [("t:f", "declarado"), ("t:f", "por_unidad")]
 
 
 def test_talla_no_confunde_meses_con_anios():
@@ -192,3 +193,23 @@ def test_ikea_api():
         "salesPrice": {"numeral": 12990.0, "previous": {"wholeNumber": "16.990"}}}}]}}}}
     [p] = extraer(datos, "ikea")
     assert (p.nombre, p.precio, p.precio_lista) == ("DJUNGELSKOG Peluche, orangután", 12990, 16990)
+
+
+def test_instax_cuenta_fotos_y_avisa_bajo_1000_por_foto(tmp_path):
+    import yaml
+    from ofertas.unidades import contar
+    assert contar("PELÍCULA PACK X2 INSTAX MINI 2×20") == 40
+    assert contar("Pelicula Instax Mini 10X2 Pack") == 20
+    assert contar("INSTAX MINI 10/PK HEART SKETCH") == 10
+    assert contar("Twin Pack 20 Hojas 53x86mm") == 20
+    assert contar("Pack X3 películas Instax Mini 60 fotos") == 60
+    assert contar("PACK X4 PELÍCULA INSTAX MINI 80 UN") == 80
+    cats = yaml.safe_load(open("config/productos.yaml", encoding="utf-8"))["categorias"]
+    con = db.conectar(tmp_path / "x.sqlite")
+    barato = Producto("f", "a", "Pack X5 películas Instax mini 100 fotos", "u", 87990, categoria="pelicula_instax_mini")
+    justo = Producto("f", "b", "Pack Instax Film Mini 100 Fotos", "u", 99990, categoria="pelicula_instax_mini")
+    for p in (barato, justo):
+        db.guardar(con, p, "2026-10-04")
+    res = alertas.detectar(con, "2026-10-04", 30, 60, cats)
+    assert [(a.producto_id, a.tipo, a.referencia) for a in res] == [("f:a", "por_unidad", 880)]
+    assert alertas.insignia(res[0]) == "$880 c/foto"

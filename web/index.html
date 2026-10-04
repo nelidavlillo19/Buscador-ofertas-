@@ -186,13 +186,13 @@ function pintarOfertas() {
   const al = alertasHoy();
   $("t-ofertas").textContent = `Ofertas de hoy: ${al.length}`;
   if (!al.length) { $("ofertas").innerHTML = '<p class="vacio">Hoy no hay ofertas que cumplan el mínimo con estos filtros.</p>'; return; }
-  const tipo = {declarado: "según la tienda", historico: "vs. su precio habitual", precio_bajo: "precio bajo"};
+  const tipo = {declarado: "según la tienda", historico: "vs. su precio habitual", precio_bajo: "precio bajo", por_unidad: "precio por foto"};
   $("ofertas").innerHTML = al.slice(0, 60).map(a => `
     <a class="card" href="${esc(a.url)}" target="_blank" rel="noopener">
       ${a.imagen ? `<img src="${esc(a.imagen)}" alt="" loading="lazy">` : ""}
-      <span class="badge">${a.descuento >= 1 ? "-" + a.descuento.toFixed(0) + "%" : "Precio bajo"}</span>
+      <span class="badge">${a.tipo === "por_unidad" ? clp(a.referencia) + " c/foto" : a.descuento >= 1 ? "-" + a.descuento.toFixed(0) + "%" : "Precio bajo"}</span>
       <span class="n">${esc(a.nombre)}</span>
-      <span class="precio">${clp(a.precio)}<span class="antes">${clp(a.referencia)}</span></span>
+      <span class="precio">${clp(a.precio)}${a.tipo === "por_unidad" ? "" : `<span class="antes">${clp(a.referencia)}</span>`}</span>
       <span class="meta">${esc(D.tiendas[a.tienda] || a.tienda)} · ${esc(D.categorias[a.categoria] || "")} · ${tipo[a.tipo]}</span>
     </a>`).join("");
 }

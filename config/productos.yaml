@@ -7,6 +7,7 @@
 #   excluir:  si el nombre contiene alguna de estas palabras, se descarta
 #   tallas:   (opcional) sólo se consideran variantes con alguna de estas tallas
 #   umbral_descuento: (opcional) % mínimo propio de esa categoría (1 = avisar cualquier oferta)
+#   precio_maximo_por_unidad: (opcional) avisa si precio ÷ unidades del pack queda bajo este valor
 #   destacar: true    (opcional) aparece primero en el correo y con ⭐ en el panel
 #
 # Las comparaciones ignoran mayúsculas y tildes.
@@ -56,6 +57,7 @@ categorias:
   pelicula_instax_mini:
     nombre: Película Instax Mini
     umbral_descuento: 1       # avisar CUALQUIER oferta, aunque sea pequeña
+    precio_maximo_por_unidad: 1000   # avisar todo pack donde cada foto cueste menos de $1.000
     buscar: [instax mini film, pelicula instax mini, instax mini, papel fotografico instax]
     incluir: [instax]
     incluir_tambien: [film, pelicula, papel, pack, hojas, fotos]

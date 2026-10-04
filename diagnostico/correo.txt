@@ -1,3 +1,3 @@
 # Cambiar este archivo envía un correo de prueba con las mejores ofertas vigentes.
 # El resultado queda en diagnostico/correo_resultado.txt
-prueba 2
+prueba 3

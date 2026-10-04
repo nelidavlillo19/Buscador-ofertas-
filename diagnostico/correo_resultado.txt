@@ -1,1 +1,1 @@
-2026-10-02 21:15 correo NO configurado (faltan GMAIL_USUARIO y GMAIL_CLAVE_APP)
+2026-10-04 13:03 ERROR al enviar: UnicodeEncodeError: 'ascii' codec can't encode character '\xf1' in position 33: ordinal not in range(128)

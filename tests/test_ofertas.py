@@ -213,3 +213,20 @@ def test_instax_cuenta_fotos_y_avisa_bajo_1000_por_foto(tmp_path):
     res = alertas.detectar(con, "2026-10-04", 30, 60, cats)
     assert [(a.producto_id, a.tipo, a.referencia) for a in res] == [("f:a", "por_unidad", 880)]
     assert alertas.insignia(res[0]) == "$880 c/foto"
+
+
+def test_oferta_inflada_no_se_avisa_y_queda_en_vigilancia(tmp_path):
+    con = db.conectar(tmp_path / "x.sqlite")
+    # 5 días a $6.796 (-60%); antes del CyberDay sube a $8.495 y lo anuncia como "-50%"
+    for d in range(25, 30):
+        db.guardar(con, Producto("c", "t", "Traje de baño", "u", 6796, precio_lista=16990, categoria="ropa"),
+                   f"2026-09-{d}")
+    db.guardar(con, Producto("c", "t", "Traje de baño", "u", 8495, precio_lista=16990, categoria="ropa"), "2026-09-30")
+    assert [a for a in alertas.detectar(con, "2026-09-30", 30, 60) if a.tipo == "declarado"] == []
+    vig = alertas.vigilancia(con, "2026-09-30", 30)
+    assert [(i["producto_id"], i["minimo"], i["subida"]) for i in vig["infladas"]] == [("c:t", 6796, 25.0)]
+    assert [i["producto_id"] for i in vig["subidas"]] == ["c:t"]
+    # una baja real bajo el mínimo de 30 días sí se avisa
+    db.guardar(con, Producto("c", "t", "Traje de baño", "u", 4990, precio_lista=16990, categoria="ropa"), "2026-10-01")
+    [a] = [a for a in alertas.detectar(con, "2026-10-01", 30, 60) if a.tipo == "declarado"]
+    assert a.nota.startswith("precio más bajo en 30 días")

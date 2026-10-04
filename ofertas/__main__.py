@@ -129,7 +129,8 @@ def cmd_rastrear(args) -> int:
         try:
             nombres = {t["nombre"]: t["id"] for t in config["tiendas"]}
             revisadas = {nombres[n]: (n, c) for n, c in resumen.items()}
-            aviso = alertas.notificar(lista, fecha, categorias, url_panel(), revisadas)
+            vig = alertas.vigilancia(con, fecha, config["productos"].get("umbral_descuento", 30), categorias)
+            aviso = alertas.notificar(lista, fecha, categorias, url_panel(), revisadas, vig)
         except Exception as e:  # noqa: BLE001 - un aviso fallido no debe impedir el respaldo
             log.exception("No se pudieron enviar los avisos (revisa GMAIL_USUARIO / GMAIL_CLAVE_APP)")
             aviso = f"ERROR al enviar: {type(e).__name__}: {str(e)[:200]}"
@@ -183,8 +184,9 @@ def cmd_correo_prueba(args) -> int:
         revisadas = {f["tienda"]: (nombres.get(f["tienda"], f["tienda"]), f["n"]) for f in con.execute(
             """SELECT p.tienda, COUNT(*) AS n FROM precios pr JOIN productos p ON p.id = pr.producto_id
                WHERE pr.fecha = ? GROUP BY p.tienda ORDER BY n DESC""", (fecha,))}
+        vig = alertas.vigilancia(con, fecha, config["productos"].get("umbral_descuento", 30), categorias)
         resultado = alertas.notificar(lista, f"{fecha} (correo de prueba)", categorias,
-                                      url_panel(), revisadas)
+                                      url_panel(), revisadas, vig)
     except Exception as e:  # noqa: BLE001
         resultado = f"ERROR al enviar: {type(e).__name__}: {str(e)[:300]}"
     salida = RAIZ / "diagnostico" / "correo_resultado.txt"

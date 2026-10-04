@@ -8,6 +8,10 @@ Un buscador como kanasta.cl pero sólo con los productos que le interesan a la f
    - **Según la tienda**: precio oferta vs. precio normal publicado.
    - **Según el historial**: precio de hoy vs. su *precio habitual* (mediana de los últimos 60 días).
      Así se detectan ofertas reales aunque no se anuncien, y se evitan los "precios normales" inflados.
+   - **Protección anti ofertas infladas** (útil antes del CyberDay): un descuento anunciado sólo cuenta si el
+     precio queda bajo el **precio más bajo de los últimos 30 días**. Las "ofertas" sobre precios que subieron
+     hace poco y los productos que subieron 10%+ aparecen en la sección **Vigilancia de precios** del correo
+     y del panel.
 4. **Respalda** los datos: un CSV comprimido por día (`data/respaldos/AAAA/`) y copias de la base completa
    de los últimos 7 días (`data/respaldos/base/`). Además, cada día queda guardado como commit en GitHub.
 5. **Arma un panel web** con las ofertas del día, estadísticas y el gráfico de precio de cada producto.

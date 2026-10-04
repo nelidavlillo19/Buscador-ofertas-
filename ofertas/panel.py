@@ -9,6 +9,8 @@ from collections import defaultdict
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
+from . import alertas as mod_alertas
+
 PLANTILLA = Path(__file__).resolve().parent.parent / "web" / "index.html"
 DIAS_GRAFICO = 180
 
@@ -61,6 +63,8 @@ def exportar(con: sqlite3.Connection, fecha: str, config: dict, salida: Path, de
         "productos": productos,
         "alertas": alertas,
         "alertas_por_dia": por_dia,
+        "vigilancia": mod_alertas.vigilancia(con, fecha, config["productos"].get("umbral_descuento", 30),
+                                             config["productos"]["categorias"]),
     }
     salida.mkdir(parents=True, exist_ok=True)
     (salida / "data.json").write_text(json.dumps(datos, ensure_ascii=False, separators=(",", ":")),

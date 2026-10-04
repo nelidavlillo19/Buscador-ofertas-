@@ -17,6 +17,17 @@ from .red import Cliente
 log = logging.getLogger(__name__)
 
 MIN_DIAS_HISTORIAL = 7  # días con precio antes de confiar en el "precio habitual"
+DIAS_REFERENCIA = 30    # "precio más bajo de los últimos 30 días" (regla anti ofertas infladas)
+MIN_DIAS_REFERENCIA = 3
+TOLERANCIA = 0.02       # diferencias de ±2% se consideran el mismo precio
+SUBIDA_ALERTA = 0.10    # subida de 10% o más sobre el mínimo de 30 días = "subió de precio"
+
+
+def minimo_previo(con: sqlite3.Connection, producto_id: str, fecha: str) -> float | None:
+    """Precio más bajo de los 30 días anteriores (sin contar hoy), si hay historial suficiente."""
+    desde = (date.fromisoformat(fecha) - timedelta(days=DIAS_REFERENCIA)).isoformat()
+    previos = db.historial(con, producto_id, desde, fecha)
+    return min(previos) if len(previos) >= MIN_DIAS_REFERENCIA else None
 
 
 @dataclass
@@ -31,6 +42,7 @@ class Alerta:
     url: str = ""
     categoria: str = ""
     nueva: bool = True
+    nota: str = ""
 
 
 def detectar(con: sqlite3.Connection, fecha: str, umbral: float, dias_historial: int,
@@ -76,7 +88,17 @@ def detectar(con: sqlite3.Connection, fecha: str, umbral: float, dias_historial:
         # referencia = precio por unidad redondeado (p. ej. por foto); $999,9 cuenta como $1.000
         if n_unidades and round(f["precio"] / n_unidades) < maximo_unidad:
             candidatos.append(("por_unidad", round(f["precio"] / n_unidades)))
+        minimo = minimo_previo(con, f["id"], fecha)
         for tipo, referencia in candidatos:
+            nota = ""
+            if tipo == "declarado" and minimo:
+                if f["precio"] > minimo * (1 + TOLERANCIA):
+                    # "Oferta" sobre un precio inflado: hace poco estuvo más barato. No se avisa.
+                    continue
+                if f["precio"] >= minimo * (1 - TOLERANCIA):
+                    nota = "mismo precio de los últimos días (descuento permanente)"
+                else:
+                    nota = f"precio más bajo en 30 días (antes {_clp(minimo)})"
             if tipo == "por_unidad":
                 lista = f["precio_lista"] or 0
                 descuento = round(100 * (1 - f["precio"] / lista), 1) if lista > f["precio"] else 0.0
@@ -90,13 +112,44 @@ def detectar(con: sqlite3.Connection, fecha: str, umbral: float, dias_historial:
                 (f["id"], tipo, ayer, fecha, f["precio"]),
             ).fetchone()
             alertas.append(Alerta(f["id"], tipo, descuento, f["precio"], referencia, f["nombre"],
-                                  f["tienda"], f["url"], f["categoria"], nueva=not ya_avisada))
+                                  f["tienda"], f["url"], f["categoria"], nueva=not ya_avisada, nota=nota))
             con.execute(
                 "INSERT OR REPLACE INTO alertas VALUES (?, ?, ?, ?, ?, ?)",
                 (f["id"], fecha, tipo, descuento, f["precio"], referencia),
             )
     alertas.sort(key=lambda a: -a.descuento)
     return alertas
+
+
+def vigilancia(con: sqlite3.Connection, fecha: str, umbral: float, categorias: dict | None = None) -> dict:
+    """Productos para vigilar antes de eventos como el CyberDay.
+
+    * subidas: hoy cuestan 10%+ más que su precio más bajo de los últimos 30 días.
+    * infladas: anuncian un descuento grande, pero hace poco estuvieron más baratos.
+    """
+    subidas, infladas = [], []
+    for f in con.execute(
+        """SELECT p.id, p.nombre, p.tienda, p.url, p.categoria, pr.precio, pr.precio_lista
+           FROM precios pr JOIN productos p ON p.id = pr.producto_id
+           WHERE pr.fecha = ? AND pr.disponible = 1""", (fecha,)
+    ).fetchall():
+        minimo = minimo_previo(con, f["id"], fecha)
+        if not minimo:
+            continue
+        item = {"producto_id": f["id"], "nombre": f["nombre"], "tienda": f["tienda"], "url": f["url"],
+                "categoria": f["categoria"], "precio": f["precio"], "minimo": minimo,
+                "precio_lista": f["precio_lista"], "subida": round(100 * (f["precio"] / minimo - 1), 1)}
+        if f["precio"] >= minimo * (1 + SUBIDA_ALERTA):
+            subidas.append(item)
+        lista = f["precio_lista"] or 0
+        minimo_cat = (categorias or {}).get(f["categoria"], {}).get("umbral_descuento", umbral)
+        if lista > f["precio"] and 100 * (1 - f["precio"] / lista) >= minimo_cat \
+                and f["precio"] > minimo * (1 + TOLERANCIA):
+            item = dict(item, descuento_anunciado=round(100 * (1 - f["precio"] / lista), 1))
+            infladas.append(item)
+    subidas.sort(key=lambda x: -x["subida"])
+    infladas.sort(key=lambda x: -x["descuento_anunciado"])
+    return {"subidas": subidas, "infladas": infladas}
 
 
 def _clp(valor: float) -> str:
@@ -179,6 +232,7 @@ def _fila_html(a: Alerta, categorias: dict, nombres: dict) -> str:
   <a href="{escape(a.url)}" style="color:#0b0b0b;font-weight:bold">{escape(a.nombre)}</a><br>
   <span style="font-size:17px;font-weight:bold">{_clp(a.precio)}</span>{antes}<br>
   <span style="color:#52514e;font-size:13px">{escape(nombres.get(a.tienda, a.tienda))} · {escape(cat)} · {etiquetas[a.tipo]}</span>
+  {f'<br><span style="color:#7a7974;font-size:12px">{escape(a.nota)}</span>' if a.nota else ""}
 </td></tr>"""
 
 
@@ -195,8 +249,30 @@ def _mejores_por_categoria(alertas: list[Alerta], excluir: set, cuantas: int = 3
     return por_cat
 
 
+def _vigilancia_html(vig: dict, nombres: dict, maximo: int = 10) -> str:
+    if not vig or not (vig.get("subidas") or vig.get("infladas")):
+        return ""
+    h = ['<h3>🔍 Vigilancia de precios (ojo con el CyberDay)</h3>',
+         '<p style="color:#52514e;font-size:13px">Comparamos con el precio más bajo de los últimos 30 días. '
+         'Una oferta real debe quedar bajo ese mínimo.</p>']
+    if vig.get("infladas"):
+        h.append(f'<h4 style="margin:12px 0 4px">⚠️ Ofertas infladas ({len(vig["infladas"])}): anuncian descuento, '
+                 'pero hace poco estuvieron más baratas</h4><ul style="padding-left:18px">')
+        h += [f'<li><a href="{escape(i["url"])}">{escape(i["nombre"])}</a> ({escape(nombres.get(i["tienda"], i["tienda"]))}): '
+              f'dice -{i["descuento_anunciado"]:.0f}%, hoy {_clp(i["precio"])}, pero estuvo a <b>{_clp(i["minimo"])}</b></li>'
+              for i in vig["infladas"][:maximo]]
+        h.append("</ul>")
+    if vig.get("subidas"):
+        h.append(f'<h4 style="margin:12px 0 4px">📈 Subieron de precio ({len(vig["subidas"])})</h4><ul style="padding-left:18px">')
+        h += [f'<li><a href="{escape(i["url"])}">{escape(i["nombre"])}</a> ({escape(nombres.get(i["tienda"], i["tienda"]))}): '
+              f'hoy {_clp(i["precio"])}, <b>+{i["subida"]:.0f}%</b> sobre su mínimo de {_clp(i["minimo"])}</li>'
+              for i in vig["subidas"][:maximo]]
+        h.append("</ul>")
+    return "".join(h)
+
+
 def resumen_diario(alertas: list[Alerta], fecha: str, categorias: dict, tiendas: dict,
-                   url_panel: str = "") -> tuple[str, str, str]:
+                   url_panel: str = "", vig: dict | None = None) -> tuple[str, str, str]:
     """Correo diario: qué se revisó, ofertas nuevas y mejores ofertas vigentes por categoría.
 
     `tiendas` = {id: (nombre, productos revisados)}. Devuelve (asunto, texto, html).
@@ -223,6 +299,14 @@ def resumen_diario(alertas: list[Alerta], fecha: str, categorias: dict, tiendas:
         t.append(categorias.get(cid, {}).get("nombre", cid))
         t += [f"  - {a.nombre}: {_clp(a.precio)} ({insignia(a) if a.tipo == 'por_unidad' else 'antes ' + _clp(a.referencia)}) "
               f"{nombres.get(a.tienda, a.tienda)} {a.url}" for a in vigentes[cid]]
+    if vig and vig.get("infladas"):
+        t += ["", "OJO: OFERTAS INFLADAS (estuvieron más baratas en los últimos 30 días)"]
+        t += [f"  - {i['nombre']}: dice -{i['descuento_anunciado']:.0f}%, hoy {_clp(i['precio'])}, "
+              f"estuvo a {_clp(i['minimo'])}" for i in vig["infladas"][:10]]
+    if vig and vig.get("subidas"):
+        t += ["", "SUBIERON DE PRECIO"]
+        t += [f"  - {i['nombre']}: hoy {_clp(i['precio'])} (+{i['subida']:.0f}% sobre {_clp(i['minimo'])})"
+              for i in vig["subidas"][:10]]
     if url_panel:
         t += ["", f"Panel con gráficos: {url_panel}"]
     texto = "\n".join(t) + "\n"
@@ -250,16 +334,17 @@ def resumen_diario(alertas: list[Alerta], fecha: str, categorias: dict, tiendas:
         h.append(f'<h4 style="margin:16px 0 4px">{escape(categorias.get(cid, {}).get("nombre", cid))}</h4>'
                  '<table style="border-collapse:collapse;width:100%">'
                  + "".join(_fila_html(a, categorias, nombres) for a in vigentes[cid]) + "</table>")
+    h.append(_vigilancia_html(vig or {}, nombres))
     h.append(f'<h3>Tiendas revisadas</h3><table style="border-collapse:collapse;font-size:14px">{filas_tiendas}</table>')
     h.append("</div>")
     return asunto, texto, "".join(h)
 
 
 def notificar(alertas: list[Alerta], fecha: str, categorias: dict, url_panel: str = "",
-              tiendas: dict | None = None) -> str:
+              tiendas: dict | None = None, vig: dict | None = None) -> str:
     """Envía el resumen diario por correo (y Telegram si está configurado), haya o no ofertas nuevas."""
     tiendas = tiendas or {}
-    asunto, texto, html = resumen_diario(alertas, fecha, categorias, tiendas, url_panel)
+    asunto, texto, html = resumen_diario(alertas, fecha, categorias, tiendas, url_panel, vig)
     nuevas = seleccionar_para_aviso(alertas, categorias)
     estado = []
 

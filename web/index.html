@@ -73,6 +73,10 @@ tbody tr:hover, tbody tr.sel { background: var(--accent-bg); }
 .vacio { color: var(--text-muted); padding: 20px; text-align: center; }
 #detalle { display: none; }
 #detalle a { color: var(--series-1); }
+.vig { list-style: none; margin: 0; padding: 0; font-size: 14px; }
+.vig li { padding: 7px 0; border-bottom: 1px solid var(--border); }
+.vig a { color: var(--text-primary); font-weight: 600; text-decoration: none; }
+.vig a:hover { text-decoration: underline; }
 .mas { margin-top: 10px; font: inherit; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border);
   background: var(--surface); color: var(--text-primary); cursor: pointer; }
 </style>
@@ -92,6 +96,13 @@ tbody tr:hover, tbody tr.sel { background: var(--accent-bg); }
     <select id="f-tienda"><option value="">Todas las tiendas</option></select>
     <input type="search" id="f-texto" placeholder="Buscar producto…">
     <label><input type="checkbox" id="f-ofertas"> Sólo ofertas</label>
+  </div>
+
+  <h2>🔍 Vigilancia de precios (CyberDay)</h2>
+  <p class="sub">Comparamos con el precio más bajo de los últimos 30 días: una oferta real debe quedar bajo ese mínimo.</p>
+  <div class="grid2" id="vigilancia">
+    <div class="panel"><h3 id="t-infladas">⚠️ Ofertas infladas</h3><div id="infladas"></div></div>
+    <div class="panel"><h3 id="t-subidas">📈 Subieron de precio</h3><div id="subidas"></div></div>
   </div>
 
   <h2 id="t-ofertas">Ofertas de hoy</h2>
@@ -168,7 +179,19 @@ function alertasHoy() {
   return Object.values(mejor).sort((a, b) => b.descuento - a.descuento);
 }
 
-function pintar() { pintarKpis(); pintarOfertas(); pintarDias(); pintarCategorias(); pintarTabla(); }
+function pintarVigilancia() {
+  const v = D.vigilancia || {infladas: [], subidas: []};
+  const lista = (items, texto) => items.length
+    ? `<ul class="vig">${items.slice(0, 15).map(i => `<li><a href="${esc(i.url)}" target="_blank" rel="noopener">${esc(i.nombre)}</a><br><span class="meta">${esc(D.tiendas[i.tienda] || i.tienda)} · ${texto(i)}</span></li>`).join("")}</ul>`
+    : '<p class="vacio">Nada sospechoso hoy con estos filtros.</p>';
+  const inf = v.infladas.filter(filtro), sub = v.subidas.filter(filtro);
+  $("t-infladas").textContent = `⚠️ Ofertas infladas (${inf.length})`;
+  $("t-subidas").textContent = `📈 Subieron de precio (${sub.length})`;
+  $("infladas").innerHTML = lista(inf, i => `dice -${i.descuento_anunciado.toFixed(0)}%, hoy ${clp(i.precio)}, pero estuvo a <b>${clp(i.minimo)}</b>`);
+  $("subidas").innerHTML = lista(sub, i => `hoy ${clp(i.precio)}, <b>+${i.subida.toFixed(0)}%</b> sobre su mínimo de ${clp(i.minimo)}`);
+}
+
+function pintar() { pintarKpis(); pintarOfertas(); pintarVigilancia(); pintarDias(); pintarCategorias(); pintarTabla(); }
 
 function pintarKpis() {
   const prods = D.productos.filter(p => p.vigente && filtro(p)), al = alertasHoy();

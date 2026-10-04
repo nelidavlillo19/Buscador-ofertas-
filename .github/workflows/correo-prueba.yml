@@ -25,7 +25,7 @@ jobs:
           GMAIL_USUARIO: ${{ secrets.GMAIL_USUARIO }}
           GMAIL_CLAVE_APP: ${{ secrets.GMAIL_CLAVE_APP }}
           CORREO_DESTINO: ${{ secrets.CORREO_DESTINO }}
-          URL_PANEL: ${{ vars.URL_PANEL || format('https://{0}.github.io/{1}/', github.repository_owner, github.event.repository.name) }}
+          URL_PANEL: ${{ vars.URL_PANEL }}
         run: python -m ofertas correo-prueba
       - run: |
           git config user.name "buscador-ofertas"

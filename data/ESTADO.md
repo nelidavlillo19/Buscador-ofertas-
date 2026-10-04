@@ -1,18 +1,18 @@
 # Última revisión: 2026-10-04
 
-- Hora: 12:56 (Chile)
-- Ofertas encontradas: 741 (1 nuevas)
-- Avisos: correo NO configurado (falta: GMAIL_USUARIO, GMAIL_CLAVE_APP)
+- Hora: 13:24 (Chile)
+- Ofertas encontradas: 745 (0 nuevas)
+- Avisos: correo enviado (0 ofertas nuevas)
 
 | Tienda | Productos |
 |---|---|
-| Pichintun | 0 ⚠️ |
-| Colloky | 368 |
+| Pichintun | 645 |
+| Colloky | 369 |
 | Uma Baby | 541 |
 | Casa Ideas | 194 |
 | IKEA | 245 |
 | SuperZoo | 223 |
-| Falabella | 123 |
+| Falabella | 125 |
 | Sodimac | 31 |
-| Jumbo | 375 |
+| Jumbo | 376 |
 | Santa Isabel | 353 |

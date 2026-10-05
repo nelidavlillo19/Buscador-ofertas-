@@ -1,5 +1,2 @@
-# H&M términos
-https://cl.hm.com/api/catalog_system/pub/products/search?ft=vestido&_from=0&_to=4
-https://cl.hm.com/api/catalog_system/pub/products/search?_from=0&_to=4
-https://cl.hm.com/api/catalog_system/pub/products/search?ft=traje%20de%20ba%C3%B1o&_from=0&_to=4
-https://cl.hm.com/api/io/_v/api/intelligent-search/product_search/?query=vestido&count=4
+# H&M árbol de categorías
+https://cl.hm.com/api/catalog_system/pub/category/tree/3

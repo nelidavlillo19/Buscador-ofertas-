@@ -55,7 +55,8 @@ def extraer(pagina: str, tienda: str, base: str = "") -> list[Producto]:
         vendedor = r.get("sellerName") or ""
         productos.append(Producto(
             tienda=tienda, sku=str(r.get("skuId") or r.get("productId")),
-            nombre=r.get("displayName", "") + (f" (vende {vendedor})" if vendedor and vendedor != "Falabella" else ""),
+            nombre=r.get("displayName", "") + (
+                f" (vende {vendedor})" if vendedor and vendedor.lower() not in ("falabella", "tottus", "sodimac") else ""),
             url=r.get("url") or f"{base}/product/{r.get('productId')}/{_slug(r.get('displayName', ''))}",
             precio=min(vigentes),
             precio_lista=max([t for t in tachados if t and t > min(vigentes)], default=None),
@@ -66,5 +67,6 @@ def extraer(pagina: str, tienda: str, base: str = "") -> list[Producto]:
 
 class Falabella(Adaptador):
     def buscar(self, termino: str) -> list[Producto]:
-        r = self.cliente.get(f"{self.url}/search?Ntt={quote(termino)}")
+        ruta = self.tienda.get("ruta_busqueda", "/search?Ntt={q}")  # Tottus usa /buscar?Ntt={q}
+        r = self.cliente.get(self.url + ruta.format(q=quote(termino)))
         return extraer(r.text, self.id, self.url) if r is not None else []

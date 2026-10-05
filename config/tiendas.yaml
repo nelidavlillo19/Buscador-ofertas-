@@ -183,6 +183,7 @@ tiendas:
     nombre: Tottus
     url: https://www.tottus.cl/tottus-cl
     plataforma: falabella   # mismo sistema que Falabella
+    ruta_busqueda: /buscar?Ntt={q}
     categorias: [yoguito, jugo_naranja_quillayes, panales_pampers_xxg, snacks_bebe_marcas, compotas, jugos_sin_azucar,
                  cereales_infantiles, barritas, galletas_colacion, cafe_grano, alimento_mascotas, crema_cuerpo_ninos,
                  kh7_quitamanchas, mr_bubble, nenuco]

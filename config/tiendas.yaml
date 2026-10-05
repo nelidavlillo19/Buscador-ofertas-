@@ -100,7 +100,7 @@ tiendas:
     nombre: Falabella
     url: https://www.falabella.com/falabella-cl
     plataforma: falabella
-    categorias: [cargador_portatil, pelicula_instax_mini]
+    categorias: [panales_pampers_xxg, cargador_portatil, pelicula_instax_mini]
 
   # ---------- Construcción / pinturas ----------
   - id: sodimac
@@ -122,14 +122,14 @@ tiendas:
     nombre: Jumbo
     url: https://www.jumbo.cl
     plataforma: auto
-    categorias: [compotas, jugos_sin_azucar, cereales_infantiles, barritas, galletas_colacion,
+    categorias: [panales_pampers_xxg, compotas, jugos_sin_azucar, cereales_infantiles, barritas, galletas_colacion,
                  cafe_grano, alimento_mascotas, crema_cuerpo_ninos]
 
   - id: santaisabel
     nombre: Santa Isabel
     url: https://www.santaisabel.cl
     plataforma: cencosud
-    categorias: [compotas, jugos_sin_azucar, cereales_infantiles, barritas, galletas_colacion,
+    categorias: [panales_pampers_xxg, compotas, jugos_sin_azucar, cereales_infantiles, barritas, galletas_colacion,
                  cafe_grano, alimento_mascotas, crema_cuerpo_ninos]
 
   - id: unimarc

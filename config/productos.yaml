@@ -17,6 +17,13 @@ umbral_descuento: 30        # % mínimo para generar alerta
 dias_historial: 60          # ventana para calcular el "precio habitual"
 
 categorias:
+  panales_pampers_xxg:
+    nombre: Pañales Pampers talla XXG
+    buscar: [pampers xxg, pañales pampers xxg, pampers premium care xxg, pampers confort sec xxg]
+    incluir: [pampers]
+    incluir_tambien: [xxg, xx-g, xxl]
+    excluir: [toallita, toallitas, wipes]
+
   cargador_portatil:
     nombre: Cargador portátil de celular (power bank)
     buscar: [power bank, cargador portatil, bateria portatil, bateria externa celular]

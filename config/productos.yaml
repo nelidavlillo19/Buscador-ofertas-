@@ -26,7 +26,8 @@ categorias:
     buscar: [maleta de cabina, maleta cabina, carry on, maleta 20 pulgadas, maleta pequeña rigida]
     incluir: [maleta, carry on, carry-on, trolley]
     incluir_tambien: [cabina, carry, <20>, 20", 20 pulgadas, 55 cm, 55cm, <s>, pequeña, small, 18"]
-    excluir: [set de, juego de, set 2, set 3, organizador, funda, candado, balanza, cubre maleta, juguete, niños]
+    excluir: [set de, juego de, set 2, set 3, pack de 2, pack 2, pack de 3, bodega, organizador, funda, candado, balanza,
+              cubre maleta, juguete, niños]
 
   organizadores_equipaje:
     nombre: 🧳 Organizadores de equipaje

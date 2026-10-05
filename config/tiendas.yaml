@@ -82,6 +82,9 @@ tiendas:
     url: https://cl.hm.com
     plataforma: vtex
     nombre_con_categoria: true   # agrega el departamento (NIÑOS NIÑA 2-8A) al nombre para filtrar
+    catalogo_completo: true
+    # Su buscador no entiende "niña"/"niño": se recorren estas secciones completas.
+    secciones: ["551403/551406", "551403/551409", "7902575/551408", "551401/551440"]  # niña 2-8, niño 2-8, bebé niña, zapatos mujer
     categorias: [traje_bano_nina_t2, traje_bano_nino_t6, ropa_nina_t2, ropa_nino_t6, calzado_mujer]
 
   - id: limonada
@@ -89,8 +92,8 @@ tiendas:
     url: https://limonada.cl
     plataforma: shopify
     catalogo_completo: true
-    categorias: [traje_bano_nina_t2, traje_bano_nino_t6, ropa_nina_t2, ropa_nino_t6, calzado_ergonomico,
-                 calzado_mujer]
+    # sin calzado_ergonomico: aquí tomaba todos los zapatos de niño
+    categorias: [traje_bano_nina_t2, traje_bano_nino_t6, ropa_nina_t2, ropa_nino_t6, calzado_mujer]
 
   - id: miniso
     nombre: Miniso

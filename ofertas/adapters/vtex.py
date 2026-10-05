@@ -71,12 +71,15 @@ class Vtex(Adaptador):
         return [p for p in map(self._producto, datos or []) if p]
 
     def catalogo(self) -> list[Producto]:
+        # secciones: rutas de categoría (p. ej. "551403/551406") para recorrer sólo esas partes de la tienda
+        filtros = [f"&fq=C:/{s.strip('/')}/" for s in self.tienda.get("secciones") or []] or [""]
         productos = []
-        for desde in range(0, MAX_CATALOGO, TAMANO_PAGINA):
-            url = (f"{self.url}/api/catalog_system/pub/products/search"
-                   f"?_from={desde}&_to={desde + TAMANO_PAGINA - 1}")
-            lote = self.cliente.json(url)
-            if not lote:
-                break
-            productos += [p for p in map(self._producto, lote) if p]
+        for filtro in filtros:
+            for desde in range(0, MAX_CATALOGO, TAMANO_PAGINA):
+                url = (f"{self.url}/api/catalog_system/pub/products/search"
+                       f"?_from={desde}&_to={desde + TAMANO_PAGINA - 1}{filtro}")
+                lote = self.cliente.json(url)
+                if not lote:
+                    break
+                productos += [p for p in map(self._producto, lote) if p]
         return productos

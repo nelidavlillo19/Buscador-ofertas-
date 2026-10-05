@@ -1,3 +1,14 @@
-# Páginas a guardar para estudiarlas (una URL por línea)
-https://www.pichintun.cl/products.json?limit=2
-https://www.pichintun.cl/
+# Tiendas de origen de las marcas vistas en Líder (¿existen y son Shopify/VTEX?)
+https://www.kunafoods.cl/products.json?limit=3
+https://kunafoods.cl/products.json?limit=3
+https://www.kunafoods.com/products.json?limit=3
+https://www.amatime.cl/products.json?limit=3
+https://amatime.cl/products.json?limit=3
+https://www.ama-time.cl/products.json?limit=3
+https://www.smileykids.cl/products.json?limit=3
+https://smileykids.cl/products.json?limit=3
+https://www.babymummum.cl/products.json?limit=3
+https://api.mercadolibre.com/sites/MLC/search?q=kuna%20foods%20gumis&limit=3
+https://listado.mercadolibre.cl/kuna-foods
+https://www.falabella.com/falabella-cl/search?Ntt=kuna%20foods
+https://www.falabella.com/falabella-cl/search?Ntt=baby%20mum%20mum

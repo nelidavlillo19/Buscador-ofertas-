@@ -31,6 +31,8 @@ Se configuran en [`config/productos.yaml`](config/productos.yaml):
 | Juegos | autos Mario Kart Hot Wheels, Cuboro, escalera de cuerda / trapecio / columpio / presas de escalada, kits de mostacillas, sillas infantiles |
 | Hogar | limpiapiés, muebles de bambú (baño, zapatero) |
 | Colaciones bebé | Kuna Foods, Baby Mum-Mum, Smiley Kids, AMA, NaturNes, Nestum |
+| Más juguetes | Mini Color Stack, Nee Doh, sets de Super Mario, muñecas Nenuco, cocina de juguete de madera, FocuSwing |
+| Baño y limpieza | set Mr. Bubble, quitamanchas KH-7 |
 | Fotografía | película Instax Mini (**avisa cualquier oferta** y todo pack donde **cada foto cueste menos de $1.000**) |
 | Mascotas | alimento de perro y gato, juguetes para mascotas |
 | Niños | juguetes, ropa de niña **talla 2**, ropa de niño **talla 6**, trajes de baño (niña T2, niño T6), crema de cuerpo para niños, calzado ergonómico tipo Uma Baby |

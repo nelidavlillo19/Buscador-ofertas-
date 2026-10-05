@@ -18,6 +18,50 @@ umbral_descuento: 30        # % mínimo para generar alerta
 dias_historial: 60          # ventana para calcular el "precio habitual"
 
 categorias:
+  mini_color_stack:
+    nombre: Juego Mini Color Stack
+    buscar: [mini color stack, color stack challenge, color stack juego]
+    incluir: [color stack]
+
+  mr_bubble:
+    nombre: Set de baño Mr. Bubble (experimentos de baño)
+    buscar: [mr bubble, mr. bubble, mr bubble bath time fun]
+    incluir: [mr bubble, mr. bubble, mrbubble]
+
+  focuswing:
+    nombre: FocuSwing (columpio sensorial)
+    buscar: [focuswing, focu swing]
+    incluir: [focuswing, focu swing]
+
+  nee_doh:
+    nombre: Nee Doh (juguetes antiestrés)
+    buscar: [nee doh, needoh, nee doh cool kittens, schylling nee doh]
+    incluir: [nee doh, needoh, nee-doh]
+
+  super_mario_juguetes:
+    nombre: Juguetes y sets de Super Mario
+    buscar: [super mario playset, super mario juguete, set super mario jakks, figura super mario]
+    incluir: [super mario, mario bros]
+    incluir_tambien: [playset, set, figura, juguete, juego de, deluxe, peluche, lego]
+    excluir: [nintendo switch, videojuego, polera, pijama, mochila, disfraz, toalla]
+
+  nenuco:
+    nombre: Muñecas Nenuco
+    buscar: [nenuco, muñeca nenuco, nenuco unicorn birthday]
+    incluir: [nenuco]
+
+  cocina_juguete:
+    nombre: Cocina de juguete infantil (madera)
+    buscar: [cocina de juguete, cocina de juego infantil, cocina juguete madera, cocinita infantil]
+    incluir: [cocina, cocinita]
+    incluir_tambien: [juguete, juego, infantil, niño, nino, niña, nina, kids]
+    excluir: [libro de cocina, utensilio, delantal]
+
+  kh7_quitamanchas:
+    nombre: KH-7 quitamanchas y quita-olores
+    buscar: [kh-7, kh7 quitamanchas, kh-7 quita olores]
+    incluir: [kh-7, kh7, kh 7]
+
   pelicula_polaroid:
     nombre: Película Polaroid (i-Type y 600, para Polaroid Lab)
     umbral_descuento: 1       # avisar CUALQUIER oferta

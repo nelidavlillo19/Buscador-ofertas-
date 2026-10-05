@@ -45,7 +45,7 @@ tiendas:
     plataforma: magento
     api: https://headless.casaideas.cl/graphql
     ruta_producto: /producto/{url_key}
-    categorias: [hot_wheels_mario_kart, cuboro, juegos_escalada, manualidades_mostacillas, sillas_infantiles, marcos_fotos, limpiapies, cargador_portatil, peluches, rompecabezas, libros_actividades, dinosaurios, juguetes_ninos, organizacion_hogar,
+    categorias: [nee_doh, cocina_juguete, hot_wheels_mario_kart, cuboro, juegos_escalada, manualidades_mostacillas, sillas_infantiles, marcos_fotos, limpiapies, cargador_portatil, peluches, rompecabezas, libros_actividades, dinosaurios, juguetes_ninos, organizacion_hogar,
                  cafeteras, robot_cocina, pelicula_instax_mini]
 
   - id: ikea
@@ -54,7 +54,7 @@ tiendas:
     plataforma: ikea
     # Además de las ofertas de 30%+, avisa todo lo que cueste $10.000 o menos (peluches destacados)
     alerta_precio_maximo: 10000
-    categorias: [sillas_infantiles, marcos_fotos, limpiapies, cargador_portatil, peluches, rompecabezas, dinosaurios, juguetes_ninos, organizacion_hogar]
+    categorias: [cocina_juguete, sillas_infantiles, marcos_fotos, limpiapies, cargador_portatil, peluches, rompecabezas, dinosaurios, juguetes_ninos, organizacion_hogar]
 
   # ---------- Mascotas ----------
   - id: superzoo
@@ -100,7 +100,7 @@ tiendas:
     nombre: Falabella
     url: https://www.falabella.com/falabella-cl
     plataforma: falabella
-    categorias: [pelicula_polaroid, hot_wheels_mario_kart, cuboro, juegos_escalada, sillas_infantiles, marcos_fotos, panales_pampers_xxg, cargador_portatil, pelicula_instax_mini]
+    categorias: [mini_color_stack, mr_bubble, focuswing, nee_doh, super_mario_juguetes, nenuco, cocina_juguete, kh7_quitamanchas, snacks_bebe_marcas, pelicula_polaroid, hot_wheels_mario_kart, cuboro, juegos_escalada, sillas_infantiles, marcos_fotos, panales_pampers_xxg, cargador_portatil, pelicula_instax_mini]
 
   # ---------- Construcción / pinturas ----------
   - id: sodimac
@@ -122,14 +122,14 @@ tiendas:
     nombre: Jumbo
     url: https://www.jumbo.cl
     plataforma: auto
-    categorias: [snacks_bebe_marcas, hot_wheels_mario_kart, panales_pampers_xxg, compotas, jugos_sin_azucar, cereales_infantiles, barritas, galletas_colacion,
+    categorias: [mr_bubble, nenuco, kh7_quitamanchas, snacks_bebe_marcas, hot_wheels_mario_kart, panales_pampers_xxg, compotas, jugos_sin_azucar, cereales_infantiles, barritas, galletas_colacion,
                  cafe_grano, alimento_mascotas, crema_cuerpo_ninos]
 
   - id: santaisabel
     nombre: Santa Isabel
     url: https://www.santaisabel.cl
     plataforma: cencosud
-    categorias: [snacks_bebe_marcas, panales_pampers_xxg, compotas, jugos_sin_azucar, cereales_infantiles, barritas, galletas_colacion,
+    categorias: [kh7_quitamanchas, snacks_bebe_marcas, panales_pampers_xxg, compotas, jugos_sin_azucar, cereales_infantiles, barritas, galletas_colacion,
                  cafe_grano, alimento_mascotas, crema_cuerpo_ninos]
 
   - id: unimarc

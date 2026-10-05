@@ -12,3 +12,8 @@ https://api.mercadolibre.com/sites/MLC/search?q=kuna%20foods%20gumis&limit=3
 https://listado.mercadolibre.cl/kuna-foods
 https://www.falabella.com/falabella-cl/search?Ntt=kuna%20foods
 https://www.falabella.com/falabella-cl/search?Ntt=baby%20mum%20mum
+https://www.focuswing.cl/products.json?limit=3
+https://focuswing.cl/products.json?limit=3
+https://www.focuswing.com/products.json?limit=3
+https://www.falabella.com/falabella-cl/search?Ntt=mini%20color%20stack
+https://www.falabella.com/falabella-cl/search?Ntt=nee%20doh

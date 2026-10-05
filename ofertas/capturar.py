@@ -21,9 +21,13 @@ def main() -> int:
     cliente = Cliente(pausa=1.0)
     indice = []
     for i, url in enumerate(urls):
-        r = cliente.sesion.get(url, timeout=30)
+        try:
+            r = cliente.sesion.get(url, timeout=30)
+        except Exception as e:  # noqa: BLE001 - un dominio inexistente no debe frenar el resto
+            indice.append(f"{i:02d} ERROR {type(e).__name__} {url}")
+            continue
         (carpeta / f"{i:02d}.html.gz").write_bytes(gzip.compress(r.content))
-        indice.append(f"{i:02d} {r.status_code} {len(r.content)} {url}")
+        indice.append(f"{i:02d} {r.status_code} {len(r.content)} {r.url[:90]} <- {url}")
     (carpeta / "indice.txt").write_text("\n".join(indice) + "\n")
     print("\n".join(indice))
     return 0

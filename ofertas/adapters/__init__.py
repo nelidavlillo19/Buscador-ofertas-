@@ -6,6 +6,7 @@ import logging
 from ..red import Cliente
 from .base import Adaptador
 from .cencosud import Cencosud
+from .cruzverde import CruzVerde
 from .falabella import Falabella
 from .ikea import Ikea
 from .jsonld import JsonLd
@@ -19,7 +20,7 @@ log = logging.getLogger(__name__)
 
 PLATAFORMAS: dict[str, type[Adaptador]] = {
     "shopify": Shopify, "vtex": Vtex, "jsonld": JsonLd,
-    "sfcc": Sfcc, "falabella": Falabella, "cencosud": Cencosud, "magento": Magento, "ikea": Ikea, "walmart": Walmart, "ahumada": Ahumada,
+    "sfcc": Sfcc, "falabella": Falabella, "cencosud": Cencosud, "magento": Magento, "ikea": Ikea, "walmart": Walmart, "ahumada": Ahumada, "cruzverde": CruzVerde,
 }
 
 

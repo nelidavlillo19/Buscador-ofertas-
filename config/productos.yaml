@@ -3,6 +3,7 @@
 # Cada categoría tiene:
 #   buscar:   términos que se consultan en el buscador de cada tienda
 #   incluir:  el nombre del producto debe contener AL MENOS UNA de estas palabras
+#             (una palabra entre <> debe aparecer completa: "<ama>" no coincide con "cama")
 #   incluir_tambien: (opcional) y además AL MENOS UNA de estas otras
 #   excluir:  si el nombre contiene alguna de estas palabras, se descarta
 #   tallas:   (opcional) sólo se consideran variantes con alguna de estas tallas
@@ -17,8 +18,63 @@ umbral_descuento: 30        # % mínimo para generar alerta
 dias_historial: 60          # ventana para calcular el "precio habitual"
 
 categorias:
+  pelicula_polaroid:
+    nombre: Película Polaroid (i-Type y 600, para Polaroid Lab)
+    umbral_descuento: 1       # avisar CUALQUIER oferta
+    buscar: [polaroid i-type film, polaroid 600 film, pelicula polaroid, film polaroid i-type, polaroid film]
+    incluir: [polaroid]
+    incluir_tambien: [i-type, itype, i type, <600>]
+    excluir: [camara, cámara, camera, impresora, printer, album, álbum, funda, estuche, marco]
+
+  hot_wheels_mario_kart:
+    nombre: Autos Mario Kart (Hot Wheels)
+    buscar: [hot wheels mario kart, mario kart hot wheels, auto mario kart]
+    incluir: [mario kart]
+
+  cuboro:
+    nombre: Cuboro y pistas de canicas de madera
+    buscar: [cuboro, pista de canicas madera, circuito de canicas]
+    incluir: [cuboro, canica]
+
+  juegos_escalada:
+    nombre: Juegos de escalada y aire libre (escalera de cuerda, trapecio, columpio, presas)
+    buscar: [escalera de cuerda, trapecio de madera, columpio de escalada, presas de escalada, muro escalada infantil]
+    incluir: [escalera de cuerda, escalera cuerda, trapecio, columpio, presas, escalada, anillas]
+    excluir: [mascota, perro, gato]
+
+  manualidades_mostacillas:
+    nombre: Kits de mostacillas y accesorios para hacer
+    buscar: [mostacillas, kit mostacillas, set mostacillas, accesorios con mostacillas, cuentas planchables]
+    incluir: [mostacilla, cuentas planchables, cuentas plasticas, hama]
+
+  sillas_infantiles:
+    nombre: Sillas infantiles
+    buscar: [silla infantil, silla niños, silla plastica infantil, silla apilable infantil]
+    incluir: [silla]
+    incluir_tambien: [infantil, niño, nino, niña, nina, kids, junior, niños]
+    excluir: [auto, coche, alzador, comer, paseo, bicicleta, escritorio gamer]
+
+  marcos_fotos:
+    nombre: Cubo de fotos y marcos giratorios
+    buscar: [cubo de fotos, cubo fotos giratorio, marco giratorio fotos, cubo 3d fotografias]
+    incluir: [cubo, giratorio]
+    incluir_tambien: [foto]
+
+  limpiapies:
+    nombre: Limpiapiés (fibra de coco)
+    buscar: [limpiapies, limpia pies, felpudo, limpiapies fibra de coco]
+    incluir: [limpiapie, limpia pie, felpudo, tapete de entrada]
+
+  snacks_bebe_marcas:
+    nombre: Snacks y colaciones de bebé (Kuna, Mum-Mum, Smiley Kids, AMA, NaturNes)
+    buscar: [kuna foods, gumis kuna, puffs kuna, bombas kuna, cookids, baby mum mum, smiley kids, jugo ama organico,
+             naturnes, nestum]
+    incluir: [kuna, mum-mum, mum mum, smiley kids, granjeritas, <ama>, naturnes, nestum, cookids]
+    excluir: [pañal, panal]
+
   panales_pampers_xxg:
     nombre: Pañales Pampers talla XXG
+    umbral_descuento: 1       # avisar CUALQUIER oferta
     buscar: [pampers xxg, pañales pampers xxg, pampers premium care xxg, pampers confort sec xxg]
     incluir: [pampers]
     incluir_tambien: [xxg, xx-g, xxl]
@@ -159,11 +215,12 @@ categorias:
     nombre: Calzado ergonómico infantil (tipo Uma Baby)
     buscar: [zapato ergonomico, zapatilla barefoot, calzado respetuoso, zapato infantil]
     incluir: [zapat, bota, sandalia, barefoot, ergonom]
-    excluir: [bag, bolso, mochila, calcetin, gift card]
+    excluir: [bag, bolso, mochila, calcetin, gift card, zapatero, mueble, repisa, organizador]
 
   organizacion_hogar:
     nombre: Muebles y organización del hogar
-    buscar: [organizador, repisa, estante, cajonera, canasto organizador, zapatero]
+    buscar: [organizador, repisa, estante, cajonera, canasto organizador, zapatero, zapatero bambu,
+             mueble baño bambu, repisa bambu]
     incluir: [organizador, repisa, estante, cajonera, canasto, zapatero, rack, mueble, caja]
 
   robot_cocina:

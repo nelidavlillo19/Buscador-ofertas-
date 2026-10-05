@@ -238,3 +238,20 @@ def test_modo_solo_nuevas_no_envia_sin_novedades_y_omite_vigentes():
     assert "no se envió" in alertas.notificar([vieja], "2026-10-05", {}, solo_nuevas=True)
     asunto, texto, html = alertas.resumen_diario([vieja, nueva], "2026-10-05", {}, {}, solo_nuevas=True)
     assert "1 ofertas nuevas" in asunto and "Nueva" in html and "Vieja" not in html
+
+
+def test_categorias_de_las_fotos():
+    import yaml
+    cats = yaml.safe_load(open("config/productos.yaml", encoding="utf-8"))["categorias"]
+    casos = {
+        "Película Polaroid Color i-Type Film 8 fotos": "pelicula_polaroid",
+        "Polaroid Go Film doble pack": None,             # otro formato, no sirve para la Polaroid Lab
+        "Hot Wheels Mario Kart Waluigi": "hot_wheels_mario_kart",
+        "Escalera cuerda plast 2m": "juegos_escalada",
+        "Jugo orgánico manzana AMA 200 ml": "snacks_bebe_marcas",
+        "Cama para perro": None,                         # "<ama>" exige la palabra completa
+        "Zapatero 2 niveles plegable bambú": "organizacion_hogar",
+    }
+    for nombre, esperado in casos.items():
+        r = clasificar(Producto("x", "1", nombre, "u", 1000), cats, None)
+        assert r == esperado or (esperado is None and r not in ("pelicula_polaroid", "snacks_bebe_marcas")), nombre

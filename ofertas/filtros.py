@@ -7,7 +7,15 @@ from .modelos import Producto, normalizar
 
 
 def _contiene(texto: str, palabras: list[str]) -> bool:
-    return any(normalizar(p) in texto for p in palabras)
+    """Una palabra entre <> debe aparecer completa ("<ama>" no coincide con "cama")."""
+    for p in palabras:
+        p = normalizar(str(p))
+        if p.startswith("<") and p.endswith(">"):
+            if re.search(rf"(?<![a-z0-9]){re.escape(p[1:-1])}(?![a-z0-9])", texto):
+                return True
+        elif p in texto:
+            return True
+    return False
 
 
 def _talla_coincide(nombre_variante: str, tallas: list[str]) -> bool:

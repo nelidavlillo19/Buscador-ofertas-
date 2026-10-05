@@ -133,8 +133,8 @@ categorias:
     umbral_descuento: 1       # avisar CUALQUIER oferta
     buscar: [pampers xxg, pañales pampers xxg, pampers premium care xxg, pampers confort sec xxg]
     incluir: [pampers]
-    incluir_tambien: [xxg, xx-g, xxl]
-    excluir: [toallita, toallitas, wipes]
+    incluir_tambien: [<xxg>, <xx-g>, <xxl>]   # palabra completa: XXXG no cuenta
+    excluir: [toallita, toallitas, wipes, xxxg]
 
   cargador_portatil:
     nombre: Cargador portátil de celular (power bank)

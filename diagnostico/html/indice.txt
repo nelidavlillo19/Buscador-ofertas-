@@ -1,5 +1,0 @@
-00 200 2 https://cl.hm.com/api/catalog_system/pub/products/search?ft=vestido%20nina&_from=0&_to=4 <- https://cl.hm.com/api/catalog_system/pub/products/search?ft=vestido%20nina&_from=0&_to=4
-01 404 126731 https://cl.hm.com/products.json?limit=2 <- https://cl.hm.com/products.json?limit=2
-02 200 14199 https://limonada.cl/products.json?limit=3 <- https://limonada.cl/products.json?limit=3
-03 206 45581 https://www.miniso.cl/api/catalog_system/pub/products/search?ft=peluche&_from=0&_to=4 <- https://www.miniso.cl/api/catalog_system/pub/products/search?ft=peluche&_from=0&_to=4
-04 200 986731 https://www.miniso.cl/products.json?limit=3 <- https://www.miniso.cl/products.json?limit=3

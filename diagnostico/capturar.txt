@@ -1,19 +1,7 @@
-# Tiendas de origen de las marcas vistas en Líder (¿existen y son Shopify/VTEX?)
-https://www.kunafoods.cl/products.json?limit=3
-https://kunafoods.cl/products.json?limit=3
-https://www.kunafoods.com/products.json?limit=3
-https://www.amatime.cl/products.json?limit=3
-https://amatime.cl/products.json?limit=3
-https://www.ama-time.cl/products.json?limit=3
-https://www.smileykids.cl/products.json?limit=3
-https://smileykids.cl/products.json?limit=3
-https://www.babymummum.cl/products.json?limit=3
-https://api.mercadolibre.com/sites/MLC/search?q=kuna%20foods%20gumis&limit=3
-https://listado.mercadolibre.cl/kuna-foods
-https://www.falabella.com/falabella-cl/search?Ntt=kuna%20foods
-https://www.falabella.com/falabella-cl/search?Ntt=baby%20mum%20mum
-https://www.focuswing.cl/products.json?limit=3
-https://focuswing.cl/products.json?limit=3
-https://www.focuswing.com/products.json?limit=3
-https://www.falabella.com/falabella-cl/search?Ntt=mini%20color%20stack
-https://www.falabella.com/falabella-cl/search?Ntt=nee%20doh
+# Fernapet
+https://www.fernapet.cl/products.json?limit=3
+https://www.fernapet.cl/api/catalog_system/pub/products/search?ft=cubo%20fotos&_from=0&_to=2
+https://www.fernapet.cl/
+https://www.fernapet.cl/search?q=cubo
+https://www.fernapet.cl/?s=cubo&post_type=product
+https://www.fernapet.cl/wp-json/wc/store/v1/products?search=cubo&per_page=3

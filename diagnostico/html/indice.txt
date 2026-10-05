@@ -1,6 +1,0 @@
-00 200 602048 https://www.fernapet.cl/products.json?limit=3 <- https://www.fernapet.cl/products.json?limit=3
-01 200 5238 https://www.fernapet.cl/api/catalog_system/pub/products/search?ft=cubo%20fotos&_from=0&_to <- https://www.fernapet.cl/api/catalog_system/pub/products/search?ft=cubo%20fotos&_from=0&_to=2
-02 200 1314146 https://www.fernapet.cl/ <- https://www.fernapet.cl/
-03 200 631727 https://www.fernapet.cl/search?q=cubo <- https://www.fernapet.cl/search?q=cubo
-04 200 1314146 https://www.fernapet.cl/?s=cubo&post_type=product <- https://www.fernapet.cl/?s=cubo&post_type=product
-05 404 530136 https://www.fernapet.cl/wp-json/wc/store/v1/products?search=cubo&per_page=3 <- https://www.fernapet.cl/wp-json/wc/store/v1/products?search=cubo&per_page=3

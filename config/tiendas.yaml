@@ -63,6 +63,12 @@ tiendas:
     plataforma: sfcc
     categorias: [alimento_mascotas, juguetes_mascotas]
 
+  - id: fernapet
+    nombre: Fernapet
+    url: https://www.fernapet.cl
+    plataforma: vtex
+    categorias: [marcos_fotos, alimento_mascotas, juguetes_mascotas, peluches, limpiapies, organizacion_hogar]
+
   # ---------- Fotografía / tecnología (película Instax Mini) ----------
   - id: reifschneider
     nombre: Reifschneider

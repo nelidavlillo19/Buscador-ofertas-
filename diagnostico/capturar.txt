@@ -1,3 +1,4 @@
-# Casa Royal
-https://www.casaroyal.cl/api/catalog_system/pub/products/search?ft=instax%20mini&_from=0&_to=9
-https://www.casaroyal.cl/api/catalog_system/pub/products/search?fq=productClusterIds:306&_from=0&_to=9
+# Decathlon
+https://www.decathlon.cl/search?Ntt=trekking
+https://www.decathlon.cl/products.json?limit=2
+https://www.decathlon.cl/api/catalog_system/pub/products/search?ft=trekking&_from=0&_to=2

@@ -230,3 +230,11 @@ def test_oferta_inflada_no_se_avisa_y_queda_en_vigilancia(tmp_path):
     db.guardar(con, Producto("c", "t", "Traje de baño", "u", 4990, precio_lista=16990, categoria="ropa"), "2026-10-01")
     [a] = [a for a in alertas.detectar(con, "2026-10-01", 30, 60) if a.tipo == "declarado"]
     assert a.nota.startswith("precio más bajo en 30 días")
+
+
+def test_modo_solo_nuevas_no_envia_sin_novedades_y_omite_vigentes():
+    vieja = alertas.Alerta("t:a", "declarado", 50, 1000, 2000, "Vieja", "t", "u", "c", nueva=False)
+    nueva = alertas.Alerta("t:b", "declarado", 40, 600, 1000, "Nueva", "t", "u", "c", nueva=True)
+    assert "no se envió" in alertas.notificar([vieja], "2026-10-05", {}, solo_nuevas=True)
+    asunto, texto, html = alertas.resumen_diario([vieja, nueva], "2026-10-05", {}, {}, solo_nuevas=True)
+    assert "1 ofertas nuevas" in asunto and "Nueva" in html and "Vieja" not in html

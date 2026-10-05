@@ -8,7 +8,8 @@ import sqlite3
 import statistics
 from html import escape
 from dataclasses import dataclass
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
+from zoneinfo import ZoneInfo
 from email.message import EmailMessage
 
 from . import db, unidades
@@ -16,6 +17,7 @@ from .red import Cliente
 
 log = logging.getLogger(__name__)
 
+ZONA = ZoneInfo("America/Santiago")
 MIN_DIAS_HISTORIAL = 7  # días con precio antes de confiar en el "precio habitual"
 DIAS_REFERENCIA = 30    # "precio más bajo de los últimos 30 días" (regla anti ofertas infladas)
 MIN_DIAS_REFERENCIA = 3
@@ -272,7 +274,8 @@ def _vigilancia_html(vig: dict, nombres: dict, maximo: int = 10) -> str:
 
 
 def resumen_diario(alertas: list[Alerta], fecha: str, categorias: dict, tiendas: dict,
-                   url_panel: str = "", vig: dict | None = None) -> tuple[str, str, str]:
+                   url_panel: str = "", vig: dict | None = None,
+                   solo_nuevas: bool = False) -> tuple[str, str, str]:
     """Correo diario: qué se revisó, ofertas nuevas y mejores ofertas vigentes por categoría.
 
     `tiendas` = {id: (nombre, productos revisados)}. Devuelve (asunto, texto, html).
@@ -286,6 +289,10 @@ def resumen_diario(alertas: list[Alerta], fecha: str, categorias: dict, tiendas:
 
     asunto = (f"🛒 {len(nuevas)} ofertas nuevas · {total_ofertas} vigentes ({fecha})" if nuevas
               else f"🛒 Resumen del {fecha}: {total_ofertas} ofertas vigentes")
+    if solo_nuevas:
+        # modo días de ofertas: sólo lo nuevo de esta revisión
+        vigentes, vig = {}, None
+        asunto = f"🛒 {len(nuevas)} ofertas nuevas ({fecha}, revisión de las {datetime.now(ZONA):%H:%M})"
 
     # --- texto plano ---
     t = [f"Resumen del {fecha}", f"Revisamos {revisados} productos en {len(tiendas)} tiendas. "
@@ -294,7 +301,8 @@ def resumen_diario(alertas: list[Alerta], fecha: str, categorias: dict, tiendas:
     if nuevas:
         t += ["", "OFERTAS NUEVAS"] + [f"- {a.nombre}: {_clp(a.precio)} ({insignia(a) if a.tipo == 'por_unidad' else 'antes ' + _clp(a.referencia)}) "
                                       f"{nombres.get(a.tienda, a.tienda)} {a.url}" for a in nuevas]
-    t += ["", "MEJORES OFERTAS VIGENTES POR CATEGORÍA"]
+    if vigentes:
+        t += ["", "MEJORES OFERTAS VIGENTES POR CATEGORÍA"]
     for cid in sorted(vigentes, key=lambda c: orden.index(c) if c in orden else 99):
         t.append(categorias.get(cid, {}).get("nombre", cid))
         t += [f"  - {a.nombre}: {_clp(a.precio)} ({insignia(a) if a.tipo == 'por_unidad' else 'antes ' + _clp(a.referencia)}) "
@@ -328,7 +336,8 @@ def resumen_diario(alertas: list[Alerta], fecha: str, categorias: dict, tiendas:
                  + "".join(_fila_html(a, categorias, nombres) for a in nuevas) + "</table>")
     else:
         h.append("<p>Hoy no aparecieron ofertas nuevas; estas son las mejores que siguen vigentes.</p>")
-    h.append("<h3>⭐ Mejores ofertas vigentes por categoría</h3>")
+    if vigentes:
+        h.append("<h3>⭐ Mejores ofertas vigentes por categoría</h3>")
     for cid in sorted(vigentes, key=lambda c: (not categorias.get(c, {}).get("destacar"),
                                                orden.index(c) if c in orden else 99)):
         h.append(f'<h4 style="margin:16px 0 4px">{escape(categorias.get(cid, {}).get("nombre", cid))}</h4>'
@@ -341,11 +350,16 @@ def resumen_diario(alertas: list[Alerta], fecha: str, categorias: dict, tiendas:
 
 
 def notificar(alertas: list[Alerta], fecha: str, categorias: dict, url_panel: str = "",
-              tiendas: dict | None = None, vig: dict | None = None) -> str:
-    """Envía el resumen diario por correo (y Telegram si está configurado), haya o no ofertas nuevas."""
+              tiendas: dict | None = None, vig: dict | None = None, solo_nuevas: bool = False) -> str:
+    """Envía el resumen diario por correo (y Telegram si está configurado), haya o no ofertas nuevas.
+
+    Con `solo_nuevas` el correo trae sólo las ofertas nuevas y no se envía si no hay ninguna.
+    """
     tiendas = tiendas or {}
-    asunto, texto, html = resumen_diario(alertas, fecha, categorias, tiendas, url_panel, vig)
     nuevas = seleccionar_para_aviso(alertas, categorias)
+    if solo_nuevas and not nuevas:
+        return "sin ofertas nuevas: no se envió correo (modo sólo nuevas)"
+    asunto, texto, html = resumen_diario(alertas, fecha, categorias, tiendas, url_panel, vig, solo_nuevas)
     estado = []
 
     token, chat = os.environ.get("TELEGRAM_BOT_TOKEN"), os.environ.get("TELEGRAM_CHAT_ID")

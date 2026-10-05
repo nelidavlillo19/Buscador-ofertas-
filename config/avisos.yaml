@@ -1,0 +1,6 @@
+# Configuración de los correos.
+#
+# Hasta esta fecha (incluida) el correo trae SÓLO ofertas nuevas y no se envía si no hay ninguna.
+# Se usa en días de ofertas (CyberDay), cuando la revisión corre varias veces al día.
+# Después de esa fecha vuelve el resumen diario completo.
+solo_nuevas_hasta: 2026-10-07

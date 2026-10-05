@@ -31,7 +31,13 @@ log = logging.getLogger("ofertas")
 
 def cargar_config() -> dict:
     leer = lambda nombre: yaml.safe_load((RAIZ / "config" / nombre).read_text(encoding="utf-8"))  # noqa: E731
-    return {"tiendas": leer("tiendas.yaml")["tiendas"], "productos": leer("productos.yaml")}
+    avisos = leer("avisos.yaml") if (RAIZ / "config" / "avisos.yaml").exists() else {}
+    return {"tiendas": leer("tiendas.yaml")["tiendas"], "productos": leer("productos.yaml"), "avisos": avisos or {}}
+
+
+def solo_nuevas(config: dict, fecha: str) -> bool:
+    hasta = config["avisos"].get("solo_nuevas_hasta")
+    return bool(hasta) and fecha <= str(hasta)
 
 
 def url_panel() -> str:
@@ -130,7 +136,8 @@ def cmd_rastrear(args) -> int:
             nombres = {t["nombre"]: t["id"] for t in config["tiendas"]}
             revisadas = {nombres[n]: (n, c) for n, c in resumen.items()}
             vig = alertas.vigilancia(con, fecha, config["productos"].get("umbral_descuento", 30), categorias)
-            aviso = alertas.notificar(lista, fecha, categorias, url_panel(), revisadas, vig)
+            aviso = alertas.notificar(lista, fecha, categorias, url_panel(), revisadas, vig,
+                                      solo_nuevas(config, fecha))
         except Exception as e:  # noqa: BLE001 - un aviso fallido no debe impedir el respaldo
             log.exception("No se pudieron enviar los avisos (revisa GMAIL_USUARIO / GMAIL_CLAVE_APP)")
             aviso = f"ERROR al enviar: {type(e).__name__}: {str(e)[:200]}"

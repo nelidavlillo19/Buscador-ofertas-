@@ -26,7 +26,10 @@ def main() -> int:
                 url = url[5:].strip()
                 r = cliente.sesion.post(url, timeout=30, json={})
             else:
-                r = cliente.sesion.get(url, timeout=30)
+                # "<url> | Cabecera=valor": cabeceras extra (p. ej. Referer)
+                url, _, extra = url.partition(" | ")
+                cabeceras = dict(c.split("=", 1) for c in extra.split(";") if "=" in c)
+                r = cliente.sesion.get(url.strip(), timeout=30, headers=cabeceras)
         except Exception as e:  # noqa: BLE001 - un dominio inexistente no debe frenar el resto
             indice.append(f"{i:02d} ERROR {type(e).__name__} {url}")
             continue

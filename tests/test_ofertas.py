@@ -268,3 +268,17 @@ def test_lider_walmart_next_data():
                   "https://super.lider.cl")
     assert (p.nombre, p.precio, p.precio_lista, p.url) == ("Yoguito Frutilla con bombilla", 1883, 2690,
                                                            "https://super.lider.cl/ip/yoguito/1")
+
+
+def test_farmacias_cruzverde_y_salcobrand_usan_precio_publico():
+    from ofertas.adapters import cruzverde, salcobrand
+    [c] = cruzverde.extraer({"hits": [{"productId": "1", "productName": "Pañales XXG 60", "brand": "PAMPERS",
+                                       "prices": {"price-sale-cl": 17759, "price-list-cl": 32290}, "stock": 3}]},
+                            "cruzverde", "https://www.cruzverde.cl")
+    assert (c.precio, c.precio_lista, c.marca, c.url) == (17759, 32290, "Pampers",
+                                                         "https://www.cruzverde.cl/panales-xxg-60/1.html")
+    [s] = salcobrand.extraer({"hits": [{"sku": "9", "name": "Pañales Pampers XXG 60", "slug": "p-xxg",
+                                        "normal_price": 31899, "direct_discount": "17544.0",
+                                        "direct_discount_sbpay": "14355.0", "has_stock": True}]},
+                             "salcobrand", "https://salcobrand.cl")
+    assert (s.precio, s.precio_lista, s.url) == (17544, 31899, "https://salcobrand.cl/products/p-xxg")

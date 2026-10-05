@@ -12,6 +12,7 @@ from .ikea import Ikea
 from .jsonld import JsonLd
 from .magento import Magento
 from .sfcc import Ahumada, Sfcc
+from .salcobrand import Salcobrand
 from .shopify import Shopify
 from .vtex import Vtex
 from .walmart import Walmart
@@ -20,7 +21,7 @@ log = logging.getLogger(__name__)
 
 PLATAFORMAS: dict[str, type[Adaptador]] = {
     "shopify": Shopify, "vtex": Vtex, "jsonld": JsonLd,
-    "sfcc": Sfcc, "falabella": Falabella, "cencosud": Cencosud, "magento": Magento, "ikea": Ikea, "walmart": Walmart, "ahumada": Ahumada, "cruzverde": CruzVerde,
+    "sfcc": Sfcc, "falabella": Falabella, "cencosud": Cencosud, "magento": Magento, "ikea": Ikea, "walmart": Walmart, "ahumada": Ahumada, "cruzverde": CruzVerde, "salcobrand": Salcobrand,
 }
 
 

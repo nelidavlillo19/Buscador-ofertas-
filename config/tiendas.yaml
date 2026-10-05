@@ -147,6 +147,25 @@ tiendas:
   # Mercado Libre bloquea a los programas automáticos; AMA y Smiley Kids no tienen tienda propia
   # (se buscan en Jumbo, Santa Isabel y Falabella). Parent's Choice es marca exclusiva de Líder.
 
+  # ---------- Farmacias ----------
+  - id: cruzverde
+    nombre: Cruz Verde
+    url: https://www.cruzverde.cl
+    plataforma: cruzverde
+    categorias: [panales_pampers_xxg, crema_cuerpo_ninos, mr_bubble]
+
+  - id: salcobrand
+    nombre: Salcobrand
+    url: https://salcobrand.cl
+    plataforma: salcobrand
+    categorias: [panales_pampers_xxg, crema_cuerpo_ninos, mr_bubble]
+
+  - id: ahumada
+    nombre: Farmacias Ahumada
+    url: https://www.farmaciasahumada.cl
+    plataforma: ahumada
+    categorias: [panales_pampers_xxg, crema_cuerpo_ninos, mr_bubble]
+
   # ---------- Supermercados ----------
   - id: jumbo
     nombre: Jumbo

@@ -38,7 +38,7 @@ Se configuran en [`config/productos.yaml`](config/productos.yaml):
 | Fotografía | película Instax Mini (**avisa cualquier oferta** y todo pack donde **cada foto cueste menos de $1.000**) |
 | Mascotas | alimento de perro y gato, juguetes para mascotas |
 | Niños | juguetes, ropa de niña **talla 2**, ropa de niño **talla 6**, trajes de baño (niña T2, niño T6), crema de cuerpo para niños, calzado ergonómico tipo Uma Baby |
-| Bebé | pañales Pampers talla XXG (Jumbo, Santa Isabel, Falabella; **cualquier oferta**) |
+| Bebé | pañales Pampers talla XXG (supermercados, Falabella y farmacias Cruz Verde, Salcobrand y Ahumada; **cualquier oferta**) |
 | Colaciones | compotas, cajitas de jugo sin azúcar, cereales para 2 años, barritas tipo Mizo, galletas |
 | Mujer | zapatillas y calzado |
 | Hogar | muebles y organización, robot de cocina, café de grano, cafeteras tipo profesional |

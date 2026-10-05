@@ -1,0 +1,4 @@
+00 200 599503 https://static.salcobrand.cl/packs/search_bar-ba8048a1e4e2bcc739a4.js <- https://static.salcobrand.cl/packs/search_bar-ba8048a1e4e2bcc739a4.js
+01 200 28826 https://salcobrand.cl/search_result?query=pampers%20xxg <- https://salcobrand.cl/search_result?query=pampers%20xxg
+02 201 1414 https://api.cruzverde.cl/customer-service/login <- https://api.cruzverde.cl/customer-service/login
+03 200 27308 https://api.cruzverde.cl/product-service/products/search?limit=10&offset=0&sort=&q=pampers <- https://api.cruzverde.cl/product-service/products/search?limit=10&offset=0&sort=&q=pampers%20xxg

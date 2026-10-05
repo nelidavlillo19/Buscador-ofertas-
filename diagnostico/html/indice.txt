@@ -1,3 +1,0 @@
-00 403 5778 https://www.decathlon.cl/search?Ntt=trekking <- https://www.decathlon.cl/search?Ntt=trekking
-01 403 5784 https://www.decathlon.cl/products.json?limit=2 <- https://www.decathlon.cl/products.json?limit=2
-02 403 5985 https://www.decathlon.cl/api/catalog_system/pub/products/search?ft=trekking&_from=0&_to=2 <- https://www.decathlon.cl/api/catalog_system/pub/products/search?ft=trekking&_from=0&_to=2

@@ -24,8 +24,8 @@ def main() -> int:
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36"))
         for i, url in enumerate(urls):
             try:
-                resp = pag.goto(url, wait_until="networkidle", timeout=60000)
-                pag.wait_for_timeout(3000)
+                resp = pag.goto(url, wait_until="domcontentloaded", timeout=60000)
+                pag.wait_for_timeout(8000)
                 html = pag.content()
                 (carpeta / f"r{i:02d}.html.gz").write_bytes(gzip.compress(html.encode()))
                 indice.append(f"r{i:02d} {resp.status if resp else '?'} {len(html)} {pag.url[:90]} titulo={pag.title()[:60]!r}")

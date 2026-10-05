@@ -117,6 +117,30 @@ tiendas:
     activa: false
     categorias: [pintura_antihongos]
 
+  # ---------- Tiendas de origen de marcas (productos vistos en góndolas de Líder) ----------
+  - id: kunafoods
+    nombre: Kuna Foods
+    url: https://www.kunafoods.cl
+    plataforma: shopify
+    catalogo_completo: true      # catálogo pequeño: se revisa completo
+    categorias: [snacks_bebe_marcas]
+
+  - id: eaty
+    nombre: Eaty
+    url: https://www.eaty.cl
+    plataforma: shopify
+    categorias: [snacks_bebe_marcas]
+
+  - id: focuswing
+    nombre: FocuSwing
+    url: https://www.focuswing.cl
+    plataforma: shopify
+    catalogo_completo: true
+    categorias: [focuswing]
+
+  # Mercado Libre bloquea a los programas automáticos; AMA y Smiley Kids no tienen tienda propia
+  # (se buscan en Jumbo, Santa Isabel y Falabella). Parent's Choice es marca exclusiva de Líder.
+
   # ---------- Supermercados ----------
   - id: jumbo
     nombre: Jumbo

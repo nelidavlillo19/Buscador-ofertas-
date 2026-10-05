@@ -18,6 +18,11 @@ umbral_descuento: 30        # % mínimo para generar alerta
 dias_historial: 60          # ventana para calcular el "precio habitual"
 
 categorias:
+  yoguito:
+    nombre: Yoguito (con y sin bombilla)
+    buscar: [yoguito, yoguito bombilla, yogurt yoguito, yoguito soprole]
+    incluir: [yoguito]
+
   jugo_naranja_quillayes:
     nombre: Jugo de naranja Quillayes
     buscar: [jugo naranja quillayes, quillayes naranja, jugo de naranja quillayes]

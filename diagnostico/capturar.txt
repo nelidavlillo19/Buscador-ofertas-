@@ -1,7 +1,5 @@
-# Fernapet
-https://www.fernapet.cl/products.json?limit=3
-https://www.fernapet.cl/api/catalog_system/pub/products/search?ft=cubo%20fotos&_from=0&_to=2
-https://www.fernapet.cl/
-https://www.fernapet.cl/search?q=cubo
-https://www.fernapet.cl/?s=cubo&post_type=product
-https://www.fernapet.cl/wp-json/wc/store/v1/products?search=cubo&per_page=3
+# Líder con petición simple
+https://www.lider.cl/
+https://www.lider.cl/supermercado/search?query=yoguito
+https://super.lider.cl/search?q=yoguito
+https://www.lider.cl/catalogo/search?query=yoguito

@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["diagnostico/tiendas.txt", "diagnostico/capturar.txt", "ofertas/capturar.py", "ofertas/diagnostico.py", ".github/workflows/diagnostico.yml"]
+    paths: ["diagnostico/tiendas.txt", "diagnostico/capturar.txt", "diagnostico/renderizar.txt", "ofertas/renderizar.py", "ofertas/capturar.py", "ofertas/diagnostico.py", ".github/workflows/diagnostico.yml"]
 
 permissions:
   contents: write
@@ -23,6 +23,12 @@ jobs:
       - run: pip install -r requirements.txt
       - run: python -m ofertas.diagnostico $(grep -v '^#' diagnostico/tiendas.txt)
       - run: python -m ofertas.capturar
+      - name: Abrir páginas con navegador real
+        if: hashFiles('diagnostico/renderizar.txt') != ''
+        continue-on-error: true
+        run: |
+          pip install playwright && python -m playwright install --with-deps chromium
+          python -m ofertas.renderizar
       - run: |
           git config user.name "buscador-ofertas"
           git config user.email "actions@users.noreply.github.com"

@@ -1,5 +1,10 @@
-# Tottus: rutas de búsqueda posibles
-https://www.tottus.cl/tottus-cl/buscar?Ntt=compota
-https://www.tottus.cl/tottus-cl/search?Ntt=compota
-https://www.tottus.cl/tottus-cl/search?q=compota
-https://www.tottus.cl/tottus-cl/lista/CATG28510/Soprole
+# Farmacias: búsqueda de pañales Pampers XXG
+https://www.cruzverde.cl/search?q=pampers%20xxg
+https://www.cruzverde.cl/products.json?limit=2
+https://api.cruzverde.cl/product-service/products/search?q=pampers&limit=5
+https://salcobrand.cl/search?q=pampers%20xxg
+https://salcobrand.cl/products.json?limit=2
+https://salcobrand.cl/api/catalog_system/pub/products/search?ft=pampers&_from=0&_to=2
+https://www.salcobrand.cl/
+https://www.farmaciasahumada.cl/search?q=pampers%20xxg
+https://www.farmaciasahumada.cl/products.json?limit=2

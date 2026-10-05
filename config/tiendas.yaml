@@ -173,9 +173,16 @@ tiendas:
 
   - id: lider
     nombre: Líder
-    url: https://www.lider.cl
-    plataforma: auto
-    # Líder tiene protección anti-bots fuerte; se deja pausada hasta probarla.
-    activa: false
-    categorias: [yoguito, compotas, jugos_sin_azucar, cereales_infantiles, barritas, galletas_colacion,
-                 cafe_grano, alimento_mascotas, crema_cuerpo_ninos]
+    url: https://super.lider.cl
+    plataforma: walmart
+    categorias: [yoguito, jugo_naranja_quillayes, panales_pampers_xxg, snacks_bebe_marcas, compotas, jugos_sin_azucar,
+                 cereales_infantiles, barritas, galletas_colacion, cafe_grano, alimento_mascotas, crema_cuerpo_ninos,
+                 kh7_quitamanchas, mr_bubble, nenuco]
+
+  - id: tottus
+    nombre: Tottus
+    url: https://www.tottus.cl/tottus-cl
+    plataforma: falabella   # mismo sistema que Falabella
+    categorias: [yoguito, jugo_naranja_quillayes, panales_pampers_xxg, snacks_bebe_marcas, compotas, jugos_sin_azucar,
+                 cereales_infantiles, barritas, galletas_colacion, cafe_grano, alimento_mascotas, crema_cuerpo_ninos,
+                 kh7_quitamanchas, mr_bubble, nenuco]

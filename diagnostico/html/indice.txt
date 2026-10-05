@@ -1,4 +1,0 @@
-00 200 682081 https://www.lider.cl/inicio <- https://www.lider.cl/
-01 200 1335393 https://super.lider.cl/?query=yoguito <- https://www.lider.cl/supermercado/search?query=yoguito
-02 200 762782 https://super.lider.cl/search?q=yoguito <- https://super.lider.cl/search?q=yoguito
-03 200 722211 https://www.lider.cl/search?q=yoguito <- https://www.lider.cl/catalogo/search?query=yoguito

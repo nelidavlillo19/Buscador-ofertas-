@@ -255,3 +255,16 @@ def test_categorias_de_las_fotos():
     for nombre, esperado in casos.items():
         r = clasificar(Producto("x", "1", nombre, "u", 1000), cats, None)
         assert r == esperado or (esperado is None and r not in ("pelicula_polaroid", "snacks_bebe_marcas")), nombre
+
+
+def test_lider_walmart_next_data():
+    import json
+    from ofertas.adapters.walmart import extraer
+    datos = {"props": {"pageProps": {"initialData": {"searchResult": {"itemStacks": [{"items": [
+        {"usItemId": "1", "name": "Yoguito Frutilla con bombilla", "canonicalUrl": "/ip/yoguito/1",
+         "priceInfo": {"linePrice": "$1.883", "wasPrice": "$2.690"}, "image": "i.jpg"},
+        {"usItemId": "2", "name": "", "priceInfo": {"linePrice": "$3.290"}, "isOutOfStock": True}]}]}}}}}
+    [p] = extraer(f"<script id=__NEXT_DATA__ type=application/json>{json.dumps(datos)}</script>", "lider",
+                  "https://super.lider.cl")
+    assert (p.nombre, p.precio, p.precio_lista, p.url) == ("Yoguito Frutilla con bombilla", 1883, 2690,
+                                                           "https://super.lider.cl/ip/yoguito/1")

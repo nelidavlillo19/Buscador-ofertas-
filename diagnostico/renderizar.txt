@@ -1,3 +1,0 @@
-# Páginas para abrir con navegador real (Chromium)
-https://www.lider.cl/supermercado/search?query=yoguito
-https://super.lider.cl/search?q=yoguito

@@ -121,10 +121,11 @@ categorias:
     incluir: [limpiapie, limpia pie, felpudo, tapete de entrada]
 
   snacks_bebe_marcas:
-    nombre: Snacks y colaciones de bebé (Kuna, Mum-Mum, Smiley Kids, AMA, NaturNes)
+    nombre: Snacks y colaciones de bebé (Kuna, Mum-Mum, Smiley Kids, AMA, NaturNes, Parent's Choice)
     buscar: [kuna foods, gumis kuna, puffs kuna, bombas kuna, cookids, baby mum mum, smiley kids, jugo ama organico,
-             naturnes, nestum]
-    incluir: [kuna, mum-mum, mum mum, smiley kids, granjeritas, <ama>, naturnes, nestum, cookids]
+             naturnes, nestum, parent's choice galletas arroz, parents choice colado]
+    incluir: [kuna, mum-mum, mum mum, smiley kids, granjeritas, <ama>, naturnes, nestum, cookids,
+              parent's choice, parents choice]
     excluir: [pañal, panal]
 
   panales_pampers_xxg:

@@ -1,0 +1,3 @@
+00 200 1384129 https://www.falabella.com/falabella-cl/search?Ntt=quechua <- https://www.falabella.com/falabella-cl/search?Ntt=quechua
+01 200 2512100 https://www.falabella.com/falabella-cl/search?Ntt=zapatilla%20trekking <- https://www.falabella.com/falabella-cl/search?Ntt=zapatilla%20trekking
+02 200 684753 https://super.lider.cl/search?q=quechua <- https://super.lider.cl/search?q=quechua

@@ -22,7 +22,11 @@ def main() -> int:
     indice = []
     for i, url in enumerate(urls):
         try:
-            r = cliente.sesion.get(url, timeout=30)
+            if url.startswith("POST "):  # "POST <url>": p. ej. abrir sesión de invitado; la cookie queda guardada
+                url = url[5:].strip()
+                r = cliente.sesion.post(url, timeout=30, json={})
+            else:
+                r = cliente.sesion.get(url, timeout=30)
         except Exception as e:  # noqa: BLE001 - un dominio inexistente no debe frenar el resto
             indice.append(f"{i:02d} ERROR {type(e).__name__} {url}")
             continue

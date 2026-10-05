@@ -46,3 +46,46 @@ class Sfcc(Adaptador):
     def buscar(self, termino: str) -> list[Producto]:
         r = self.cliente.get(f"{self.url}/buscar?q={quote(termino)}&sz=48")
         return extraer(r.text, self.id, self.url) if r is not None else []
+
+
+# --- Farmacias Ahumada: otra plantilla de SFCC, con precio normal, precio internet y precio CMR ---
+TARJETA_AHUMADA = re.compile(r'<div class="product product-tile-wrapper[^"]*"[^>]*data-pid="([^"]+)"(.*?)END_dwmarker', re.S)
+
+
+def extraer_ahumada(pagina: str, tienda: str, base: str) -> list[Producto]:
+    productos = []
+    for pid, bloque in TARJETA_AHUMADA.findall(pagina):
+        enlace = re.search(r'<div class="pdp-link">\s*<a class="link" href="([^"]+)">(.*?)</a>', bloque, re.S)
+        precio_html = re.search(r'<div class="price">(.*?)<div class="tile-cta', bloque, re.S)
+        if not (enlace and precio_html):
+            continue
+        precios = precio_html.group(1)
+        # el precio con tarjeta CMR (insignia "promotion-badge") no se usa: exige tarjeta
+        publico = re.search(r'cmr-price-display.*?content="([\d.]+)"', precios, re.S)
+        normal = re.search(r'strike-through list.*?content="([\d.]+)"', precios, re.S)
+        if publico:
+            precio = float(publico.group(1))
+        else:
+            sin_tachado = re.sub(r"<del.*?</del>", "", precios, flags=re.S)
+            valores = _valores(sin_tachado) or [float(re.sub(r"[^\d]", "", v)) for v in
+                                                re.findall(r"\$\s*([\d.]+)", sin_tachado)]
+            if not valores:
+                continue
+            precio = min(valores)
+        lista = float(normal.group(1)) if normal else None
+        marca = re.search(r'product-tile-brand">\s*<span[^>]*>(.*?)</span>', bloque, re.S)
+        imagen = re.search(r'<img class="tile-image"\s+src="([^"]+)"', bloque, re.S)
+        productos.append(Producto(
+            tienda=tienda, sku=pid, nombre=html.unescape(enlace.group(2).strip()),
+            url=urljoin(base + "/", enlace.group(1)), precio=precio,
+            precio_lista=lista if lista and lista > precio else None,
+            marca=html.unescape(marca.group(1).strip()) if marca else "",
+            imagen=html.unescape(imagen.group(1)) if imagen else "",
+        ))
+    return productos
+
+
+class Ahumada(Adaptador):
+    def buscar(self, termino: str) -> list[Producto]:
+        r = self.cliente.get(f"{self.url}/search?q={quote(termino)}")
+        return extraer_ahumada(r.text, self.id, self.url) if r is not None else []

@@ -1,10 +1,6 @@
-# Farmacias: búsqueda de pañales Pampers XXG
-https://www.cruzverde.cl/search?q=pampers%20xxg
-https://www.cruzverde.cl/products.json?limit=2
-https://api.cruzverde.cl/product-service/products/search?q=pampers&limit=5
-https://salcobrand.cl/search?q=pampers%20xxg
-https://salcobrand.cl/products.json?limit=2
-https://salcobrand.cl/api/catalog_system/pub/products/search?ft=pampers&_from=0&_to=2
-https://www.salcobrand.cl/
-https://www.farmaciasahumada.cl/search?q=pampers%20xxg
-https://www.farmaciasahumada.cl/products.json?limit=2
+# Salcobrand: buscador (Algolia) y página de resultados
+https://static.salcobrand.cl/packs/search_bar-ba8048a1e4e2bcc739a4.js
+https://salcobrand.cl/search_result?query=pampers%20xxg
+# Cruz Verde: sesión de invitado y búsqueda
+POST https://api.cruzverde.cl/customer-service/login
+https://api.cruzverde.cl/product-service/products/search?limit=10&offset=0&sort=&q=pampers%20xxg

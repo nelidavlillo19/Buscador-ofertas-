@@ -18,6 +18,12 @@ umbral_descuento: 30        # % mínimo para generar alerta
 dias_historial: 60          # ventana para calcular el "precio habitual"
 
 categorias:
+  jugo_naranja_quillayes:
+    nombre: Jugo de naranja Quillayes
+    buscar: [jugo naranja quillayes, quillayes naranja, jugo de naranja quillayes]
+    incluir: [quillayes, quillalles]
+    incluir_tambien: [naranja]
+
   mini_color_stack:
     nombre: Juego Mini Color Stack
     buscar: [mini color stack, color stack challenge, color stack juego]

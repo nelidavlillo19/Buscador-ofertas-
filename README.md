@@ -30,6 +30,7 @@ Se configuran en [`config/productos.yaml`](config/productos.yaml):
 | Fotos | película **Polaroid i-Type y 600** (cualquier oferta), cubo de fotos giratorio |
 | Juegos | autos Mario Kart Hot Wheels, Cuboro, escalera de cuerda / trapecio / columpio / presas de escalada, kits de mostacillas, sillas infantiles |
 | Hogar | limpiapiés, muebles de bambú (baño, zapatero) |
+| Jugos | jugo de naranja Quillayes (Jumbo, Santa Isabel, Falabella) |
 | Colaciones bebé | Kuna Foods, Baby Mum-Mum, Smiley Kids, AMA, NaturNes, Nestum |
 | Más juguetes | Mini Color Stack, Nee Doh, sets de Super Mario, muñecas Nenuco, cocina de juguete de madera, FocuSwing |
 | Baño y limpieza | set Mr. Bubble, quitamanchas KH-7 |

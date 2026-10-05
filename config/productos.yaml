@@ -9,6 +9,7 @@
 #   tallas:   (opcional) sólo se consideran variantes con alguna de estas tallas
 #   umbral_descuento: (opcional) % mínimo propio de esa categoría (1 = avisar cualquier oferta)
 #   precio_maximo_por_unidad: (opcional) avisa si precio ÷ unidades del pack queda bajo este valor
+#   grupo: viaje      (opcional) categorías con revisión y correo propios (python -m ofertas grupo viaje)
 #   destacar: true    (opcional) aparece primero en el correo y con ⭐ en el panel
 #
 # Las comparaciones ignoran mayúsculas y tildes.
@@ -18,6 +19,31 @@ umbral_descuento: 30        # % mínimo para generar alerta
 dias_historial: 60          # ventana para calcular el "precio habitual"
 
 categorias:
+  # ---------- Viaje (revisión cada 6 horas con correo propio: grupo viaje) ----------
+  maleta_cabina:
+    nombre: 🧳 Maleta de cabina
+    grupo: viaje
+    buscar: [maleta de cabina, maleta cabina, carry on, maleta 20 pulgadas, maleta pequeña rigida]
+    incluir: [maleta, carry on, carry-on, trolley]
+    incluir_tambien: [cabina, carry, <20>, 20", 20 pulgadas, 55 cm, 55cm, <s>, pequeña, small, 18"]
+    excluir: [set de, juego de, set 2, set 3, organizador, funda, candado, balanza, cubre maleta, juguete, niños]
+
+  organizadores_equipaje:
+    nombre: 🧳 Organizadores de equipaje
+    grupo: viaje
+    buscar: [organizador de maleta, organizador de equipaje, cubos organizadores viaje, packing cubes,
+             set organizador viaje, bolsas organizadoras viaje]
+    incluir: [organizador, cubo, cubos, packing, neceser, bolsa, set de bolsas]
+    incluir_tambien: [maleta, viaje, equipaje, travel, packing]
+
+  banano_documentos:
+    nombre: 🧳 Banano / porta documentos
+    grupo: viaje
+    buscar: [banano porta documentos, porta pasaporte, banano viaje, riñonera viaje, porta documentos viaje]
+    incluir: [banano, riñonera, rinonera, porta documento, portadocumento, porta pasaporte, portapasaporte,
+              billetera de viaje, cartera de viaje]
+    excluir: [perro, mascota, bebe, pañal]
+
   yoguito:
     nombre: Yoguito (con y sin bombilla)
     buscar: [yoguito, yoguito bombilla, yogurt yoguito, yoguito soprole]

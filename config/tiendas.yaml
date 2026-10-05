@@ -45,7 +45,7 @@ tiendas:
     plataforma: magento
     api: https://headless.casaideas.cl/graphql
     ruta_producto: /producto/{url_key}
-    categorias: [nee_doh, cocina_juguete, hot_wheels_mario_kart, cuboro, juegos_escalada, manualidades_mostacillas, sillas_infantiles, marcos_fotos, limpiapies, cargador_portatil, peluches, rompecabezas, libros_actividades, dinosaurios, juguetes_ninos, organizacion_hogar,
+    categorias: [maleta_cabina, organizadores_equipaje, banano_documentos, nee_doh, cocina_juguete, hot_wheels_mario_kart, cuboro, juegos_escalada, manualidades_mostacillas, sillas_infantiles, marcos_fotos, limpiapies, cargador_portatil, peluches, rompecabezas, libros_actividades, dinosaurios, juguetes_ninos, organizacion_hogar,
                  cafeteras, robot_cocina, pelicula_instax_mini]
 
   - id: ikea
@@ -54,7 +54,7 @@ tiendas:
     plataforma: ikea
     # Además de las ofertas de 30%+, avisa todo lo que cueste $10.000 o menos (peluches destacados)
     alerta_precio_maximo: 10000
-    categorias: [cocina_juguete, sillas_infantiles, marcos_fotos, limpiapies, cargador_portatil, peluches, rompecabezas, dinosaurios, juguetes_ninos, organizacion_hogar]
+    categorias: [maleta_cabina, organizadores_equipaje, banano_documentos, cocina_juguete, sillas_infantiles, marcos_fotos, limpiapies, cargador_portatil, peluches, rompecabezas, dinosaurios, juguetes_ninos, organizacion_hogar]
 
   # ---------- Mascotas ----------
   - id: superzoo
@@ -73,7 +73,7 @@ tiendas:
     nombre: Casa Royal
     url: https://www.casaroyal.cl
     plataforma: vtex
-    categorias: [pelicula_instax_mini, pelicula_polaroid, cargador_portatil, robot_cocina, cafeteras,
+    categorias: [maleta_cabina, organizadores_equipaje, banano_documentos, pelicula_instax_mini, pelicula_polaroid, cargador_portatil, robot_cocina, cafeteras,
                  hot_wheels_mario_kart, super_mario_juguetes, nee_doh, mini_color_stack, nenuco, cocina_juguete,
                  peluches, rompecabezas, dinosaurios, marcos_fotos, juguetes_ninos]
 
@@ -114,7 +114,7 @@ tiendas:
     nombre: Falabella
     url: https://www.falabella.com/falabella-cl
     plataforma: falabella
-    categorias: [jugo_naranja_quillayes, mini_color_stack, mr_bubble, focuswing, nee_doh, super_mario_juguetes, nenuco, cocina_juguete, kh7_quitamanchas, snacks_bebe_marcas, pelicula_polaroid, hot_wheels_mario_kart, cuboro, juegos_escalada, sillas_infantiles, marcos_fotos, panales_pampers_xxg, cargador_portatil, pelicula_instax_mini]
+    categorias: [maleta_cabina, organizadores_equipaje, banano_documentos, jugo_naranja_quillayes, mini_color_stack, mr_bubble, focuswing, nee_doh, super_mario_juguetes, nenuco, cocina_juguete, kh7_quitamanchas, snacks_bebe_marcas, pelicula_polaroid, hot_wheels_mario_kart, cuboro, juegos_escalada, sillas_infantiles, marcos_fotos, panales_pampers_xxg, cargador_portatil, pelicula_instax_mini]
 
   # ---------- Construcción / pinturas ----------
   - id: sodimac
@@ -202,7 +202,7 @@ tiendas:
     nombre: Líder
     url: https://super.lider.cl
     plataforma: walmart
-    categorias: [yoguito, jugo_naranja_quillayes, panales_pampers_xxg, snacks_bebe_marcas, compotas, jugos_sin_azucar,
+    categorias: [maleta_cabina, organizadores_equipaje, banano_documentos, yoguito, jugo_naranja_quillayes, panales_pampers_xxg, snacks_bebe_marcas, compotas, jugos_sin_azucar,
                  cereales_infantiles, barritas, galletas_colacion, cafe_grano, alimento_mascotas, crema_cuerpo_ninos,
                  kh7_quitamanchas, mr_bubble, nenuco]
 
@@ -211,6 +211,6 @@ tiendas:
     url: https://www.tottus.cl/tottus-cl
     plataforma: falabella   # mismo sistema que Falabella
     ruta_busqueda: /buscar?Ntt={q}
-    categorias: [yoguito, jugo_naranja_quillayes, panales_pampers_xxg, snacks_bebe_marcas, compotas, jugos_sin_azucar,
+    categorias: [maleta_cabina, organizadores_equipaje, banano_documentos, yoguito, jugo_naranja_quillayes, panales_pampers_xxg, snacks_bebe_marcas, compotas, jugos_sin_azucar,
                  cereales_infantiles, barritas, galletas_colacion, cafe_grano, alimento_mascotas, crema_cuerpo_ninos,
                  kh7_quitamanchas, mr_bubble, nenuco]

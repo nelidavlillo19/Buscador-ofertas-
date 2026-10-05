@@ -35,6 +35,7 @@ Se configuran en [`config/productos.yaml`](config/productos.yaml):
 | Colaciones bebé | Kuna Foods, Baby Mum-Mum, Smiley Kids, AMA, NaturNes, Nestum |
 | Más juguetes | Mini Color Stack, Nee Doh, sets de Super Mario, muñecas Nenuco, cocina de juguete de madera, FocuSwing |
 | Baño y limpieza | set Mr. Bubble, quitamanchas KH-7 |
+| 🧳 Viaje (**cada 6 horas, correo propio**) | maleta de cabina, organizadores de equipaje, banano / porta documentos (Falabella, Líder, Tottus, Casa Ideas, IKEA, Casa Royal) |
 | Fotografía | película Instax Mini (**avisa cualquier oferta** y todo pack donde **cada foto cueste menos de $1.000**) |
 | Mascotas | alimento de perro y gato, juguetes para mascotas |
 | Niños | juguetes, ropa de niña **talla 2**, ropa de niño **talla 6**, trajes de baño (niña T2, niño T6), crema de cuerpo para niños, calzado ergonómico tipo Uma Baby |

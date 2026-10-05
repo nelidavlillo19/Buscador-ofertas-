@@ -1,0 +1,60 @@
+name: Reporte de viaje (cada 6 horas)
+
+on:
+  schedule:
+    - cron: "40 */6 * * *"   # cada 6 horas (GitHub puede atrasarlo un poco)
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["disparos/viaje.txt"]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: rastreo            # misma fila que la revisión diaria: nunca corren a la vez
+  cancel-in-progress: false
+
+jobs:
+  viaje:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Revisar productos de viaje y enviar el reporte
+        env:
+          GMAIL_USUARIO: ${{ secrets.GMAIL_USUARIO }}
+          GMAIL_CLAVE_APP: ${{ secrets.GMAIL_CLAVE_APP }}
+          CORREO_DESTINO: ${{ secrets.CORREO_DESTINO }}
+          URL_PANEL: ${{ vars.URL_PANEL }}
+        run: python -m ofertas grupo viaje
+      - name: Guardar historial
+        run: |
+          git config user.name "buscador-ofertas"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/
+          git diff --cached --quiet || git commit -m "Precios de viaje $(TZ=America/Santiago date '+%F %H:%M')"
+          git pull --rebase -q origin main
+          git push
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: sitio
+
+  publicar:
+    needs: viaje
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

@@ -282,3 +282,16 @@ def test_farmacias_cruzverde_y_salcobrand_usan_precio_publico():
                                         "direct_discount_sbpay": "14355.0", "has_stock": True}]},
                              "salcobrand", "https://salcobrand.cl")
     assert (s.precio, s.precio_lista, s.url) == (17544, 31899, "https://salcobrand.cl/products/p-xxg")
+
+
+def test_reporte_de_viaje(tmp_path):
+    con = db.conectar(tmp_path / "x.sqlite")
+    cats = {"maleta_cabina": {"nombre": "Maleta de cabina", "grupo": "viaje"}}
+    db.guardar(con, Producto("f", "m1", "Maleta cabina 20", "u", 39990, precio_lista=79990, categoria="maleta_cabina"),
+               "2026-10-05")
+    db.guardar(con, Producto("f", "m2", "Maleta cabina S", "u", 29990, categoria="maleta_cabina"), "2026-10-05")
+    lista = alertas.detectar(con, "2026-10-05", 30, 60, cats)
+    asunto, texto, html = alertas.reporte_grupo(con, "2026-10-05", cats, {"f": "Falabella"}, lista,
+                                                {"Falabella": 2}, "🧳 Reporte de viaje")
+    assert "1 ofertas nuevas" in asunto and "Maleta cabina 20" in html and "-50%" in html
+    assert texto.index("Maleta cabina 20") < texto.rindex("Maleta cabina S")   # lo más rebajado primero

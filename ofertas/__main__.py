@@ -155,6 +155,51 @@ def cmd_rastrear(args) -> int:
     return 0
 
 
+def cmd_grupo(args) -> int:
+    """Revisa sólo las categorías de un grupo (p. ej. viaje) y envía su propio reporte por correo."""
+    config = cargar_config()
+    todas = config["productos"]["categorias"]
+    cats = {k: v for k, v in todas.items() if v.get("grupo") == args.grupo}
+    if not cats:
+        print(f"No hay categorías con grupo {args.grupo!r}")
+        return 1
+    fecha = hoy()
+    con = db.conectar(RUTA_DB)
+    cliente = Cliente(pausa=args.pausa)
+    nombres = {t["id"]: t["nombre"] for t in config["tiendas"]}
+    revisadas = {}
+    for tienda in config["tiendas"]:
+        propias = [c for c in tienda.get("categorias") or [] if c in cats]
+        if not tienda.get("activa", True) or not propias:
+            continue
+        try:
+            productos = recolectar(dict(tienda, categorias=propias, catalogo_completo=False), todas, cliente)
+        except Exception:  # noqa: BLE001
+            log.exception("%s: error inesperado", tienda["id"])
+            productos = []
+        for p in productos:
+            db.guardar(con, p, fecha)
+        con.commit()
+        revisadas[tienda["nombre"]] = len(productos)
+        log.info("%s: %d productos de %s", tienda["nombre"], len(productos), args.grupo)
+    lista = alertas.detectar(con, fecha, config["productos"].get("umbral_descuento", 30),
+                             config["productos"].get("dias_historial", 60), todas,
+                             {t["id"]: t for t in config["tiendas"]})
+    con.commit()
+    titulo = {"viaje": "🧳 Reporte de viaje"}.get(args.grupo, f"Reporte {args.grupo}")
+    asunto, texto, html = alertas.reporte_grupo(con, fecha, cats, nombres, lista, revisadas, titulo, url_panel())
+    try:
+        aviso = "avisos desactivados" if args.sin_avisos else alertas.enviar_correo(asunto, texto, html)
+    except Exception as e:  # noqa: BLE001
+        aviso = f"ERROR al enviar: {type(e).__name__}: {str(e)[:200]}"
+    (DATOS / f"ESTADO_{args.grupo.upper()}.md").write_text(
+        f"# {titulo}: {fecha} {datetime.now(ZoneInfo('America/Santiago')):%H:%M}\n\n- Correo: {aviso}\n\n"
+        + "\n".join(f"- {n}: {c}" for n, c in revisadas.items()) + "\n", encoding="utf-8")
+    panel.exportar(con, fecha, config, SITIO)
+    print(asunto, "|", aviso)
+    return 0
+
+
 def cmd_probar(args) -> int:
     config = cargar_config()
     tienda = next((t for t in config["tiendas"] if t["id"] == args.tienda), None)
@@ -246,6 +291,11 @@ def main(argv=None) -> int:
     p.set_defaults(func=cmd_probar)
 
     sub.add_parser("panel").set_defaults(func=cmd_panel)
+
+    p = sub.add_parser("grupo", help="revisa un grupo de categorías y envía su reporte (p. ej. viaje)")
+    p.add_argument("grupo")
+    p.add_argument("--sin-avisos", action="store_true")
+    p.set_defaults(func=cmd_grupo)
     sub.add_parser("correo-prueba").set_defaults(func=cmd_correo_prueba)
 
     p = sub.add_parser("demo")

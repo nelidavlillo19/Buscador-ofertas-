@@ -394,3 +394,75 @@ def notificar(alertas: list[Alerta], fecha: str, categorias: dict, url_panel: st
         faltan = [n for n, v in (("GMAIL_USUARIO", usuario), ("GMAIL_CLAVE_APP", clave)) if not v]
         estado.append(f"correo NO configurado (falta: {', '.join(faltan)})")
     return ", ".join(estado)
+
+
+def enviar_correo(asunto: str, texto: str, html: str) -> str:
+    """Envía un correo con las credenciales de Gmail/SMTP configuradas. Devuelve el estado."""
+    usuario = (os.environ.get("GMAIL_USUARIO") or os.environ.get("SMTP_USUARIO") or "").strip()
+    clave = (os.environ.get("GMAIL_CLAVE_APP") or os.environ.get("SMTP_CLAVE") or "").strip()
+    if not (usuario and clave):
+        return "correo NO configurado"
+    msg = EmailMessage()
+    msg["Subject"] = asunto
+    msg["From"] = usuario
+    msg["To"] = os.environ.get("CORREO_DESTINO") or usuario
+    msg.set_content(texto)
+    msg.add_alternative(html, subtype="html")
+    with smtplib.SMTP(os.environ.get("SMTP_SERVIDOR") or "smtp.gmail.com", int(os.environ.get("SMTP_PUERTO") or 587)) as s:
+        s.starttls()
+        s.login(usuario, clave.replace(" ", ""))
+        s.send_message(msg)
+    return "correo enviado"
+
+
+def reporte_grupo(con: sqlite3.Connection, fecha: str, cats: dict, nombres: dict, lista: list[Alerta],
+                  revisadas: dict, titulo: str, url_panel: str = "", por_categoria: int = 6) -> tuple[str, str, str]:
+    """Reporte de un grupo de categorías (p. ej. viaje): ofertas nuevas y mejores precios vigentes."""
+    nuevas = seleccionar_para_aviso([a for a in lista if a.categoria in cats], cats)
+    hora = datetime.now(ZONA).strftime("%H:%M")
+    asunto = f"{titulo} {fecha} {hora}: {len(nuevas)} ofertas nuevas"
+    h = [f'<div style="font-family:Arial,sans-serif;max-width:640px;color:#0b0b0b">',
+         f'<h2 style="margin-bottom:4px">{escape(titulo)} · {fecha} {hora}</h2>',
+         f'<p style="margin-top:0;color:#52514e">Revisamos <b>{sum(revisadas.values())}</b> productos de viaje en '
+         f'<b>{len(revisadas)}</b> tiendas · <b>{len(nuevas)}</b> ofertas nuevas</p>']
+    t = [f"{titulo} {fecha} {hora}", f"Productos revisados: {sum(revisadas.values())} en {len(revisadas)} tiendas", ""]
+    if url_panel:
+        h.append(f'<p><a href="{escape(url_panel)}" style="background:#2a78d6;color:#fff;padding:10px 16px;'
+                 f'border-radius:8px;text-decoration:none;display:inline-block">Ver panel con gráficos</a></p>')
+    if nuevas:
+        h.append('<h3>🆕 Ofertas nuevas</h3><table style="border-collapse:collapse;width:100%">'
+                 + "".join(_fila_html(a, cats, nombres) for a in nuevas) + "</table>")
+        t += ["OFERTAS NUEVAS"] + [f"- {a.nombre}: {_clp(a.precio)} ({insignia(a)}) {a.url}" for a in nuevas] + [""]
+    else:
+        h.append("<p>No hay ofertas nuevas desde la revisión anterior. Estos son los mejores precios de ahora:</p>")
+    for cid, cat in cats.items():
+        filas = con.execute(
+            """SELECT p.nombre, p.tienda, p.url, pr.precio, pr.precio_lista FROM precios pr
+               JOIN productos p ON p.id = pr.producto_id
+               WHERE pr.fecha = ? AND p.categoria = ? AND pr.disponible = 1""", (fecha, cid)).fetchall()
+        def orden(f):  # primero lo más rebajado, luego lo más barato
+            desc = 1 - f["precio"] / f["precio_lista"] if f["precio_lista"] and f["precio_lista"] > f["precio"] else 0
+            return (-round(desc, 2), f["precio"])
+        mejores = sorted(filas, key=orden)[:por_categoria]
+        h.append(f'<h3 style="margin:18px 0 4px">{escape(cat.get("nombre", cid))} '
+                 f'<span style="color:#7a7974;font-size:13px;font-weight:normal">({len(filas)} productos)</span></h3>')
+        t.append(f"{cat.get('nombre', cid)} ({len(filas)} productos)")
+        if not mejores:
+            h.append('<p style="color:#7a7974">Sin productos encontrados en esta revisión.</p>')
+            continue
+        h.append('<table style="border-collapse:collapse;width:100%;font-size:14px">')
+        for f in mejores:
+            antes = f["precio_lista"] if f["precio_lista"] and f["precio_lista"] > f["precio"] else None
+            desc = f' <span style="color:#d03b3b;font-weight:bold">-{100 * (1 - f["precio"] / antes):.0f}%</span>' if antes else ""
+            h.append(f'<tr><td style="padding:6px 4px;border-bottom:1px solid #e3e1dc">'
+                     f'<a href="{escape(f["url"])}" style="color:#0b0b0b">{escape(f["nombre"])}</a><br>'
+                     f'<span style="color:#52514e;font-size:12px">{escape(nombres.get(f["tienda"], f["tienda"]))}</span></td>'
+                     f'<td style="padding:6px 4px;border-bottom:1px solid #e3e1dc;text-align:right;white-space:nowrap">'
+                     f'<b>{_clp(f["precio"])}</b>{desc}'
+                     + (f'<br><span style="color:#7a7974;text-decoration:line-through;font-size:12px">{_clp(antes)}</span>' if antes else "")
+                     + "</td></tr>")
+            t.append(f"  - {f['nombre']}: {_clp(f['precio'])}" + (f" (antes {_clp(antes)})" if antes else "")
+                     + f" {nombres.get(f['tienda'], f['tienda'])} {f['url']}")
+        h.append("</table>")
+    h.append("</div>")
+    return asunto, "\n".join(t) + "\n", "".join(h)

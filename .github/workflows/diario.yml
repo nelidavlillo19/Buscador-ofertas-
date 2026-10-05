@@ -8,7 +8,7 @@ on:
   workflow_dispatch:         # botón "Run workflow" para ejecutarlo a mano
   push:                      # también corre al cambiar productos, tiendas o el programa
     branches: [main]
-    paths: ["config/**", "ofertas/**", "web/**", ".github/workflows/**", "disparos/**"]
+    paths: ["config/**", "ofertas/**", "web/**", ".github/workflows/**", "disparos/ultimo.txt"]
 
 permissions:
   contents: write

@@ -77,6 +77,29 @@ tiendas:
                  hot_wheels_mario_kart, super_mario_juguetes, nee_doh, mini_color_stack, nenuco, cocina_juguete,
                  peluches, rompecabezas, dinosaurios, marcos_fotos, juguetes_ninos]
 
+  - id: hm
+    nombre: H&M
+    url: https://cl.hm.com
+    plataforma: vtex
+    nombre_con_categoria: true   # agrega el departamento (NIÑOS NIÑA 2-8A) al nombre para filtrar
+    categorias: [traje_bano_nina_t2, traje_bano_nino_t6, ropa_nina_t2, ropa_nino_t6, calzado_mujer]
+
+  - id: limonada
+    nombre: Limonada
+    url: https://limonada.cl
+    plataforma: shopify
+    catalogo_completo: true
+    categorias: [traje_bano_nina_t2, traje_bano_nino_t6, ropa_nina_t2, ropa_nino_t6, calzado_ergonomico,
+                 calzado_mujer]
+
+  - id: miniso
+    nombre: Miniso
+    url: https://www.miniso.cl
+    plataforma: vtex
+    categorias: [maleta_cabina, organizadores_equipaje, banano_documentos, peluches, nee_doh, super_mario_juguetes,
+                 cargador_portatil, organizacion_hogar, rompecabezas, dinosaurios, juguetes_ninos, marcos_fotos,
+                 pelicula_instax_mini]
+
   - id: decathlon
     nombre: Decathlon
     url: https://www.decathlon.cl

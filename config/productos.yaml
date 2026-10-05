@@ -263,6 +263,8 @@ categorias:
     nombre: Zapatillas y calzado de mujer
     buscar: [zapatillas mujer, calzado mujer, botines mujer, sandalias mujer]
     incluir: [mujer, dama]
+    incluir_tambien: [zapat, botin, bota, sandalia, calzado, mocasin, ballerina, bailarina, sneaker, alpargata,
+                      zueco, pantufla, chala, slipper, loafer]
     # tallas: ["37", "38"]   # descomenta y ajusta tu talla
 
   # Los trajes de baño van antes que la ropa para que no se mezclen con ella.

@@ -1,4 +1,7 @@
 from datetime import date, timedelta
+from pathlib import Path
+
+import yaml
 
 from ofertas import alertas, db
 from ofertas.adapters.jsonld import extraer_productos
@@ -295,3 +298,18 @@ def test_reporte_de_viaje(tmp_path):
                                                 {"Falabella": 2}, "🧳 Reporte de viaje")
     assert "1 ofertas nuevas" in asunto and "Maleta cabina 20" in html and "-50%" in html
     assert texto.index("Maleta cabina 20") < texto.rindex("Maleta cabina S")   # lo más rebajado primero
+
+
+def test_hm_usa_departamento_para_saber_si_es_de_nina():
+    cats = yaml.safe_load((Path(__file__).parent.parent / "config/productos.yaml").read_text())["categorias"]
+    item = lambda talla: {"name": f"Vestido {talla}", "sellers": [{"commertialOffer": {  # noqa: E731
+        "Price": 2990, "ListPrice": 5990, "AvailableQuantity": 5}}]}
+    datos = {"productId": "1", "productName": "Vestido estampado", "brand": "H&M", "linkText": "1",
+             "categories": ["/NIÑOS/NIÑA 2-8A/ROPA/VESTIDOS/kids_girls/", "/NIÑOS/"],
+             "items": [item("2-3A"), item("4-5A")]}
+    p = Vtex({"id": "hm", "url": "https://cl.hm.com", "nombre_con_categoria": True}, None)._producto(datos)
+    assert p.nombre == "Vestido estampado · NIÑOS NIÑA 2-8A"
+    assert clasificar(p, cats, ["ropa_nina_t2", "calzado_mujer"]) == "ropa_nina_t2"
+    mujer = Vtex({"id": "hm", "url": "https://cl.hm.com", "nombre_con_categoria": True}, None)._producto(
+        {**datos, "categories": ["/MUJER/VESTIDOS/"]})
+    assert clasificar(mujer, cats, ["calzado_mujer"]) is None

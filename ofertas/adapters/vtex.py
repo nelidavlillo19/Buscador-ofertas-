@@ -41,10 +41,15 @@ class Vtex(Adaptador):
         link = p.get("link") or f"{self.url}/{p.get('linkText')}/p"
         if link.startswith("/"):
             link = self.url + link
+        nombre = p.get("productName", "")
+        if self.tienda.get("nombre_con_categoria") and p.get("categories"):
+            # H&M: el nombre no dice si es de niña/niño; el departamento sí ("/NIÑOS/NIÑA 2-8A/...")
+            ruta = max(p["categories"], key=len).strip("/").split("/")
+            nombre += " · " + " ".join(x for x in ruta[:2] if "_" not in x)
         return Producto(
             tienda=self.id,
             sku=str(p.get("productId")),
-            nombre=p.get("productName", ""),
+            nombre=nombre,
             url=link,
             precio=mejor.precio,
             precio_lista=mejor.precio_lista,

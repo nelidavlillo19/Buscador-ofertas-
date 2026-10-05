@@ -1,8 +1,8 @@
 # Última revisión: 2026-10-05
 
-- Hora: 01:12 (Chile)
-- Ofertas encontradas: 1485 (108 nuevas)
-- Avisos: correo enviado (50 ofertas nuevas)
+- Hora: 01:41 (Chile)
+- Ofertas encontradas: 1486 (0 nuevas)
+- Avisos: sin ofertas nuevas: no se envió correo (modo sólo nuevas)
 
 | Tienda | Productos |
 |---|---|
@@ -13,7 +13,7 @@
 | IKEA | 289 |
 | SuperZoo | 218 |
 | Fernapet | 182 |
-| Falabella | 544 |
+| Falabella | 543 |
 | Sodimac | 78 |
 | Kuna Foods | 83 |
 | Eaty | 15 |
@@ -21,7 +21,7 @@
 | Cruz Verde | 11 |
 | Salcobrand | 15 |
 | Farmacias Ahumada | 11 |
-| Jumbo | 445 |
-| Santa Isabel | 436 |
-| Líder | 571 |
-| Tottus | 557 |
+| Jumbo | 443 |
+| Santa Isabel | 434 |
+| Líder | 583 |
+| Tottus | 560 |

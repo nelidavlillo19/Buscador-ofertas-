@@ -164,7 +164,8 @@ def cmd_grupo(args) -> int:
         print(f"No hay categorías con grupo {args.grupo!r}")
         return 1
     fecha = hoy()
-    con = db.conectar(RUTA_DB)
+    # Base propia del grupo (data/viaje.sqlite): así no choca con la revisión diaria al guardar.
+    con = db.conectar(DATOS / f"{args.grupo}.sqlite")
     cliente = Cliente(pausa=args.pausa)
     nombres = {t["id"]: t["nombre"] for t in config["tiendas"]}
     revisadas = {}
@@ -195,7 +196,6 @@ def cmd_grupo(args) -> int:
     (DATOS / f"ESTADO_{args.grupo.upper()}.md").write_text(
         f"# {titulo}: {fecha} {datetime.now(ZoneInfo('America/Santiago')):%H:%M}\n\n- Correo: {aviso}\n\n"
         + "\n".join(f"- {n}: {c}" for n, c in revisadas.items()) + "\n", encoding="utf-8")
-    panel.exportar(con, fecha, config, SITIO)
     print(asunto, "|", aviso)
     return 0
 

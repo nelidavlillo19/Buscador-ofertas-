@@ -1,4 +1,6 @@
-# Marcas de Decathlon en otras tiendas
-https://www.falabella.com/falabella-cl/search?Ntt=quechua
-https://www.falabella.com/falabella-cl/search?Ntt=zapatilla%20trekking
-https://super.lider.cl/search?q=quechua
+# H&M, Limonada, Miniso
+https://cl.hm.com/api/catalog_system/pub/products/search?ft=vestido%20nina&_from=0&_to=4
+https://cl.hm.com/products.json?limit=2
+https://limonada.cl/products.json?limit=3
+https://www.miniso.cl/api/catalog_system/pub/products/search?ft=peluche&_from=0&_to=4
+https://www.miniso.cl/products.json?limit=3

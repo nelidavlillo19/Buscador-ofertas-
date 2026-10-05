@@ -1,3 +1,5 @@
-# Tottus
+# Tottus: rutas de búsqueda posibles
+https://www.tottus.cl/tottus-cl/buscar?Ntt=compota
 https://www.tottus.cl/tottus-cl/search?Ntt=compota
-https://www.tottus.cl/
+https://www.tottus.cl/tottus-cl/search?q=compota
+https://www.tottus.cl/tottus-cl/lista/CATG28510/Soprole

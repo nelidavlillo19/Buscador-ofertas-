@@ -19,6 +19,13 @@ umbral_descuento: 30        # % mínimo para generar alerta
 dias_historial: 60          # ventana para calcular el "precio habitual"
 
 categorias:
+  trekking:
+    nombre: 🥾 Trekking (zapatillas, botas, mochilas y bastones)
+    buscar: [zapatilla trekking, bota trekking, zapatilla outdoor, mochila trekking, bastones trekking]
+    incluir: [trekking, outdoor, hiking, senderismo, montaña, montana, baston]
+    incluir_tambien: [zapatilla, zapato, bota, botin, mochila, baston, bastón]
+    excluir: [perro, mascota, juguete, macetero, libro]
+
   # ---------- Viaje (revisión cada 6 horas con correo propio: grupo viaje) ----------
   maleta_cabina:
     nombre: 🧳 Maleta de cabina

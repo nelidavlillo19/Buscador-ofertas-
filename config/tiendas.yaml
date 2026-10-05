@@ -73,9 +73,17 @@ tiendas:
     nombre: Casa Royal
     url: https://www.casaroyal.cl
     plataforma: vtex
-    categorias: [maleta_cabina, organizadores_equipaje, banano_documentos, pelicula_instax_mini, pelicula_polaroid, cargador_portatil, robot_cocina, cafeteras,
+    categorias: [trekking, maleta_cabina, organizadores_equipaje, banano_documentos, pelicula_instax_mini, pelicula_polaroid, cargador_portatil, robot_cocina, cafeteras,
                  hot_wheels_mario_kart, super_mario_juguetes, nee_doh, mini_color_stack, nenuco, cocina_juguete,
                  peluches, rompecabezas, dinosaurios, marcos_fotos, juguetes_ninos]
+
+  - id: decathlon
+    nombre: Decathlon
+    url: https://www.decathlon.cl
+    plataforma: auto
+    # Protegida por Cloudflare ("Un momento..."): bloquea incluso con navegador real (403).
+    activa: false
+    categorias: [trekking, maleta_cabina, organizadores_equipaje, banano_documentos]
 
   # ---------- Fotografía / tecnología (película Instax Mini) ----------
   - id: reifschneider
@@ -114,7 +122,7 @@ tiendas:
     nombre: Falabella
     url: https://www.falabella.com/falabella-cl
     plataforma: falabella
-    categorias: [maleta_cabina, organizadores_equipaje, banano_documentos, jugo_naranja_quillayes, mini_color_stack, mr_bubble, focuswing, nee_doh, super_mario_juguetes, nenuco, cocina_juguete, kh7_quitamanchas, snacks_bebe_marcas, pelicula_polaroid, hot_wheels_mario_kart, cuboro, juegos_escalada, sillas_infantiles, marcos_fotos, panales_pampers_xxg, cargador_portatil, pelicula_instax_mini]
+    categorias: [trekking, maleta_cabina, organizadores_equipaje, banano_documentos, jugo_naranja_quillayes, mini_color_stack, mr_bubble, focuswing, nee_doh, super_mario_juguetes, nenuco, cocina_juguete, kh7_quitamanchas, snacks_bebe_marcas, pelicula_polaroid, hot_wheels_mario_kart, cuboro, juegos_escalada, sillas_infantiles, marcos_fotos, panales_pampers_xxg, cargador_portatil, pelicula_instax_mini]
 
   # ---------- Construcción / pinturas ----------
   - id: sodimac
@@ -202,7 +210,7 @@ tiendas:
     nombre: Líder
     url: https://super.lider.cl
     plataforma: walmart
-    categorias: [maleta_cabina, organizadores_equipaje, banano_documentos, yoguito, jugo_naranja_quillayes, panales_pampers_xxg, snacks_bebe_marcas, compotas, jugos_sin_azucar,
+    categorias: [trekking, maleta_cabina, organizadores_equipaje, banano_documentos, yoguito, jugo_naranja_quillayes, panales_pampers_xxg, snacks_bebe_marcas, compotas, jugos_sin_azucar,
                  cereales_infantiles, barritas, galletas_colacion, cafe_grano, alimento_mascotas, crema_cuerpo_ninos,
                  kh7_quitamanchas, mr_bubble, nenuco]
 
@@ -211,6 +219,6 @@ tiendas:
     url: https://www.tottus.cl/tottus-cl
     plataforma: falabella   # mismo sistema que Falabella
     ruta_busqueda: /buscar?Ntt={q}
-    categorias: [maleta_cabina, organizadores_equipaje, banano_documentos, yoguito, jugo_naranja_quillayes, panales_pampers_xxg, snacks_bebe_marcas, compotas, jugos_sin_azucar,
+    categorias: [trekking, maleta_cabina, organizadores_equipaje, banano_documentos, yoguito, jugo_naranja_quillayes, panales_pampers_xxg, snacks_bebe_marcas, compotas, jugos_sin_azucar,
                  cereales_infantiles, barritas, galletas_colacion, cafe_grano, alimento_mascotas, crema_cuerpo_ninos,
                  kh7_quitamanchas, mr_bubble, nenuco]

@@ -1,0 +1,4 @@
+00 200 1707697 https://www.tottus.cl/tottus-cl/buscar?Ntt=compota <- https://www.tottus.cl/tottus-cl/buscar?Ntt=compota
+01 526 7698 https://www.tottus.cl/tottus-cl/search?Ntt=compota <- https://www.tottus.cl/tottus-cl/search?Ntt=compota
+02 526 7698 https://www.tottus.cl/tottus-cl/search?q=compota <- https://www.tottus.cl/tottus-cl/search?q=compota
+03 200 1615258 https://www.tottus.cl/tottus-cl/lista/CATG28510/Soprole <- https://www.tottus.cl/tottus-cl/lista/CATG28510/Soprole

@@ -1,2 +1,0 @@
-00 200 98122 https://www.casaroyal.cl/api/catalog_system/pub/products/search?ft=instax%20mini&_from=0&_ <- https://www.casaroyal.cl/api/catalog_system/pub/products/search?ft=instax%20mini&_from=0&_to=9
-01 206 219578 https://www.casaroyal.cl/api/catalog_system/pub/products/search?fq=productClusterIds:306&_ <- https://www.casaroyal.cl/api/catalog_system/pub/products/search?fq=productClusterIds:306&_from=0&_to=9

@@ -10,7 +10,7 @@ from .modelos import normalizar
 
 # En orden de confianza: una cantidad explícita de fotos gana a "2x20" y éste a "10 pack".
 PATRONES = [
-    (r"(\d+)\s*(?:fotos?|unidades|uni|un|hojas|exposiciones|exp|laminas)\b", lambda m: int(m[1])),
+    (r"(\d+)\s*(?:fotografias|fotos?|unidades|uni|un|hojas|exposiciones|exp|laminas)\b", lambda m: int(m[1])),
     (r"(\d+)\s*[x×]\s*(\d+)(?!\s*mm)", lambda m: int(m[1]) * int(m[2])),
     (r"(\d+)\s*(?:peliculas|films?)\b", lambda m: int(m[1])),
     (r"(\d+)\s*/?\s*(?:pk|pack)\b", lambda m: int(m[1])),

@@ -69,6 +69,14 @@ tiendas:
     plataforma: vtex
     categorias: [marcos_fotos, alimento_mascotas, juguetes_mascotas, peluches, limpiapies, organizacion_hogar]
 
+  - id: casaroyal
+    nombre: Casa Royal
+    url: https://www.casaroyal.cl
+    plataforma: vtex
+    categorias: [pelicula_instax_mini, pelicula_polaroid, cargador_portatil, robot_cocina, cafeteras,
+                 hot_wheels_mario_kart, super_mario_juguetes, nee_doh, mini_color_stack, nenuco, cocina_juguete,
+                 peluches, rompecabezas, dinosaurios, marcos_fotos, juguetes_ninos]
+
   # ---------- Fotografía / tecnología (película Instax Mini) ----------
   - id: reifschneider
     nombre: Reifschneider

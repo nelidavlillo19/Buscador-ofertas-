@@ -147,10 +147,10 @@ th.n { text-align: right; }
 
       <section class="panel">
         <h2>Situación especial (art. 37)</h2>
-        <p class="hint">Con más de 5 meses de ausencia por enfermedad o maternidad, la evaluación se suspende. En otros casos se evalúa en relación al % de la jornada que dedicó a sus funciones: las metas con evidencia se ajustan a ese %. En ambos casos se informa a la Oficina y a las autoridades.</p>
+        <p class="hint">Con una ausencia justificada de más de 5 meses continuos, por cualquier motivo, la evaluación se suspende. En otros casos se evalúa en relación al % de la jornada que dedicó a sus funciones: las metas con evidencia se ajustan a ese %. En ambos casos se informa a la Oficina y a las autoridades.</p>
         <div class="row">
           <label for="sit-motivo">Motivo<select id="sit-motivo"><option value="" selected>Sin situación especial</option></select></label>
-          <label for="sit-meses">Meses de ausencia<input id="sit-meses" type="number" min="0" step="0.5" value="0"></label>
+          <label for="sit-meses">Meses continuos de ausencia<input id="sit-meses" type="number" min="0" step="0.5" value="0"></label>
           <label for="sit-pct">% de jornada dedicado<input id="sit-pct" type="number" min="0" max="100" value="100"></label>
         </div>
       </section>
@@ -169,7 +169,7 @@ const MODELO = {
   umbrales: [["A+", 101], ["A", 90], ["B", 75], ["C", 55], ["D", 0]],
   tope: 120,  // % máximo con que cuenta una tarea con excedente validado
   situaciones: {
-    mesesSuspension: 5, suspenden: ["enfermedad", "maternidad"],
+    mesesSuspension: 5,
     motivos: {
       enfermedad: "Licencia médica por enfermedad", maternidad: "Permiso o licencia por maternidad",
       parental: "Permiso postnatal parental o cuidados parentales", permiso_sin_goce: "Permiso sin goce de remuneraciones",
@@ -280,7 +280,7 @@ function situacion() {
   if (!motivo) return { factor: 1 };
   const S = MODELO.situaciones, meses = num($("sit-meses").value) || 0;
   const texto = S.motivos[motivo] + (meses ? `, ${fmt(meses, 0)} meses` : "");
-  if (S.suspenden.includes(motivo) && meses > S.mesesSuspension) return { suspendida: true, factor: 1, texto };
+  if (meses > S.mesesSuspension) return { suspendida: true, factor: 1, texto };
   const pct = num($("sit-pct").value);
   if (!(pct > 0 && pct <= 100)) return { factor: 1, texto, error: "Situación especial: indica el % de la jornada dedicado a sus funciones (mayor que 0 y hasta 100)." };
   return { factor: pct / 100, texto: `${texto}; evaluada en relación al ${fmt(pct, 0)}% de la jornada` };
@@ -444,7 +444,7 @@ function pintarActa() {
   const r = calcular();
   if (r.suspendida) {
     $("acta").innerHTML = `<div class="acta-head"><div class="letra L-C">—</div><div><div class="puntaje">Suspendida</div>
-      <div class="desc">Ausencia prolongada por enfermedad o maternidad (art. 37): ${esc(r.texto)}.</div></div></div>
+      <div class="desc">Ausencia justificada de más de 5 meses continuos (art. 37): ${esc(r.texto)}.</div></div></div>
       <div class="obs"><p>Informar a ${MODELO.situaciones.informarA}.</p></div>`;
     return;
   }

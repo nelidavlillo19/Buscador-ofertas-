@@ -175,8 +175,8 @@ def test_casos_de_compromisos_2023():
                      "caso3_asociado_docencia": [47.4, 38.2, 10.5, 3.9]}
 
 
-@pytest.mark.parametrize("motivo", ["enfermedad", "maternidad"])
-def test_ausencia_de_mas_de_5_meses_suspende_la_evaluacion(motivo):
+@pytest.mark.parametrize("motivo", ["enfermedad", "maternidad", "parental", "permiso_sin_goce", "comision_servicio"])
+def test_ausencia_justificada_de_mas_de_5_meses_suspende_la_evaluacion(motivo):
     datos = academico({"docencia": 100}, [])
     datos["situacion_especial"] = {"motivo": motivo, "meses_ausencia": 6}
     r = calificar(datos)
@@ -206,7 +206,7 @@ def test_meta_ajustada_no_genera_excedente_si_no_supera_la_original():
 
 @pytest.mark.parametrize("situacion, mensaje", [
     ({"motivo": "vacaciones"}, "no válido"),
-    ({"motivo": "permiso_sin_goce", "meses_ausencia": 7}, "porcentaje_jornada"),
+    ({"motivo": "permiso_sin_goce", "meses_ausencia": 3}, "porcentaje_jornada"),
     ({"motivo": "maternidad", "meses_ausencia": 5}, "porcentaje_jornada"),   # 5 meses no supera el límite
 ])
 def test_errores_de_situacion_especial(situacion, mensaje):

@@ -48,13 +48,13 @@ umbrales:
 tope_excedente: 120
 
 # Situaciones especiales (art. 37 del Reglamento de Carrera Académica).
-# - Ausencia de más de `meses_suspension` meses por un motivo de `suspenden`: la evaluación se suspende.
+# - Ausencia justificada de más de `meses_suspension` meses continuos, por cualquier motivo: la evaluación
+#   se suspende.
 # - Cualquier otra situación: se evalúa en relación al % de la jornada comprometida que la persona dedicó
 #   al cumplimiento de sus funciones (las metas de la evidencia se ajustan a ese %).
 # En ambos casos se informa a la Oficina y a las autoridades.
 situaciones_especiales:
   meses_suspension: 5
-  suspenden: [enfermedad, maternidad]
   motivos:
     enfermedad: Licencia médica por enfermedad
     maternidad: Permiso o licencia por maternidad
@@ -64,7 +64,7 @@ situaciones_especiales:
     cargo_directivo: Cargo en la planta directiva
     estudios: Estudios de postgrado o postdoctorado
     otra: Otra situación
-  descripcion_suspension: Ausencia prolongada por enfermedad o maternidad (art. 37)
+  descripcion_suspension: Ausencia justificada de más de 5 meses continuos (art. 37)
   informar_a: la Oficina de Evaluación de Desempeño Académico y las autoridades correspondientes
 
 descripcion_letras:

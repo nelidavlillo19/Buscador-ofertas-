@@ -12,7 +12,7 @@ Flujo (Reglamento de Carrera Académica, Título III):
 Los excedentes validados (logrado > comprometido) cuentan sobre 100% hasta un tope por tarea, y quedan
 registrados como destacados para el reconocimiento institucional; sin validar, se topan en 100%.
 
-Situaciones especiales (art. 37): una ausencia de más de 5 meses por enfermedad o maternidad suspende la
+Situaciones especiales (art. 37): una ausencia justificada de más de 5 meses continuos suspende la
 evaluación; en los demás casos las metas se ajustan al % de la jornada dedicado a sus funciones. En ambos
 casos se informa a la Oficina de Evaluación de Desempeño Académico y a las autoridades correspondientes.
 """
@@ -281,7 +281,7 @@ def situacion_especial(datos: dict, modelo: dict) -> tuple[bool, float, str | No
     texto = reglas["motivos"][motivo] + (f", {meses:g} meses" if meses else "")
     if sit.get("detalle"):
         texto += f" ({sit['detalle']})"
-    if motivo in reglas["suspenden"] and meses > reglas["meses_suspension"]:
+    if meses > reglas["meses_suspension"]:
         return True, 1.0, texto
     pct = sit.get("porcentaje_jornada")
     if pct is None or not 0 < float(pct) <= 100:

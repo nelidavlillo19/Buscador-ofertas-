@@ -95,13 +95,13 @@ Con D (o dos C seguidas) el informe recuerda el ingreso al programa de acompaña
 situacion_especial:
   motivo: enfermedad        # enfermedad, maternidad, parental, permiso_sin_goce, comision_servicio,
                             # cargo_directivo, estudios u otra
-  meses_ausencia: 6
+  meses_ausencia: 6         # meses continuos de ausencia justificada
   porcentaje_jornada: 60    # % de la jornada comprometida que dedicó a sus funciones
   detalle: texto libre
 ```
 
-- **Ausencia de más de 5 meses por enfermedad o maternidad:** la evaluación se **suspende**. No hay letra ni
-  puntaje.
+- **Ausencia justificada de más de 5 meses continuos**, por cualquier motivo: la evaluación se **suspende**.
+  No hay letra ni puntaje.
 - **Cualquier otra situación** (incluidas las ausencias de 5 meses o menos): se evalúa en relación al
   `porcentaje_jornada`. Las metas con evidencia se ajustan a ese % (por ejemplo, 2 publicaciones al 50% → 1).
   El excedente se cuenta sólo si lo logrado supera la meta original.
@@ -141,10 +141,13 @@ definiciones actuales en:
 - **Ponderación**: 10% autoevaluación + 10% estudiantes + 80% compromiso (la Jornada 2024 indicaba 15/15/70).
 - **Letras**: A+ desde 101% de cumplimiento (la Jornada 2024 asignaba A+ a la nota 7, es decir desde 90%).
 
+## Definiciones confirmadas
+
+- Tope de excedente por tarea: 120%.
+- Sin mínimo de exigencia por ámbito ni combinaciones de logro entre ámbitos: la letra depende sólo del %
+  de cumplimiento final.
+- Cualquier ausencia justificada de más de 5 meses continuos suspende la evaluación.
+
 ## Pendiente de definir
 
-- Si la **A** exige además un mínimo en cada ámbito.
-- Valor definitivo del tope de excedente (hoy 120%).
-- Si el permiso postnatal parental también suspende la evaluación cuando supera los 5 meses (hoy sólo
-  enfermedad y maternidad).
 - Instrumentos estandarizados de cada subcategoría y su escala.

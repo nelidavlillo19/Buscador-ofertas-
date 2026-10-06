@@ -1,4 +1,4 @@
-# 🧳 Reporte de viaje: 2026-10-06 03:53
+# 🧳 Reporte de viaje: 2026-10-06 15:39
 
 - Correo: correo enviado
 
@@ -6,6 +6,6 @@
 - IKEA: 2
 - Casa Royal: 1
 - Miniso: 6
-- Falabella: 272
-- Líder: 9
+- Falabella: 261
+- Líder: 10
 - Tottus: 0

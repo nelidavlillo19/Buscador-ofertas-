@@ -118,6 +118,50 @@ def test_errores_de_datos(cambio, mensaje):
         calificar(datos)
 
 
+def test_ponderacion_desde_horas_promedia_semestres():
+    datos = academico(None, [tarea("docencia", evidencia={"estado": "cumplido"}),
+                             tarea("gestion", evidencia={"estado": "cumplido"})])
+    del datos["compromiso"]
+    datos["horas"] = {"docencia": [10, 20], "gestion": 15, "vinculacion": 0}
+    r = calificar(datos)
+    assert [(a.ambito, a.declarado) for a in r.ambitos] == [("docencia", 50), ("gestion", 50)]
+
+
+def test_advierte_horas_sobre_la_jornada_y_docencia_fuera_de_rango():
+    datos = academico(None, [tarea("docencia", evidencia={"estado": "cumplido"}),
+                             tarea("vinculacion", evidencia={"estado": "cumplido"})],
+                      jerarquia="Asociado", perfil="investigador", jornada="completa")
+    del datos["compromiso"]
+    datos["horas"] = {"docencia": 15, "vinculacion": 35}
+    obs = " ".join(calificar(datos).observaciones)
+    assert "superan la jornada completa (44 h)" in obs
+    assert "docencia pesa 30.0%" in obs and "entre 40% y 60%" in obs
+
+
+def test_docencia_dentro_de_rango_no_advierte():
+    r = calificar(academico({"docencia": 70, "gestion": 30},
+                            [tarea("docencia", evidencia={"estado": "cumplido"}),
+                             tarea("gestion", evidencia={"estado": "cumplido"})],
+                            jerarquia="instructor"))
+    assert not any("docencia pesa" in o for o in r.observaciones)
+
+
+def test_no_se_puede_declarar_porcentaje_y_horas():
+    datos = academico({"docencia": 100}, [tarea("docencia", evidencia={"estado": "cumplido"})])
+    datos["horas"] = {"docencia": 10}
+    with pytest.raises(ErrorCompromiso, match="no en ambos"):
+        calificar(datos)
+
+
+def test_casos_de_compromisos_2023():
+    casos = {p.stem: calificar(yaml.safe_load(p.read_text(encoding="utf-8")))
+             for p in (EJEMPLOS / "compromisos_2023").glob("*.yaml")}
+    pesos = {k: [round(a.declarado, 1) for a in r.ambitos] for k, r in casos.items()}
+    assert pesos == {"caso1_asistente_gestion": [21.7, 72.5, 5.8],
+                     "caso2_asociado_creacion": [33.8, 16.0, 32.1, 18.0],
+                     "caso3_asociado_docencia": [47.4, 38.2, 10.5, 3.9]}
+
+
 def test_ejemplos():
     resultados = {p.stem: calificar(yaml.safe_load(p.read_text(encoding="utf-8")))
                   for p in EJEMPLOS.glob("*.yaml")}

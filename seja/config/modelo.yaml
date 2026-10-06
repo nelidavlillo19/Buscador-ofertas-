@@ -14,6 +14,26 @@ componentes_fijos:
   autoevaluacion: 0.10
   estudiantes: 0.10
 
+# Horas semanales de cada jornada, para advertir si el compromiso las supera.
+horas_jornada:
+  completa: 44
+  media: 22
+
+# Carga de docencia (% del compromiso) que indica el Reglamento de Carrera Académica para cada
+# jerarquía y perfil (art. 14, 18, 19, 23, 24, 28 y 29). Fuera de rango, el informe lo advierte.
+carga_docente:
+  instructor:
+    todos: [60, 80]
+  asistente:
+    investigador: [50, 70]
+    vinculador: [60, 70]
+  asociado:
+    investigador: [40, 60]
+    vinculador: [50, 60]
+  titular:
+    investigador: [30, 50]
+    vinculador: [40, 60]
+
 # % mínimo de cumplimiento para cada letra, de mayor a menor. Bajo C → D.
 # Sobre 100% sólo se llega con excedentes validados (logrado > comprometido).
 umbrales:
@@ -63,10 +83,6 @@ ambitos:
         nombre: Docencia de postgrado
         instrumento: Evaluación de estudiantes, evaluación de la dirección de la unidad académica y autoevaluación
         periodicidad: semestral
-      coordinacion_practicas:
-        nombre: Coordinación de prácticas
-        instrumento: Evaluación a la gestión, coordinador/a de prácticas
-        periodicidad: anual
       direccion_titulacion:
         nombre: Dirección de tesis, seminarios de título, memorias, tesinas o trabajos de grado
         instrumento: Evaluación a la docencia de estudiantes (actividad curricular)
@@ -152,6 +168,10 @@ ambitos:
     nombre: Gestión Académica
     subcategorias:
       direccion: Dirección o coordinación de unidades académicas
+      coordinacion_practicas:
+        nombre: Coordinación de prácticas
+        instrumento: Evaluación a la gestión, coordinador/a de prácticas
+        periodicidad: anual
       coordinacion_vcm:
         nombre: Coordinación de VcM de facultad o departamental
         instrumento: Evaluación a la gestión, coordinador/a de VcM y extensión (decano/a o director/a)

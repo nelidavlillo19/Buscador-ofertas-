@@ -56,6 +56,11 @@ cuente más dentro de su ámbito; si no se indica, el ámbito es un promedio sim
 
 - **80%**: los ámbitos, cada uno según el % declarado en el Compromiso de Desempeño (los % deben sumar 100).
   Ejemplo: docencia 55%, ICI 30%, VcM 5%, gestión 10% → pesan 44%, 24%, 4% y 8% del total.
+- El % de cada ámbito se ingresa directo (`compromiso:`) o se calcula desde las **horas semanales** (`horas:`):
+  % = horas del ámbito ÷ total de horas. Si la docencia cambia por semestre se ingresa una lista
+  (`docencia: [17, 16.75]`) y se promedia. El informe advierte si las horas superan la jornada
+  (`jornada: completa` = 44 h, `media` = 22 h) o si la docencia queda fuera del rango del reglamento para la
+  jerarquía y el perfil (`jerarquia:`, `perfil:`). Ver [el análisis de los compromisos](docs/analisis_compromisos.md).
 - **10%**: autoevaluación.
 - **10%**: evaluación de los estudiantes.
 - Si la persona está eximida de docencia (art. 37 a), se marca `exento_estudiantes: true` y ese 10% pasa a los ámbitos.

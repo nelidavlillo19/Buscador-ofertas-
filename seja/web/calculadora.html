@@ -108,14 +108,16 @@ th.n { text-align: right; }
         <div class="row">
           <label for="academico">Nombre<input id="academico" value="Académica de ejemplo"></label>
           <label for="periodo">Período<input id="periodo" value="2026"></label>
-          <label for="jerarquia">Jerarquía<select id="jerarquia"><option>Instructor/a</option><option selected>Asistente</option><option>Asociado/a</option><option>Titular</option></select></label>
-          <label for="perfil">Perfil<select id="perfil"><option selected>Investigador/a</option><option>Vinculador/a</option></select></label>
+          <label for="jerarquia">Jerarquía<select id="jerarquia"><option value="instructor">Instructor/a</option><option value="asistente" selected>Asistente</option><option value="asociado">Asociado/a</option><option value="titular">Titular</option></select></label>
+          <label for="perfil">Perfil<select id="perfil"><option value="investigador" selected>Investigador/a</option><option value="vinculador">Vinculador/a</option></select></label>
+          <label for="jornada">Jornada<select id="jornada"><option value="completa" selected>Completa (44 h)</option><option value="media">Media (22 h)</option></select></label>
         </div>
       </section>
 
       <section class="panel">
         <h2>Compromiso de Desempeño: % declarado por ámbito</h2>
-        <p class="hint">Debe sumar 100. Un ámbito en 0 no se evalúa. Estos % se aplican sobre el 80% del total.</p>
+        <label for="unidad" style="max-width:280px">Ingresar como<select id="unidad"><option value="pct" selected>% del compromiso (suma 100)</option><option value="horas">Horas semanales (se calcula el %)</option></select></label>
+        <p class="hint">Un ámbito en 0 no se evalúa. Los % resultantes se aplican sobre el 80% del total. En horas, usa el promedio semanal de los dos semestres.</p>
         <div class="compromiso" id="compromiso"></div>
         <div class="suma" id="suma"></div>
       </section>
@@ -162,12 +164,19 @@ const MODELO = {
   },
   estados: { cumplido: 100, parcial: 50, no_cumplido: 0, sin_evidencia: 0 },
   // Tabla de equivalencia % → escala numérica 1–7 (Jornada Modelo de Evaluación SEJA 2024).
+  jornada: { completa: 44, media: 22 },
+  // % de docencia que indica el Reglamento de Carrera Académica por jerarquía y perfil.
+  cargaDocente: {
+    instructor: { investigador: [60, 80], vinculador: [60, 80] },
+    asistente: { investigador: [50, 70], vinculador: [60, 70] },
+    asociado: { investigador: [40, 60], vinculador: [50, 60] },
+    titular: { investigador: [30, 50], vinculador: [40, 60] },
+  },
   escala: [[90, 7], [80, 6], [70, 5], [60, 4], [50, 3], [40, 2], [0, 1]],
   ambitos: {
     docencia: { nombre: "Docencia", subs: {
       cursos_pregrado: {"n": "Docencia de pregrado", "i": "Evaluación de estudiantes, evaluación de la dirección de la unidad académica y autoevaluación", "p": "semestral"},
       cursos_postgrado: {"n": "Docencia de postgrado", "i": "Evaluación de estudiantes, evaluación de la dirección de la unidad académica y autoevaluación", "p": "semestral"},
-      coordinacion_practicas: {"n": "Coordinación de prácticas", "i": "Evaluación a la gestión, coordinador/a de prácticas", "p": "anual"},
       direccion_titulacion: {"n": "Dirección de tesis, seminarios de título, memorias, tesinas o trabajos de grado", "i": "Evaluación a la docencia de estudiantes (actividad curricular)", "p": "semestral"},
       practicas: {"n": "Orientación y supervisión de prácticas profesionales"},
       tutoria: {"n": "Tutoría y acompañamiento académico de estudiantes"},
@@ -206,6 +215,7 @@ const MODELO = {
     } },
     gestion: { nombre: "Gestión Académica", subs: {
       direccion: {"n": "Dirección o coordinación de unidades académicas"},
+      coordinacion_practicas: {"n": "Coordinación de prácticas", "i": "Evaluación a la gestión, coordinador/a de prácticas", "p": "anual"},
       coordinacion_vcm: {"n": "Coordinación de VcM de facultad o departamental", "i": "Evaluación a la gestión, coordinador/a de VcM y extensión (decano/a o director/a)", "p": "anual"},
       gestion_curricular: {"n": "Diseño, actualización y aseguramiento de la calidad de planes de estudio"},
       gestion_investigacion: {"n": "Gestión de líneas de investigación, proyectos y fondos concursables"},
@@ -269,10 +279,20 @@ function clasificar(p) {
 
 function calcular() {
   const errores = [], obs = [];
-  const declarado = Object.entries(estado.compromiso).filter(([, v]) => num(v) > 0);
+  const enHoras = $("unidad").value === "horas";
+  let declarado = Object.entries(estado.compromiso).filter(([, v]) => num(v) > 0);
   const suma = declarado.reduce((s, [, v]) => s + num(v), 0);
-  if (!declarado.length) errores.push("Declara el % de al menos un ámbito.");
-  else if (Math.abs(suma - 100) > 0.01) errores.push(`Los % del compromiso suman ${fmt(suma, 0)}; deben sumar 100.`);
+  if (!declarado.length) errores.push(`Declara ${enHoras ? "las horas" : "el %"} de al menos un ámbito.`);
+  else if (enHoras) {
+    declarado = declarado.map(([k, v]) => [k, num(v) / suma * 100]);
+    const jornada = MODELO.jornada[$("jornada").value];
+    if (suma > jornada) obs.push(`Las horas declaradas (${fmt(suma)} h semanales) superan la jornada de ${jornada} h.`);
+  } else if (Math.abs(suma - 100) > 0.01) errores.push(`Los % del compromiso suman ${fmt(suma, 0)}; deben sumar 100.`);
+  const jer = $("jerarquia").value, per = $("perfil").value;
+  const rango = MODELO.cargaDocente[jer][per];
+  const doc = (declarado.find(([k]) => k === "docencia") || [, 0])[1];
+  if (declarado.length && (Math.round(doc * 10) / 10 < rango[0] || Math.round(doc * 10) / 10 > rango[1]))
+    obs.push(`La docencia pesa ${fmt(doc)}% del compromiso; para ${$("jerarquia").selectedOptions[0].text} ${$("perfil").selectedOptions[0].text.toLowerCase()} el reglamento indica entre ${rango[0]}% y ${rango[1]}%.`);
 
   const auto = escalar(num($("auto-p").value), num($("auto-min").value), num($("auto-max").value));
   if (auto == null) errores.push("Autoevaluación: puntaje fuera de su escala.");
@@ -378,8 +398,9 @@ function pintarTareas() {
 function pintarActa() {
   const r = calcular();
   const suma = Object.values(estado.compromiso).reduce((s, v) => s + (num(v) || 0), 0);
-  $("suma").textContent = `Suma declarada: ${fmt(suma, 0)}%`;
-  $("suma").className = "suma" + (Math.abs(suma - 100) > 0.01 ? " mal" : "");
+  const enHoras = $("unidad").value === "horas";
+  $("suma").textContent = enHoras ? `Total: ${fmt(suma)} h semanales` : `Suma declarada: ${fmt(suma, 0)}%`;
+  $("suma").className = "suma" + (!enHoras && Math.abs(suma - 100) > 0.01 ? " mal" : "");
   estado.tareas.forEach((t, i) => {
     const el = $(`t${i}-res`); if (!el) return;
     const e = evaluarTarea(t);

@@ -81,7 +81,7 @@ class Resultado:
             "estudiantes": {"puntaje": self.estudiantes,
                             "ponderacion": self.ponderacion_estudiantes},
             "ambitos": [
-                {"ambito": a.ambito, "nombre": a.nombre, "declarado": a.declarado,
+                {"ambito": a.ambito, "nombre": a.nombre, "declarado": round(a.declarado, 2),
                  "ponderacion": a.ponderacion, "puntaje": a.puntaje, "letra": a.letra,
                  "excedente": a.excedente,
                  "tareas": [t.__dict__ for t in a.tareas]}
@@ -185,19 +185,58 @@ def clasificar(puntaje: float, modelo: dict) -> str:
     return letras[-1]
 
 
-def calificar(datos: dict, modelo: dict | None = None) -> Resultado:
-    modelo = modelo or cargar_modelo()
-    observaciones: list[str] = []
+def horas_semanales(valor, contexto: str) -> float:
+    """Horas semanales de un ámbito: un número, o una lista por semestre (se promedia)."""
+    valores = valor if isinstance(valor, list) else [valor]
+    try:
+        horas = [float(v) for v in valores]
+    except (TypeError, ValueError):
+        raise ErrorCompromiso(f"{contexto}: las horas deben ser números (o una lista por semestre)")
+    if not horas or any(h < 0 for h in horas):
+        raise ErrorCompromiso(f"{contexto}: las horas no pueden ser negativas")
+    return sum(horas) / len(horas)
 
-    # 1. Ponderación declarada en el compromiso (% de la carga por ámbito).
-    declarado = {k: float(v) for k, v in (datos.get("compromiso") or {}).items() if float(v) > 0}
+
+def ponderacion_compromiso(datos: dict, modelo: dict, observaciones: list[str]) -> dict[str, float]:
+    """% de cada ámbito: declarado directamente (``compromiso``) o calculado desde ``horas``."""
+    if datos.get("compromiso") and datos.get("horas"):
+        raise ErrorCompromiso("Indica la ponderación en 'compromiso' (%) o en 'horas', no en ambos")
+    if datos.get("horas"):
+        horas = {k: horas_semanales(v, f"Horas de {k}") for k, v in datos["horas"].items()}
+        horas = {k: h for k, h in horas.items() if h > 0}
+        total = sum(horas.values())
+        declarado = {k: h / total * 100 for k, h in horas.items()} if total else {}
+        jornada = modelo["horas_jornada"].get(str(datos.get("jornada", "")).lower())
+        if jornada and total > jornada:
+            observaciones.append(f"Las horas declaradas ({total:.1f} h semanales) superan la jornada "
+                                 f"{datos['jornada']} ({jornada} h).")
+    else:
+        declarado = {k: float(v) for k, v in (datos.get("compromiso") or {}).items() if float(v) > 0}
     for ambito in declarado:
         if ambito not in modelo["ambitos"]:
             raise ErrorCompromiso(f"Compromiso: ámbito '{ambito}' no existe ({', '.join(modelo['ambitos'])})")
     if not declarado:
-        raise ErrorCompromiso("El compromiso debe declarar el % de al menos un ámbito")
+        raise ErrorCompromiso("El compromiso debe declarar el % o las horas de al menos un ámbito")
     if abs(sum(declarado.values()) - 100) > 0.01:
         raise ErrorCompromiso(f"Los % declarados en el compromiso suman {sum(declarado.values()):g}, deben sumar 100")
+
+    # Carga docente esperada según jerarquía y perfil (Reglamento de Carrera Académica, Título II).
+    jerarquia, perfil = str(datos.get("jerarquia", "")).lower(), str(datos.get("perfil", "")).lower()
+    rango = modelo["carga_docente"].get(jerarquia, {})
+    rango = rango.get(perfil) or rango.get("todos")
+    docencia = declarado.get("docencia", 0)
+    if rango and not rango[0] <= round(docencia, 1) <= rango[1]:
+        observaciones.append(f"La docencia pesa {docencia:.1f}% del compromiso; para {jerarquia} "
+                             f"{perfil} el reglamento indica entre {rango[0]}% y {rango[1]}%.")
+    return declarado
+
+
+def calificar(datos: dict, modelo: dict | None = None) -> Resultado:
+    modelo = modelo or cargar_modelo()
+    observaciones: list[str] = []
+
+    # 1. Ponderación declarada en el compromiso (% de la carga por ámbito, o calculada desde las horas).
+    declarado = ponderacion_compromiso(datos, modelo, observaciones)
 
     # 2. Componentes fijos. Si la persona está eximida de docencia (art. 37 a) no hay
     #    evaluación de estudiantes y su 10% se suma a los ámbitos del compromiso.
@@ -254,7 +293,7 @@ def informe(r: Resultado) -> str:
     """Informe en texto para revisar o adjuntar al expediente académico."""
     lineas = [f"Calificación académica SEJA — {r.academico} ({r.periodo})", "=" * 60]
     for a in r.ambitos:
-        lineas.append(f"\n{a.nombre}  [declarado {a.declarado:g}% → pondera {a.ponderacion:.1%}]")
+        lineas.append(f"\n{a.nombre}  [declarado {a.declarado:.1f}% → pondera {a.ponderacion:.1%}]")
         for t in a.tareas:
             extra = " ★ excedente validado" if t.excedente else ""
             peso = f" ×{t.peso:g}" if t.peso != 1 else ""

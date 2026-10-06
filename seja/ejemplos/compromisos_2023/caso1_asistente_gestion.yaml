@@ -1,15 +1,15 @@
 # Caso 1 — tomado de un Compromiso de Desempeño 2023 real, ANONIMIZADO.
-# Departamento de Matemática, Asistente, jornada completa.
+# Sujeto 07 del ejercicio 2023. Asistente, jornada completa.
 # Las horas son las declaradas; los RESULTADOS de evaluación son FICTICIOS, sólo para probar el cálculo.
 #
 # Cómo se ordenó lo declarado:
 # - Docencia: el resumen decía 15 h, pero era la suma de los dos semestres (3 + 3 + 1,5 en cada uno).
 #   Se registran 7,5 h semanales por semestre.
-# - Gestión declaraba 27 h. La coordinación de las Jornadas Nacionales de Educación Matemática (2 h) es
+# - Gestión declaraba 27 h. La coordinación de unas jornadas nacionales de la disciplina (2 h) es
 #   producción de un evento académico, así que pasa a Vinculación con el Medio.
 # - Las asesorías externas (capacitaciones a dos instituciones) no tenían horas: se evalúan como tareas
 #   de VcM, pero no suman ponderación.
-academico: Caso 1 (anonimizado)
+academico: Sujeto 07
 periodo: 2023
 jerarquia: asistente
 perfil: vinculador   # supuesto: el formulario 2023 no pedía perfil
@@ -23,11 +23,11 @@ horas:
 tareas:
   - ambito: docencia
     subcategoria: cursos_pregrado
-    descripcion: Curso de didáctica de la matemática (2 semestres)
+    descripcion: Asignatura 1 (2 semestres)
     instrumento: {nombre: Evaluación a la docencia de pregrado (estudiantes), cumple: 17, no_cumple: 2, no_aplica: 1}
   - ambito: docencia
     subcategoria: practicas
-    descripcion: Talleres de práctica intermedia y profesional
+    descripcion: Asignaturas 2 y 3 (talleres de práctica)
     instrumento: {nombre: Encuesta de práctica profesional, cumple: 9, no_cumple: 1}
   - ambito: gestion
     subcategoria: coordinacion_practicas
@@ -39,7 +39,7 @@ tareas:
     evidencia: {estado: cumplido}
   - ambito: vinculacion
     subcategoria: iniciativas_vcm
-    descripcion: Coordinación de jornadas nacionales de educación matemática
+    descripcion: Coordinación de jornadas nacionales de la disciplina
     evidencia: {estado: cumplido}
   - ambito: vinculacion
     subcategoria: extension

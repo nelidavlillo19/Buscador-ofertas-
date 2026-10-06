@@ -1,5 +1,5 @@
 # Caso 2 — tomado de un Compromiso de Desempeño 2023 real, ANONIMIZADO.
-# Departamento de Artes Visuales, Asociado/a, jornada completa.
+# Sujeto 08 del ejercicio 2023. Asociado/a, jornada completa.
 # Las horas son las declaradas; los RESULTADOS de evaluación son FICTICIOS, sólo para probar el cálculo.
 #
 # Cómo se ordenó lo declarado:
@@ -9,7 +9,7 @@
 # - Los proyectos de investigación y las publicaciones declaraban 1 a 2 h cada uno (8 h en total).
 # - Las ponencias (4) y la revisión de artículos no tenían horas: se evalúan como tareas, pero no
 #   suman ponderación.
-academico: Caso 2 (anonimizado)
+academico: Sujeto 08
 periodo: 2023
 jerarquia: asociado
 perfil: investigador   # supuesto: el formulario 2023 no pedía perfil
@@ -24,11 +24,11 @@ horas:
 tareas:
   - ambito: docencia
     subcategoria: cursos_pregrado
-    descripcion: Taller de producción de obra y optativo transdisciplinario
+    descripcion: Asignaturas 1 y 2 (pregrado)
     instrumento: {nombre: Evaluación a la docencia de pregrado (estudiantes), cumple: 19, no_cumple: 1}
   - ambito: docencia
     subcategoria: cursos_postgrado
-    descripcion: Cursos de magíster
+    descripcion: Asignaturas 3 y 4 (postgrado)
     instrumento: {nombre: Evaluación a la docencia de postgrado (estudiantes), cumple: 11, no_cumple: 0}
   - ambito: docencia
     subcategoria: direccion_titulacion
@@ -36,15 +36,15 @@ tareas:
     evidencia: {comprometido: 5, logrado: 5}
   - ambito: investigacion
     subcategoria: postulacion_fondos
-    descripcion: Postulaciones a fondos concursables (ANID, Fondart, DIUMCE)
+    descripcion: Postulaciones a 3 fondos concursables
     evidencia: {comprometido: 3, logrado: 3}
   - ambito: investigacion
     subcategoria: proyectos
-    descripcion: Cierre de proyecto interno DIUMCE (investigadora responsable)
+    descripcion: Cierre de proyecto con financiamiento interno (responsable)
     evidencia: {estado: cumplido}
   - ambito: investigacion
     subcategoria: publicaciones
-    descripcion: Artículo Latindex, reseña Scopus y artículo enviado a revista Scopus
+    descripcion: 3 publicaciones (artículos y reseña)
     evidencia: {comprometido: 3, logrado: 4, validado: true}
   - ambito: investigacion
     subcategoria: presentaciones

@@ -20,14 +20,14 @@ Tipos de actividad de docencia que admite el formulario: docencia de pregrado, t
 profesionales, dirección de tesis, seminarios de título, memorias o tesinas, educación continua y docencia
 de postgrado.
 
-## 2. Los tres casos
+## 2. Los tres sujetos
 
 Los casos están en [`ejemplos/compromisos_2023/`](../ejemplos/compromisos_2023). Las horas son las declaradas.
 Los resultados de evaluación son ficticios y sólo sirven para probar el cálculo.
 
-| | Caso 1 | Caso 2 | Caso 3 |
+| | Sujeto 07 | Sujeto 08 | Sujeto 09 |
 |---|---|---|---|
-| Departamento, jerarquía | Matemática, Asistente | Artes Visuales, Asociado/a | Matemática, Asociado/a |
+| Jerarquía | Asistente | Asociado/a | Asociado/a |
 | Perfil de carga | Centrado en gestión (coordinación de prácticas) | Docencia, creación y VcM | Docencia e investigación |
 | Horas declaradas (semanales) | 42 | 50 (1.er sem.) y 48,75 (2.º) | 38 |
 | **Ponderación tal como se declaró** | Doc 35,7 · Gest 64,3 | Doc 34,0 · Inv 16,0 · VcM 32,0 · Gest 18,0 | Doc 47,4 · Inv 32,9 · VcM 5,3 · Gest 14,5 |
@@ -35,23 +35,23 @@ Los resultados de evaluación son ficticios y sólo sirven para probar el cálcu
 | Docencia según el reglamento | 60–70% (vinculador/a) → **bajo el rango** | 40–60% (investigador/a) → **bajo el rango** | 40–60% → dentro |
 | Resultado con evaluaciones ficticias | A (96,2%) | A (98,3%), con advertencia de horas | B (83,6%) |
 
-El modelo resuelve los tres casos, aunque no se parecen entre sí: uno con 4 tareas en 2 ámbitos y otro con
-12 tareas en los 4. Cada ámbito pesa lo que la persona comprometió, así que la gestión vale 72,5% en el caso 1
-y 3,9% en el caso 3.
+El modelo resuelve los tres sujetos, aunque no se parecen entre sí: uno con 4 tareas en 2 ámbitos y otro con
+12 tareas en los 4. Cada ámbito pesa lo que la persona comprometió, así que la gestión vale 72,5% en el sujeto 07
+y 3,9% en el sujeto 09.
 
 ## 3. Problemas encontrados en lo que se registra
 
-1. **Las horas de docencia no se registran igual.** El caso 1 sumó los dos semestres (15 h, en realidad 7,5 h
-   semanales). El caso 3 anotó "4,5 + 4,5" por curso y en el resumen puso un solo semestre. El caso 2 anotó
-   cada semestre por separado. Sin una regla común, la docencia del caso 1 parece pesar 35,7% cuando pesa 21,7%.
+1. **Las horas de docencia no se registran igual.** El sujeto 07 sumó los dos semestres (15 h, en realidad 7,5 h
+   semanales). El sujeto 09 anotó "4,5 + 4,5" por curso y en el resumen puso un solo semestre. El sujeto 08 anotó
+   cada semestre por separado. Sin una regla común, la docencia del sujeto 07 parece pesar 35,7% cuando pesa 21,7%.
 2. **Formato de horas ambiguo.** "16.45" y "3.45" parecen horas y minutos (16 h 45 min), no decimales.
 3. **Actividades en el ámbito equivocado.** En Gestión se declaró una representación internacional (que es VcM),
    una revisión de artículos (Investigación) y la organización de un evento académico (VcM). Si se pondera con lo
-   declarado, la gestión del caso 3 pesa 14,5% en vez de 3,9%.
+   declarado, la gestión del sujeto 09 pesa 14,5% en vez de 3,9%.
 4. **Actividades sin horas.** Ponencias, asesorías externas, postulaciones a fondos y patentes se declaran sin
    horas. Se pueden evaluar como tareas, pero no aportan ponderación al ámbito.
-5. **Horas sobre la jornada.** El caso 2 declara unas 50 h semanales en una jornada completa de 44 h.
-6. **Carga docente fuera del rango del reglamento.** En dos de los tres casos la docencia queda bajo el mínimo
+5. **Horas sobre la jornada.** El sujeto 08 declara unas 50 h semanales en una jornada completa de 44 h.
+6. **Carga docente fuera del rango del reglamento.** En dos de los tres sujetos la docencia queda bajo el mínimo
    que fija el reglamento para la jerarquía (art. 18, 19, 23 y 24).
 7. **El formulario 2024 no permite ponderar 4 ámbitos.** Quitó las horas por actividad y la sección de gestión,
    y el resumen acepta "horas o porcentaje", lo que mezcla unidades.

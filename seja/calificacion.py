@@ -45,6 +45,10 @@ class ResultadoTarea:
     excedente: bool
     detalle: str
     cumplimiento_real: float  # sin tope: es el que se registra para el reconocimiento
+    destaca: bool = False  # excedente validado o avance validado más allá de la etapa comprometida
+    mecanismo: str = ""  # mecanismo de evidencia (declarado o el del catálogo)
+    comprometido: str = ""  # lo comprometido y lo evidenciado, en texto (etapa, meta o instrumento)
+    evidenciado: str = ""
 
 
 @dataclass
@@ -143,13 +147,15 @@ def escalar(datos: dict, contexto: str) -> float:
 
 
 def evaluar_evidencia(datos: dict, modelo: dict, contexto: str,
-                      factor: float = 1.0) -> tuple[float, bool, str]:
+                      factor: float = 1.0) -> tuple[float, bool, str, dict]:
     """% de cumplimiento según la evidencia y si hay un excedente validado sobre lo comprometido.
 
     ``factor`` ajusta la meta al % de la jornada dedicado a las funciones (art. 37). El excedente
     se cuenta sólo cuando lo logrado supera la meta original, no la ajustada.
     """
     validado = bool(datos.get("validado", False))
+    if "etapa_comprometida" in datos:
+        return evaluar_etapa(datos, modelo, contexto, validado)
     if "comprometido" in datos:
         comprometido, logrado = float(datos["comprometido"]), float(datos.get("logrado", 0))
         if comprometido <= 0 or logrado < 0:
@@ -162,12 +168,38 @@ def evaluar_evidencia(datos: dict, modelo: dict, contexto: str,
             detalle += f" (meta ajustada a {meta:g} por jornada al {factor:.0%})"
         if logrado > comprometido and not validado:
             detalle += ", excedente sin validar: se considera 100"
-        return puntaje, excedente, detalle
+        return puntaje, excedente, detalle, {"destaca": excedente, "comprometido": f"{comprometido:g}",
+                                             "evidenciado": f"{logrado:g}"}
     estado = datos.get("estado")
     estados = modelo["estados_evidencia"]
     if estado not in estados:
         raise ErrorCompromiso(f"{contexto}: estado de evidencia '{estado}' no válido ({', '.join(estados)})")
-    return float(estados[estado]), bool(datos.get("excedente")) and validado, f"evidencia {estado}"
+    excedente = bool(datos.get("excedente")) and validado
+    return float(estados[estado]), excedente, f"evidencia {estado}", {
+        "destaca": excedente, "comprometido": "Cumplimiento", "evidenciado": estado.replace("_", " ").capitalize()}
+
+
+def evaluar_etapa(datos: dict, modelo: dict, contexto: str, validado: bool) -> tuple[float, bool, str, dict]:
+    """Compara la etapa comprometida con la evidenciada dentro de su secuencia (proyecto, publicación…)."""
+    reglas = modelo["etapas"]
+    comprometida, evidenciada = datos["etapa_comprometida"], datos.get("etapa_evidenciada")
+    nombres = reglas["nombres"]
+    extra = {"destaca": False, "comprometido": nombres.get(comprometida, comprometida),
+             "evidenciado": nombres.get(evidenciada, evidenciada) if evidenciada else "Sin evidencia"}
+    if not evidenciada:
+        return 0.0, False, "sin evidencia", extra
+    secuencia = next((sec for sec in reglas["secuencias"].values()
+                      if comprometida in sec and evidenciada in sec), None)
+    if secuencia is None:
+        validas = "; ".join(f"{k}: {', '.join(v)}" for k, v in reglas["secuencias"].items())
+        raise ErrorCompromiso(f"{contexto}: las etapas '{comprometida}' y '{evidenciada}' no están en una misma "
+                              f"secuencia ({validas})")
+    avance = secuencia.index(evidenciada) - secuencia.index(comprometida)
+    detalle = f"etapa {extra['comprometido']} → {extra['evidenciado']}"
+    if avance < 0:
+        return float(reglas["etapa_anterior"]), False, detalle + " (etapa anterior a la comprometida)", extra
+    extra["destaca"] = avance > 0 and validado
+    return 100.0, False, detalle, extra
 
 
 def nombre_subcategoria(datos: str | dict) -> str:
@@ -191,12 +223,12 @@ def evaluar_tarea(tarea: dict, modelo: dict, n: int, factor: float = 1.0) -> Res
         raise ErrorCompromiso(f"{contexto}: subcategoría '{sub}' no existe en {ambito} ({', '.join(subcategorias)})")
 
     # La tarea se evalúa por instrumento y/o evidencia: si hay ambos, se promedian.
-    puntajes, detalles, excedente = [], [], False
+    puntajes, detalles, excedente, extra = [], [], False, {}
     if "instrumento" in tarea:
         puntajes.append(escalar(tarea["instrumento"], contexto))
         detalles.append(f"instrumento {tarea['instrumento'].get('nombre', '')}".strip())
     if "evidencia" in tarea:
-        puntaje, excedente, detalle = evaluar_evidencia(tarea["evidencia"], modelo, contexto, factor)
+        puntaje, excedente, detalle, extra = evaluar_evidencia(tarea["evidencia"], modelo, contexto, factor)
         puntajes.append(puntaje)
         detalles.append(detalle)
     if not puntajes:
@@ -210,8 +242,13 @@ def evaluar_tarea(tarea: dict, modelo: dict, n: int, factor: float = 1.0) -> Res
     detalle = " + ".join(detalles)
     if real > tope:
         detalle += f"; cumplimiento real {real:.0f}%, cuenta con tope de {tope:g}%"
+    catalogo = subcategorias[sub] if isinstance(subcategorias[sub], dict) else {}
+    mecanismo = (tarea.get("evidencia") or {}).get("mecanismo") or (tarea.get("instrumento") or {}).get("nombre") \
+        or catalogo.get("instrumento", "")
     return ResultadoTarea(ambito, sub, tarea.get("descripcion", nombre_subcategoria(subcategorias[sub])),
-                          round(min(real, tope), 2), peso, excedente, detalle, round(real, 2))
+                          round(min(real, tope), 2), peso, excedente, detalle, round(real, 2),
+                          extra.get("destaca", excedente), mecanismo,
+                          extra.get("comprometido", "Instrumento"), extra.get("evidenciado", f"{real:.0f}%"))
 
 
 def clasificar(puntaje: float, modelo: dict) -> str:
@@ -355,7 +392,7 @@ def calificar(datos: dict, modelo: dict | None = None) -> Resultado:
 
     # 5. Lo que destaca (excedentes validados), para el reconocimiento institucional.
     destacados = [Destacado(t.ambito, t.subcategoria, t.descripcion, t.detalle, t.cumplimiento_real)
-                  for a in ambitos for t in a.tareas if t.excedente]
+                  for a in ambitos for t in a.tareas if t.destaca]
     if letra == "A+":
         observaciones.append("Desempeño sobresaliente: candidato/a a reconocimiento institucional.")
 
@@ -363,6 +400,12 @@ def calificar(datos: dict, modelo: dict | None = None) -> Resultado:
                      a_escala_numerica(total, modelo), observaciones, ambitos,
                      round(auto, 2), p_auto, None if est is None else round(est, 2), p_est,
                      destacados, situacion, informar_a)
+
+
+def texto_destacado(d: Destacado) -> str:
+    if d.detalle.startswith("etapa "):
+        return f"avanzó más allá de lo comprometido ({d.detalle.removeprefix('etapa ')})"
+    return f"{d.cumplimiento_real:.0f}% de lo comprometido"
 
 
 def informe(r: Resultado) -> str:
@@ -375,7 +418,7 @@ def informe(r: Resultado) -> str:
     for a in r.ambitos:
         lineas.append(f"\n{a.nombre}  [declarado {a.declarado:.1f}% → pondera {a.ponderacion:.1%}]")
         for t in a.tareas:
-            extra = " ★ destaca" if t.excedente else ""
+            extra = " ★ destaca" if t.destaca else ""
             peso = f" ×{t.peso:g}" if t.peso != 1 else ""
             lineas.append(f"  · [{t.subcategoria}] {t.descripcion}: {t.puntaje:.1f}{peso} ({t.detalle}){extra}")
         lineas.append(f"  Promedio del ámbito: {a.puntaje:.1f} → {a.letra}")
@@ -386,8 +429,7 @@ def informe(r: Resultado) -> str:
                f"CLASIFICACIÓN: {r.letra} — {r.descripcion}"]
     if r.destacados:
         lineas += ["", "Reconocimiento institucional — destaca en:"]
-        lineas += [f"  ★ {d.descripcion} ({d.subcategoria}): {d.cumplimiento_real:.0f}% de lo comprometido"
-                   for d in r.destacados]
+        lineas += [f"  ★ {d.descripcion} ({d.subcategoria}): {texto_destacado(d)}" for d in r.destacados]
     if r.observaciones:
         lineas += ["", "Observaciones:"] + [f"  - {o}" for o in r.observaciones]
     return "\n".join(lineas)

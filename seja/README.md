@@ -48,6 +48,12 @@ Como cada académico/a declara su propio compromiso, cada tarea indica **cómo**
 | Evidencia con meta | `evidencia: {comprometido: 2, logrado: 3, validado: true}` | 150 (**excedente validado**) |
 | Evidencia con meta, sin validar | `evidencia: {comprometido: 2, logrado: 3}` | 100 (tope) |
 | Evidencia por estado | `evidencia: {estado: parcial}` | cumplido 100 · parcial 50 · no cumplido / sin evidencia 0 |
+| Evidencia por etapa | `evidencia: {etapa_comprometida: enviada, etapa_evidenciada: publicada, mecanismo: Carta}` | 100 si llega a la etapa comprometida o la supera · 50 si queda antes · 0 sin evidencia |
+
+Las etapas siguen las secuencias de los Informes de Cierre: proyecto (formulación → postulación → adjudicación →
+ejecución → cierre), publicación (en preparación → enviada → aceptada → publicada) y actividad (planificación →
+ejecución → finalizada). Superar la etapa comprometida con evidencia validada no sube el puntaje, pero se registra
+como destacado.
 
 Si una tarea tiene instrumento **y** evidencia, se promedian. `peso` (opcional, por defecto 1) permite que una tarea
 cuente más dentro de su ámbito; si no se indica, el ámbito es un promedio simple.
@@ -128,6 +134,31 @@ print(resultado.letra, resultado.puntaje)
 
 La **calculadora web** [`web/calculadora.html`](web/calculadora.html) aplica el mismo modelo en el navegador, con
 un caso de ejemplo editable.
+
+### Documentos del ciclo del compromiso
+
+```bash
+python -m seja reporte ARCHIVO.yaml -o reporte.docx   # reporte del compromiso para la jefatura (octubre)
+python -m seja cierre  ARCHIVO.yaml -o cierre.docx    # informe de cierre con la calificación (marzo)
+```
+
+- **Reporte del compromiso:** identificación, resumen con la distribución de horas, actividades por ámbito con su
+  mecanismo de evidencia, y alertas para la jefatura.
+- **Informe de cierre:** para cada actividad, lo comprometido, lo evidenciado, el mecanismo y el % de cumplimiento;
+  además, la calificación SEJA, el reconocimiento institucional, las funciones de la jerarquía según el Reglamento
+  de Carrera Académica ([`config/funciones.yaml`](config/funciones.yaml)), las oportunidades y fortalezas, y las
+  orientaciones.
+
+Se generan en Markdown, o en Word si está instalado [pandoc](https://pandoc.org).
+
+### Ejercicio con los registros 2023
+
+[`ejercicio_2023/`](ejercicio_2023) aplica el modelo a los compromisos e informes de cierre 2023 de nueve sujetos
+anonimizados y genera el [informe extendido](docs/informe_ejercicio_2023.md), con las fórmulas de ponderación:
+
+```bash
+python -m seja.ejercicio_2023.generar -o informe.docx
+```
 
 Pruebas: `python -m pytest -q tests/test_seja.py`
 

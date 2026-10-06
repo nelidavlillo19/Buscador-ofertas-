@@ -223,3 +223,53 @@ def test_ejemplos():
     assert resultados["asistente_investigadora"].puntaje == 102.4
     assert resultados["instructor_vinculador"].letra == "C"
     assert "CLASIFICACIÓN: A+" in informe(resultados["asistente_investigadora"])
+
+
+@pytest.mark.parametrize("evidencia, puntaje, destaca", [
+    ({"etapa_comprometida": "ejecucion", "etapa_evidenciada": "finalizada"}, 100, False),
+    ({"etapa_comprometida": "enviada", "etapa_evidenciada": "enviada"}, 100, False),
+    ({"etapa_comprometida": "enviada", "etapa_evidenciada": "publicada", "validado": True}, 100, True),
+    ({"etapa_comprometida": "enviada", "etapa_evidenciada": "publicada"}, 100, False),
+    ({"etapa_comprometida": "publicada", "etapa_evidenciada": "enviada"}, 50, False),
+    ({"etapa_comprometida": "ejecucion"}, 0, False),
+])
+def test_evidencia_por_etapa(evidencia, puntaje, destaca):
+    r = calificar(academico({"investigacion": 100}, [tarea("investigacion", "publicaciones", evidencia=evidencia)]))
+    t = r.ambitos[0].tareas[0]
+    assert (t.puntaje, t.destaca) == (puntaje, destaca)
+    assert bool(r.destacados) == destaca
+
+
+def test_etapas_de_secuencias_distintas_es_error():
+    with pytest.raises(ErrorCompromiso, match="misma secuencia"):
+        calificar(academico({"investigacion": 100}, [tarea("investigacion", evidencia={
+            "etapa_comprometida": "postulacion", "etapa_evidenciada": "publicada"})]))
+
+
+def test_reporte_del_compromiso():
+    from seja.reportes import reporte_compromiso
+    datos = yaml.safe_load((EJEMPLOS / "informes_2023" / "caso4_titular_cierre.yaml").read_text(encoding="utf-8"))
+    texto = reporte_compromiso(datos)
+    assert "# Reporte: Compromiso de Desempeño Académico 2023" in texto
+    assert "| Investigación, Creación e Innovación | 14 | 31,8% | 25,5% |" in texto
+    assert "## Alertas para la jefatura" in texto and "entre 30% y 50%" in texto
+
+
+def test_informe_de_cierre():
+    from seja.reportes import informe_cierre
+    datos = yaml.safe_load((EJEMPLOS / "informes_2023" / "caso4_titular_cierre.yaml").read_text(encoding="utf-8"))
+    texto = informe_cierre(datos)
+    assert "Calificación A" in texto and "## Reconocimiento institucional" in texto
+    assert "| Liderar proyectos de investigación, innovación o creación competitivos | Sí |" in texto
+    assert "| Acreditar formación continua | No declarada |" in texto
+    datos["situacion_especial"] = {"motivo": "estudios", "meses_ausencia": 8}
+    assert "## Evaluación suspendida" in informe_cierre(datos)
+
+
+def test_informe_del_ejercicio_2023_es_anonimo():
+    from seja.ejercicio_2023.generar import generar
+    texto = generar()
+    assert "### Sujeto 01" in texto and "### Sujeto 09" in texto
+    assert "C_{E1}" in texto and r"w_a = \frac{h_a}{\sum_{b} h_b}" in texto
+    for nombre in ["Matemática", "Artes Visuales", "Kinesiología", "Música", "DIUMCE", "FONDECYT"]:
+        assert nombre not in texto

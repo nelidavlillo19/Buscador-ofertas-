@@ -1,0 +1,80 @@
+# Caso 4 — estructura tomada de un Reporte y un Informe de Cierre 2023 reales, ANONIMIZADO.
+# Sujeto 05 del ejercicio 2023. Titular, jornada completa.
+# Las actividades y sus etapas son las del informe de cierre. SUPUESTOS para probar el cálculo:
+# - las horas (el reporte sólo decía que "investigación y gestión son mayoría");
+# - el perfil (el formulario 2023 no lo pedía);
+# - la autoevaluación y la evaluación de estudiantes.
+academico: Sujeto 05
+jefatura: Dirección de departamento
+unidad: Unidad académica (anonimizada)
+contrato: Contrata
+ingreso: 2014
+periodo: 2023
+jerarquia: titular
+perfil: investigador
+jornada: completa
+fecha_compromiso: 2023-06-05
+fecha_reporte: 2023-10-05
+fecha_cierre: 2024-03-14
+
+horas:
+  docencia: 13
+  investigacion: 14
+  vinculacion: 3
+  gestion: 14
+
+tareas:
+  - ambito: docencia
+    subcategoria: cursos_pregrado
+    descripcion: 2 actividades curriculares de pregrado
+    evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Registro UCampus}
+  - ambito: docencia
+    subcategoria: direccion_titulacion
+    descripcion: 12 memorias de título
+    evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Registro UCampus}
+  - ambito: docencia
+    subcategoria: cursos_postgrado
+    descripcion: 3 actividades curriculares de postgrado
+    evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Registro UCampus}
+
+  - ambito: investigacion
+    subcategoria: proyectos
+    descripcion: 1 proyecto con financiamiento interno
+    evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: cierre, mecanismo: Informe, validado: true}
+  - ambito: investigacion
+    subcategoria: proyectos
+    descripcion: 1 proyecto con financiamiento externo
+    evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: cierre, mecanismo: Informe, validado: true}
+  - ambito: investigacion
+    subcategoria: publicaciones
+    descripcion: 1 artículo
+    evidencia: {etapa_comprometida: enviada}          # sin evidencia → 0%
+
+  - ambito: vinculacion
+    subcategoria: proyectos_vcm
+    descripcion: 1 proyecto de convenio marco
+    evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Informe}
+  - ambito: vinculacion
+    subcategoria: difusion
+    descripcion: 3 ponencias
+    evidencia: {comprometido: 2, logrado: 3, validado: true, mecanismo: Afiche y certificado}
+
+  - ambito: gestion
+    subcategoria: direccion
+    descripcion: Coordinación de un observatorio
+    evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Constancia}
+  - ambito: gestion
+    subcategoria: gestion_curricular
+    descripcion: Creación de un programa de magíster
+    evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Constancia}
+  - ambito: gestion
+    subcategoria: aseguramiento_calidad
+    descripcion: Comité de autoevaluación de magíster
+    evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Constancia}
+  - ambito: gestion
+    subcategoria: comisiones
+    descripcion: Comité académico de núcleo de magíster
+    evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Constancia}
+
+autoevaluacion: {cumple: 18, no_cumple: 2}
+estudiantes: {cumple: 46, no_cumple: 4}

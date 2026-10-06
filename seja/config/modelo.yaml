@@ -92,6 +92,32 @@ estados_evidencia:
   no_cumplido: 0
   sin_evidencia: 0
 
+# Evidencia por etapa del proceso (como en los Informes de Cierre 2023): se compara la etapa comprometida
+# con la evidenciada dentro de su secuencia.
+# - Llegar a la etapa comprometida (o más allá) → 100.
+# - Quedar en una etapa anterior → `etapa_anterior` (avance parcial).
+# - Sin evidencia → 0.
+# Pasar a una etapa posterior a la comprometida (por ejemplo, comprometer el envío y publicar) no sube el
+# puntaje, pero si está validado se registra como destacado para el reconocimiento institucional.
+etapas:
+  etapa_anterior: 50
+  secuencias:
+    proyecto: [formulacion, postulacion, adjudicacion, ejecucion, cierre]
+    publicacion: [en_preparacion, enviada, aceptada, publicada]
+    actividad: [planificacion, ejecucion, finalizada]
+  nombres:
+    formulacion: Formulación
+    postulacion: Postulación
+    adjudicacion: Adjudicación
+    ejecucion: Ejecución
+    cierre: Cierre
+    en_preparacion: En preparación
+    enviada: Enviada
+    aceptada: Aceptada
+    publicada: Publicada
+    planificacion: Planificación
+    finalizada: Finalizada
+
 # Ámbitos (art. 34 del Reglamento de Carrera Académica) y sus subcategorías (roles y funciones).
 # Cada subcategoría indica su nombre, cómo se evalúa y cada cuánto, según la Jornada Modelo de
 # Evaluación SEJA 2024 (cuando la presentación no lo define, sólo se indica el nombre).

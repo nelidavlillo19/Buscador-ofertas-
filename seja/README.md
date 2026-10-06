@@ -30,7 +30,7 @@ definiciones del documento de síntesis SEJA (lista completa en [`config/modelo.
 | `gestion` | dirección/coordinación, gestión curricular, de la investigación, de la VcM, del cuerpo académico, aseguramiento de la calidad, comisiones |
 
 Para cada subcategoría, el catálogo indica también con qué instrumento o evidencia se evalúa y cada cuánto
-(semestral, anual o bianual), tomado de la *Jornada Modelo de Evaluación SEJA 2025*. Por ejemplo, la docencia de pregrado
+(semestral, anual o bianual), tomado de la *Jornada Modelo de Evaluación SEJA 2024*. Por ejemplo, la docencia de pregrado
 se evalúa con la pauta de estudiantes, la de la dirección de la unidad académica y la autoevaluación (semestral);
 un artículo indexado, con la constancia de la revista, la indexación y la copia de la publicación (anual).
 
@@ -73,7 +73,7 @@ cuente más dentro de su ámbito; si no se indica, el ámbito es un promedio sim
 Sobre 100% sólo se llega con excedentes validados (`validado: true`); un excedente sin validar cuenta como 100%.
 La autoevaluación y la evaluación de estudiantes llegan como máximo a 100%.
 
-El informe entrega además la **escala numérica 1–7** según la tabla de equivalencia de la Jornada 2025:
+El informe entrega además la **escala numérica 1–7** según la tabla de equivalencia de la Jornada 2024:
 90–100% → 7 · 80–89% → 6 · 70–79% → 5 · 60–69% → 4 · 50–59% → 3 · 40–49% → 2 · 39% o menos → 1.
 
 Con D (o dos C seguidas) el informe recuerda el ingreso al programa de acompañamiento (art. 41).
@@ -101,12 +101,17 @@ un caso de ejemplo editable.
 
 Pruebas: `python -m pytest -q tests/test_seja.py`
 
-## Pendiente de definir
+## Definiciones vigentes frente a la Jornada 2024
 
-- **Ponderación de los componentes fijos**: este modelo usa 10% autoevaluación + 10% estudiantes + 80% compromiso;
-  la Jornada 2025 indica 15% + 15% + 70% (unidad académica y otras unidades). Se cambia en `componentes_fijos`.
-- **Letras según la escala numérica**: la Jornada 2025 asigna A+ = 7, A = 6, B = 5, C = 4 y D = 1–3
-  (A+ desde 90%), mientras que este modelo usa A+ desde 101%.
+La Jornada 2024 es anterior a las definiciones actuales. De ella se toman la pauta Cumple / No cumple / No aplica,
+la tabla de equivalencia a la escala 1–7 y el catálogo de instrumentos y periodicidad. Prevalecen las
+definiciones actuales en:
+
+- **Ámbitos**: son 4, incluida la **Gestión Académica** (la Jornada 2024 evaluaba 3).
+- **Ponderación**: 10% autoevaluación + 10% estudiantes + 80% compromiso (la Jornada 2024 indicaba 15/15/70).
+- **Letras**: A+ desde 101% de cumplimiento (la Jornada 2024 asignaba A+ a la nota 7, es decir desde 90%).
+
+## Pendiente de definir
 
 - Umbrales definitivos de A, B y C, y si la **A** exige además un mínimo en cada ámbito.
 - Si el excedente de una tarea tiene un tope (hoy 3 publicaciones sobre 2 comprometidas valen 150%).

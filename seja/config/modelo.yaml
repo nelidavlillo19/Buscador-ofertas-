@@ -31,7 +31,7 @@ descripcion_letras:
   D: Insuficiente
 
 # Tabla de equivalencia del % de cumplimiento a la escala numérica 1–7
-# (Jornada Modelo de Evaluación SEJA 2025). % mínimo → nota; bajo 40% → 1.
+# (Jornada Modelo de Evaluación SEJA 2024). % mínimo → nota; bajo 40% → 1.
 escala_numerica:
   - [90, 7]
   - [80, 6]

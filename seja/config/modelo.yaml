@@ -30,6 +30,17 @@ descripcion_letras:
   C: Cumplimiento parcial (requiere mejora)
   D: Insuficiente
 
+# Tabla de equivalencia del % de cumplimiento a la escala numérica 1–7
+# (Jornada Modelo de Evaluación SEJA 2025). % mínimo → nota; bajo 40% → 1.
+escala_numerica:
+  - [90, 7]
+  - [80, 6]
+  - [70, 5]
+  - [60, 4]
+  - [50, 3]
+  - [40, 2]
+  - [0, 1]
+
 # Valor (0–100) de los estados de evidencia cuando no hay meta numérica.
 estados_evidencia:
   cumplido: 100
@@ -38,13 +49,28 @@ estados_evidencia:
   sin_evidencia: 0
 
 # Ámbitos (art. 34 del Reglamento de Carrera Académica) y sus subcategorías (roles y funciones).
+# Cada subcategoría indica su nombre, cómo se evalúa y cada cuánto, según la Jornada Modelo de
+# Evaluación SEJA 2025 (cuando la presentación no lo define, sólo se indica el nombre).
 ambitos:
   docencia:
     nombre: Docencia en los distintos niveles formativos
     subcategorias:
-      cursos_pregrado: Diseño, planificación, implementación y evaluación de cursos de pregrado
-      cursos_postgrado: Cursos, módulos y programas de postgrado
-      direccion_titulacion: Dirección o guía de tesis, memorias y trabajos de titulación o graduación
+      cursos_pregrado:
+        nombre: Docencia de pregrado
+        instrumento: Evaluación de estudiantes, evaluación de la dirección de la unidad académica y autoevaluación
+        periodicidad: semestral
+      cursos_postgrado:
+        nombre: Docencia de postgrado
+        instrumento: Evaluación de estudiantes, evaluación de la dirección de la unidad académica y autoevaluación
+        periodicidad: semestral
+      coordinacion_practicas:
+        nombre: Coordinación de prácticas
+        instrumento: Evaluación a la gestión, coordinador/a de prácticas
+        periodicidad: anual
+      direccion_titulacion:
+        nombre: Dirección de tesis, seminarios de título, memorias, tesinas o trabajos de grado
+        instrumento: Evaluación a la docencia de estudiantes (actividad curricular)
+        periodicidad: semestral
       practicas: Orientación y supervisión de prácticas profesionales
       tutoria: Tutoría y acompañamiento académico de estudiantes
       ayudantes: Formación y acompañamiento de estudiantes ayudantes
@@ -55,11 +81,31 @@ ambitos:
   investigacion:
     nombre: Investigación, Creación e Innovación
     subcategorias:
-      proyectos: Proyectos de investigación, creación o innovación (IR o co-investigador/a)
-      publicaciones: Publicaciones indexadas (WoS, Scopus, SciELO u otras), libros y capítulos con comité editorial
-      creacion_artistica: Creación, producción, circulación y difusión de obra
+      proyectos:
+        nombre: Proyecto de investigación (responsable, co-investigador/a o colaborador/a; interno, externo nacional o internacional)
+        instrumento: Constancia de la entidad (postulación, adjudicación o cierre) y evaluación de la Dirección de Investigación
+        periodicidad: anual (interno) / bianual (externo)
+      publicaciones:
+        nombre: Artículo indexado (WoS, Scopus, SciELO u otros índices)
+        instrumento: Constancia de la revista, indexación, factor de impacto y copia de la publicación
+        periodicidad: anual
+      libros:
+        nombre: Libro o capítulo de libro
+        instrumento: Constancia editorial e identificación del comité evaluador
+        periodicidad: anual
+      creacion_artistica:
+        nombre: Exposición, concierto, interpretación, recreación o composición de obra
+        instrumento: Evidencias de la obra y su presentación pública; constancia de la DIUMCE
+        periodicidad: anual
+      patentes_licencias:
+        nombre: Patente o licencia
+        instrumento: Certificado de registro INAPI
+        periodicidad: anual
+      presentaciones:
+        nombre: Divulgación en eventos científicos, artísticos o deportivos
+        instrumento: Certificado de la entidad organizadora
+        periodicidad: anual
       innovacion: Desarrollo y transferencia de tecnologías, métodos, productos o soluciones
-      presentaciones: Presentación de trabajos en eventos científicos, artísticos o deportivos
       redes: Participación en redes académicas, artísticas, deportivas o profesionales
       postulacion_fondos: Postulación a fondos con financiamiento externo
       claustros_postgrado: Integración de núcleos o claustros de postgrado (estándares CNA)
@@ -69,17 +115,47 @@ ambitos:
   vinculacion:
     nombre: Vinculación con el Medio y Extensión
     subcategorias:
-      proyectos_vcm: Iniciativas, proyectos o programas de VcM y extensión
+      programas_vcm:
+        nombre: Programa de VcM (responsable o integrante)
+        instrumento: Constancia (postulación, adjudicación, cierre) y pauta de evaluación de la Dirección de VcM
+        periodicidad: anual
+      proyectos_vcm:
+        nombre: Proyecto de VcM con financiamiento interno o externo (responsable o integrante)
+        instrumento: Constancia (postulación, adjudicación, cierre), pauta y reporte de la Dirección de VcM
+        periodicidad: anual
+      iniciativas_vcm:
+        nombre: Iniciativas de VcM (talleres, encuentros, seminarios, capacitaciones)
+        instrumento: Constancia y evaluación de la Dirección de VcM y de la unidad académica
+        periodicidad: semestral
+      educacion_continua:
+        nombre: Diseño e implementación de educación continua
+        instrumento: Constancia y evaluación de la Dirección de VcM y DEC
+        periodicidad: anual
+      trabajo_asociativo:
+        nombre: Trabajo asociativo con investigadores/as o creadores/as para transferencia al medio
+        instrumento: Constancia y evaluación de las direcciones de VcM e Investigación
+      publicaciones_vcm:
+        nombre: Publicación de resultados de VcM (libros, capítulos, revistas)
+        instrumento: Constancia, copia de la publicación y comité editorial
+      difusion:
+        nombre: Presentaciones en eventos académicos
+        instrumento: Certificado de la entidad organizadora (nombre, rol, fecha, lugar y organización)
+      representacion:
+        nombre: Representación institucional
+        instrumento: Certificado o constancia y producto comprometido
       actividades_relevantes: Actividades relevantes vinculadas a la educación física, el deporte, la recreación o las artes
-      difusion: Exposición, presentación o difusión de actividades y resultados ante comunidades
       redes: Participación en redes nacionales o internacionales
-      extension: Formación continua y extensión hacia el entorno relevante
+      extension: Otras acciones de extensión hacia el entorno relevante
       otra: Otra actividad de vinculación con el medio declarada en el compromiso
 
   gestion:
     nombre: Gestión Académica
     subcategorias:
       direccion: Dirección o coordinación de unidades académicas
+      coordinacion_vcm:
+        nombre: Coordinación de VcM de facultad o departamental
+        instrumento: Evaluación a la gestión, coordinador/a de VcM y extensión (decano/a o director/a)
+        periodicidad: anual
       gestion_curricular: Diseño, actualización y aseguramiento de la calidad de planes de estudio
       gestion_investigacion: Gestión de líneas de investigación, proyectos y fondos concursables
       gestion_vinculacion: Gestión de la vinculación con el medio y extensión

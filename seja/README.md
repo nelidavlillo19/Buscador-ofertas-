@@ -29,6 +29,11 @@ definiciones del documento de síntesis SEJA (lista completa en [`config/modelo.
 | `vinculacion` | iniciativas y proyectos VcM, actividades relevantes (EF, deporte, artes), difusión, redes, extensión |
 | `gestion` | dirección/coordinación, gestión curricular, de la investigación, de la VcM, del cuerpo académico, aseguramiento de la calidad, comisiones |
 
+Para cada subcategoría, el catálogo indica también con qué instrumento o evidencia se evalúa y cada cuánto
+(semestral, anual o bianual), tomado de la *Jornada Modelo de Evaluación SEJA 2025*. Por ejemplo, la docencia de pregrado
+se evalúa con la pauta de estudiantes, la de la dirección de la unidad académica y la autoevaluación (semestral);
+un artículo indexado, con la constancia de la revista, la indexación y la copia de la publicación (anual).
+
 Cada ámbito tiene además la subcategoría `otra`, para actividades declaradas que no calcen en las anteriores.
 
 ### 2. Evaluación de cada tarea
@@ -37,6 +42,7 @@ Como cada académico/a declara su propio compromiso, cada tarea indica **cómo**
 
 | Forma | Ejemplo | Puntaje |
 |---|---|---|
+| Pauta de afirmaciones (Cumple / No cumple / No aplica) | `instrumento: {cumple: 9, no_cumple: 1, no_aplica: 2}` | 9 / (9 + 1) = 90 (los "no aplica" no cuentan) |
 | Instrumento con escala | `instrumento: {puntaje: 3.6, min: 1, max: 4}` | (3,6 − 1) / (4 − 1) = 86,7 |
 | Instrumento en % | `instrumento: {porcentaje: 95}` | 95 |
 | Evidencia con meta | `evidencia: {comprometido: 2, logrado: 3, validado: true}` | 150 (**excedente validado**) |
@@ -67,6 +73,9 @@ cuente más dentro de su ámbito; si no se indica, el ámbito es un promedio sim
 Sobre 100% sólo se llega con excedentes validados (`validado: true`); un excedente sin validar cuenta como 100%.
 La autoevaluación y la evaluación de estudiantes llegan como máximo a 100%.
 
+El informe entrega además la **escala numérica 1–7** según la tabla de equivalencia de la Jornada 2025:
+90–100% → 7 · 80–89% → 6 · 70–79% → 5 · 60–69% → 4 · 50–59% → 3 · 40–49% → 2 · 39% o menos → 1.
+
 Con D (o dos C seguidas) el informe recuerda el ingreso al programa de acompañamiento (art. 41).
 Los umbrales y pesos se cambian en [`config/modelo.yaml`](config/modelo.yaml), sin tocar el código.
 
@@ -93,6 +102,11 @@ un caso de ejemplo editable.
 Pruebas: `python -m pytest -q tests/test_seja.py`
 
 ## Pendiente de definir
+
+- **Ponderación de los componentes fijos**: este modelo usa 10% autoevaluación + 10% estudiantes + 80% compromiso;
+  la Jornada 2025 indica 15% + 15% + 70% (unidad académica y otras unidades). Se cambia en `componentes_fijos`.
+- **Letras según la escala numérica**: la Jornada 2025 asigna A+ = 7, A = 6, B = 5, C = 4 y D = 1–3
+  (A+ desde 90%), mientras que este modelo usa A+ desde 101%.
 
 - Umbrales definitivos de A, B y C, y si la **A** exige además un mínimo en cada ámbito.
 - Si el excedente de una tarea tiene un tope (hoy 3 publicaciones sobre 2 comprometidas valen 150%).

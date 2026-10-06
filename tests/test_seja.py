@@ -40,6 +40,19 @@ def test_tareas_se_promedian_dentro_del_ambito_y_ambito_se_califica():
     assert docencia.letra == "B"
 
 
+def test_pauta_cumple_no_cumple_ignora_no_aplica():
+    r = calificar(academico({"docencia": 100}, [
+        tarea("docencia", "cursos_pregrado", instrumento={"cumple": 9, "no_cumple": 1, "no_aplica": 3})]))
+    assert r.ambitos[0].puntaje == 90
+
+
+@pytest.mark.parametrize("puntaje, nota", [(100, 7), (90, 7), (89.9, 6), (80, 6), (70, 5), (60, 4), (50, 3), (40, 2), (39, 1)])
+def test_escala_numerica_segun_tabla_de_equivalencia(puntaje, nota):
+    r = calificar(academico({"docencia": 100}, [tarea("docencia", instrumento={"porcentaje": puntaje})],
+                            auto=puntaje, est=puntaje))
+    assert r.nota == nota
+
+
 def test_instrumento_y_evidencia_en_la_misma_tarea_se_promedian():
     r = calificar(academico({"gestion": 100}, [
         tarea("gestion", instrumento={"porcentaje": 80}, evidencia={"estado": "cumplido"})]))
@@ -95,6 +108,7 @@ def test_ambito_declarado_sin_tareas_vale_cero():
     ({"tareas": [tarea("docencia")]}, "instrumento"),
     ({"tareas": [tarea("docencia", instrumento={"puntaje": 8, "min": 1, "max": 7})]}, "fuera de la escala"),
     ({"tareas": [tarea("docencia", evidencia={"estado": "casi"})]}, "no válido"),
+    ({"tareas": [tarea("docencia", instrumento={"cumple": 0, "no_cumple": 0, "no_aplica": 5})]}, "no tiene afirmaciones"),
     ({"estudiantes": None}, "estudiantes"),
 ])
 def test_errores_de_datos(cambio, mensaje):

@@ -124,7 +124,7 @@ th.n { text-align: right; }
         <div class="tarea-pie"><h2>Tareas evaluadas</h2>
           <div class="acciones"><button class="primario" id="agregar">Agregar tarea</button><button id="limpiar">Vaciar</button><button id="ejemplo">Cargar ejemplo</button></div>
         </div>
-        <p class="hint">Instrumento: puntaje en su escala (ej. rúbrica 1–4, nota 1–7) o porcentaje. Evidencia: meta comprometida vs. lograda, o estado. Un logro sobre la meta, marcado como validado, cuenta sobre 100% (sin validar se considera 100%). A+ se alcanza desde 101% de cumplimiento final.</p>
+        <p class="hint">Instrumento: pauta de afirmaciones (% = cumple ÷ (cumple + no cumple); los “no aplica” no cuentan), puntaje en su escala o porcentaje. Evidencia: meta comprometida vs. lograda, o estado. Un logro sobre la meta, marcado como validado, cuenta sobre 100% (sin validar se considera 100%). A+ se alcanza desde 101% de cumplimiento final.</p>
         <div id="tareas" class="stack"></div>
       </section>
 
@@ -151,7 +151,7 @@ th.n { text-align: right; }
 </div>
 
 <script>
-// Mismo modelo que seja/config/modelo.yaml (umbrales provisorios).
+// Mismo modelo que seja/config/modelo.yaml (umbrales provisorios). El catálogo de ámbitos se genera desde ese archivo.
 const MODELO = {
   fijos: { autoevaluacion: 0.10, estudiantes: 0.10 },
   umbrales: [["A+", 101], ["A", 90], ["B", 75], ["C", 60], ["D", 0]],
@@ -161,25 +161,60 @@ const MODELO = {
     C: "Cumplimiento parcial (requiere mejora)", D: "Insuficiente",
   },
   estados: { cumplido: 100, parcial: 50, no_cumplido: 0, sin_evidencia: 0 },
+  // Tabla de equivalencia % → escala numérica 1–7 (Jornada Modelo de Evaluación SEJA 2025).
+  escala: [[90, 7], [80, 6], [70, 5], [60, 4], [50, 3], [40, 2], [0, 1]],
   ambitos: {
     docencia: { nombre: "Docencia", subs: {
-      cursos_pregrado: "Cursos de pregrado", cursos_postgrado: "Cursos de postgrado",
-      direccion_titulacion: "Dirección de tesis y titulación", practicas: "Supervisión de prácticas",
-      tutoria: "Tutoría y acompañamiento", ayudantes: "Formación de ayudantes",
-      formacion_academicos: "Formación de académicos/as", formacion_continua: "Formación continua", otra: "Otra" } },
+      cursos_pregrado: {"n": "Docencia de pregrado", "i": "Evaluación de estudiantes, evaluación de la dirección de la unidad académica y autoevaluación", "p": "semestral"},
+      cursos_postgrado: {"n": "Docencia de postgrado", "i": "Evaluación de estudiantes, evaluación de la dirección de la unidad académica y autoevaluación", "p": "semestral"},
+      coordinacion_practicas: {"n": "Coordinación de prácticas", "i": "Evaluación a la gestión, coordinador/a de prácticas", "p": "anual"},
+      direccion_titulacion: {"n": "Dirección de tesis, seminarios de título, memorias, tesinas o trabajos de grado", "i": "Evaluación a la docencia de estudiantes (actividad curricular)", "p": "semestral"},
+      practicas: {"n": "Orientación y supervisión de prácticas profesionales"},
+      tutoria: {"n": "Tutoría y acompañamiento académico de estudiantes"},
+      ayudantes: {"n": "Formación y acompañamiento de estudiantes ayudantes"},
+      formacion_academicos: {"n": "Formación y desarrollo de académicos/as de jerarquía menor o equivalente"},
+      formacion_continua: {"n": "Formación continua en la disciplina y/o en el ámbito educativo"},
+      otra: {"n": "Otra actividad de docencia declarada en el compromiso"},
+    } },
     investigacion: { nombre: "Investigación, Creación e Innovación", subs: {
-      proyectos: "Proyectos", publicaciones: "Publicaciones", creacion_artistica: "Creación artística",
-      innovacion: "Innovación y transferencia", presentaciones: "Presentaciones en eventos", redes: "Redes",
-      postulacion_fondos: "Postulación a fondos", claustros_postgrado: "Claustros de postgrado",
-      equipos_interdisciplinarios: "Equipos interdisciplinarios", otra: "Otra" } },
+      proyectos: {"n": "Proyecto de investigación (responsable, co-investigador/a o colaborador/a; interno, externo nacional o internacional)", "i": "Constancia de la entidad (postulación, adjudicación o cierre) y evaluación de la Dirección de Investigación", "p": "anual (interno) / bianual (externo)"},
+      publicaciones: {"n": "Artículo indexado (WoS, Scopus, SciELO u otros índices)", "i": "Constancia de la revista, indexación, factor de impacto y copia de la publicación", "p": "anual"},
+      libros: {"n": "Libro o capítulo de libro", "i": "Constancia editorial e identificación del comité evaluador", "p": "anual"},
+      creacion_artistica: {"n": "Exposición, concierto, interpretación, recreación o composición de obra", "i": "Evidencias de la obra y su presentación pública; constancia de la DIUMCE", "p": "anual"},
+      patentes_licencias: {"n": "Patente o licencia", "i": "Certificado de registro INAPI", "p": "anual"},
+      presentaciones: {"n": "Divulgación en eventos científicos, artísticos o deportivos", "i": "Certificado de la entidad organizadora", "p": "anual"},
+      innovacion: {"n": "Desarrollo y transferencia de tecnologías, métodos, productos o soluciones"},
+      redes: {"n": "Participación en redes académicas, artísticas, deportivas o profesionales"},
+      postulacion_fondos: {"n": "Postulación a fondos con financiamiento externo"},
+      claustros_postgrado: {"n": "Integración de núcleos o claustros de postgrado (estándares CNA)"},
+      equipos_interdisciplinarios: {"n": "Equipos de investigación interdisciplinarios o multidisciplinarios"},
+      otra: {"n": "Otra actividad de investigación, creación o innovación declarada en el compromiso"},
+    } },
     vinculacion: { nombre: "Vinculación con el Medio y Extensión", subs: {
-      proyectos_vcm: "Iniciativas y proyectos VcM", actividades_relevantes: "Actividades relevantes (EF, deporte, artes)",
-      difusion: "Difusión", redes: "Redes", extension: "Extensión", otra: "Otra" } },
+      programas_vcm: {"n": "Programa de VcM (responsable o integrante)", "i": "Constancia (postulación, adjudicación, cierre) y pauta de evaluación de la Dirección de VcM", "p": "anual"},
+      proyectos_vcm: {"n": "Proyecto de VcM con financiamiento interno o externo (responsable o integrante)", "i": "Constancia (postulación, adjudicación, cierre), pauta y reporte de la Dirección de VcM", "p": "anual"},
+      iniciativas_vcm: {"n": "Iniciativas de VcM (talleres, encuentros, seminarios, capacitaciones)", "i": "Constancia y evaluación de la Dirección de VcM y de la unidad académica", "p": "semestral"},
+      educacion_continua: {"n": "Diseño e implementación de educación continua", "i": "Constancia y evaluación de la Dirección de VcM y DEC", "p": "anual"},
+      trabajo_asociativo: {"n": "Trabajo asociativo con investigadores/as o creadores/as para transferencia al medio", "i": "Constancia y evaluación de las direcciones de VcM e Investigación"},
+      publicaciones_vcm: {"n": "Publicación de resultados de VcM (libros, capítulos, revistas)", "i": "Constancia, copia de la publicación y comité editorial"},
+      difusion: {"n": "Presentaciones en eventos académicos", "i": "Certificado de la entidad organizadora (nombre, rol, fecha, lugar y organización)"},
+      representacion: {"n": "Representación institucional", "i": "Certificado o constancia y producto comprometido"},
+      actividades_relevantes: {"n": "Actividades relevantes vinculadas a la educación física, el deporte, la recreación o las artes"},
+      redes: {"n": "Participación en redes nacionales o internacionales"},
+      extension: {"n": "Otras acciones de extensión hacia el entorno relevante"},
+      otra: {"n": "Otra actividad de vinculación con el medio declarada en el compromiso"},
+    } },
     gestion: { nombre: "Gestión Académica", subs: {
-      direccion: "Dirección o coordinación", gestion_curricular: "Gestión curricular",
-      gestion_investigacion: "Gestión de la investigación", gestion_vinculacion: "Gestión de la VcM",
-      gestion_cuerpo_academico: "Gestión del cuerpo académico", aseguramiento_calidad: "Aseguramiento de la calidad",
-      comisiones: "Comisiones y comités", otra: "Otra" } },
+      direccion: {"n": "Dirección o coordinación de unidades académicas"},
+      coordinacion_vcm: {"n": "Coordinación de VcM de facultad o departamental", "i": "Evaluación a la gestión, coordinador/a de VcM y extensión (decano/a o director/a)", "p": "anual"},
+      gestion_curricular: {"n": "Diseño, actualización y aseguramiento de la calidad de planes de estudio"},
+      gestion_investigacion: {"n": "Gestión de líneas de investigación, proyectos y fondos concursables"},
+      gestion_vinculacion: {"n": "Gestión de la vinculación con el medio y extensión"},
+      gestion_cuerpo_academico: {"n": "Procesos de jerarquización, calificación y desarrollo de la carrera académica"},
+      aseguramiento_calidad: {"n": "Autoevaluación, acreditación y mejora continua"},
+      comisiones: {"n": "Comisiones y comités institucionales"},
+      otra: {"n": "Otra actividad de gestión académica declarada en el compromiso"},
+    } },
   },
 };
 
@@ -212,6 +247,10 @@ function evaluarTarea(t) {
   switch (t.tipo) {
     case "escala": return { puntaje: escalar(num(t.puntaje), num(t.min), num(t.max)), excedente: false };
     case "porcentaje": { const p = num(t.porcentaje); return { puntaje: p >= 0 && p <= 100 ? p : null, excedente: false }; }
+    case "pauta": {
+      const c = num(t.cumple), nc = num(t.no_cumple);
+      return { puntaje: c >= 0 && nc >= 0 && c + nc > 0 ? c / (c + nc) * 100 : null, excedente: false };
+    }
     case "meta": {
       const c = num(t.comprometido), l = num(t.logrado);
       if (!(c > 0) || !(l >= 0)) return { puntaje: null, excedente: false };
@@ -285,11 +324,23 @@ function camposEval(t, i) {
   switch (t.tipo) {
     case "escala": return n("puntaje", "Puntaje") + n("min", "mín.") + n("max", "máx.");
     case "porcentaje": return n("porcentaje", "% logrado");
+    case "pauta": return n("cumple", "Cumple", 1) + n("no_cumple", "No cumple", 1) + n("no_aplica", "No aplica", 1);
     case "meta": return n("comprometido", "Comprometido") + n("logrado", "Logrado") +
       `<label class="chk" for="t${i}-validado"><input id="t${i}-validado" type="checkbox" data-i="${i}" data-campo="validado"${t.validado ? " checked" : ""}> Excedente validado</label>`;
     case "estado": return `<label for="t${i}-estado">Estado<select id="t${i}-estado" data-i="${i}" data-campo="estado">${opciones({ cumplido: "Cumplido (100)", parcial: "Parcial (50)", no_cumplido: "No cumplido (0)", sin_evidencia: "Sin evidencia (0)" }, t.estado)}</select></label>`;
   }
   return "";
+}
+
+function hintSub(t) {
+  const s = MODELO.ambitos[t.ambito].subs[t.sub];
+  if (!s || !s.i) return "";
+  return `<p class="hint">Se evalúa con: ${esc(s.i)}${s.p ? ` · Periodicidad ${esc(s.p)}` : ""}</p>`;
+}
+
+function aEscala(p) {
+  for (const [m, n] of MODELO.escala) if (p >= m) return n;
+  return 1;
 }
 
 function pintarCompromiso() {
@@ -307,12 +358,13 @@ function pintarTareas() {
         return `<div class="tarea">
           <div class="tarea-top">
             <label for="t${i}-ambito">Ámbito<select id="t${i}-ambito" data-i="${i}" data-campo="ambito">${opciones(Object.fromEntries(Object.entries(MODELO.ambitos).map(([k, a]) => [k, a.nombre])), t.ambito)}</select></label>
-            <label for="t${i}-sub">Subcategoría (rol o función)<select id="t${i}-sub" data-i="${i}" data-campo="sub">${opciones(MODELO.ambitos[t.ambito].subs, t.sub)}</select></label>
+            <label for="t${i}-sub">Subcategoría (rol o función)<select id="t${i}-sub" data-i="${i}" data-campo="sub">${opciones(Object.fromEntries(Object.entries(MODELO.ambitos[t.ambito].subs).map(([k, s]) => [k, s.n])), t.sub)}</select></label>
             <button class="quitar" data-quitar="${i}" aria-label="Quitar tarea ${i + 1}">Quitar</button>
           </div>
+          ${hintSub(t)}
           <label for="t${i}-desc">Descripción<input id="t${i}-desc" data-i="${i}" data-campo="desc" value="${esc(t.desc)}"></label>
           <div class="tarea-eval">
-            <label for="t${i}-tipo">Evaluada por<select id="t${i}-tipo" data-i="${i}" data-campo="tipo">${opciones({ escala: "Instrumento (escala)", porcentaje: "Instrumento (%)", meta: "Evidencia: meta", estado: "Evidencia: estado" }, t.tipo)}</select></label>
+            <label for="t${i}-tipo">Evaluada por<select id="t${i}-tipo" data-i="${i}" data-campo="tipo">${opciones({ pauta: "Pauta: cumple / no cumple", escala: "Instrumento (escala)", porcentaje: "Instrumento (%)", meta: "Evidencia: meta", estado: "Evidencia: estado" }, t.tipo)}</select></label>
             ${camposEval(t, i)}
             <label for="t${i}-peso">Peso<input id="t${i}-peso" data-i="${i}" data-campo="peso" type="number" min="0" step="any" value="${esc(t.peso ?? 1)}"></label>
           </div>
@@ -346,7 +398,7 @@ function pintarActa() {
     : `<div class="acta-head"><div class="letra ${claseLetra(r.letra)}">${r.letra}</div>
         <div><div class="puntaje">${fmt(r.total)}% <small>cumplimiento</small></div>
         <div class="desc">${MODELO.letras[r.letra]}</div>
-        <div class="desc">Nota referencial ${fmt(1 + 6 * Math.min(r.total, 100) / 100)}</div></div></div>`;
+        <div class="desc">Escala numérica ${aEscala(r.total)}</div></div></div>`;
   const notas = [...r.errores.map((e) => `<p class="err">${esc(e)}</p>`), ...r.obs.map((o) => `<p>${esc(o)}</p>`)].join("");
 
   $("acta").innerHTML = cabeza +
@@ -365,7 +417,7 @@ document.addEventListener("input", (e) => {
     const t = estado.tareas[+el.dataset.i], campo = el.dataset.campo;
     t[campo] = el.type === "checkbox" ? el.checked : el.value;
     if (campo === "ambito") { t.sub = Object.keys(MODELO.ambitos[t.ambito].subs)[0]; pintarTareas(); $(`t${el.dataset.i}-ambito`)?.focus(); }
-    if (campo === "tipo") { pintarTareas(); $(`t${el.dataset.i}-tipo`)?.focus(); }
+    if (campo === "tipo" || campo === "sub") { pintarTareas(); $(`t${el.dataset.i}-${campo}`)?.focus(); }
   }
   pintarActa();
 });
@@ -374,7 +426,7 @@ document.addEventListener("click", (e) => {
   if (q != null) { estado.tareas.splice(+q, 1); pintarTareas(); pintarActa(); }
 });
 $("agregar").onclick = () => {
-  estado.tareas.push({ ambito: "docencia", sub: "cursos_pregrado", desc: "", tipo: "escala", puntaje: "", min: 1, max: 7 });
+  estado.tareas.push({ ambito: "docencia", sub: "cursos_pregrado", desc: "", tipo: "pauta", cumple: "", no_cumple: "", no_aplica: 0 });
   pintarTareas(); pintarActa(); $(`t${estado.tareas.length - 1}-desc`)?.focus();
 };
 $("limpiar").onclick = () => { estado.tareas = []; todo(); };

@@ -66,11 +66,7 @@ class Resultado:
     letra: str
     descripcion: str
     observaciones: list[str]
-
-    @property
-    def nota(self) -> float:
-        """Equivalencia en escala 1,0–7,0 (referencial)."""
-        return round(1 + 6 * min(self.puntaje, 100) / 100, 1)
+    nota: int  # escala numérica 1–7 según la tabla de equivalencia
 
     def como_dict(self) -> dict:
         return {
@@ -98,8 +94,16 @@ class Resultado:
 def escalar(datos: dict, contexto: str) -> float:
     """Lleva un puntaje de instrumento a 0–100.
 
-    Acepta ``{porcentaje: 85}`` o ``{puntaje: 6.2, min: 1, max: 7}``.
+    Acepta ``{porcentaje: 85}``, ``{puntaje: 6.2, min: 1, max: 7}`` o una pauta de afirmaciones
+    ``{cumple: 9, no_cumple: 1, no_aplica: 2}`` (los "no aplica" no cuentan).
     """
+    if "cumple" in datos or "no_cumple" in datos:
+        cumple, no_cumple = int(datos.get("cumple", 0)), int(datos.get("no_cumple", 0))
+        if cumple < 0 or no_cumple < 0 or int(datos.get("no_aplica", 0)) < 0:
+            raise ErrorCompromiso(f"{contexto}: las cantidades de la pauta no pueden ser negativas")
+        if cumple + no_cumple == 0:
+            raise ErrorCompromiso(f"{contexto}: la pauta no tiene afirmaciones aplicables")
+        return cumple / (cumple + no_cumple) * 100
     if "porcentaje" in datos:
         valor = float(datos["porcentaje"])
         if not 0 <= valor <= 100:
@@ -108,7 +112,7 @@ def escalar(datos: dict, contexto: str) -> float:
     try:
         puntaje, minimo, maximo = float(datos["puntaje"]), float(datos["min"]), float(datos["max"])
     except KeyError as e:
-        raise ErrorCompromiso(f"{contexto}: falta '{e.args[0]}' (usa porcentaje o puntaje/min/max)")
+        raise ErrorCompromiso(f"{contexto}: falta '{e.args[0]}' (usa porcentaje, puntaje/min/max o cumple/no_cumple)")
     if maximo <= minimo or not minimo <= puntaje <= maximo:
         raise ErrorCompromiso(f"{contexto}: puntaje {puntaje} fuera de la escala {minimo}–{maximo}")
     return (puntaje - minimo) / (maximo - minimo) * 100
@@ -132,6 +136,17 @@ def evaluar_evidencia(datos: dict, modelo: dict, contexto: str) -> tuple[float, 
     if estado not in estados:
         raise ErrorCompromiso(f"{contexto}: estado de evidencia '{estado}' no válido ({', '.join(estados)})")
     return float(estados[estado]), bool(datos.get("excedente")) and validado, f"evidencia {estado}"
+
+
+def nombre_subcategoria(datos: str | dict) -> str:
+    return datos["nombre"] if isinstance(datos, dict) else datos
+
+
+def a_escala_numerica(puntaje: float, modelo: dict) -> int:
+    for minimo, nota in modelo["escala_numerica"]:
+        if puntaje >= minimo:
+            return nota
+    return modelo["escala_numerica"][-1][1]
 
 
 def evaluar_tarea(tarea: dict, modelo: dict, n: int) -> ResultadoTarea:
@@ -158,7 +173,7 @@ def evaluar_tarea(tarea: dict, modelo: dict, n: int) -> ResultadoTarea:
     peso = float(tarea.get("peso", 1))
     if peso <= 0:
         raise ErrorCompromiso(f"{contexto}: el peso debe ser mayor que 0")
-    return ResultadoTarea(ambito, sub, tarea.get("descripcion", subcategorias[sub]),
+    return ResultadoTarea(ambito, sub, tarea.get("descripcion", nombre_subcategoria(subcategorias[sub])),
                           round(sum(puntajes) / len(puntajes), 2), peso, excedente, " + ".join(detalles))
 
 
@@ -231,7 +246,8 @@ def calificar(datos: dict, modelo: dict | None = None) -> Resultado:
 
     return Resultado(str(datos.get("academico", "")), str(datos.get("periodo", "")), ambitos,
                      round(auto, 2), p_auto, None if est is None else round(est, 2), p_est,
-                     total, letra, modelo["descripcion_letras"][letra], observaciones)
+                     total, letra, modelo["descripcion_letras"][letra], observaciones,
+                     a_escala_numerica(total, modelo))
 
 
 def informe(r: Resultado) -> str:
@@ -247,7 +263,7 @@ def informe(r: Resultado) -> str:
     lineas.append(f"\nAutoevaluación: {r.autoevaluacion:.1f}  [pondera {r.ponderacion_autoevaluacion:.0%}]")
     if r.estudiantes is not None:
         lineas.append(f"Evaluación de estudiantes: {r.estudiantes:.1f}  [pondera {r.ponderacion_estudiantes:.0%}]")
-    lineas += ["-" * 60, f"CUMPLIMIENTO FINAL: {r.puntaje:.1f}%  (nota {r.nota:.1f})",
+    lineas += ["-" * 60, f"CUMPLIMIENTO FINAL: {r.puntaje:.1f}%  (escala numérica {r.nota})",
                f"CLASIFICACIÓN: {r.letra} — {r.descripcion}"]
     if r.observaciones:
         lineas += ["", "Observaciones:"] + [f"  - {o}" for o in r.observaciones]

@@ -50,7 +50,7 @@ estados_evidencia:
 
 # Ámbitos (art. 34 del Reglamento de Carrera Académica) y sus subcategorías (roles y funciones).
 # Cada subcategoría indica su nombre, cómo se evalúa y cada cuánto, según la Jornada Modelo de
-# Evaluación SEJA 2025 (cuando la presentación no lo define, sólo se indica el nombre).
+# Evaluación SEJA 2024 (cuando la presentación no lo define, sólo se indica el nombre).
 ambitos:
   docencia:
     nombre: Docencia en los distintos niveles formativos

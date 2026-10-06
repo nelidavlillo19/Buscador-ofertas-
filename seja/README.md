@@ -151,9 +151,9 @@ python -m seja cierre  ARCHIVO.yaml -o cierre.docx    # informe de cierre con la
 
 Se generan en Markdown, o en Word si está instalado [pandoc](https://pandoc.org).
 
-### Ejercicio con los registros 2023
+### Ejercicio con los registros 2023 y 2024
 
-[`ejercicio_2023/`](ejercicio_2023) aplica el modelo a los compromisos e informes de cierre 2023 de nueve sujetos
+[`ejercicio_2023/`](ejercicio_2023) aplica el modelo a los compromisos e informes de cierre 2023 y 2024 de 25 sujetos
 anonimizados y genera el [informe extendido](docs/informe_ejercicio_2023.md), con las fórmulas de ponderación:
 
 ```bash

@@ -271,5 +271,11 @@ def test_informe_del_ejercicio_2023_es_anonimo():
     texto = generar()
     assert "### Sujeto 01" in texto and "### Sujeto 09" in texto
     assert "C_{E1}" in texto and r"w_a = \frac{h_a}{\sum_{b} h_b}" in texto
-    for nombre in ["Matemática", "Artes Visuales", "Kinesiología", "Música", "DIUMCE", "FONDECYT"]:
+    for nombre in ["Matemática", "Artes Visuales", "Kinesiología", "Música", "DIUMCE", "FONDECYT", "Biología",
+                   "Parvularia", "Física", "Castellano", "Francés", "Inglés", "@umce"]:
         assert nombre not in texto
+    # 2024: compromisos con ponderación por horas e informes de cierre con dos criterios de evidencia.
+    assert "## 7. Compromisos 2024" in texto and "## 8. Informes de cierre 2024" in texto
+    assert "| Sujeto 25 | Asociado | 22,0 | 1 de 3 | 100,0% (A) | 18,2% (D) |" in texto
+    assert "| Sujeto 16 | Sí | 41,5 | 86,7% |" in texto
+    assert "Art. 37: evaluación suspendida" in texto

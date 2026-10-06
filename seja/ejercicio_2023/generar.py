@@ -241,6 +241,190 @@ def seccion_horas(s: dict, modelo: dict) -> str:
     return "\n\n".join(out)
 
 
+def _horas_semanales(v) -> float:
+    return sum(v) / len(v) if isinstance(v, list) else float(v)
+
+
+def _formula_horas(h: dict[str, float], w: dict[str, float]) -> str:
+    total = sum(h.values())
+    partes = " + ".join(tex(h[a]) for a in ORDEN if a in h)
+    lineas = [f"$$\\sum_b h_b = {partes} = {tex(total)} \\text{{ h semanales}}$$"]
+    lineas.append("$$" + r" \qquad ".join(f"w_{{\\text{{{CORTO[a]}}}}} = \\frac{{{tex(h[a])}}}{{{tex(total)}}} = "
+                                          f"{tex(w[a] / 100, 3)}" for a in ORDEN if a in h) + "$$")
+    return "\n\n".join(lineas)
+
+
+def _rangos_docencia(jerarquia: str | None, w_doc: float, modelo: dict) -> str | None:
+    if not jerarquia:
+        return None
+    rangos = modelo["carga_docente"].get(jerarquia, {})
+    textos = [f"{p} {r[0]}–{r[1]}%" for p, r in rangos.items()]
+    dentro = [p for p, r in rangos.items() if r[0] <= round(w_doc, 1) <= r[1]]
+    estado = ("dentro del rango para " + _lista(dentro)) if dentro else "fuera del rango"
+    return (f"La docencia pesa {n(w_doc)}%: {estado} del reglamento para {jerarquia} "
+            f"({'; '.join(textos)}).")
+
+
+def seccion_compromiso_2024(s: dict, modelo: dict) -> tuple[str, dict]:
+    from seja.calificacion import situacion_especial
+    out = [f"### Sujeto {s['sujeto']}" + (" (también en 2023)" if s.get("vinculo_2023") or s["sujeto"] == "02" else "")]
+    out.append(f"**Jerarquía:** {s['jerarquia'].capitalize() if s.get('jerarquia') else 'no registrada en el formulario 2024'}"
+               f" · **Formulario completo:** {'sí' if s['completo'] else 'no'} · **Declarado:** {s['declarado']}")
+    out.append("\n".join(f"- **{NOMBRES_CORTOS[a]}:** {txt}" for a, txt in s["actividades"].items()))
+    res = {"sujeto": s["sujeto"], "completo": s["completo"], "w": {}, "situacion": ""}
+    notas = list(s["notas"])
+    if s["horas"]:
+        h = {a: _horas_semanales(v) for a, v in s["horas"].items()}
+        obs: list[str] = []
+        w = ponderacion_compromiso({"horas": s["horas"], "jornada": "completa"}, modelo, obs)
+        out.append(tabla(["Ámbito", "$h_a$ (h semanales)", "$w_a$", "$\\omega_a$ (peso en la calificación)"],
+                         [[NOMBRES_CORTOS[a], n(h[a]), n(w[a]) + "%", n(0.8 * w[a]) + "%"] for a in ORDEN if a in h]))
+        out.append(_formula_horas(h, w))
+        rango = _rangos_docencia(s.get("jerarquia"), w.get("docencia", 0), modelo)
+        notas += [re.sub(r"(\d)\.(\d)", r"\1,\2", o) for o in obs] + ([rango] if rango else [])
+        res["w"] = w
+        res["total"] = sum(h.values())
+    else:
+        out.append("_Sin horas por ámbito: no se puede calcular la ponderación $w_a$._")
+    if s.get("situacion_especial"):
+        suspendida, factor, texto = situacion_especial({"situacion_especial": s["situacion_especial"]}, modelo)
+        res["situacion"] = "Suspendida" if suspendida else f"Proporcional ({n(factor * 100)}%)"
+        notas.append(("**Art. 37: evaluación suspendida** — " if suspendida else
+                      f"**Art. 37: evaluación proporcional, $f = {tex(factor, 3)}$** — ")
+                     + re.sub(r"(\d)\.(\d)", r"\1,\2", texto) + ".")
+    nombres = modelo["etapas"]["nombres"]
+    filas = []
+    for t in s["tareas"]:
+        sub = modelo["ambitos"][t["ambito"]]["subcategorias"][t["subcategoria"]]
+        comp = f"Meta: {t['meta']}" if "meta" in t else nombres.get(t.get("etapa"), t.get("etapa", "—"))
+        filas.append([NOMBRES_CORTOS[t["ambito"]], t["descripcion"], comp,
+                      sub.get("instrumento", "Por definir") if isinstance(sub, dict) else "Por definir"])
+    out.append("**Plan de evaluación al cierre** (cada actividad se evaluará con la fórmula 3.1 que le corresponde):")
+    out.append(tabla(["Ámbito", "Actividad", "Etapa o meta comprometida", "Evidencia esperada"], filas))
+    out.append("**Notas:**\n\n" + "\n".join(f"- {x}" for x in notas))
+    res["tareas"] = len(s["tareas"])
+    return "\n\n".join(out), res
+
+
+def _datos_cierre(s: dict, estricto: bool) -> dict:
+    tareas = []
+    for t in s["tareas"]:
+        evidencia = {"estado": "sin_evidencia" if estricto and t.get("solo_carga") else t["estado"]}
+        for k in ("mecanismo", "excedente", "validado"):
+            if k in t:
+                evidencia[k] = t[k]
+        if t.get("solo_carga"):
+            evidencia["mecanismo"] = "Carga académica (sin evidencia en la carpeta)"
+        tareas.append({"ambito": t["ambito"], "subcategoria": t["subcategoria"], "descripcion": t["descripcion"],
+                       "evidencia": evidencia})
+    if s.get("ponderacion") == "igual":
+        ambitos = [a for a in ORDEN if a in s["horas"] or any(t["ambito"] == a for t in s["tareas"])]
+        pond = {"compromiso": {a: 100 / len(ambitos) for a in ambitos}}
+    else:
+        pond = {"horas": s["horas"]}
+    return {**pond, "tareas": tareas, "jerarquia": s["jerarquia"],
+            "autoevaluacion": {"porcentaje": 100}, "estudiantes": {"porcentaje": 100}}
+
+
+def seccion_cierre_2024(s: dict, modelo: dict) -> tuple[str, dict]:
+    out = [f"### Sujeto {s['sujeto']}" + (" (también en 2023)" if s["sujeto"] == "03" else "")]
+    out.append(f"**Jerarquía:** {s['jerarquia'].capitalize()} · **Compromiso:** {s['compromiso']}")
+    res = {"sujeto": s["sujeto"], "jer": s["jerarquia"].capitalize()}
+    if not s["tareas"]:
+        out.append("**No calificable:** no hay compromiso, carga ni evidencias registradas.")
+        out.append("**Notas:**\n\n" + "\n".join(f"- {x}" for x in s["notas"]))
+        res.update({"c_inf": None, "c_est": None, "total": None})
+        return "\n\n".join(out), res
+    r_inf = calificar(_datos_cierre(s, False), modelo)
+    r_est = calificar(_datos_cierre(s, True), modelo)
+    c_inf = round(sum(a.declarado / 100 * a.puntaje for a in r_inf.ambitos), 1)
+    c_est = round(sum(a.declarado / 100 * a.puntaje for a in r_est.ambitos), 1)
+    filas = []
+    for a_inf, a_est in zip(r_inf.ambitos, r_est.ambitos):
+        for t_inf, t_est in zip(a_inf.tareas, a_est.tareas):
+            filas.append([NOMBRES_CORTOS[a_inf.ambito], t_inf.descripcion + (" ★" if t_inf.destaca else ""),
+                          t_inf.mecanismo or "—", n(t_inf.puntaje) + "%", n(t_est.puntaje) + "%"])
+    out.append(tabla(["Ámbito", "Actividad", "Mecanismo de evidencia", "$p_t$ según informe", "$p_t$ SEJA estricto"],
+                     filas))
+    if s.get("ponderacion") == "igual":
+        out.append("Ponderación: escenario E1 (igual peso), porque sólo la gestión tiene horas registradas.")
+    else:
+        h = {a: _horas_semanales(v) for a, v in s["horas"].items()}
+        out.append(_formula_horas(h, {a.ambito: a.declarado for a in r_inf.ambitos}))
+    out.append(tabla(["Ámbito", "$w_a$", "$S_a$ según informe", "$S_a$ SEJA estricto"],
+                     [[a.nombre, n(a.declarado) + "%", n(a.puntaje) + "%", n(b.puntaje) + "%"]
+                      for a, b in zip(r_inf.ambitos, r_est.ambitos)]))
+    for etiqueta, r, c in (("informe", r_inf, c_inf), ("estricto", r_est, c_est)):
+        suma = " + ".join(f"{tex(a.declarado / 100, 3)} \\cdot {tex(a.puntaje)}" for a in r.ambitos)
+        out.append(f"$$C_{{\\text{{{etiqueta}}}}} = {suma} = {tex(c)}\\%$$")
+    out.append(tabla(["Criterio", "$C$", "Letra (AE = EE = C)", "Escala"],
+                     [["Según informe 2024 (carga académica = cumplido)", n(c_inf) + "%", clasificar(c_inf, modelo),
+                       escala(c_inf, modelo)],
+                      ["SEJA estricto (sin evidencia en la carpeta = 0%)", n(c_est) + "%", clasificar(c_est, modelo),
+                       escala(c_est, modelo)]]))
+    if r_inf.destacados:
+        out.append("**Destaca en:** " + "; ".join(f"{d.descripcion}" for d in r_inf.destacados) + ".")
+    obs = [re.sub(r"(\d)\.(\d)", r"\1,\2", o) for o in r_inf.observaciones
+           if "jornada" in o or "pertenece" in o or "sin tareas" in o]
+    out.append("**Notas:**\n\n" + "\n".join(f"- {x}" for x in s["notas"] + obs))
+    total = sum(_horas_semanales(v) for v in s["horas"].values()) if s["horas"] else None
+    res.update({"c_inf": c_inf, "c_est": c_est, "l_inf": clasificar(c_inf, modelo),
+                "l_est": clasificar(c_est, modelo), "total": total,
+                "solo_carga": sum(1 for t in s["tareas"] if t.get("solo_carga")), "tareas": len(s["tareas"])})
+    return "\n\n".join(out), res
+
+
+DOCUMENTOS = {
+    "01": ("Reporte e informe de cierre", "—"), "02": ("Reporte e informe de cierre", "Compromiso (incompleto)"),
+    "03": ("Reporte e informe de cierre", "Informe de cierre (sin compromiso)"),
+    "04": ("Reporte e informe de cierre", "—"), "05": ("Reporte e informe de cierre", "—"),
+    "06": ("Reporte e informe de cierre", "—"), "07": ("Compromiso con horas", "—"),
+    "08": ("Compromiso con horas", "Compromiso"), "09": ("Compromiso con horas", "Compromiso"),
+}
+
+
+def seccion_relacion(datos: dict, res_23: list, res_24c: list, res_24k: list) -> str:
+    docs = dict(DOCUMENTOS)
+    for s in datos["compromisos_2024"]:
+        docs.setdefault(s["sujeto"], ("—", "Compromiso" + ("" if s["completo"] else " (incompleto)")))
+    for s in datos["cierres_2024"]:
+        docs.setdefault(s["sujeto"], ("—", "Informe de cierre" + ("" if s["tareas"] else " (sin compromiso ni carga)")))
+    filas = []
+    for suj in sorted(docs):
+        d23, d24 = docs[suj]
+        ciclo = "Completo en ambos años" if "cierre" in d23 and "cierre" in d24 and "Compromiso" in d24 else (
+            "Ambos años, ciclo incompleto" if d23 != "—" and d24 != "—" else "Sólo 2023" if d24 == "—" else "Sólo 2024")
+        filas.append([f"Sujeto {suj}", d23, d24, ciclo])
+    out = ["## 9. Relación entre 2023 y 2024",
+           "Documentos disponibles por sujeto. Un ciclo completo requiere, para cada año, el compromiso con horas y el "
+           "informe de cierre con evidencia.",
+           tabla(["Sujeto", "2023", "2024", "Relación"], filas)]
+    r23 = {r["sujeto"]: r for r in res_23}
+    r24c = {r["sujeto"]: r for r in res_24c}
+    r24k = {r["sujeto"]: r for r in res_24k}
+    comp = []
+    if "02" in r23:
+        comp.append(f"- **Sujeto 02.** En 2023 tuvo $C = {tex(r23['02']['c1'])}\\%$ ({r23['02']['l1']}, E1): "
+                    "investigación y gestión sin evidencia. Su compromiso 2024 está incompleto (sólo docencia), así que "
+                    "no se puede ver si corrigió esos ámbitos.")
+    if "03" in r23 and "03" in r24c:
+        comp.append(f"- **Sujeto 03.** En 2023 tuvo $C = {tex(r23['03']['c1'])}\\%$ ({r23['03']['l1']}, E1) con "
+                    f"actividades en los 4 ámbitos. En 2024 no se encontró el compromiso y la carga registra sólo docencia "
+                    f"(20 h): $C$ = {n(r24c['03']['c_inf'])}% según el informe, pero {n(r24c['03']['c_est'])}% con el "
+                    "criterio estricto. El informe 2024 marca como no cumplidas la dirección de memorias y la gestión.")
+    for suj in ("08", "09"):
+        if suj in r24k and r24k[suj]["w"]:
+            s = next(x for x in datos["compromisos_2024"] if x["sujeto"] == suj)
+            antes = s["vinculo_2023"]
+            despues = r24k[suj]["w"]
+            cambios = ", ".join(f"{CORTO[a]} {n(antes.get(a, 0))}% → {n(despues.get(a, 0))}%" for a in ORDEN)
+            comp.append(f"- **Sujeto {suj}.** Ponderación por horas 2023 → 2024: {cambios}. "
+                        + ("La gestión declarada en 2024 no tiene horas, por eso baja a 0%."
+                           if despues.get("gestion", 0) == 0 else ""))
+    out += ["### Comparación de los sujetos con registros en ambos años", "\n".join(comp)]
+    return "\n\n".join(out)
+
+
 def generar() -> str:
     modelo = cargar_modelo()
     datos = yaml.safe_load(DATOS.read_text(encoding="utf-8"))
@@ -260,13 +444,36 @@ def generar() -> str:
     conteo = ", ".join(f"{letras.count(l)} en {l}" for l in ["A+", "A", "B", "C", "D"] if letras.count(l))
     cambios = [r["sujeto"] for r in resumenes if r["l1"] != r["l2"]]
 
+    datos["compromisos_2024"].sort(key=lambda x: x["sujeto"])
+    datos["cierres_2024"].sort(key=lambda x: x["sujeto"])
+    det_24k, res_24k = zip(*[seccion_compromiso_2024(x, modelo) for x in datos["compromisos_2024"]])
+    det_24c, res_24c = zip(*[seccion_cierre_2024(x, modelo) for x in datos["cierres_2024"]])
+    tabla_24k = tabla(["Sujeto", "Completo", "Horas semanales", "$w$ Doc", "$w$ ICI", "$w$ VcM", "$w$ Gest",
+                       "Actividades", "Art. 37"],
+                      [[f"Sujeto {r['sujeto']}", "Sí" if r["completo"] else "No",
+                        n(r["total"]) if r.get("total") else "—"] +
+                       [n(r["w"][a]) + "%" if a in r["w"] else "—" for a in ORDEN] +
+                       [r["tareas"], r["situacion"] or "—"] for r in res_24k])
+    tabla_24c = tabla(["Sujeto", "Jerarquía", "Horas en la carga", "Filas sólo con carga académica",
+                       "$C$ según informe", "$C$ SEJA estricto"],
+                      [[f"Sujeto {r['sujeto']}", r["jer"], n(r["total"]) if r.get("total") else "—",
+                        f"{r['solo_carga']} de {r['tareas']}" if r.get("tareas") else "—",
+                        f"{n(r['c_inf'])}% ({r['l_inf']})" if r["c_inf"] is not None else "No calificable",
+                        f"{n(r['c_est'])}% ({r['l_est']})" if r["c_est"] is not None else "No calificable"]
+                       for r in res_24c])
+    calificables = [r for r in res_24c if r["c_inf"] is not None]
+    bajan = [r["sujeto"] for r in calificables if r["l_inf"] != r["l_est"]]
+
     partes = [
-        "---\ntitle: \"Ejercicio de calificación SEJA con los registros 2023\"\n"
+        "---\ntitle: \"Ejercicio de calificación SEJA con los registros 2023 y 2024\"\n"
         "subtitle: \"Informe extendido · Oficina de Evaluación de Desempeño Académico\"\nlang: es\n---",
         "## 1. Resumen ejecutivo",
-        f"Se aplicó el modelo de calificación SEJA a los registros 2023 de **nueve sujetos**. Seis de ellos (sujetos "
-        f"01 a 06) tienen reporte del compromiso e informe de cierre con el cumplimiento de cada actividad. Los otros "
-        f"tres (sujetos 07 a 09) tienen formulario de compromiso con horas, pero no informe de cierre.",
+        f"Se aplicó el modelo de calificación SEJA a los registros 2023 y 2024 de **25 sujetos**:\n\n"
+        f"- **2023:** sujetos 01 a 06, con reporte e informe de cierre; sujetos 07 a 09, con compromiso con horas.\n"
+        f"- **2024:** {len(res_24k)} compromisos (sujetos 02, 08, 09 y 10 a 18) y {len(res_24c)} informes de cierre "
+        f"(sujetos 03 y 19 a 25).\n"
+        f"- **En ambos años:** sujetos 02, 03, 08 y 09.",
+        "### Resultados 2023",
         f"- **Resultados (escenario E1, igual peso por ámbito):** {conteo}. "
         + (f"La letra cambia según cómo se pondera en {'el sujeto' if len(cambios) == 1 else 'los sujetos'} "
            f"{_lista(cambios)}."
@@ -281,6 +488,17 @@ def generar() -> str:
         "- **Los registros tienen inconsistencias.** Hay resúmenes que contradicen su propia tabla, una jerarquía que "
         "cambia entre el reporte y el informe, actividades declaradas que no se evalúan al cierre, actividades en el "
         "ámbito equivocado y horas que se registran de tres formas distintas.",
+        "### Resultados 2024",
+        f"- **Compromisos 2024.** {sum(1 for r in res_24k if r['w'])} de {len(res_24k)} permiten calcular la ponderación "
+        "por horas. Los demás no tienen resumen de horas o el formulario quedó incompleto. El formulario 2024 no tiene "
+        "casilla de gestión, y las horas de gestión aparecen en observaciones o mezcladas con docencia.",
+        f"- **Informes de cierre 2024.** En {sum(1 for r in calificables if r['solo_carga'])} de {len(res_24c)} el "
+        "cumplimiento sale de la **carga académica** y no de evidencia en la carpeta individual; en varios no se "
+        "encontró el compromiso. Según esos informes casi todo está al 100%, pero con el criterio SEJA estricto la "
+        f"letra baja en los sujetos {_lista(bajan)}." if bajan else "",
+        "- **Carga fuera de rango.** Hay cargas sobre la jornada de 44 h (56 h y 45,5 h) y cargas muy bajas (6 h y "
+        "20 h), además de docencias fuera del rango del reglamento (86,7% y 19,5%).",
+        "### Conclusión",
         "- **Recomendación principal.** Registrar en UCampus las horas semanales por ámbito, cada actividad con su "
         "subcategoría y su etapa comprometida, y la autoevaluación y la evaluación de estudiantes. Con eso la calificación "
         "se calcula automáticamente con las fórmulas de la sección 3.",
@@ -291,11 +509,14 @@ def generar() -> str:
         "actividad, funciones de la Res. 320/93, y oportunidades y fortalezas.",
         "- **Formularios de Compromiso de Desempeño 2023** con horas por actividad, y el formulario e instructivo 2024 "
         "de UCampus.",
+        "- **Formularios de Compromiso de Desempeño 2024** (respuestas en QuestionPro) e **Informes de Cierre 2024**.",
         "- **Normativa de referencia:** propuesta de Reglamento de Carrera Académica, Síntesis SEJA (agosto 2026) y "
         "Jornada Modelo de Evaluación SEJA 2024.",
         "Las personas se identifican como *sujeto 01, 02…*. Las asignaturas se numeran por sujeto (*asignatura 1, "
         "asignatura 2…*). Se omiten los nombres de personas, jefaturas, departamentos, proyectos, eventos y "
-        "comisiones.",
+        "comisiones. Tampoco se incluyen los RUT, correos ni direcciones IP de los formularios, ni los nombres de "
+        "terceros (coinvestigadores, estudiantes, autores) que aparecen en ellos. Las personas presentes en ambos años "
+        "conservan su código (sujetos 02, 03, 08 y 09).",
         seccion_formulas(),
         seccion_metodo(),
         "## 5. Resultados de los sujetos con informe de cierre (01 a 06)",
@@ -309,7 +530,21 @@ def generar() -> str:
         "semanales, promediando semestres, y con cada actividad en el ámbito que le corresponde según el catálogo. "
         "$\\omega_a = 0{,}8\\,w_a$ es el peso efectivo del ámbito en la calificación final.",
         *[seccion_horas(s, modelo) for s in datos["solo_compromiso"]],
-        "## 7. Hallazgos transversales",
+        "## 7. Compromisos 2024",
+        "Para cada compromiso se calcula la ponderación por horas (fórmula 3.3) y se deja el **plan de evaluación**: "
+        "qué etapa o meta se comprometió en cada actividad y con qué evidencia se evaluará al cierre. El formulario 2024 "
+        "no registra jerarquía; se informa cuando se conoce por otro documento.",
+        tabla_24k,
+        *det_24k,
+        "## 8. Informes de cierre 2024",
+        "Se calcula $C$ con dos criterios de evidencia. **Según el informe:** se acepta el 100% que el informe asigna "
+        "por carga académica. **SEJA estricto:** la carga académica dice qué se asignó, no que se cumplió, así que las "
+        "filas sin evidencia en la carpeta individual valen $p_t = 0$. La ponderación usa las horas de la carga "
+        "(fórmula 3.3).",
+        tabla_24c,
+        *det_24c,
+        seccion_relacion(datos, resumenes, list(res_24c), list(res_24k)),
+        "## 10. Hallazgos transversales",
         "\n".join([
             "1. **Sin horas no hay ponderación.** Ningún reporte ni informe 2023 registra horas por ámbito, y el "
             "formulario 2024 eliminó las horas por actividad. La afirmación «X es mayoría» no se puede verificar.",
@@ -325,11 +560,20 @@ def generar() -> str:
             "pertenecen a investigación o a VcM. El «perfeccionamiento» se registra como un área aparte.",
             "6. **Las horas se registran de tres formas.** Hay sumas de los dos semestres, valores «x + x» y horas con "
             "minutos escritas como decimales («16.45»).",
-            "7. **La normativa cambia.** Los informes 2023 revisan funciones de la Res. 320/93. La propuesta de "
+            "7. **El formulario 2024 no permite ponderar.** No pide jerarquía, perfil ni jornada, no tiene casilla de "
+            "gestión y su resumen acepta «horas o porcentaje». Varios formularios quedaron incompletos (sin resumen, sin "
+            "VcM o sólo con docencia), y las personas anotan horas en observaciones.",
+            "8. **Los informes de cierre 2024 no usan evidencia.** En la mayoría el 100% proviene de la carga académica de "
+            "la Dirección de Docencia y la carpeta individual no tiene evidencias; en varios casos no se encontró el "
+            "compromiso. Uno marca funciones de titular para un asociado.",
+            "9. **Cargas académicas sin control.** Hay cargas que superan la jornada (56 h y 45,5 h), cargas de 6 h y 20 h "
+            "en jornada completa, y una docencia de 86,7% con una persona que deja constancia de no poder comprometer "
+            "investigación ni VcM.",
+            "10. **La normativa cambia.** Los informes 2023 revisan funciones de la Res. 320/93. La propuesta de "
             "Reglamento de Carrera Académica define funciones por jerarquía y perfil, con carga docente esperada, lo que "
             "deja más funciones pendientes en varios sujetos (por ejemplo, formación de académicos, redes y formación "
             "continua)."]),
-        "## 8. Recomendaciones",
+        "## 11. Recomendaciones",
         "\n".join([
             "1. Registrar en UCampus las **horas semanales por ámbito** (por semestre en docencia) y calcular el resumen "
             "automáticamente con la fórmula 3.3.",
@@ -340,7 +584,12 @@ def generar() -> str:
             "5. Generar el reporte de octubre y el informe de cierre **desde los mismos datos** (`python -m seja reporte` "
             "y `python -m seja cierre`), para evitar las inconsistencias entre documentos.",
             "6. Mantener el registro de **destacados** (excedentes y avances validados) para el reconocimiento "
-            "institucional."]),
+            "institucional.",
+            "7. Exigir que el informe de cierre se base en **evidencia en la carpeta individual**; la carga académica "
+            "sirve para las horas ($h_a$), no para el cumplimiento ($p_t$).",
+            "8. Validar al cerrar el compromiso que la suma de horas esté dentro de la jornada y que la docencia esté en el "
+            "rango de la jerarquía y el perfil; alertar a la jefatura si no.",
+            "9. Completar los documentos faltantes para cerrar la relación entre 2023 y 2024 (sección 9)."]),
         "## Anexo. Parámetros del modelo",
         tabla(["Parámetro", "Valor"], [
             ["Autoevaluación / evaluación de estudiantes", "10% / 10%"],

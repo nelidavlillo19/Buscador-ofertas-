@@ -46,32 +46,31 @@ def test_instrumento_y_evidencia_en_la_misma_tarea_se_promedian():
     assert r.ambitos[0].puntaje == 90
 
 
-@pytest.mark.parametrize("puntaje, letra", [(90, "A"), (89.9, "B"), (75, "B"), (60, "C"), (40, "D"), (39.9, "E")])
-def test_umbrales_de_clasificacion(puntaje, letra):
+@pytest.mark.parametrize("puntaje, letra", [(90, "A"), (89.9, "B"), (75, "B"), (60, "C"), (59.9, "D"), (0, "D")])
+def test_umbrales_de_clasificacion_sin_letra_e(puntaje, letra):
     r = calificar(academico({"docencia": 100}, [tarea("docencia", instrumento={"porcentaje": puntaje})],
                             auto=puntaje, est=puntaje))
     assert r.letra == letra
 
 
-def test_a_mas_requiere_excedente_validado_en_dos_ambitos():
-    excede = {"comprometido": 1, "logrado": 2, "validado": True}
-    sin_validar = {"comprometido": 1, "logrado": 2}
-    base = {"docencia": 60, "investigacion": 30, "gestion": 10}
+def test_a_mas_desde_101_por_ciento_con_excedente_validado():
+    def final(logrado, validado=True):
+        return calificar(academico({"docencia": 100}, [tarea("docencia", evidencia={
+            "comprometido": 100, "logrado": logrado, "validado": validado})]))
 
-    r = calificar(academico(base, [tarea("docencia", evidencia=excede), tarea("investigacion", evidencia=excede),
-                                   tarea("gestion", evidencia={"estado": "cumplido"})]))
-    assert r.letra == "A+"
-
-    r = calificar(academico(base, [tarea("docencia", evidencia=excede), tarea("investigacion", evidencia=sin_validar),
-                                   tarea("gestion", evidencia={"estado": "cumplido"})]))
-    assert r.letra == "A"
-    assert any("A+ requiere 2" in o for o in r.observaciones)
+    assert final(101).ambitos[0].puntaje == 101
+    assert (final(101).puntaje, final(101).letra) == (100.8, "A")   # 101·0,8 + 100·0,2
+    assert (final(102).puntaje, final(102).letra) == (101.6, "A+")
+    assert final(102).ambitos[0].letra == "A+"
+    assert final(102).nota == 7.0
 
 
-def test_excedente_no_sube_el_puntaje_sobre_100():
+def test_excedente_sin_validar_se_considera_100():
     r = calificar(academico({"docencia": 100},
-                            [tarea("docencia", evidencia={"comprometido": 2, "logrado": 5, "validado": True})]))
+                            [tarea("docencia", evidencia={"comprometido": 2, "logrado": 5})]))
     assert r.ambitos[0].puntaje == 100
+    assert r.letra == "A"
+    assert "sin validar" in r.ambitos[0].tareas[0].detalle
 
 
 def test_eximido_de_docencia_redistribuye_el_10_de_estudiantes():
@@ -109,5 +108,6 @@ def test_ejemplos():
     resultados = {p.stem: calificar(yaml.safe_load(p.read_text(encoding="utf-8")))
                   for p in EJEMPLOS.glob("*.yaml")}
     assert resultados["asistente_investigadora"].letra == "A+"
+    assert resultados["asistente_investigadora"].puntaje == 104.2
     assert resultados["instructor_vinculador"].letra == "C"
     assert "CLASIFICACIÓN: A+" in informe(resultados["asistente_investigadora"])

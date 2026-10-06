@@ -7,7 +7,9 @@ Flujo (Reglamento de Carrera Académica, Título III):
 2. Las tareas se PROMEDIAN dentro de su ámbito → puntaje del ámbito, que se califica (A–E).
 3. Los ámbitos se ponderan según el % declarado en el compromiso y ocupan el 80% del total;
    la autoevaluación y la evaluación de estudiantes aportan un 10% fijo cada una.
-4. El puntaje final se clasifica en A+, A, B, C, D o E (art. 39 y 40).
+4. El % de cumplimiento final se clasifica en A+ (desde 101%, sobresaliente), A, B, C o D.
+
+Los excedentes validados (logrado > comprometido) cuentan sobre 100%; sin validar, se topan en 100%.
 """
 
 from __future__ import annotations
@@ -68,7 +70,7 @@ class Resultado:
     @property
     def nota(self) -> float:
         """Equivalencia en escala 1,0–7,0 (referencial)."""
-        return round(1 + 6 * self.puntaje / 100, 1)
+        return round(1 + 6 * min(self.puntaje, 100) / 100, 1)
 
     def como_dict(self) -> dict:
         return {
@@ -113,15 +115,18 @@ def escalar(datos: dict, contexto: str) -> float:
 
 
 def evaluar_evidencia(datos: dict, modelo: dict, contexto: str) -> tuple[float, bool, str]:
-    """Puntaje 0–100 según la evidencia, y si hay un excedente validado sobre lo comprometido."""
+    """% de cumplimiento según la evidencia (sobre 100 sólo con excedente validado) y si hay excedente."""
     validado = bool(datos.get("validado", False))
     if "comprometido" in datos:
         comprometido, logrado = float(datos["comprometido"]), float(datos.get("logrado", 0))
         if comprometido <= 0 or logrado < 0:
             raise ErrorCompromiso(f"{contexto}: 'comprometido' debe ser mayor que 0 y 'logrado' no negativo")
-        puntaje = min(logrado / comprometido, 1) * 100
         excedente = logrado > comprometido and validado
-        return puntaje, excedente, f"evidencia {logrado:g}/{comprometido:g}"
+        puntaje = (logrado / comprometido if excedente else min(logrado / comprometido, 1)) * 100
+        detalle = f"evidencia {logrado:g}/{comprometido:g}"
+        if logrado > comprometido and not validado:
+            detalle += ", excedente sin validar: se considera 100"
+        return puntaje, excedente, detalle
     estado = datos.get("estado")
     estados = modelo["estados_evidencia"]
     if estado not in estados:
@@ -158,10 +163,11 @@ def evaluar_tarea(tarea: dict, modelo: dict, n: int) -> ResultadoTarea:
 
 
 def clasificar(puntaje: float, modelo: dict) -> str:
-    for letra, minimo in modelo["umbrales"].items():
-        if puntaje >= minimo:
+    letras = list(modelo["umbrales"])
+    for letra in letras:
+        if puntaje >= modelo["umbrales"][letra]:
             return letra
-    return "E"
+    return letras[-1]
 
 
 def calificar(datos: dict, modelo: dict | None = None) -> Resultado:
@@ -219,13 +225,7 @@ def calificar(datos: dict, modelo: dict | None = None) -> Resultado:
     total = sum(a.puntaje * a.ponderacion for a in ambitos) + auto * p_auto + (est or 0) * p_est
     total = round(total, 1)
     letra = clasificar(total, modelo)
-    con_excedente = [a for a in ambitos if a.excedente]
-    if letra == "A" and len(con_excedente) >= modelo["a_mas_ambitos_con_excedente"]:
-        letra = "A+"
-    elif letra == "A" and con_excedente:
-        observaciones.append(f"Excedente validado en {len(con_excedente)} ámbito(s); A+ requiere "
-                             f"{modelo['a_mas_ambitos_con_excedente']}.")
-    if letra in ("D", "E"):
+    if letra == "D":
         observaciones.append("Ingresa al programa institucional de acompañamiento y fortalecimiento "
                              "académico (art. 41; también tras dos C consecutivas).")
 
@@ -247,7 +247,7 @@ def informe(r: Resultado) -> str:
     lineas.append(f"\nAutoevaluación: {r.autoevaluacion:.1f}  [pondera {r.ponderacion_autoevaluacion:.0%}]")
     if r.estudiantes is not None:
         lineas.append(f"Evaluación de estudiantes: {r.estudiantes:.1f}  [pondera {r.ponderacion_estudiantes:.0%}]")
-    lineas += ["-" * 60, f"PUNTAJE FINAL: {r.puntaje:.1f} / 100  (nota {r.nota:.1f})",
+    lineas += ["-" * 60, f"CUMPLIMIENTO FINAL: {r.puntaje:.1f}%  (nota {r.nota:.1f})",
                f"CLASIFICACIÓN: {r.letra} — {r.descripcion}"]
     if r.observaciones:
         lineas += ["", "Observaciones:"] + [f"  - {o}" for o in r.observaciones]

@@ -69,11 +69,11 @@ aside { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); }
 .acta { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
 .acta-head { padding: 18px; display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; border-bottom: 1px solid var(--line); }
 .letra { font: 650 46px/1 var(--f-display); width: 84px; height: 84px; border-radius: 10px; display: grid; place-items: center; }
-.L-Ap, .L-A { background: var(--ok-soft); color: var(--ok); }
+.L-Ap { background: var(--ok); color: var(--surface); }
+.L-A { background: var(--ok-soft); color: var(--ok); }
 .L-B { background: var(--mid-soft); color: var(--mid); }
 .L-C { background: var(--warn-soft); color: var(--warn); }
 .L-D { background: var(--bad-soft); color: var(--bad); }
-.L-E { background: var(--crit-soft); color: var(--crit); }
 .puntaje { font: 500 28px/1.1 var(--f-mono); font-variant-numeric: tabular-nums; }
 .puntaje small { font-size: 14px; color: var(--muted); }
 .desc { font-size: 13px; color: var(--muted); margin-top: 4px; }
@@ -124,7 +124,7 @@ th.n { text-align: right; }
         <div class="tarea-pie"><h2>Tareas evaluadas</h2>
           <div class="acciones"><button class="primario" id="agregar">Agregar tarea</button><button id="limpiar">Vaciar</button><button id="ejemplo">Cargar ejemplo</button></div>
         </div>
-        <p class="hint">Instrumento: puntaje en su escala (ej. rúbrica 1–4, nota 1–7) o porcentaje. Evidencia: meta comprometida vs. lograda, o estado. Un logro sobre la meta, marcado como validado, cuenta como excedente para A+.</p>
+        <p class="hint">Instrumento: puntaje en su escala (ej. rúbrica 1–4, nota 1–7) o porcentaje. Evidencia: meta comprometida vs. lograda, o estado. Un logro sobre la meta, marcado como validado, cuenta sobre 100% (sin validar se considera 100%). A+ se alcanza desde 101% de cumplimiento final.</p>
         <div id="tareas" class="stack"></div>
       </section>
 
@@ -154,12 +154,11 @@ th.n { text-align: right; }
 // Mismo modelo que seja/config/modelo.yaml (umbrales provisorios).
 const MODELO = {
   fijos: { autoevaluacion: 0.10, estudiantes: 0.10 },
-  umbrales: [["A", 90], ["B", 75], ["C", 60], ["D", 40]],
-  aMas: 2,
+  umbrales: [["A+", 101], ["A", 90], ["B", 75], ["C", 60], ["D", 0]],
   letras: {
-    "A+": "Cumplimiento pleno más excedente validado en al menos dos áreas",
+    "A+": "Sobresaliente: cumplimiento sobre lo comprometido",
     A: "Cumplimiento pleno del compromiso académico", B: "Cumplimiento bueno",
-    C: "Cumplimiento parcial (requiere mejora)", D: "Insuficiente", E: "Sin cumplimiento o sin evidencia",
+    C: "Cumplimiento parcial (requiere mejora)", D: "Insuficiente",
   },
   estados: { cumplido: 100, parcial: 50, no_cumplido: 0, sin_evidencia: 0 },
   ambitos: {
@@ -189,7 +188,7 @@ const EJEMPLO = {
   tareas: [
     { ambito: "docencia", sub: "cursos_pregrado", desc: "Didáctica de la Historia I", tipo: "escala", puntaje: 3.6, min: 1, max: 4 },
     { ambito: "docencia", sub: "cursos_postgrado", desc: "Seminario de investigación (Magíster)", tipo: "escala", puntaje: 6.4, min: 1, max: 7 },
-    { ambito: "docencia", sub: "direccion_titulacion", desc: "Guía de tesis de licenciatura", tipo: "meta", comprometido: 3, logrado: 3 },
+    { ambito: "docencia", sub: "direccion_titulacion", desc: "Guía de tesis de licenciatura", tipo: "meta", comprometido: 3, logrado: 4, validado: true },
     { ambito: "investigacion", sub: "proyectos", desc: "Proyecto FONDECYT de Iniciación (co-investigadora)", tipo: "estado", estado: "cumplido" },
     { ambito: "investigacion", sub: "publicaciones", desc: "Artículos en revistas indexadas", tipo: "meta", comprometido: 2, logrado: 3, validado: true },
     { ambito: "investigacion", sub: "presentaciones", desc: "Ponencia en congreso internacional", tipo: "porcentaje", porcentaje: 95 },
@@ -216,7 +215,8 @@ function evaluarTarea(t) {
     case "meta": {
       const c = num(t.comprometido), l = num(t.logrado);
       if (!(c > 0) || !(l >= 0)) return { puntaje: null, excedente: false };
-      return { puntaje: Math.min(l / c, 1) * 100, excedente: l > c && !!t.validado };
+      const excedente = l > c && !!t.validado;
+      return { puntaje: (excedente ? l / c : Math.min(l / c, 1)) * 100, excedente };
     }
     case "estado": return { puntaje: MODELO.estados[t.estado] ?? null, excedente: false };
   }
@@ -225,7 +225,7 @@ function evaluarTarea(t) {
 
 function clasificar(p) {
   for (const [l, m] of MODELO.umbrales) if (p >= m) return l;
-  return "E";
+  return MODELO.umbrales.at(-1)[0];
 }
 
 function calcular() {
@@ -269,11 +269,8 @@ function calcular() {
   if (errores.length) return { errores, obs, ambitos };
   const total = Math.round((ambitos.reduce((s, a) => s + a.puntaje * a.pond, 0)
     + auto * MODELO.fijos.autoevaluacion + (est || 0) * pEst) * 10) / 10;
-  let letra = clasificar(total);
-  const conExc = ambitos.filter((a) => a.excedente).length;
-  if (letra === "A" && conExc >= MODELO.aMas) letra = "A+";
-  else if (letra === "A" && conExc) obs.push(`Excedente validado en ${conExc} ámbito; A+ requiere ${MODELO.aMas}.`);
-  if (letra === "D" || letra === "E") obs.push("Ingresa al programa de acompañamiento y fortalecimiento académico (art. 41).");
+  const letra = clasificar(total);
+  if (letra === "D") obs.push("Ingresa al programa de acompañamiento y fortalecimiento académico (art. 41).");
   return { errores, obs, ambitos, total, letra, auto, est, pEst };
 }
 
@@ -337,7 +334,7 @@ function pintarActa() {
     el.textContent = (e.puntaje == null ? "—" : fmt(e.puntaje)) + (e.excedente ? " ★ excedente" : "");
   });
 
-  const filas = r.ambitos.map((a) => `<tr><td>${a.nombre}<div class="bar"><i style="width:${a.puntaje}%"></i></div></td>
+  const filas = r.ambitos.map((a) => `<tr><td>${a.nombre}<div class="bar"><i style="width:${Math.min(a.puntaje, 100)}%"></i></div></td>
       <td class="n">${fmt(a.pond * 100)}%</td><td class="n">${fmt(a.puntaje)}</td>
       <td class="n"><span class="chip ${claseLetra(a.letra)}">${a.letra}</span>${a.excedente ? " ★" : ""}</td></tr>`).join("");
   const fijos = r.errores.length ? "" :
@@ -345,17 +342,17 @@ function pintarActa() {
     (r.est != null ? `<tr><td>Evaluación de estudiantes</td><td class="n">10,0%</td><td class="n">${fmt(r.est)}</td><td></td></tr>` : "");
 
   const cabeza = r.errores.length
-    ? `<div class="acta-head"><div class="letra L-E">?</div><div><div class="puntaje">Sin calificar</div><div class="desc">Corrige los datos marcados abajo.</div></div></div>`
+    ? `<div class="acta-head"><div class="letra L-D">?</div><div><div class="puntaje">Sin calificar</div><div class="desc">Corrige los datos marcados abajo.</div></div></div>`
     : `<div class="acta-head"><div class="letra ${claseLetra(r.letra)}">${r.letra}</div>
-        <div><div class="puntaje">${fmt(r.total)} <small>/ 100</small></div>
+        <div><div class="puntaje">${fmt(r.total)}% <small>cumplimiento</small></div>
         <div class="desc">${MODELO.letras[r.letra]}</div>
-        <div class="desc">Nota referencial ${fmt(1 + 6 * r.total / 100)}</div></div></div>`;
+        <div class="desc">Nota referencial ${fmt(1 + 6 * Math.min(r.total, 100) / 100)}</div></div></div>`;
   const notas = [...r.errores.map((e) => `<p class="err">${esc(e)}</p>`), ...r.obs.map((o) => `<p>${esc(o)}</p>`)].join("");
 
   $("acta").innerHTML = cabeza +
     `<div style="overflow-x:auto"><table><thead><tr><th>Componente</th><th class="n">Pondera</th><th class="n">Puntaje</th><th class="n">Letra</th></tr></thead><tbody>${filas}${fijos}</tbody></table></div>` +
     (notas ? `<div class="obs">${notas}</div>` : "") +
-    `<div class="obs"><div class="escala">${["A+", "A", "B", "C", "D", "E"].map((l) => `<span class="chip ${claseLetra(l)}">${l}</span><span>${l === "A+" ? "A + excedente en 2 ámbitos" : l === "E" ? "menos de 40" : "desde " + MODELO.umbrales.find(([x]) => x === l)[1]} · ${MODELO.letras[l]}</span>`).join("")}</div></div>` +
+    `<div class="obs"><div class="escala">${MODELO.umbrales.map(([l, m]) => `<span class="chip ${claseLetra(l)}">${l}</span><span>${l === "D" ? "menos de 60%" : "desde " + m + "%"} · ${MODELO.letras[l]}</span>`).join("")}</div></div>` +
     `<div class="formula">Final = Σ(ámbito × %declarado × ${fmt(1 - MODELO.fijos.autoevaluacion - (r.pEst ?? MODELO.fijos.estudiantes), 2)}) + auto × 0,10${r.pEst === 0 ? "" : " + estudiantes × 0,10"}<br>Umbrales provisorios.</div>`;
 }
 

@@ -6,15 +6,15 @@ según el Reglamento de Carrera Académica UMCE (Título III, art. 31–41).
 ## Modelo
 
 ```
-TAREA ──(instrumento estandarizado y/o evidencia)──► puntaje 0–100
+TAREA ──(instrumento estandarizado y/o evidencia)──► % de cumplimiento
    │  se promedian dentro de su ámbito
    ▼
-ÁMBITO ──► puntaje del ámbito ──► letra del ámbito (A–E)
+ÁMBITO ──► % del ámbito ──► letra del ámbito (A+–D)
    │  ponderado por el % declarado en el Compromiso de Desempeño
    ▼
 FINAL = 80% Σ (ámbito × % declarado)  +  10% autoevaluación  +  10% evaluación de estudiantes
    ▼
-CLASIFICACIÓN: A+ · A · B · C · D · E
+CLASIFICACIÓN: A+ · A · B · C · D
 ```
 
 ### 1. Ámbitos y subcategorías (roles y funciones)
@@ -39,7 +39,8 @@ Como cada académico/a declara su propio compromiso, cada tarea indica **cómo**
 |---|---|---|
 | Instrumento con escala | `instrumento: {puntaje: 3.6, min: 1, max: 4}` | (3,6 − 1) / (4 − 1) = 86,7 |
 | Instrumento en % | `instrumento: {porcentaje: 95}` | 95 |
-| Evidencia con meta | `evidencia: {comprometido: 2, logrado: 3, validado: true}` | 100 (tope) + **excedente** |
+| Evidencia con meta | `evidencia: {comprometido: 2, logrado: 3, validado: true}` | 150 (**excedente validado**) |
+| Evidencia con meta, sin validar | `evidencia: {comprometido: 2, logrado: 3}` | 100 (tope) |
 | Evidencia por estado | `evidencia: {estado: parcial}` | cumplido 100 · parcial 50 · no cumplido / sin evidencia 0 |
 
 Si una tarea tiene instrumento **y** evidencia, se promedian. `peso` (opcional, por defecto 1) permite que una tarea
@@ -55,16 +56,18 @@ cuente más dentro de su ámbito; si no se indica, el ámbito es un promedio sim
 
 ### 4. Clasificación (umbrales provisorios)
 
-| Letra | Puntaje final | Significado (art. 39–40) |
+| Letra | % de cumplimiento final | Significado |
 |---|---|---|
-| **A+** | A + excedente validado en ≥ 2 ámbitos | Cumplimiento pleno más excedente acreditado y validado |
-| **A** | ≥ 90 | Cumplimiento pleno |
-| **B** | ≥ 75 | Cumplimiento bueno |
-| **C** | ≥ 60 | Cumplimiento parcial (requiere mejora) |
-| **D** | ≥ 40 | Insuficiente |
-| **E** | < 40 | Sin cumplimiento o sin evidencia |
+| **A+** | ≥ 101% | Sobresaliente: cumplimiento sobre lo comprometido |
+| **A** | ≥ 90% | Cumplimiento pleno |
+| **B** | ≥ 75% | Cumplimiento bueno |
+| **C** | ≥ 60% | Cumplimiento parcial (requiere mejora) |
+| **D** | < 60% | Insuficiente |
 
-Con D o E (o dos C seguidas) el informe recuerda el ingreso al programa de acompañamiento (art. 41).
+Sobre 100% sólo se llega con excedentes validados (`validado: true`); un excedente sin validar cuenta como 100%.
+La autoevaluación y la evaluación de estudiantes llegan como máximo a 100%.
+
+Con D (o dos C seguidas) el informe recuerda el ingreso al programa de acompañamiento (art. 41).
 Los umbrales y pesos se cambian en [`config/modelo.yaml`](config/modelo.yaml), sin tocar el código.
 
 ## Uso
@@ -91,7 +94,7 @@ Pruebas: `python -m pytest -q tests/test_seja.py`
 
 ## Pendiente de definir
 
-- Umbrales definitivos de cada letra y si la **A** exige además un mínimo en cada ámbito.
-- Qué es exactamente la letra **E** (el reglamento llega hasta D).
+- Umbrales definitivos de A, B y C, y si la **A** exige además un mínimo en cada ámbito.
+- Si el excedente de una tarea tiene un tope (hoy 3 publicaciones sobre 2 comprometidas valen 150%).
 - Instrumentos estandarizados de cada subcategoría y su escala.
 - Factor de corrección por maternidad, licencias y otros contextos (art. 37).

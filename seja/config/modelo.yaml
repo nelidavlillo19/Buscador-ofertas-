@@ -14,24 +14,21 @@ componentes_fijos:
   autoevaluacion: 0.10
   estudiantes: 0.10
 
-# Puntaje mínimo (0–100) para cada letra, de mayor a menor. Bajo el último umbral → E.
+# % mínimo de cumplimiento para cada letra, de mayor a menor. Bajo C → D.
+# Sobre 100% sólo se llega con excedentes validados (logrado > comprometido).
 umbrales:
-  A: 90   # Cumplimiento pleno del compromiso
-  B: 75   # Cumplimiento bueno
-  C: 60   # Cumplimiento parcial (requiere mejora)
-  D: 40   # Insuficiente
-  # E: menos de 40
+  A+: 101  # Sobresaliente: supera el compromiso
+  A: 90    # Cumplimiento pleno del compromiso
+  B: 75    # Cumplimiento bueno
+  C: 60    # Cumplimiento parcial (requiere mejora)
+  D: 0     # Insuficiente
 
 descripcion_letras:
-  A+: Cumplimiento pleno del compromiso más un excedente en al menos dos áreas de desarrollo, acreditado y validado
+  A+: Sobresaliente, cumplimiento sobre lo comprometido (desde 101%), acreditado y validado
   A: Cumplimiento pleno del compromiso académico
   B: Cumplimiento bueno
   C: Cumplimiento parcial (requiere mejora)
   D: Insuficiente
-  E: Sin cumplimiento o sin evidencia
-
-# A+ (art. 39): letra A más excedente validado en al menos esta cantidad de ámbitos.
-a_mas_ambitos_con_excedente: 2
 
 # Valor (0–100) de los estados de evidencia cuando no hay meta numérica.
 estados_evidencia:

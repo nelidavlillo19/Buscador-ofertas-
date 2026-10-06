@@ -24,7 +24,7 @@ tareas:
   - ambito: docencia
     subcategoria: direccion_titulacion
     descripcion: Guía de tesis de licenciatura
-    evidencia: {comprometido: 3, logrado: 3}
+    evidencia: {comprometido: 3, logrado: 4, validado: true}   # excedente validado
 
   # Investigación, creación e innovación: evidencia del compromiso.
   - ambito: investigacion

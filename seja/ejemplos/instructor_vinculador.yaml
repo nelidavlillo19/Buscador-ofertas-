@@ -1,0 +1,37 @@
+# Ejemplo: académico Instructor/a, perfil Vinculador/a, con cumplimiento parcial.
+academico: Académico de ejemplo
+periodo: 2026
+jerarquia: instructor
+perfil: vinculador
+
+compromiso:
+  docencia: 75
+  vinculacion: 15
+  gestion: 10
+
+tareas:
+  - ambito: docencia
+    subcategoria: cursos_pregrado
+    descripcion: Expresión Corporal I
+    instrumento: {nombre: Pauta de observación de clases, puntaje: 2.8, min: 1, max: 4}
+  - ambito: docencia
+    subcategoria: cursos_pregrado
+    descripcion: Expresión Corporal II
+    instrumento: {nombre: Pauta de observación de clases, puntaje: 3.0, min: 1, max: 4}
+  - ambito: docencia
+    subcategoria: practicas
+    descripcion: Supervisión de prácticas iniciales
+    evidencia: {estado: parcial}
+
+  - ambito: vinculacion
+    subcategoria: actividades_relevantes
+    descripcion: Festival deportivo comunal
+    evidencia: {comprometido: 2, logrado: 1}
+
+  - ambito: gestion
+    subcategoria: comisiones
+    descripcion: Comité de prácticas del departamento
+    evidencia: {estado: cumplido}
+
+autoevaluacion: {puntaje: 6.0, min: 1, max: 7}
+estudiantes: {puntaje: 3.0, min: 1, max: 4}

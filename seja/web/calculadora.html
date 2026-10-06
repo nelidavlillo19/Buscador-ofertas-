@@ -144,6 +144,16 @@ th.n { text-align: right; }
         </div>
         <label class="chk" for="exento"><input id="exento" type="checkbox"> Eximido/a de docencia (art. 37 a): sin evaluación de estudiantes, su 10% pasa a los ámbitos</label>
       </section>
+
+      <section class="panel">
+        <h2>Situación especial (art. 37)</h2>
+        <p class="hint">Con más de 5 meses de ausencia por enfermedad o maternidad, la evaluación se suspende. En otros casos se evalúa en relación al % de la jornada que dedicó a sus funciones: las metas con evidencia se ajustan a ese %. En ambos casos se informa a la Oficina y a las autoridades.</p>
+        <div class="row">
+          <label for="sit-motivo">Motivo<select id="sit-motivo"><option value="" selected>Sin situación especial</option></select></label>
+          <label for="sit-meses">Meses de ausencia<input id="sit-meses" type="number" min="0" step="0.5" value="0"></label>
+          <label for="sit-pct">% de jornada dedicado<input id="sit-pct" type="number" min="0" max="100" value="100"></label>
+        </div>
+      </section>
     </div>
 
     <aside>
@@ -153,10 +163,21 @@ th.n { text-align: right; }
 </div>
 
 <script>
-// Mismo modelo que seja/config/modelo.yaml (umbrales provisorios). El catálogo de ámbitos se genera desde ese archivo.
+// Mismo modelo que seja/config/modelo.yaml. El catálogo de ámbitos se genera desde ese archivo.
 const MODELO = {
   fijos: { autoevaluacion: 0.10, estudiantes: 0.10 },
-  umbrales: [["A+", 101], ["A", 90], ["B", 75], ["C", 60], ["D", 0]],
+  umbrales: [["A+", 101], ["A", 90], ["B", 75], ["C", 55], ["D", 0]],
+  tope: 120,  // % máximo con que cuenta una tarea con excedente validado
+  situaciones: {
+    mesesSuspension: 5, suspenden: ["enfermedad", "maternidad"],
+    motivos: {
+      enfermedad: "Licencia médica por enfermedad", maternidad: "Permiso o licencia por maternidad",
+      parental: "Permiso postnatal parental o cuidados parentales", permiso_sin_goce: "Permiso sin goce de remuneraciones",
+      comision_servicio: "Comisión de servicio", cargo_directivo: "Cargo en la planta directiva",
+      estudios: "Estudios de postgrado o postdoctorado", otra: "Otra situación",
+    },
+    informarA: "la Oficina de Evaluación de Desempeño Académico y las autoridades correspondientes",
+  },
   letras: {
     "A+": "Sobresaliente: cumplimiento sobre lo comprometido",
     A: "Cumplimiento pleno del compromiso académico", B: "Cumplimiento bueno",
@@ -231,8 +252,8 @@ const MODELO = {
 const EJEMPLO = {
   compromiso: { docencia: 55, investigacion: 30, vinculacion: 5, gestion: 10 },
   tareas: [
-    { ambito: "docencia", sub: "cursos_pregrado", desc: "Didáctica de la Historia I", tipo: "escala", puntaje: 3.6, min: 1, max: 4 },
-    { ambito: "docencia", sub: "cursos_postgrado", desc: "Seminario de investigación (Magíster)", tipo: "escala", puntaje: 6.4, min: 1, max: 7 },
+    { ambito: "docencia", sub: "cursos_pregrado", desc: "Didáctica de la Historia I", tipo: "escala", puntaje: 3.9, min: 1, max: 4 },
+    { ambito: "docencia", sub: "cursos_postgrado", desc: "Seminario de investigación (Magíster)", tipo: "escala", puntaje: 6.9, min: 1, max: 7 },
     { ambito: "docencia", sub: "direccion_titulacion", desc: "Guía de tesis de licenciatura", tipo: "meta", comprometido: 3, logrado: 4, validado: true },
     { ambito: "investigacion", sub: "proyectos", desc: "Proyecto FONDECYT de Iniciación (co-investigadora)", tipo: "estado", estado: "cumplido" },
     { ambito: "investigacion", sub: "publicaciones", desc: "Artículos en revistas indexadas", tipo: "meta", comprometido: 2, logrado: 3, validado: true },
@@ -253,7 +274,25 @@ function escalar(p, min, max) {
   return (p - min) / (max - min) * 100;
 }
 
+// Situación especial (art. 37): suspende la evaluación o ajusta las metas al % de jornada.
+function situacion() {
+  const motivo = $("sit-motivo").value;
+  if (!motivo) return { factor: 1 };
+  const S = MODELO.situaciones, meses = num($("sit-meses").value) || 0;
+  const texto = S.motivos[motivo] + (meses ? `, ${fmt(meses, 0)} meses` : "");
+  if (S.suspenden.includes(motivo) && meses > S.mesesSuspension) return { suspendida: true, factor: 1, texto };
+  const pct = num($("sit-pct").value);
+  if (!(pct > 0 && pct <= 100)) return { factor: 1, texto, error: "Situación especial: indica el % de la jornada dedicado a sus funciones (mayor que 0 y hasta 100)." };
+  return { factor: pct / 100, texto: `${texto}; evaluada en relación al ${fmt(pct, 0)}% de la jornada` };
+}
+
 function evaluarTarea(t) {
+  const r = evaluarBase(t, situacion().factor);
+  if (r.puntaje == null) return r;
+  return { ...r, real: r.puntaje, puntaje: Math.min(r.puntaje, MODELO.tope) };
+}
+
+function evaluarBase(t, factor) {
   switch (t.tipo) {
     case "escala": return { puntaje: escalar(num(t.puntaje), num(t.min), num(t.max)), excedente: false };
     case "porcentaje": { const p = num(t.porcentaje); return { puntaje: p >= 0 && p <= 100 ? p : null, excedente: false }; }
@@ -264,8 +303,8 @@ function evaluarTarea(t) {
     case "meta": {
       const c = num(t.comprometido), l = num(t.logrado);
       if (!(c > 0) || !(l >= 0)) return { puntaje: null, excedente: false };
-      const excedente = l > c && !!t.validado;
-      return { puntaje: (excedente ? l / c : Math.min(l / c, 1)) * 100, excedente };
+      const meta = c * factor, excedente = l > c && !!t.validado;
+      return { puntaje: (excedente ? l / meta : Math.min(l / meta, 1)) * 100, excedente };
     }
     case "estado": return { puntaje: MODELO.estados[t.estado] ?? null, excedente: false };
   }
@@ -279,6 +318,10 @@ function clasificar(p) {
 
 function calcular() {
   const errores = [], obs = [];
+  const sit = situacion();
+  if (sit.suspendida) return { suspendida: true, texto: sit.texto, errores, obs, ambitos: [] };
+  if (sit.error) errores.push(sit.error);
+  else if (sit.texto) obs.push(`Situación especial (art. 37): ${sit.texto}. Informar a ${MODELO.situaciones.informarA}.`);
   const enHoras = $("unidad").value === "horas";
   let declarado = Object.entries(estado.compromiso).filter(([, v]) => num(v) > 0);
   const suma = declarado.reduce((s, [, v]) => s + num(v), 0);
@@ -330,7 +373,9 @@ function calcular() {
     + auto * MODELO.fijos.autoevaluacion + (est || 0) * pEst) * 10) / 10;
   const letra = clasificar(total);
   if (letra === "D") obs.push("Ingresa al programa de acompañamiento y fortalecimiento académico (art. 41).");
-  return { errores, obs, ambitos, total, letra, auto, est, pEst };
+  if (letra === "A+") obs.push("Desempeño sobresaliente: candidato/a a reconocimiento institucional.");
+  const destacados = evaluadas.filter((t) => t.excedente && declaradas.has(t.ambito));
+  return { errores, obs, ambitos, total, letra, auto, est, pEst, destacados };
 }
 
 function opciones(obj, sel) {
@@ -388,7 +433,7 @@ function pintarTareas() {
             ${camposEval(t, i)}
             <label for="t${i}-peso">Peso<input id="t${i}-peso" data-i="${i}" data-campo="peso" type="number" min="0" step="any" value="${esc(t.peso ?? 1)}"></label>
           </div>
-          <div class="tarea-pie"><span>Puntaje de la tarea</span><b id="t${i}-res">${r.puntaje == null ? "—" : fmt(r.puntaje)}${r.excedente ? " ★ excedente" : ""}</b></div>
+          <div class="tarea-pie"><span>Puntaje de la tarea</span><b id="t${i}-res">${r.puntaje == null ? "—" : fmt(r.puntaje)}${r.real > MODELO.tope ? ` (real ${fmt(r.real, 0)}%, tope ${MODELO.tope}%)` : ""}${r.excedente ? " ★ destaca" : ""}</b></div>
         </div>`;
       }).join("") + "</div>";
   }).join("");
@@ -397,6 +442,12 @@ function pintarTareas() {
 
 function pintarActa() {
   const r = calcular();
+  if (r.suspendida) {
+    $("acta").innerHTML = `<div class="acta-head"><div class="letra L-C">—</div><div><div class="puntaje">Suspendida</div>
+      <div class="desc">Ausencia prolongada por enfermedad o maternidad (art. 37): ${esc(r.texto)}.</div></div></div>
+      <div class="obs"><p>Informar a ${MODELO.situaciones.informarA}.</p></div>`;
+    return;
+  }
   const suma = Object.values(estado.compromiso).reduce((s, v) => s + (num(v) || 0), 0);
   const enHoras = $("unidad").value === "horas";
   $("suma").textContent = enHoras ? `Total: ${fmt(suma)} h semanales` : `Suma declarada: ${fmt(suma, 0)}%`;
@@ -404,7 +455,7 @@ function pintarActa() {
   estado.tareas.forEach((t, i) => {
     const el = $(`t${i}-res`); if (!el) return;
     const e = evaluarTarea(t);
-    el.textContent = (e.puntaje == null ? "—" : fmt(e.puntaje)) + (e.excedente ? " ★ excedente" : "");
+    el.textContent = (e.puntaje == null ? "—" : fmt(e.puntaje)) + (e.real > MODELO.tope ? ` (real ${fmt(e.real, 0)}%, tope ${MODELO.tope}%)` : "") + (e.excedente ? " ★ destaca" : "");
   });
 
   const filas = r.ambitos.map((a) => `<tr><td>${a.nombre}<div class="bar"><i style="width:${Math.min(a.puntaje, 100)}%"></i></div></td>
@@ -414,6 +465,10 @@ function pintarActa() {
     `<tr><td>Autoevaluación</td><td class="n">10,0%</td><td class="n">${fmt(r.auto)}</td><td></td></tr>` +
     (r.est != null ? `<tr><td>Evaluación de estudiantes</td><td class="n">10,0%</td><td class="n">${fmt(r.est)}</td><td></td></tr>` : "");
 
+  const destaca = (r.destacados || []).length
+    ? `<div class="obs"><p><b>Reconocimiento institucional: destaca en</b></p>${r.destacados.map((d) =>
+        `<p>★ ${esc(d.desc || "Tarea")} (${esc(MODELO.ambitos[d.ambito].subs[d.sub]?.n || d.sub)}): ${fmt(d.real, 0)}% de lo comprometido</p>`).join("")}</div>`
+    : "";
   const cabeza = r.errores.length
     ? `<div class="acta-head"><div class="letra L-D">?</div><div><div class="puntaje">Sin calificar</div><div class="desc">Corrige los datos marcados abajo.</div></div></div>`
     : `<div class="acta-head"><div class="letra ${claseLetra(r.letra)}">${r.letra}</div>
@@ -424,12 +479,13 @@ function pintarActa() {
 
   $("acta").innerHTML = cabeza +
     `<div style="overflow-x:auto"><table><thead><tr><th>Componente</th><th class="n">Pondera</th><th class="n">Puntaje</th><th class="n">Letra</th></tr></thead><tbody>${filas}${fijos}</tbody></table></div>` +
-    (notas ? `<div class="obs">${notas}</div>` : "") +
-    `<div class="obs"><div class="escala">${MODELO.umbrales.map(([l, m]) => `<span class="chip ${claseLetra(l)}">${l}</span><span>${l === "D" ? "menos de 60%" : "desde " + m + "%"} · ${MODELO.letras[l]}</span>`).join("")}</div></div>` +
-    `<div class="formula">Final = Σ(ámbito × %declarado × ${fmt(1 - MODELO.fijos.autoevaluacion - (r.pEst ?? MODELO.fijos.estudiantes), 2)}) + auto × 0,10${r.pEst === 0 ? "" : " + estudiantes × 0,10"}<br>Umbrales provisorios.</div>`;
+    destaca + (notas ? `<div class="obs">${notas}</div>` : "") +
+    `<div class="obs"><div class="escala">${MODELO.umbrales.map(([l, m]) => `<span class="chip ${claseLetra(l)}">${l}</span><span>${l === "D" ? "menos de 55%" : "desde " + m + "%"} · ${MODELO.letras[l]}</span>`).join("")}</div></div>` +
+    `<div class="formula">Final = Σ(ámbito × %declarado × ${fmt(1 - MODELO.fijos.autoevaluacion - (r.pEst ?? MODELO.fijos.estudiantes), 2)}) + auto × 0,10${r.pEst === 0 ? "" : " + estudiantes × 0,10"}<br>Una tarea con excedente cuenta hasta ${MODELO.tope}%; lo que la supera queda registrado como destacado.</div>`;
 }
 
 function todo() { pintarCompromiso(); pintarTareas(); pintarActa(); }
+$("sit-motivo").insertAdjacentHTML("beforeend", Object.entries(MODELO.situaciones.motivos).map(([k, v]) => `<option value="${k}">${v}</option>`).join(""));
 
 document.addEventListener("input", (e) => {
   const el = e.target;

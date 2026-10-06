@@ -59,7 +59,7 @@ def test_instrumento_y_evidencia_en_la_misma_tarea_se_promedian():
     assert r.ambitos[0].puntaje == 90
 
 
-@pytest.mark.parametrize("puntaje, letra", [(90, "A"), (89.9, "B"), (75, "B"), (60, "C"), (59.9, "D"), (0, "D")])
+@pytest.mark.parametrize("puntaje, letra", [(100, "A"), (90, "A"), (89.9, "B"), (75, "B"), (74.9, "C"), (55, "C"), (54.9, "D"), (0, "D")])
 def test_umbrales_de_clasificacion_sin_letra_e(puntaje, letra):
     r = calificar(academico({"docencia": 100}, [tarea("docencia", instrumento={"porcentaje": puntaje})],
                             auto=puntaje, est=puntaje))
@@ -76,6 +76,19 @@ def test_a_mas_desde_101_por_ciento_con_excedente_validado():
     assert (final(102).puntaje, final(102).letra) == (101.6, "A+")
     assert final(102).ambitos[0].letra == "A+"
     assert final(102).nota == 7.0
+
+
+def test_tope_de_excedente_y_registro_de_lo_que_destaca():
+    r = calificar(academico({"docencia": 100}, [
+        tarea("docencia", "direccion_titulacion", descripcion="Tesis dirigidas",
+              evidencia={"comprometido": 2, "logrado": 5, "validado": True})]))
+    t = r.ambitos[0].tareas[0]
+    assert (t.puntaje, t.cumplimiento_real) == (120, 250)
+    assert r.puntaje == 116.0 and r.letra == "A+"
+    assert [(d.descripcion, d.cumplimiento_real) for d in r.destacados] == [("Tesis dirigidas", 250)]
+    assert any("reconocimiento institucional" in o for o in r.observaciones)
+    assert r.como_dict()["reconocimiento_institucional"][0]["subcategoria"] == "direccion_titulacion"
+    assert "destaca en" in informe(r)
 
 
 def test_excedente_sin_validar_se_considera_100():
@@ -162,10 +175,51 @@ def test_casos_de_compromisos_2023():
                      "caso3_asociado_docencia": [47.4, 38.2, 10.5, 3.9]}
 
 
+@pytest.mark.parametrize("motivo", ["enfermedad", "maternidad"])
+def test_ausencia_de_mas_de_5_meses_suspende_la_evaluacion(motivo):
+    datos = academico({"docencia": 100}, [])
+    datos["situacion_especial"] = {"motivo": motivo, "meses_ausencia": 6}
+    r = calificar(datos)
+    assert (r.estado, r.letra, r.puntaje) == ("suspendida", None, None)
+    assert "Oficina de Evaluación de Desempeño Académico" in r.informar_a
+    assert "SUSPENDIDA" in informe(r)
+
+
+def test_otras_situaciones_se_evaluan_segun_el_porcentaje_de_jornada():
+    datos = academico({"investigacion": 100}, [
+        tarea("investigacion", "publicaciones", evidencia={"comprometido": 2, "logrado": 1})])
+    datos["situacion_especial"] = {"motivo": "enfermedad", "meses_ausencia": 3, "porcentaje_jornada": 50}
+    r = calificar(datos)
+    assert r.estado == "calificada"
+    assert r.ambitos[0].puntaje == 100          # meta de 2 ajustada a 1
+    assert "meta ajustada a 1" in r.ambitos[0].tareas[0].detalle
+    assert any("Informar a la Oficina" in o for o in r.observaciones)
+
+
+def test_meta_ajustada_no_genera_excedente_si_no_supera_la_original():
+    datos = academico({"investigacion": 100}, [
+        tarea("investigacion", "publicaciones", evidencia={"comprometido": 2, "logrado": 2, "validado": True})])
+    datos["situacion_especial"] = {"motivo": "comision_servicio", "porcentaje_jornada": 50}
+    r = calificar(datos)
+    assert r.ambitos[0].puntaje == 100 and not r.destacados
+
+
+@pytest.mark.parametrize("situacion, mensaje", [
+    ({"motivo": "vacaciones"}, "no válido"),
+    ({"motivo": "permiso_sin_goce", "meses_ausencia": 7}, "porcentaje_jornada"),
+    ({"motivo": "maternidad", "meses_ausencia": 5}, "porcentaje_jornada"),   # 5 meses no supera el límite
+])
+def test_errores_de_situacion_especial(situacion, mensaje):
+    datos = academico({"docencia": 100}, [tarea("docencia", evidencia={"estado": "cumplido"})])
+    datos["situacion_especial"] = situacion
+    with pytest.raises(ErrorCompromiso, match=mensaje):
+        calificar(datos)
+
+
 def test_ejemplos():
     resultados = {p.stem: calificar(yaml.safe_load(p.read_text(encoding="utf-8")))
                   for p in EJEMPLOS.glob("*.yaml")}
     assert resultados["asistente_investigadora"].letra == "A+"
-    assert resultados["asistente_investigadora"].puntaje == 104.2
+    assert resultados["asistente_investigadora"].puntaje == 102.4
     assert resultados["instructor_vinculador"].letra == "C"
     assert "CLASIFICACIÓN: A+" in informe(resultados["asistente_investigadora"])

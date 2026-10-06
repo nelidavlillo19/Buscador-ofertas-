@@ -33,7 +33,7 @@ Los resultados de evaluación son ficticios y sólo sirven para probar el cálcu
 | **Ponderación tal como se declaró** | Doc 35,7 · Gest 64,3 | Doc 34,0 · Inv 16,0 · VcM 32,0 · Gest 18,0 | Doc 47,4 · Inv 32,9 · VcM 5,3 · Gest 14,5 |
 | **Ponderación ordenada** | Doc 21,7 · VcM 5,8 · Gest 72,5 | Doc 33,8 · Inv 16,0 · VcM 32,1 · Gest 18,0 | Doc 47,4 · Inv 38,2 · VcM 10,5 · Gest 3,9 |
 | Docencia según el reglamento | 60–70% (vinculador/a) → **bajo el rango** | 40–60% (investigador/a) → **bajo el rango** | 40–60% → dentro |
-| Resultado con evaluaciones ficticias | A (96,2%) | A (98,7%), con advertencia de horas | B (83,6%) |
+| Resultado con evaluaciones ficticias | A (96,2%) | A (98,3%), con advertencia de horas | B (83,6%) |
 
 El modelo resuelve los tres casos, aunque no se parecen entre sí: uno con 4 tareas en 2 ámbitos y otro con
 12 tareas en los 4. Cada ámbito pesa lo que la persona comprometió, así que la gestión vale 72,5% en el caso 1

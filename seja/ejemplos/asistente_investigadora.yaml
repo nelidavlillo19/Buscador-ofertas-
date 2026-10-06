@@ -16,11 +16,11 @@ tareas:
   - ambito: docencia
     subcategoria: cursos_pregrado
     descripcion: Didáctica de la Historia I
-    instrumento: {nombre: Pauta de observación de clases, puntaje: 3.6, min: 1, max: 4}
+    instrumento: {nombre: Pauta de observación de clases, puntaje: 3.9, min: 1, max: 4}
   - ambito: docencia
     subcategoria: cursos_postgrado
     descripcion: Seminario de investigación (Magíster)
-    instrumento: {nombre: Pauta programa de curso, puntaje: 6.4, min: 1, max: 7}
+    instrumento: {nombre: Pauta programa de curso, puntaje: 6.9, min: 1, max: 7}
   - ambito: docencia
     subcategoria: direccion_titulacion
     descripcion: Guía de tesis de licenciatura

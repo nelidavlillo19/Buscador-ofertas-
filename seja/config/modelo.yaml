@@ -38,10 +38,34 @@ carga_docente:
 # Sobre 100% sólo se llega con excedentes validados (logrado > comprometido).
 umbrales:
   A+: 101  # Sobresaliente: supera el compromiso
-  A: 90    # Cumplimiento pleno del compromiso
-  B: 75    # Cumplimiento bueno
-  C: 60    # Cumplimiento parcial (requiere mejora)
-  D: 0     # Insuficiente
+  A: 90    # 90% a 100%: cumplimiento pleno del compromiso
+  B: 75    # 75% a 89%: cumplimiento bueno
+  C: 55    # 55% a 74%: cumplimiento parcial (requiere mejora)
+  D: 0     # menos de 55%: insuficiente
+
+# Tope (% de cumplimiento) con que cuenta una tarea con excedente validado. Lo que la supera no sube
+# la nota, pero queda registrado como destacado para el reconocimiento institucional.
+tope_excedente: 120
+
+# Situaciones especiales (art. 37 del Reglamento de Carrera Académica).
+# - Ausencia de más de `meses_suspension` meses por un motivo de `suspenden`: la evaluación se suspende.
+# - Cualquier otra situación: se evalúa en relación al % de la jornada comprometida que la persona dedicó
+#   al cumplimiento de sus funciones (las metas de la evidencia se ajustan a ese %).
+# En ambos casos se informa a la Oficina y a las autoridades.
+situaciones_especiales:
+  meses_suspension: 5
+  suspenden: [enfermedad, maternidad]
+  motivos:
+    enfermedad: Licencia médica por enfermedad
+    maternidad: Permiso o licencia por maternidad
+    parental: Permiso postnatal parental o cuidados parentales
+    permiso_sin_goce: Permiso sin goce de remuneraciones
+    comision_servicio: Comisión de servicio
+    cargo_directivo: Cargo en la planta directiva
+    estudios: Estudios de postgrado o postdoctorado
+    otra: Otra situación
+  descripcion_suspension: Ausencia prolongada por enfermedad o maternidad (art. 37)
+  informar_a: la Oficina de Evaluación de Desempeño Académico y las autoridades correspondientes
 
 descripcion_letras:
   A+: Sobresaliente, cumplimiento sobre lo comprometido (desde 101%), acreditado y validado

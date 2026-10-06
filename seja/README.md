@@ -65,23 +65,48 @@ cuente más dentro de su ámbito; si no se indica, el ámbito es un promedio sim
 - **10%**: evaluación de los estudiantes.
 - Si la persona está eximida de docencia (art. 37 a), se marca `exento_estudiantes: true` y ese 10% pasa a los ámbitos.
 
-### 4. Clasificación (umbrales provisorios)
+### 4. Clasificación
 
 | Letra | % de cumplimiento final | Significado |
 |---|---|---|
 | **A+** | ≥ 101% | Sobresaliente: cumplimiento sobre lo comprometido |
-| **A** | ≥ 90% | Cumplimiento pleno |
-| **B** | ≥ 75% | Cumplimiento bueno |
-| **C** | ≥ 60% | Cumplimiento parcial (requiere mejora) |
-| **D** | < 60% | Insuficiente |
+| **A** | 90% a 100% | Cumplimiento pleno |
+| **B** | 75% a 89% | Cumplimiento bueno |
+| **C** | 55% a 74% | Cumplimiento parcial (requiere mejora) |
+| **D** | menos de 55% | Insuficiente |
 
 Sobre 100% sólo se llega con excedentes validados (`validado: true`); un excedente sin validar cuenta como 100%.
+
+**Tope y reconocimiento institucional.** Una tarea con excedente validado cuenta como máximo **120%**
+(`tope_excedente`). Lo que pase de ahí no sube la calificación, pero queda registrado: el informe lista
+**en qué destaca** la persona (tarea, subcategoría y % real de cumplimiento). En el JSON va en
+`reconocimiento_institucional`, para el reconocimiento institucional. Con A+ el informe indica además que la
+persona es candidata a reconocimiento.
 La autoevaluación y la evaluación de estudiantes llegan como máximo a 100%.
 
 El informe entrega además la **escala numérica 1–7** según la tabla de equivalencia de la Jornada 2024:
 90–100% → 7 · 80–89% → 6 · 70–79% → 5 · 60–69% → 4 · 50–59% → 3 · 40–49% → 2 · 39% o menos → 1.
 
 Con D (o dos C seguidas) el informe recuerda el ingreso al programa de acompañamiento (art. 41).
+
+### 5. Situaciones especiales (art. 37)
+
+```yaml
+situacion_especial:
+  motivo: enfermedad        # enfermedad, maternidad, parental, permiso_sin_goce, comision_servicio,
+                            # cargo_directivo, estudios u otra
+  meses_ausencia: 6
+  porcentaje_jornada: 60    # % de la jornada comprometida que dedicó a sus funciones
+  detalle: texto libre
+```
+
+- **Ausencia de más de 5 meses por enfermedad o maternidad:** la evaluación se **suspende**. No hay letra ni
+  puntaje.
+- **Cualquier otra situación** (incluidas las ausencias de 5 meses o menos): se evalúa en relación al
+  `porcentaje_jornada`. Las metas con evidencia se ajustan a ese % (por ejemplo, 2 publicaciones al 50% → 1).
+  El excedente se cuenta sólo si lo logrado supera la meta original.
+- **En ambos casos** el informe indica que se debe informar a la Oficina de Evaluación de Desempeño Académico y
+  a las autoridades correspondientes (campo `informar_a` en el JSON).
 Los umbrales y pesos se cambian en [`config/modelo.yaml`](config/modelo.yaml), sin tocar el código.
 
 ## Uso
@@ -118,7 +143,8 @@ definiciones actuales en:
 
 ## Pendiente de definir
 
-- Umbrales definitivos de A, B y C, y si la **A** exige además un mínimo en cada ámbito.
-- Si el excedente de una tarea tiene un tope (hoy 3 publicaciones sobre 2 comprometidas valen 150%).
+- Si la **A** exige además un mínimo en cada ámbito.
+- Valor definitivo del tope de excedente (hoy 120%).
+- Si el permiso postnatal parental también suspende la evaluación cuando supera los 5 meses (hoy sólo
+  enfermedad y maternidad).
 - Instrumentos estandarizados de cada subcategoría y su escala.
-- Factor de corrección por maternidad, licencias y otros contextos (art. 37).

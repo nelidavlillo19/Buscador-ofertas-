@@ -4,12 +4,17 @@ Flujo (Reglamento de Carrera Académica, Título III):
 
 1. Cada TAREA del Compromiso de Desempeño se evalúa con un instrumento estandarizado
    y/o con la evidencia del compromiso → puntaje 0–100.
-2. Las tareas se PROMEDIAN dentro de su ámbito → puntaje del ámbito, que se califica (A–E).
+2. Las tareas se PROMEDIAN dentro de su ámbito → puntaje del ámbito, que se califica (A+–D).
 3. Los ámbitos se ponderan según el % declarado en el compromiso y ocupan el 80% del total;
    la autoevaluación y la evaluación de estudiantes aportan un 10% fijo cada una.
 4. El % de cumplimiento final se clasifica en A+ (desde 101%, sobresaliente), A, B, C o D.
 
-Los excedentes validados (logrado > comprometido) cuentan sobre 100%; sin validar, se topan en 100%.
+Los excedentes validados (logrado > comprometido) cuentan sobre 100% hasta un tope por tarea, y quedan
+registrados como destacados para el reconocimiento institucional; sin validar, se topan en 100%.
+
+Situaciones especiales (art. 37): una ausencia de más de 5 meses por enfermedad o maternidad suspende la
+evaluación; en los demás casos las metas se ajustan al % de la jornada dedicado a sus funciones. En ambos
+casos se informa a la Oficina de Evaluación de Desempeño Académico y a las autoridades correspondientes.
 """
 
 from __future__ import annotations
@@ -35,10 +40,11 @@ class ResultadoTarea:
     ambito: str
     subcategoria: str
     descripcion: str
-    puntaje: float
+    puntaje: float  # el que se promedia (con el tope de excedente aplicado)
     peso: float
     excedente: bool
     detalle: str
+    cumplimiento_real: float  # sin tope: es el que se registra para el reconocimiento
 
 
 @dataclass
@@ -54,28 +60,45 @@ class ResultadoAmbito:
 
 
 @dataclass
+class Destacado:
+    """Tarea con excedente validado: se registra para el reconocimiento institucional."""
+    ambito: str
+    subcategoria: str
+    descripcion: str
+    detalle: str
+    cumplimiento_real: float
+
+
+@dataclass
 class Resultado:
     academico: str
     periodo: str
-    ambitos: list[ResultadoAmbito]
-    autoevaluacion: float
-    ponderacion_autoevaluacion: float
-    estudiantes: float | None
-    ponderacion_estudiantes: float
-    puntaje: float
-    letra: str
+    estado: str  # "calificada" o "suspendida"
+    puntaje: float | None
+    letra: str | None
     descripcion: str
+    nota: int | None  # escala numérica 1–7 según la tabla de equivalencia
     observaciones: list[str]
-    nota: int  # escala numérica 1–7 según la tabla de equivalencia
+    ambitos: list[ResultadoAmbito] = field(default_factory=list)
+    autoevaluacion: float | None = None
+    ponderacion_autoevaluacion: float = 0.0
+    estudiantes: float | None = None
+    ponderacion_estudiantes: float = 0.0
+    destacados: list[Destacado] = field(default_factory=list)
+    situacion_especial: str | None = None
+    informar_a: str | None = None
 
     def como_dict(self) -> dict:
         return {
             "academico": self.academico,
             "periodo": self.periodo,
+            "estado": self.estado,
             "puntaje": self.puntaje,
             "nota": self.nota,
             "letra": self.letra,
             "descripcion": self.descripcion,
+            "situacion_especial": self.situacion_especial,
+            "informar_a": self.informar_a,
             "autoevaluacion": {"puntaje": self.autoevaluacion,
                                "ponderacion": self.ponderacion_autoevaluacion},
             "estudiantes": {"puntaje": self.estudiantes,
@@ -87,6 +110,7 @@ class Resultado:
                  "tareas": [t.__dict__ for t in a.tareas]}
                 for a in self.ambitos
             ],
+            "reconocimiento_institucional": [d.__dict__ for d in self.destacados],
             "observaciones": self.observaciones,
         }
 
@@ -118,16 +142,24 @@ def escalar(datos: dict, contexto: str) -> float:
     return (puntaje - minimo) / (maximo - minimo) * 100
 
 
-def evaluar_evidencia(datos: dict, modelo: dict, contexto: str) -> tuple[float, bool, str]:
-    """% de cumplimiento según la evidencia (sobre 100 sólo con excedente validado) y si hay excedente."""
+def evaluar_evidencia(datos: dict, modelo: dict, contexto: str,
+                      factor: float = 1.0) -> tuple[float, bool, str]:
+    """% de cumplimiento según la evidencia y si hay un excedente validado sobre lo comprometido.
+
+    ``factor`` ajusta la meta al % de la jornada dedicado a las funciones (art. 37). El excedente
+    se cuenta sólo cuando lo logrado supera la meta original, no la ajustada.
+    """
     validado = bool(datos.get("validado", False))
     if "comprometido" in datos:
         comprometido, logrado = float(datos["comprometido"]), float(datos.get("logrado", 0))
         if comprometido <= 0 or logrado < 0:
             raise ErrorCompromiso(f"{contexto}: 'comprometido' debe ser mayor que 0 y 'logrado' no negativo")
+        meta = comprometido * factor
         excedente = logrado > comprometido and validado
-        puntaje = (logrado / comprometido if excedente else min(logrado / comprometido, 1)) * 100
+        puntaje = (logrado / meta if excedente else min(logrado / meta, 1)) * 100
         detalle = f"evidencia {logrado:g}/{comprometido:g}"
+        if factor != 1:
+            detalle += f" (meta ajustada a {meta:g} por jornada al {factor:.0%})"
         if logrado > comprometido and not validado:
             detalle += ", excedente sin validar: se considera 100"
         return puntaje, excedente, detalle
@@ -149,7 +181,7 @@ def a_escala_numerica(puntaje: float, modelo: dict) -> int:
     return modelo["escala_numerica"][-1][1]
 
 
-def evaluar_tarea(tarea: dict, modelo: dict, n: int) -> ResultadoTarea:
+def evaluar_tarea(tarea: dict, modelo: dict, n: int, factor: float = 1.0) -> ResultadoTarea:
     ambito, sub = tarea.get("ambito"), tarea.get("subcategoria")
     contexto = f"Tarea {n} ({tarea.get('descripcion', sub)})"
     if ambito not in modelo["ambitos"]:
@@ -164,7 +196,7 @@ def evaluar_tarea(tarea: dict, modelo: dict, n: int) -> ResultadoTarea:
         puntajes.append(escalar(tarea["instrumento"], contexto))
         detalles.append(f"instrumento {tarea['instrumento'].get('nombre', '')}".strip())
     if "evidencia" in tarea:
-        puntaje, excedente, detalle = evaluar_evidencia(tarea["evidencia"], modelo, contexto)
+        puntaje, excedente, detalle = evaluar_evidencia(tarea["evidencia"], modelo, contexto, factor)
         puntajes.append(puntaje)
         detalles.append(detalle)
     if not puntajes:
@@ -173,8 +205,13 @@ def evaluar_tarea(tarea: dict, modelo: dict, n: int) -> ResultadoTarea:
     peso = float(tarea.get("peso", 1))
     if peso <= 0:
         raise ErrorCompromiso(f"{contexto}: el peso debe ser mayor que 0")
+    real = sum(puntajes) / len(puntajes)
+    tope = modelo["tope_excedente"]
+    detalle = " + ".join(detalles)
+    if real > tope:
+        detalle += f"; cumplimiento real {real:.0f}%, cuenta con tope de {tope:g}%"
     return ResultadoTarea(ambito, sub, tarea.get("descripcion", nombre_subcategoria(subcategorias[sub])),
-                          round(sum(puntajes) / len(puntajes), 2), peso, excedente, " + ".join(detalles))
+                          round(min(real, tope), 2), peso, excedente, detalle, round(real, 2))
 
 
 def clasificar(puntaje: float, modelo: dict) -> str:
@@ -231,9 +268,42 @@ def ponderacion_compromiso(datos: dict, modelo: dict, observaciones: list[str]) 
     return declarado
 
 
+def situacion_especial(datos: dict, modelo: dict) -> tuple[bool, float, str | None]:
+    """Art. 37: (¿se suspende la evaluación?, factor de jornada, descripción de la situación)."""
+    sit = datos.get("situacion_especial")
+    if not sit:
+        return False, 1.0, None
+    reglas = modelo["situaciones_especiales"]
+    motivo = str(sit.get("motivo", "")).lower()
+    if motivo not in reglas["motivos"]:
+        raise ErrorCompromiso(f"Situación especial: motivo '{motivo}' no válido ({', '.join(reglas['motivos'])})")
+    meses = float(sit.get("meses_ausencia", 0))
+    texto = reglas["motivos"][motivo] + (f", {meses:g} meses" if meses else "")
+    if sit.get("detalle"):
+        texto += f" ({sit['detalle']})"
+    if motivo in reglas["suspenden"] and meses > reglas["meses_suspension"]:
+        return True, 1.0, texto
+    pct = sit.get("porcentaje_jornada")
+    if pct is None or not 0 < float(pct) <= 100:
+        raise ErrorCompromiso("Situación especial: indica 'porcentaje_jornada' (mayor que 0 y hasta 100), "
+                              "el % de la jornada comprometida que dedicó al cumplimiento de sus funciones")
+    return False, float(pct) / 100, texto + f"; evaluada en relación al {float(pct):g}% de la jornada"
+
+
 def calificar(datos: dict, modelo: dict | None = None) -> Resultado:
     modelo = modelo or cargar_modelo()
     observaciones: list[str] = []
+    academico, periodo = str(datos.get("academico", "")), str(datos.get("periodo", ""))
+
+    # 0. Situaciones especiales (art. 37).
+    suspendida, factor, situacion = situacion_especial(datos, modelo)
+    informar_a = modelo["situaciones_especiales"]["informar_a"] if situacion else None
+    if suspendida:
+        return Resultado(academico, periodo, "suspendida", None, None,
+                         modelo["situaciones_especiales"]["descripcion_suspension"], None,
+                         [f"Informar a {informar_a}."], situacion_especial=situacion, informar_a=informar_a)
+    if situacion:
+        observaciones.append(f"Situación especial (art. 37): {situacion}. Informar a {informar_a}.")
 
     # 1. Ponderación declarada en el compromiso (% de la carga por ámbito, o calculada desde las horas).
     declarado = ponderacion_compromiso(datos, modelo, observaciones)
@@ -255,7 +325,7 @@ def calificar(datos: dict, modelo: dict | None = None) -> Resultado:
     p_compromiso = 1 - p_auto - p_est
 
     # 3. Tareas → promedio por ámbito.
-    tareas = [evaluar_tarea(t, modelo, i) for i, t in enumerate(datos.get("tareas") or [], 1)]
+    tareas = [evaluar_tarea(t, modelo, i, factor) for i, t in enumerate(datos.get("tareas") or [], 1)]
     ambitos = []
     for clave, pct in declarado.items():
         propias = [t for t in tareas if t.ambito == clave]
@@ -283,19 +353,29 @@ def calificar(datos: dict, modelo: dict | None = None) -> Resultado:
         observaciones.append("Ingresa al programa institucional de acompañamiento y fortalecimiento "
                              "académico (art. 41; también tras dos C consecutivas).")
 
-    return Resultado(str(datos.get("academico", "")), str(datos.get("periodo", "")), ambitos,
+    # 5. Lo que destaca (excedentes validados), para el reconocimiento institucional.
+    destacados = [Destacado(t.ambito, t.subcategoria, t.descripcion, t.detalle, t.cumplimiento_real)
+                  for a in ambitos for t in a.tareas if t.excedente]
+    if letra == "A+":
+        observaciones.append("Desempeño sobresaliente: candidato/a a reconocimiento institucional.")
+
+    return Resultado(academico, periodo, "calificada", total, letra, modelo["descripcion_letras"][letra],
+                     a_escala_numerica(total, modelo), observaciones, ambitos,
                      round(auto, 2), p_auto, None if est is None else round(est, 2), p_est,
-                     total, letra, modelo["descripcion_letras"][letra], observaciones,
-                     a_escala_numerica(total, modelo))
+                     destacados, situacion, informar_a)
 
 
 def informe(r: Resultado) -> str:
     """Informe en texto para revisar o adjuntar al expediente académico."""
     lineas = [f"Calificación académica SEJA — {r.academico} ({r.periodo})", "=" * 60]
+    if r.estado == "suspendida":
+        lineas += [f"EVALUACIÓN SUSPENDIDA — {r.descripcion}", f"Situación: {r.situacion_especial}"]
+        lineas += ["", "Observaciones:"] + [f"  - {o}" for o in r.observaciones]
+        return "\n".join(lineas)
     for a in r.ambitos:
         lineas.append(f"\n{a.nombre}  [declarado {a.declarado:.1f}% → pondera {a.ponderacion:.1%}]")
         for t in a.tareas:
-            extra = " ★ excedente validado" if t.excedente else ""
+            extra = " ★ destaca" if t.excedente else ""
             peso = f" ×{t.peso:g}" if t.peso != 1 else ""
             lineas.append(f"  · [{t.subcategoria}] {t.descripcion}: {t.puntaje:.1f}{peso} ({t.detalle}){extra}")
         lineas.append(f"  Promedio del ámbito: {a.puntaje:.1f} → {a.letra}")
@@ -304,6 +384,10 @@ def informe(r: Resultado) -> str:
         lineas.append(f"Evaluación de estudiantes: {r.estudiantes:.1f}  [pondera {r.ponderacion_estudiantes:.0%}]")
     lineas += ["-" * 60, f"CUMPLIMIENTO FINAL: {r.puntaje:.1f}%  (escala numérica {r.nota})",
                f"CLASIFICACIÓN: {r.letra} — {r.descripcion}"]
+    if r.destacados:
+        lineas += ["", "Reconocimiento institucional — destaca en:"]
+        lineas += [f"  ★ {d.descripcion} ({d.subcategoria}): {d.cumplimiento_real:.0f}% de lo comprometido"
+                   for d in r.destacados]
     if r.observaciones:
         lineas += ["", "Observaciones:"] + [f"  - {o}" for o in r.observaciones]
     return "\n".join(lineas)

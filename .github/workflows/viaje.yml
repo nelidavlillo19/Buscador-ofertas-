@@ -1,12 +1,9 @@
 name: Reporte de viaje (cada 6 horas)
 
+# Cancelado a pedido: ya no corre solo. Para reactivar, vuelve a agregar:
+#   schedule: [{cron: "40 */6 * * *"}]  y  push a disparos/viaje.txt
 on:
-  schedule:
-    - cron: "40 */6 * * *"   # cada 6 horas (GitHub puede atrasarlo un poco)
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: ["disparos/viaje.txt"]
 
 permissions:
   contents: write

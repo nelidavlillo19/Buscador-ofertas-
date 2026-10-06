@@ -26,10 +26,12 @@ categorias:
     incluir_tambien: [zapatilla, zapato, bota, botin, mochila, baston, bastón]
     excluir: [perro, mascota, juguete, macetero, libro]
 
-  # ---------- Viaje (revisión cada 6 horas con correo propio: grupo viaje) ----------
+  # ---------- Viaje: CANCELADO a pedido (activa: false). Para reactivar, borra esas líneas y
+  #            vuelve a poner el horario en .github/workflows/viaje.yml ----------
   maleta_cabina:
     nombre: 🧳 Maleta de cabina
     grupo: viaje
+    activa: false
     buscar: [maleta de cabina, maleta cabina, carry on, maleta 20 pulgadas, maleta pequeña rigida]
     incluir: [maleta, carry on, carry-on, trolley]
     incluir_tambien: [cabina, carry, <20>, 20", 20 pulgadas, 55 cm, 55cm, <s>, pequeña, small, 18"]
@@ -39,6 +41,7 @@ categorias:
   organizadores_equipaje:
     nombre: 🧳 Organizadores de equipaje
     grupo: viaje
+    activa: false
     buscar: [organizador de maleta, organizador de equipaje, cubos organizadores viaje, packing cubes,
              set organizador viaje, bolsas organizadoras viaje]
     incluir: [organizador, cubo, cubos, packing, neceser, bolsa, set de bolsas]
@@ -47,6 +50,7 @@ categorias:
   banano_documentos:
     nombre: 🧳 Banano / porta documentos
     grupo: viaje
+    activa: false
     buscar: [banano porta documentos, porta pasaporte, banano viaje, riñonera viaje, porta documentos viaje]
     incluir: [banano, riñonera, rinonera, porta documento, portadocumento, porta pasaporte, portapasaporte,
               billetera de viaje, cartera de viaje]

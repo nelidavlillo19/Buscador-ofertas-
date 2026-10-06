@@ -32,7 +32,15 @@ log = logging.getLogger("ofertas")
 def cargar_config() -> dict:
     leer = lambda nombre: yaml.safe_load((RAIZ / "config" / nombre).read_text(encoding="utf-8"))  # noqa: E731
     avisos = leer("avisos.yaml") if (RAIZ / "config" / "avisos.yaml").exists() else {}
-    return {"tiendas": leer("tiendas.yaml")["tiendas"], "productos": leer("productos.yaml"), "avisos": avisos or {}}
+    productos = leer("productos.yaml")
+    # activa: false en una categoría la pausa (no se busca ni se avisa) sin borrarla
+    pausadas = {k for k, v in productos["categorias"].items() if v.get("activa") is False}
+    productos["categorias"] = {k: v for k, v in productos["categorias"].items() if k not in pausadas}
+    tiendas = leer("tiendas.yaml")["tiendas"]
+    for t in tiendas:
+        if t.get("categorias"):
+            t["categorias"] = [c for c in t["categorias"] if c not in pausadas]
+    return {"tiendas": tiendas, "productos": productos, "avisos": avisos or {}}
 
 
 def solo_nuevas(config: dict, fecha: str) -> bool:

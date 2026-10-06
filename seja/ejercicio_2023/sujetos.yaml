@@ -429,12 +429,13 @@ compromisos_2024:
     declarado: "Sin horas por ámbito («–»); total 22 h."
     horas: {}
     situacion_especial: {motivo: estudios, meses_ausencia: 12, detalle: "comisión de estudios de doctorado"}
+    situacion_por_definir: "Comisión de estudios de doctorado: la evaluación depende del período y las condiciones con que se otorgó, y de los compromisos asociados (declara un proyecto interno como colaboradora y 22 h)."
     actividades:
       investigacion: "Proyecto interno como colaboradora (2024–2025)"
     tareas:
       - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto interno (colaboradora)", etapa: ejecucion}
     notas:
-      - "Está en comisión de estudios de doctorado. Si la comisión supera los 5 meses continuos, la evaluación 2024 se suspende y se informa a la Oficina y a las autoridades."
+      - "Está en comisión de estudios de doctorado. Se debe precisar por cuánto tiempo y en qué condiciones se otorgó, y qué compromisos tiene asociados: si los hay, se evalúan en relación a su jornada; si no, y la comisión supera los 5 meses continuos, la evaluación se suspende."
   - sujeto: "15"
     completo: true
     declarado: "Docencia 18,5 · Investigación 18 · VcM 0 · Total 39,5"
@@ -493,19 +494,21 @@ compromisos_2024:
       - "No declara gestión."
 
 # Informes de Cierre 2024, ANONIMIZADOS. En la mayoría, las horas y el 100% provienen de la carga académica
-# (Dirección de Docencia), «sin evidencia en la carpeta individual». `solo_carga: true` marca esas filas: en el
+# (Dirección de Docencia), «sin evidencia en la carpeta individual». `fuente: carga_academica` marca esas filas: en el
 # criterio SEJA estricto cuentan como sin evidencia.
 cierres_2024:
   - sujeto: "03"
+    omitir: true
     jerarquia: asociado
     compromiso: "No se encontró el compromiso en la carpeta"
     horas: {docencia: 20}
     tareas:
-      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Docencia de pregrado (20 h)", estado: cumplido, solo_carga: true}
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Docencia de pregrado (20 h)", estado: cumplido, fuente: carga_academica}
     notas:
       - "Sólo registra 20 h de docencia en una jornada de 44 h: investigación, VcM y gestión sin actividad en la carga."
       - "El informe 2024 registra como año de ingreso uno distinto del informe 2023."
   - sujeto: "19"
+    omitir: true
     jerarquia: titular
     compromiso: "Sin compromiso de desempeño"
     horas: {}
@@ -539,30 +542,32 @@ cierres_2024:
       - "Varias filas no tienen etapa comprometida ni % (proyecto interno, una ponencia, un artículo en revisión). Se evaluaron así: con mecanismo, 100%; «en elaboración», parcial (50%); sin mecanismo, 0%."
       - "La gestión tiene 8,5 h, pero ninguna actividad descrita: queda en 0%. Las demás áreas no tienen horas, así que se pondera con el escenario E1 (igual peso)."
   - sujeto: "21"
+    omitir: true
     jerarquia: titular
     compromiso: "Actividades sólo en la carga académica"
     horas: {docencia: 8.5, investigacion: 12, vinculacion: 2, gestion: 33.5}
     tareas:
-      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Docencia de pregrado (4,5 h)", estado: cumplido, solo_carga: true}
-      - {ambito: docencia, subcategoria: direccion_titulacion, descripcion: "Memorias (4 h)", estado: cumplido, solo_carga: true}
-      - {ambito: investigacion, subcategoria: postulacion_fondos, descripcion: "Postulación a proyecto interno (12 h)", estado: cumplido, solo_carga: true}
-      - {ambito: vinculacion, subcategoria: proyectos_vcm, descripcion: "Proyecto de extensión (2 h)", estado: cumplido, solo_carga: true}
-      - {ambito: gestion, subcategoria: direccion, descripcion: "Secretaría académica del departamento (30 h)", estado: cumplido, solo_carga: true}
-      - {ambito: gestion, subcategoria: comisiones, descripcion: "Coordinación de didáctica (2 h)", estado: cumplido, solo_carga: true}
-      - {ambito: gestion, subcategoria: comisiones, descripcion: "Reunión de departamento (1,5 h)", estado: cumplido, solo_carga: true}
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Docencia de pregrado (4,5 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: docencia, subcategoria: direccion_titulacion, descripcion: "Memorias (4 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: investigacion, subcategoria: postulacion_fondos, descripcion: "Postulación a proyecto interno (12 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: vinculacion, subcategoria: proyectos_vcm, descripcion: "Proyecto de extensión (2 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: gestion, subcategoria: direccion, descripcion: "Secretaría académica del departamento (30 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Coordinación de didáctica (2 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Reunión de departamento (1,5 h)", estado: cumplido, fuente: carga_academica}
     notas:
       - "La carga suma 56 h semanales en una jornada de 44 h."
       - "La gestión ocupa el 59,8% de la carga; la docencia, el 15,2%."
   - sujeto: "22"
+    omitir: true
     jerarquia: asociado
     compromiso: "No se encontró el compromiso en la carpeta"
     horas: {docencia: 30, investigacion: 4, gestion: 11.5}
     tareas:
-      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Docencia de pregrado (30 h)", estado: cumplido, solo_carga: true}
-      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "Artículo como investigador principal (4 h)", estado: cumplido, solo_carga: true}
-      - {ambito: gestion, subcategoria: direccion, descripcion: "Coordinación de área (4 h)", estado: cumplido, solo_carga: true}
-      - {ambito: gestion, subcategoria: gestion_curricular, descripcion: "Coordinación de gestión curricular (6 h)", estado: cumplido, solo_carga: true}
-      - {ambito: gestion, subcategoria: comisiones, descripcion: "Reunión de departamento (1,5 h)", estado: cumplido, solo_carga: true}
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Docencia de pregrado (30 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "Artículo como investigador principal (4 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: gestion, subcategoria: direccion, descripcion: "Coordinación de área (4 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: gestion, subcategoria: gestion_curricular, descripcion: "Coordinación de gestión curricular (6 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Reunión de departamento (1,5 h)", estado: cumplido, fuente: carga_academica}
     notas:
       - "La identificación registra jerarquía Asociado, pero la tabla de funciones usa las de Profesor Titular."
       - "La carga suma 45,5 h en una jornada de 44 h."
@@ -571,30 +576,32 @@ cierres_2024:
     compromiso: "Compromiso y carga académica, sin evidencia en la carpeta"
     horas: {docencia: 8, investigacion: 28, gestion: 5}
     tareas:
-      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Docencia de pregrado (6 h)", estado: cumplido, solo_carga: true}
-      - {ambito: docencia, subcategoria: direccion_titulacion, descripcion: "Memorias (2 h)", estado: cumplido, solo_carga: true}
-      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto interno (6 h)", estado: cumplido, solo_carga: true}
-      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto con financiamiento externo (22 h)", estado: cumplido, solo_carga: true}
-      - {ambito: gestion, subcategoria: direccion, descripcion: "Coordinación de unidad (2 h)", estado: cumplido, solo_carga: true}
-      - {ambito: gestion, subcategoria: comisiones, descripcion: "Claustro de doctorado (1 h)", estado: cumplido, solo_carga: true}
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Docencia de pregrado (6 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: docencia, subcategoria: direccion_titulacion, descripcion: "Memorias (2 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto interno (6 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto con financiamiento externo (22 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: gestion, subcategoria: direccion, descripcion: "Coordinación de unidad (2 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Claustro de doctorado (1 h)", estado: cumplido, fuente: carga_academica}
       - {ambito: gestion, subcategoria: gestion_curricular, descripcion: "Unidad de gestión curricular (2 h)", estado: sin_evidencia}
     notas:
       - "La docencia (19,5%) queda bajo el rango del reglamento para titular (30–50% investigador)."
       - "Una actividad de gestión aparece sin % en el informe."
   - sujeto: "24"
+    omitir: true
     jerarquia: asistente
     compromiso: "No se encontró el compromiso en la carpeta"
     horas: {docencia: 6}
     tareas:
-      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Docencia de pregrado (6 h)", estado: cumplido, solo_carga: true}
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Docencia de pregrado (6 h)", estado: cumplido, fuente: carga_academica}
     notas:
       - "Sólo registra 6 h de docencia en una jornada de 44 h; sin investigación, VcM ni gestión."
   - sujeto: "25"
+    omitir: true
     jerarquia: asociado
     compromiso: "No se encontró el compromiso; hay evidencia en la carpeta"
     horas: {docencia: 18, vinculacion: 4}
     tareas:
-      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Docencia de pregrado (18 h)", estado: cumplido, solo_carga: true}
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Docencia de pregrado (18 h)", estado: cumplido, fuente: carga_academica}
       - {ambito: investigacion, subcategoria: postulacion_fondos, descripcion: "Postulación a proyecto interno", estado: sin_evidencia}
       - {ambito: vinculacion, subcategoria: iniciativas_vcm, descripcion: "Escuela de verano en otra universidad", estado: cumplido, mecanismo: "Constancia"}
     notas:

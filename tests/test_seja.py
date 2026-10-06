@@ -262,7 +262,7 @@ def test_informe_de_cierre():
     assert "Calificación A" in texto and "## Reconocimiento institucional" in texto
     assert "| Liderar proyectos de investigación, innovación o creación competitivos | Sí |" in texto
     assert "| Acreditar formación continua | No declarada |" in texto
-    datos["situacion_especial"] = {"motivo": "estudios", "meses_ausencia": 8}
+    datos["situacion_especial"] = {"motivo": "comision_servicio", "meses_ausencia": 8}
     assert "## Evaluación suspendida" in informe_cierre(datos)
 
 
@@ -274,8 +274,34 @@ def test_informe_del_ejercicio_2023_es_anonimo():
     for nombre in ["Matemática", "Artes Visuales", "Kinesiología", "Música", "DIUMCE", "FONDECYT", "Biología",
                    "Parvularia", "Física", "Castellano", "Francés", "Inglés", "@umce"]:
         assert nombre not in texto
-    # 2024: compromisos con ponderación por horas e informes de cierre con dos criterios de evidencia.
+    # 2024: compromisos con ponderación por horas; cierres sólo con evidencia de la carpeta y sin los que no
+    # tienen compromiso.
     assert "## 7. Compromisos 2024" in texto and "## 8. Informes de cierre 2024" in texto
-    assert "| Sujeto 25 | Asociado | 22,0 | 1 de 3 | 100,0% (A) | 18,2% (D) |" in texto
+    assert "| Sujeto 23 | Titular | 41,0 | 6 de 7 | 0,0% | D |" in texto
     assert "| Sujeto 16 | Sí | 41,5 | 86,7% |" in texto
-    assert "Art. 37: evaluación suspendida" in texto
+    assert "Se omiten los informes de cierre de los sujetos 03, 19, 21, 22, 24 y 25" in texto
+    assert "### Sujeto 25" not in texto
+    assert "Art. 37: por definir" in texto
+
+
+def test_carga_academica_no_acredita_cumplimiento():
+    r = calificar(academico({"docencia": 100}, [
+        tarea("docencia", "cursos_pregrado", evidencia={"estado": "cumplido", "fuente": "carga_academica"})]))
+    t = r.ambitos[0].tareas[0]
+    assert t.puntaje == 0 and "carga académica" in t.mecanismo
+    assert r.letra == "D"
+
+
+@pytest.mark.parametrize("situacion, esperado", [
+    ({"motivo": "estudios", "meses_ausencia": 10, "compromisos_asociados": True, "porcentaje_jornada": 50}, "calificada"),
+    ({"motivo": "estudios", "meses_ausencia": 10, "compromisos_asociados": False}, "suspendida"),
+    ({"motivo": "estudios", "meses_ausencia": 10}, "error"),
+])
+def test_comision_de_estudios_segun_compromisos_asociados(situacion, esperado):
+    datos = academico({"docencia": 100}, [tarea("docencia", evidencia={"estado": "cumplido"})])
+    datos["situacion_especial"] = situacion
+    if esperado == "error":
+        with pytest.raises(ErrorCompromiso, match="compromisos_asociados"):
+            calificar(datos)
+    else:
+        assert calificar(datos).estado == esperado

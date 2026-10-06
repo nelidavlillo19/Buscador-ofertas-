@@ -154,6 +154,10 @@ def evaluar_evidencia(datos: dict, modelo: dict, contexto: str,
     se cuenta sólo cuando lo logrado supera la meta original, no la ajustada.
     """
     validado = bool(datos.get("validado", False))
+    fuente = datos.get("fuente")
+    if fuente in modelo["fuentes_no_validas"]:
+        return 0.0, False, modelo["fuentes_no_validas"][fuente], {
+            "destaca": False, "comprometido": "—", "evidenciado": "Sin evidencia en la carpeta"}
     if "etapa_comprometida" in datos:
         return evaluar_etapa(datos, modelo, contexto, validado)
     if "comprometido" in datos:
@@ -243,8 +247,9 @@ def evaluar_tarea(tarea: dict, modelo: dict, n: int, factor: float = 1.0) -> Res
     if real > tope:
         detalle += f"; cumplimiento real {real:.0f}%, cuenta con tope de {tope:g}%"
     catalogo = subcategorias[sub] if isinstance(subcategorias[sub], dict) else {}
-    mecanismo = (tarea.get("evidencia") or {}).get("mecanismo") or (tarea.get("instrumento") or {}).get("nombre") \
-        or catalogo.get("instrumento", "")
+    fuente = (tarea.get("evidencia") or {}).get("fuente")
+    mecanismo = modelo["fuentes_no_validas"].get(fuente) or (tarea.get("evidencia") or {}).get("mecanismo") \
+        or (tarea.get("instrumento") or {}).get("nombre") or catalogo.get("instrumento", "")
     return ResultadoTarea(ambito, sub, tarea.get("descripcion", nombre_subcategoria(subcategorias[sub])),
                           round(min(real, tope), 2), peso, excedente, detalle, round(real, 2),
                           extra.get("destaca", excedente), mecanismo,
@@ -318,6 +323,15 @@ def situacion_especial(datos: dict, modelo: dict) -> tuple[bool, float, str | No
     texto = reglas["motivos"][motivo] + (f", {meses:g} meses" if meses else "")
     if sit.get("detalle"):
         texto += f" ({sit['detalle']})"
+    if motivo in reglas["con_compromisos_asociados"]:
+        asociados = sit.get("compromisos_asociados")
+        if asociados is None and meses > reglas["meses_suspension"]:
+            raise ErrorCompromiso(f"Situación especial: {reglas['motivos'][motivo].lower()} por {meses:g} meses. "
+                                  "Indica 'compromisos_asociados' (true/false) según la duración y las condiciones "
+                                  "con que se otorgó")
+        if asociados:
+            texto += "; se evalúan los compromisos asociados"
+            meses = 0  # no se suspende: hay compromisos que evaluar
     if meses > reglas["meses_suspension"]:
         return True, 1.0, texto
     pct = sit.get("porcentaje_jornada")

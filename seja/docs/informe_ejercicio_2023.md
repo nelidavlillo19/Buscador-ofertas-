@@ -9,8 +9,8 @@ lang: es
 Se aplicó el modelo de calificación SEJA a los registros 2023 y 2024 de **25 sujetos**:
 
 - **2023:** sujetos 01 a 06, con reporte e informe de cierre; sujetos 07 a 09, con compromiso con horas.
-- **2024:** 12 compromisos (sujetos 02, 08, 09 y 10 a 18) y 8 informes de cierre (sujetos 03 y 19 a 25).
-- **En ambos años:** sujetos 02, 03, 08 y 09.
+- **2024:** 12 compromisos (sujetos 02, 08, 09 y 10 a 18) y 2 informes de cierre con compromiso (sujetos 20 y 23); se omiten 6 informes de cierre sin compromiso de desempeño.
+- **En ambos años:** sujetos 02, 08 y 09.
 
 ### Resultados 2023
 
@@ -26,9 +26,9 @@ Se aplicó el modelo de calificación SEJA a los registros 2023 y 2024 de **25 s
 
 - **Compromisos 2024.** 8 de 12 permiten calcular la ponderación por horas. Los demás no tienen resumen de horas o el formulario quedó incompleto. El formulario 2024 no tiene casilla de gestión, y las horas de gestión aparecen en observaciones o mezcladas con docencia.
 
-- **Informes de cierre 2024.** En 6 de 8 el cumplimiento sale de la **carga académica** y no de evidencia en la carpeta individual; en varios no se encontró el compromiso. Según esos informes casi todo está al 100%, pero con el criterio SEJA estricto la letra baja en los sujetos 03, 21, 22, 23, 24 y 25.
+- **Informes de cierre 2024.** La evidencia válida es la de la carpeta individual (Drive). La información que la Oficina recoge de la carga académica es un trabajo adicional y no acredita cumplimiento: esas actividades valen 0%, y quien no provee evidencias obtiene la calificación mínima. Con ese criterio, el sujeto 20 obtiene 71,9% (C) y el sujeto 23 obtiene 0,0% (D). Se omiten los informes de cierre de 6 sujetos sin compromiso de desempeño, porque la falta puede deberse a que el nivel central no entregó toda la información a la Oficina para la inducción.
 
-- **Carga fuera de rango.** Hay cargas sobre la jornada de 44 h (56 h y 45,5 h) y cargas muy bajas (6 h y 20 h), además de docencias fuera del rango del reglamento (86,7% y 19,5%).
+- **Carga fuera de rango.** Hay docencias fuera del rango del reglamento (86,7% en un compromiso y 19,5% en un cierre) y horas declaradas fuera de los resúmenes.
 
 ### Conclusión
 
@@ -504,7 +504,7 @@ Para cada compromiso se calcula la ponderación por horas (fórmula 3.3) y se de
 | Sujeto 11 | Sí | 37,0 | 59,5% | 32,4% | — | 8,1% | 6 | — |
 | Sujeto 12 | Sí | 42,0 | 42,9% | 57,1% | — | — | 4 | — |
 | Sujeto 13 | Sí | 31,5 | 46,0% | 22,2% | 15,9% | 15,9% | 8 | Proporcional (72,7%) |
-| Sujeto 14 | No | — | — | — | — | — | 1 | Suspendida |
+| Sujeto 14 | No | — | — | — | — | — | 1 | Por definir |
 | Sujeto 15 | Sí | 39,0 | 43,6% | 46,2% | — | 10,3% | 8 | — |
 | Sujeto 16 | Sí | 41,5 | 86,7% | — | — | 13,3% | 5 | — |
 | Sujeto 17 | Sí | 39,0 | 59,0% | 15,4% | 25,6% | — | 5 | — |
@@ -758,8 +758,8 @@ _Sin horas por ámbito: no se puede calcular la ponderación $w_a$._
 
 **Notas:**
 
-- Está en comisión de estudios de doctorado. Si la comisión supera los 5 meses continuos, la evaluación 2024 se suspende y se informa a la Oficina y a las autoridades.
-- **Art. 37: evaluación suspendida** — Estudios de postgrado o postdoctorado, 12 meses (comisión de estudios de doctorado).
+- Está en comisión de estudios de doctorado. Se debe precisar por cuánto tiempo y en qué condiciones se otorgó, y qué compromisos tiene asociados: si los hay, se evalúan en relación a su jornada; si no, y la comisión supera los 5 meses continuos, la evaluación se suspende.
+- **Art. 37: por definir** — Comisión de estudios de doctorado: la evaluación depende del período y las condiciones con que se otorgó, y de los compromisos asociados (declara un proyecto interno como colaboradora y 22 h).
 
 ### Sujeto 15
 
@@ -887,99 +887,50 @@ _Sin horas por ámbito: no se puede calcular la ponderación $w_a$._
 
 ## 8. Informes de cierre 2024
 
-Se calcula $C$ con dos criterios de evidencia. **Según el informe:** se acepta el 100% que el informe asigna por carga académica. **SEJA estricto:** la carga académica dice qué se asignó, no que se cumplió, así que las filas sin evidencia en la carpeta individual valen $p_t = 0$. La ponderación usa las horas de la carga (fórmula 3.3).
+**Criterio de evidencia.** Es obligatorio subir la evidencia a la carpeta individual (Drive). Cuando la Oficina recoge información de la carga académica, se trata de un trabajo adicional que no acredita cumplimiento: esas actividades obtienen $p_t = 0$, y la persona que no provee evidencias obtiene la calificación mínima. La carga académica sí se usa para las horas $h_a$ de la ponderación (fórmula 3.3).
 
-| Sujeto | Jerarquía | Horas en la carga | Filas sólo con carga académica | $C$ según informe | $C$ SEJA estricto |
+**Sujetos omitidos.** Se omiten los informes de cierre de los sujetos 03, 19, 21, 22, 24 y 25, que no tienen compromiso de desempeño: la falta puede deberse a un error del nivel central, que no entregó toda la información a la Oficina para realizar la inducción.
+
+| Sujeto | Jerarquía | Horas registradas | Actividades sin evidencia en la carpeta | $C$ | Letra |
 |---|---|---|---|---|---|
-| Sujeto 03 | Asociado | 20,0 | 1 de 1 | 100,0% (A) | 0,0% (D) |
-| Sujeto 19 | Titular | — | — | No calificable | No calificable |
-| Sujeto 20 | Asociado | 8,5 | 0 de 16 | 71,9% (C) | 71,9% (C) |
-| Sujeto 21 | Titular | 56,0 | 7 de 7 | 100,0% (A) | 0,0% (D) |
-| Sujeto 22 | Asociado | 45,5 | 5 de 5 | 100,0% (A) | 0,0% (D) |
-| Sujeto 23 | Titular | 41,0 | 6 de 7 | 95,9% (A) | 0,0% (D) |
-| Sujeto 24 | Asistente | 6,0 | 1 de 1 | 100,0% (A) | 0,0% (D) |
-| Sujeto 25 | Asociado | 22,0 | 1 de 3 | 100,0% (A) | 18,2% (D) |
-
-### Sujeto 03 (también en 2023)
-
-**Jerarquía:** Asociado · **Compromiso:** No se encontró el compromiso en la carpeta
-
-| Ámbito | Actividad | Mecanismo de evidencia | $p_t$ según informe | $p_t$ SEJA estricto |
-|---|---|---|---|---|
-| Docencia | Docencia de pregrado (20 h) | Carga académica (sin evidencia en la carpeta) | 100,0% | 0,0% |
-
-$$\sum_b h_b = 20{,}0 = 20{,}0 \text{ h semanales}$$
-
-$$w_{\text{Doc}} = \frac{20{,}0}{20{,}0} = 1{,}000$$
-
-| Ámbito | $w_a$ | $S_a$ según informe | $S_a$ SEJA estricto |
-|---|---|---|---|
-| Docencia en los distintos niveles formativos | 100,0% | 100,0% | 0,0% |
-
-$$C_{\text{informe}} = 1{,}000 \cdot 100{,}0 = 100{,}0\%$$
-
-$$C_{\text{estricto}} = 1{,}000 \cdot 0{,}0 = 0{,}0\%$$
-
-| Criterio | $C$ | Letra (AE = EE = C) | Escala |
-|---|---|---|---|
-| Según informe 2024 (carga académica = cumplido) | 100,0% | A | 7 |
-| SEJA estricto (sin evidencia en la carpeta = 0%) | 0,0% | D | 1 |
-
-**Notas:**
-
-- Sólo registra 20 h de docencia en una jornada de 44 h: investigación, VcM y gestión sin actividad en la carga.
-- El informe 2024 registra como año de ingreso uno distinto del informe 2023.
-
-### Sujeto 19
-
-**Jerarquía:** Titular · **Compromiso:** Sin compromiso de desempeño
-
-**No calificable:** no hay compromiso, carga ni evidencias registradas.
-
-**Notas:**
-
-- No hay compromiso ni actividades registradas: el informe concluye que no es posible evidenciar el período. Con el modelo SEJA no hay base para calificar.
+| Sujeto 20 | Asociado | 8,5 | 0 de 16 | 71,9% | C |
+| Sujeto 23 | Titular | 41,0 | 6 de 7 | 0,0% | D |
 
 ### Sujeto 20
 
 **Jerarquía:** Asociado · **Compromiso:** Compromiso con evidencias en la carpeta
 
-| Ámbito | Actividad | Mecanismo de evidencia | $p_t$ según informe | $p_t$ SEJA estricto |
-|---|---|---|---|---|
-| Docencia | Docencia de pregrado | Programación académica | 100,0% | 100,0% |
-| Investigación, Creación e Innovación | Postulación a fondo externo | Comprobante de postulación | 100,0% | 100,0% |
-| Investigación, Creación e Innovación | Artículo 1 (aceptado) | Revista | 100,0% | 100,0% |
-| Investigación, Creación e Innovación | Artículo 2 (publicado) | DOI | 100,0% | 100,0% |
-| Investigación, Creación e Innovación | Artículo 3 (publicado) | Revista | 100,0% | 100,0% |
-| Investigación, Creación e Innovación | Artículo 4 (enviado) | Comprobante de envío | 100,0% | 100,0% |
-| Investigación, Creación e Innovación | Artículo 5 (en revisión) | Correo | 100,0% | 100,0% |
-| Investigación, Creación e Innovación | Charla | Constancia | 100,0% | 100,0% |
-| Investigación, Creación e Innovación | Evaluación de artículo para revista | Constancia | 100,0% | 100,0% |
-| Investigación, Creación e Innovación | Proyecto interno (en elaboración) | Constancia de la entidad (postulación, adjudicación o cierre) y evaluación de la Dirección de Investigación | 50,0% | 50,0% |
-| Investigación, Creación e Innovación | Ponencias 1 a 3 (congresos) | Certificado | 100,0% | 100,0% |
-| Investigación, Creación e Innovación | Ponencia 4 (jornada de investigación) | Certificado de la entidad organizadora | 0,0% | 0,0% |
-| Investigación, Creación e Innovación | Congresos de la disciplina | Certificado de la entidad organizadora | 100,0% | 100,0% |
-| Vinculación con el Medio y Extensión | Ponencia de VcM | Constancia | 100,0% | 100,0% |
-| Vinculación con el Medio y Extensión | Ciclo de talleres de extensión | Afiche | 100,0% | 100,0% |
-| Vinculación con el Medio y Extensión | Adjudicación de proyecto de VcM para 2025 ★ | Carta de adjudicación | 100,0% | 100,0% |
+| Ámbito | Actividad | Evidencia | $p_t$ |
+|---|---|---|---|
+| Docencia | Docencia de pregrado | Programación académica | 100,0% |
+| Investigación, Creación e Innovación | Postulación a fondo externo | Comprobante de postulación | 100,0% |
+| Investigación, Creación e Innovación | Artículo 1 (aceptado) | Revista | 100,0% |
+| Investigación, Creación e Innovación | Artículo 2 (publicado) | DOI | 100,0% |
+| Investigación, Creación e Innovación | Artículo 3 (publicado) | Revista | 100,0% |
+| Investigación, Creación e Innovación | Artículo 4 (enviado) | Comprobante de envío | 100,0% |
+| Investigación, Creación e Innovación | Artículo 5 (en revisión) | Correo | 100,0% |
+| Investigación, Creación e Innovación | Charla | Constancia | 100,0% |
+| Investigación, Creación e Innovación | Evaluación de artículo para revista | Constancia | 100,0% |
+| Investigación, Creación e Innovación | Proyecto interno (en elaboración) | Constancia de la entidad (postulación, adjudicación o cierre) y evaluación de la Dirección de Investigación | 50,0% |
+| Investigación, Creación e Innovación | Ponencias 1 a 3 (congresos) | Certificado | 100,0% |
+| Investigación, Creación e Innovación | Ponencia 4 (jornada de investigación) | Certificado de la entidad organizadora | 0,0% |
+| Investigación, Creación e Innovación | Congresos de la disciplina | Certificado de la entidad organizadora | 100,0% |
+| Vinculación con el Medio y Extensión | Ponencia de VcM | Constancia | 100,0% |
+| Vinculación con el Medio y Extensión | Ciclo de talleres de extensión | Afiche | 100,0% |
+| Vinculación con el Medio y Extensión | Adjudicación de proyecto de VcM para 2025 ★ | Carta de adjudicación | 100,0% |
 
 Ponderación: escenario E1 (igual peso), porque sólo la gestión tiene horas registradas.
 
-| Ámbito | $w_a$ | $S_a$ según informe | $S_a$ SEJA estricto |
+| Ámbito | $w_a$ | $S_a$ | Letra del ámbito |
 |---|---|---|---|
-| Docencia en los distintos niveles formativos | 25,0% | 100,0% | 100,0% |
-| Investigación, Creación e Innovación | 25,0% | 87,5% | 87,5% |
-| Vinculación con el Medio y Extensión | 25,0% | 100,0% | 100,0% |
-| Gestión Académica | 25,0% | 0,0% | 0,0% |
+| Docencia en los distintos niveles formativos | 25,0% | 100,0% | A |
+| Investigación, Creación e Innovación | 25,0% | 87,5% | B |
+| Vinculación con el Medio y Extensión | 25,0% | 100,0% | A |
+| Gestión Académica | 25,0% | 0,0% | D |
 
-$$C_{\text{informe}} = 0{,}250 \cdot 100{,}0 + 0{,}250 \cdot 87{,}5 + 0{,}250 \cdot 100{,}0 + 0{,}250 \cdot 0{,}0 = 71{,}9\%$$
+$$C = 0{,}250 \cdot 100{,}0 + 0{,}250 \cdot 87{,}5 + 0{,}250 \cdot 100{,}0 + 0{,}250 \cdot 0{,}0 = 71{,}9\%$$
 
-$$C_{\text{estricto}} = 0{,}250 \cdot 100{,}0 + 0{,}250 \cdot 87{,}5 + 0{,}250 \cdot 100{,}0 + 0{,}250 \cdot 0{,}0 = 71{,}9\%$$
-
-| Criterio | $C$ | Letra (AE = EE = C) | Escala |
-|---|---|---|---|
-| Según informe 2024 (carga académica = cumplido) | 71,9% | C | 5 |
-| SEJA estricto (sin evidencia en la carpeta = 0%) | 71,9% | C | 5 |
+**Resultado:** $C = 71{,}9\%$ → **C** (escala 5), con el supuesto neutro $AE = EE = C$.
 
 **Destaca en:** Adjudicación de proyecto de VcM para 2025.
 
@@ -990,190 +941,48 @@ $$C_{\text{estricto}} = 0{,}250 \cdot 100{,}0 + 0{,}250 \cdot 87{,}5 + 0{,}250 \
 - La gestión tiene 8,5 h, pero ninguna actividad descrita: queda en 0%. Las demás áreas no tienen horas, así que se pondera con el escenario E1 (igual peso).
 - Gestión Académica: declarado en el compromiso pero sin tareas evaluadas (puntaje 0).
 
-### Sujeto 21
-
-**Jerarquía:** Titular · **Compromiso:** Actividades sólo en la carga académica
-
-| Ámbito | Actividad | Mecanismo de evidencia | $p_t$ según informe | $p_t$ SEJA estricto |
-|---|---|---|---|---|
-| Docencia | Docencia de pregrado (4,5 h) | Carga académica (sin evidencia en la carpeta) | 100,0% | 0,0% |
-| Docencia | Memorias (4 h) | Carga académica (sin evidencia en la carpeta) | 100,0% | 0,0% |
-| Investigación, Creación e Innovación | Postulación a proyecto interno (12 h) | Carga académica (sin evidencia en la carpeta) | 100,0% | 0,0% |
-| Vinculación con el Medio y Extensión | Proyecto de extensión (2 h) | Carga académica (sin evidencia en la carpeta) | 100,0% | 0,0% |
-| Gestión Académica | Secretaría académica del departamento (30 h) | Carga académica (sin evidencia en la carpeta) | 100,0% | 0,0% |
-| Gestión Académica | Coordinación de didáctica (2 h) | Carga académica (sin evidencia en la carpeta) | 100,0% | 0,0% |
-| Gestión Académica | Reunión de departamento (1,5 h) | Carga académica (sin evidencia en la carpeta) | 100,0% | 0,0% |
-
-$$\sum_b h_b = 8{,}5 + 12{,}0 + 2{,}0 + 33{,}5 = 56{,}0 \text{ h semanales}$$
-
-$$w_{\text{Doc}} = \frac{8{,}5}{56{,}0} = 0{,}152 \qquad w_{\text{ICI}} = \frac{12{,}0}{56{,}0} = 0{,}214 \qquad w_{\text{VcM}} = \frac{2{,}0}{56{,}0} = 0{,}036 \qquad w_{\text{Gest}} = \frac{33{,}5}{56{,}0} = 0{,}598$$
-
-| Ámbito | $w_a$ | $S_a$ según informe | $S_a$ SEJA estricto |
-|---|---|---|---|
-| Docencia en los distintos niveles formativos | 15,2% | 100,0% | 0,0% |
-| Investigación, Creación e Innovación | 21,4% | 100,0% | 0,0% |
-| Vinculación con el Medio y Extensión | 3,6% | 100,0% | 0,0% |
-| Gestión Académica | 59,8% | 100,0% | 0,0% |
-
-$$C_{\text{informe}} = 0{,}152 \cdot 100{,}0 + 0{,}214 \cdot 100{,}0 + 0{,}036 \cdot 100{,}0 + 0{,}598 \cdot 100{,}0 = 100{,}0\%$$
-
-$$C_{\text{estricto}} = 0{,}152 \cdot 0{,}0 + 0{,}214 \cdot 0{,}0 + 0{,}036 \cdot 0{,}0 + 0{,}598 \cdot 0{,}0 = 0{,}0\%$$
-
-| Criterio | $C$ | Letra (AE = EE = C) | Escala |
-|---|---|---|---|
-| Según informe 2024 (carga académica = cumplido) | 100,0% | A | 7 |
-| SEJA estricto (sin evidencia en la carpeta = 0%) | 0,0% | D | 1 |
-
-**Notas:**
-
-- La carga suma 56 h semanales en una jornada de 44 h.
-- La gestión ocupa el 59,8% de la carga; la docencia, el 15,2%.
-
-### Sujeto 22
-
-**Jerarquía:** Asociado · **Compromiso:** No se encontró el compromiso en la carpeta
-
-| Ámbito | Actividad | Mecanismo de evidencia | $p_t$ según informe | $p_t$ SEJA estricto |
-|---|---|---|---|---|
-| Docencia | Docencia de pregrado (30 h) | Carga académica (sin evidencia en la carpeta) | 100,0% | 0,0% |
-| Investigación, Creación e Innovación | Artículo como investigador principal (4 h) | Carga académica (sin evidencia en la carpeta) | 100,0% | 0,0% |
-| Gestión Académica | Coordinación de área (4 h) | Carga académica (sin evidencia en la carpeta) | 100,0% | 0,0% |
-| Gestión Académica | Coordinación de gestión curricular (6 h) | Carga académica (sin evidencia en la carpeta) | 100,0% | 0,0% |
-| Gestión Académica | Reunión de departamento (1,5 h) | Carga académica (sin evidencia en la carpeta) | 100,0% | 0,0% |
-
-$$\sum_b h_b = 30{,}0 + 4{,}0 + 11{,}5 = 45{,}5 \text{ h semanales}$$
-
-$$w_{\text{Doc}} = \frac{30{,}0}{45{,}5} = 0{,}659 \qquad w_{\text{ICI}} = \frac{4{,}0}{45{,}5} = 0{,}088 \qquad w_{\text{Gest}} = \frac{11{,}5}{45{,}5} = 0{,}253$$
-
-| Ámbito | $w_a$ | $S_a$ según informe | $S_a$ SEJA estricto |
-|---|---|---|---|
-| Docencia en los distintos niveles formativos | 65,9% | 100,0% | 0,0% |
-| Investigación, Creación e Innovación | 8,8% | 100,0% | 0,0% |
-| Gestión Académica | 25,3% | 100,0% | 0,0% |
-
-$$C_{\text{informe}} = 0{,}659 \cdot 100{,}0 + 0{,}088 \cdot 100{,}0 + 0{,}253 \cdot 100{,}0 = 100{,}0\%$$
-
-$$C_{\text{estricto}} = 0{,}659 \cdot 0{,}0 + 0{,}088 \cdot 0{,}0 + 0{,}253 \cdot 0{,}0 = 0{,}0\%$$
-
-| Criterio | $C$ | Letra (AE = EE = C) | Escala |
-|---|---|---|---|
-| Según informe 2024 (carga académica = cumplido) | 100,0% | A | 7 |
-| SEJA estricto (sin evidencia en la carpeta = 0%) | 0,0% | D | 1 |
-
-**Notas:**
-
-- La identificación registra jerarquía Asociado, pero la tabla de funciones usa las de Profesor Titular.
-- La carga suma 45,5 h en una jornada de 44 h.
-
 ### Sujeto 23
 
 **Jerarquía:** Titular · **Compromiso:** Compromiso y carga académica, sin evidencia en la carpeta
 
-| Ámbito | Actividad | Mecanismo de evidencia | $p_t$ según informe | $p_t$ SEJA estricto |
-|---|---|---|---|---|
-| Docencia | Docencia de pregrado (6 h) | Carga académica (sin evidencia en la carpeta) | 100,0% | 0,0% |
-| Docencia | Memorias (2 h) | Carga académica (sin evidencia en la carpeta) | 100,0% | 0,0% |
-| Investigación, Creación e Innovación | Proyecto interno (6 h) | Carga académica (sin evidencia en la carpeta) | 100,0% | 0,0% |
-| Investigación, Creación e Innovación | Proyecto con financiamiento externo (22 h) | Carga académica (sin evidencia en la carpeta) | 100,0% | 0,0% |
-| Gestión Académica | Coordinación de unidad (2 h) | Carga académica (sin evidencia en la carpeta) | 100,0% | 0,0% |
-| Gestión Académica | Claustro de doctorado (1 h) | Carga académica (sin evidencia en la carpeta) | 100,0% | 0,0% |
-| Gestión Académica | Unidad de gestión curricular (2 h) | — | 0,0% | 0,0% |
+| Ámbito | Actividad | Evidencia | $p_t$ |
+|---|---|---|---|
+| Docencia | Docencia de pregrado (6 h) | Sólo carga académica, sin evidencia en la carpeta individual | 0,0% |
+| Docencia | Memorias (2 h) | Sólo carga académica, sin evidencia en la carpeta individual | 0,0% |
+| Investigación, Creación e Innovación | Proyecto interno (6 h) | Sólo carga académica, sin evidencia en la carpeta individual | 0,0% |
+| Investigación, Creación e Innovación | Proyecto con financiamiento externo (22 h) | Sólo carga académica, sin evidencia en la carpeta individual | 0,0% |
+| Gestión Académica | Coordinación de unidad (2 h) | Sólo carga académica, sin evidencia en la carpeta individual | 0,0% |
+| Gestión Académica | Claustro de doctorado (1 h) | Sólo carga académica, sin evidencia en la carpeta individual | 0,0% |
+| Gestión Académica | Unidad de gestión curricular (2 h) | — | 0,0% |
 
 $$\sum_b h_b = 8{,}0 + 28{,}0 + 5{,}0 = 41{,}0 \text{ h semanales}$$
 
 $$w_{\text{Doc}} = \frac{8{,}0}{41{,}0} = 0{,}195 \qquad w_{\text{ICI}} = \frac{28{,}0}{41{,}0} = 0{,}683 \qquad w_{\text{Gest}} = \frac{5{,}0}{41{,}0} = 0{,}122$$
 
-| Ámbito | $w_a$ | $S_a$ según informe | $S_a$ SEJA estricto |
+| Ámbito | $w_a$ | $S_a$ | Letra del ámbito |
 |---|---|---|---|
-| Docencia en los distintos niveles formativos | 19,5% | 100,0% | 0,0% |
-| Investigación, Creación e Innovación | 68,3% | 100,0% | 0,0% |
-| Gestión Académica | 12,2% | 66,7% | 0,0% |
+| Docencia en los distintos niveles formativos | 19,5% | 0,0% | D |
+| Investigación, Creación e Innovación | 68,3% | 0,0% | D |
+| Gestión Académica | 12,2% | 0,0% | D |
 
-$$C_{\text{informe}} = 0{,}195 \cdot 100{,}0 + 0{,}683 \cdot 100{,}0 + 0{,}122 \cdot 66{,}7 = 95{,}9\%$$
+$$C = 0{,}195 \cdot 0{,}0 + 0{,}683 \cdot 0{,}0 + 0{,}122 \cdot 0{,}0 = 0{,}0\%$$
 
-$$C_{\text{estricto}} = 0{,}195 \cdot 0{,}0 + 0{,}683 \cdot 0{,}0 + 0{,}122 \cdot 0{,}0 = 0{,}0\%$$
-
-| Criterio | $C$ | Letra (AE = EE = C) | Escala |
-|---|---|---|---|
-| Según informe 2024 (carga académica = cumplido) | 95,9% | A | 7 |
-| SEJA estricto (sin evidencia en la carpeta = 0%) | 0,0% | D | 1 |
+**Resultado:** $C = 0{,}0\%$ → **D** (escala 1), con el supuesto neutro $AE = EE = C$.
 
 **Notas:**
 
 - La docencia (19,5%) queda bajo el rango del reglamento para titular (30–50% investigador).
 - Una actividad de gestión aparece sin % en el informe.
 
-### Sujeto 24
-
-**Jerarquía:** Asistente · **Compromiso:** No se encontró el compromiso en la carpeta
-
-| Ámbito | Actividad | Mecanismo de evidencia | $p_t$ según informe | $p_t$ SEJA estricto |
-|---|---|---|---|---|
-| Docencia | Docencia de pregrado (6 h) | Carga académica (sin evidencia en la carpeta) | 100,0% | 0,0% |
-
-$$\sum_b h_b = 6{,}0 = 6{,}0 \text{ h semanales}$$
-
-$$w_{\text{Doc}} = \frac{6{,}0}{6{,}0} = 1{,}000$$
-
-| Ámbito | $w_a$ | $S_a$ según informe | $S_a$ SEJA estricto |
-|---|---|---|---|
-| Docencia en los distintos niveles formativos | 100,0% | 100,0% | 0,0% |
-
-$$C_{\text{informe}} = 1{,}000 \cdot 100{,}0 = 100{,}0\%$$
-
-$$C_{\text{estricto}} = 1{,}000 \cdot 0{,}0 = 0{,}0\%$$
-
-| Criterio | $C$ | Letra (AE = EE = C) | Escala |
-|---|---|---|---|
-| Según informe 2024 (carga académica = cumplido) | 100,0% | A | 7 |
-| SEJA estricto (sin evidencia en la carpeta = 0%) | 0,0% | D | 1 |
-
-**Notas:**
-
-- Sólo registra 6 h de docencia en una jornada de 44 h; sin investigación, VcM ni gestión.
-
-### Sujeto 25
-
-**Jerarquía:** Asociado · **Compromiso:** No se encontró el compromiso; hay evidencia en la carpeta
-
-| Ámbito | Actividad | Mecanismo de evidencia | $p_t$ según informe | $p_t$ SEJA estricto |
-|---|---|---|---|---|
-| Docencia | Docencia de pregrado (18 h) | Carga académica (sin evidencia en la carpeta) | 100,0% | 0,0% |
-| Vinculación con el Medio y Extensión | Escuela de verano en otra universidad | Constancia | 100,0% | 100,0% |
-
-$$\sum_b h_b = 18{,}0 + 4{,}0 = 22{,}0 \text{ h semanales}$$
-
-$$w_{\text{Doc}} = \frac{18{,}0}{22{,}0} = 0{,}818 \qquad w_{\text{VcM}} = \frac{4{,}0}{22{,}0} = 0{,}182$$
-
-| Ámbito | $w_a$ | $S_a$ según informe | $S_a$ SEJA estricto |
-|---|---|---|---|
-| Docencia en los distintos niveles formativos | 81,8% | 100,0% | 0,0% |
-| Vinculación con el Medio y Extensión | 18,2% | 100,0% | 100,0% |
-
-$$C_{\text{informe}} = 0{,}818 \cdot 100{,}0 + 0{,}182 \cdot 100{,}0 = 100{,}0\%$$
-
-$$C_{\text{estricto}} = 0{,}818 \cdot 0{,}0 + 0{,}182 \cdot 100{,}0 = 18{,}2\%$$
-
-| Criterio | $C$ | Letra (AE = EE = C) | Escala |
-|---|---|---|---|
-| Según informe 2024 (carga académica = cumplido) | 100,0% | A | 7 |
-| SEJA estricto (sin evidencia en la carpeta = 0%) | 18,2% | D | 1 |
-
-**Notas:**
-
-- La carga indica 4 h de VcM sin especificar la actividad.
-- La postulación a investigación no tiene horas: se evalúa, pero no pondera.
-- 'Postulación a proyecto interno' pertenece a investigacion, que no tiene % en el compromiso: no se considera en la calificación.
-
 ## 9. Relación entre 2023 y 2024
 
-Documentos disponibles por sujeto. Un ciclo completo requiere, para cada año, el compromiso con horas y el informe de cierre con evidencia.
+Documentos disponibles por sujeto. Un ciclo completo requiere, para cada año, el compromiso con horas y el informe de cierre con evidencia en la carpeta. No se incluyen los informes de cierre 2024 sin compromiso de desempeño (sección 8).
 
 | Sujeto | 2023 | 2024 | Relación |
 |---|---|---|---|
 | Sujeto 01 | Reporte e informe de cierre | — | Sólo 2023 |
 | Sujeto 02 | Reporte e informe de cierre | Compromiso (incompleto) | Ambos años, ciclo incompleto |
-| Sujeto 03 | Reporte e informe de cierre | Informe de cierre (sin compromiso) | Ambos años, ciclo incompleto |
+| Sujeto 03 | Reporte e informe de cierre | — | Sólo 2023 |
 | Sujeto 04 | Reporte e informe de cierre | — | Sólo 2023 |
 | Sujeto 05 | Reporte e informe de cierre | — | Sólo 2023 |
 | Sujeto 06 | Reporte e informe de cierre | — | Sólo 2023 |
@@ -1189,18 +998,12 @@ Documentos disponibles por sujeto. Un ciclo completo requiere, para cada año, e
 | Sujeto 16 | — | Compromiso | Sólo 2024 |
 | Sujeto 17 | — | Compromiso | Sólo 2024 |
 | Sujeto 18 | — | Compromiso (incompleto) | Sólo 2024 |
-| Sujeto 19 | — | Informe de cierre (sin compromiso ni carga) | Sólo 2024 |
 | Sujeto 20 | — | Informe de cierre | Sólo 2024 |
-| Sujeto 21 | — | Informe de cierre | Sólo 2024 |
-| Sujeto 22 | — | Informe de cierre | Sólo 2024 |
 | Sujeto 23 | — | Informe de cierre | Sólo 2024 |
-| Sujeto 24 | — | Informe de cierre | Sólo 2024 |
-| Sujeto 25 | — | Informe de cierre | Sólo 2024 |
 
 ### Comparación de los sujetos con registros en ambos años
 
 - **Sujeto 02.** En 2023 tuvo $C = 33{,}3\%$ (D, E1): investigación y gestión sin evidencia. Su compromiso 2024 está incompleto (sólo docencia), así que no se puede ver si corrigió esos ámbitos.
-- **Sujeto 03.** En 2023 tuvo $C = 68{,}8\%$ (C, E1) con actividades en los 4 ámbitos. En 2024 no se encontró el compromiso y la carga registra sólo docencia (20 h): $C$ = 100,0% según el informe, pero 0,0% con el criterio estricto. El informe 2024 marca como no cumplidas la dirección de memorias y la gestión.
 - **Sujeto 08.** Ponderación por horas 2023 → 2024: Doc 33,8% → 55,6%, ICI 16,0% → 26,7%, VcM 32,1% → 17,8%, Gest 18,0% → 0,0%. La gestión declarada en 2024 no tiene horas, por eso baja a 0%.
 - **Sujeto 09.** Ponderación por horas 2023 → 2024: Doc 47,4% → 55,4%, ICI 38,2% → 36,1%, VcM 10,5% → 4,8%, Gest 3,9% → 3,6%. 
 
@@ -1213,8 +1016,8 @@ Documentos disponibles por sujeto. Un ciclo completo requiere, para cada año, e
 5. **Clasificación de actividades.** Los claustros de postgrado, los núcleos de investigación, la revisión de artículos, las representaciones internacionales y la organización de eventos se registran en gestión, pero pertenecen a investigación o a VcM. El «perfeccionamiento» se registra como un área aparte.
 6. **Las horas se registran de tres formas.** Hay sumas de los dos semestres, valores «x + x» y horas con minutos escritas como decimales («16.45»).
 7. **El formulario 2024 no permite ponderar.** No pide jerarquía, perfil ni jornada, no tiene casilla de gestión y su resumen acepta «horas o porcentaje». Varios formularios quedaron incompletos (sin resumen, sin VcM o sólo con docencia), y las personas anotan horas en observaciones.
-8. **Los informes de cierre 2024 no usan evidencia.** En la mayoría el 100% proviene de la carga académica de la Dirección de Docencia y la carpeta individual no tiene evidencias; en varios casos no se encontró el compromiso. Uno marca funciones de titular para un asociado.
-9. **Cargas académicas sin control.** Hay cargas que superan la jornada (56 h y 45,5 h), cargas de 6 h y 20 h en jornada completa, y una docencia de 86,7% con una persona que deja constancia de no poder comprometer investigación ni VcM.
+8. **Los informes de cierre 2024 asignan 100% sin evidencia.** En la mayoría el 100% proviene de la carga académica de la Dirección de Docencia y la carpeta individual no tiene evidencias. Con el criterio de evidencia en la carpeta esas actividades valen 0%. Además, seis informes corresponden a personas sin compromiso de desempeño, y uno marca funciones de titular para un asociado.
+9. **Cargas académicas sin control.** Una docencia de 86,7% con una persona que deja constancia de no poder comprometer investigación ni VcM, y horas de gestión que quedan fuera de los resúmenes.
 10. **La normativa cambia.** Los informes 2023 revisan funciones de la Res. 320/93. La propuesta de Reglamento de Carrera Académica define funciones por jerarquía y perfil, con carga docente esperada, lo que deja más funciones pendientes en varios sujetos (por ejemplo, formación de académicos, redes y formación continua).
 
 ## 11. Recomendaciones
@@ -1225,9 +1028,11 @@ Documentos disponibles por sujeto. Un ciclo completo requiere, para cada año, e
 4. Pedir el **perfil** (investigador/a o vinculador/a) y mostrar el rango de carga docente de la jerarquía.
 5. Generar el reporte de octubre y el informe de cierre **desde los mismos datos** (`python -m seja reporte` y `python -m seja cierre`), para evitar las inconsistencias entre documentos.
 6. Mantener el registro de **destacados** (excedentes y avances validados) para el reconocimiento institucional.
-7. Exigir que el informe de cierre se base en **evidencia en la carpeta individual**; la carga académica sirve para las horas ($h_a$), no para el cumplimiento ($p_t$).
-8. Validar al cerrar el compromiso que la suma de horas esté dentro de la jornada y que la docencia esté en el rango de la jerarquía y el perfil; alertar a la jefatura si no.
-9. Completar los documentos faltantes para cerrar la relación entre 2023 y 2024 (sección 9).
+7. Recordar que la **carpeta individual (Drive) es obligatoria**: sin evidencia, la actividad vale 0% y la calificación es la mínima. La carga académica sirve para las horas ($h_a$), no para el cumplimiento ($p_t$).
+8. Asegurar con el nivel central que la Oficina reciba la nómina completa para la **inducción**, de modo que nadie quede sin compromiso de desempeño.
+9. Definir para cada **comisión de estudios** su duración, sus condiciones y los compromisos asociados que se evaluarán.
+10. Validar al cerrar el compromiso que la suma de horas esté dentro de la jornada y que la docencia esté en el rango de la jerarquía y el perfil; alertar a la jefatura si no.
+11. Completar los documentos faltantes para cerrar la relación entre 2023 y 2024 (sección 9).
 
 ## Anexo. Parámetros del modelo
 
@@ -1238,5 +1043,7 @@ Documentos disponibles por sujeto. Un ciclo completo requiere, para cada año, e
 | Tope por tarea con excedente validado | 120% |
 | Etapa evidenciada anterior a la comprometida | 50% |
 | Suspensión (art. 37) | Ausencia justificada de más de 5 meses continuos |
+| Comisión de estudios | Se evalúan los compromisos asociados; si no los hay, regla general de suspensión |
+| Evidencia válida | Carpeta individual (Drive); la carga académica no acredita cumplimiento |
 | Umbrales | A+ ≥ 101%; A 90–100%; B 75–89%; C 55–74%; D < 55% |
 | Jornada | Completa 44 h; media 22 h |

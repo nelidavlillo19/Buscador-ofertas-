@@ -153,6 +153,7 @@ th.n { text-align: right; }
           <label for="sit-meses">Meses continuos de ausencia<input id="sit-meses" type="number" min="0" step="0.5" value="0"></label>
           <label for="sit-pct">% de jornada dedicado<input id="sit-pct" type="number" min="0" max="100" value="100"></label>
         </div>
+        <label class="chk" for="sit-asociados"><input id="sit-asociados" type="checkbox"> Comisión de estudios con compromisos asociados (se evalúan aunque dure más de 5 meses)</label>
       </section>
     </div>
 
@@ -279,9 +280,11 @@ function situacion() {
   const motivo = $("sit-motivo").value;
   if (!motivo) return { factor: 1 };
   const S = MODELO.situaciones, meses = num($("sit-meses").value) || 0;
-  const texto = S.motivos[motivo] + (meses ? `, ${fmt(meses, 0)} meses` : "");
-  if (meses > S.mesesSuspension) return { suspendida: true, factor: 1, texto };
+  let texto = S.motivos[motivo] + (meses ? `, ${fmt(meses, 0)} meses` : "");
+  const asociados = motivo === "estudios" && $("sit-asociados").checked;
+  if (meses > S.mesesSuspension && !asociados) return { suspendida: true, factor: 1, texto };
   const pct = num($("sit-pct").value);
+  if (asociados) texto += "; se evalúan los compromisos asociados";
   if (!(pct > 0 && pct <= 100)) return { factor: 1, texto, error: "Situación especial: indica el % de la jornada dedicado a sus funciones (mayor que 0 y hasta 100)." };
   return { factor: pct / 100, texto: `${texto}; evaluada en relación al ${fmt(pct, 0)}% de la jornada` };
 }
@@ -392,7 +395,7 @@ function camposEval(t, i) {
     case "pauta": return n("cumple", "Cumple", 1) + n("no_cumple", "No cumple", 1) + n("no_aplica", "No aplica", 1);
     case "meta": return n("comprometido", "Comprometido") + n("logrado", "Logrado") +
       `<label class="chk" for="t${i}-validado"><input id="t${i}-validado" type="checkbox" data-i="${i}" data-campo="validado"${t.validado ? " checked" : ""}> Excedente validado</label>`;
-    case "estado": return `<label for="t${i}-estado">Estado<select id="t${i}-estado" data-i="${i}" data-campo="estado">${opciones({ cumplido: "Cumplido (100)", parcial: "Parcial (50)", no_cumplido: "No cumplido (0)", sin_evidencia: "Sin evidencia (0)" }, t.estado)}</select></label>`;
+    case "estado": return `<label for="t${i}-estado">Estado<select id="t${i}-estado" data-i="${i}" data-campo="estado">${opciones({ cumplido: "Cumplido (100)", parcial: "Parcial (50)", no_cumplido: "No cumplido (0)", sin_evidencia: "Sin evidencia en la carpeta (0)" }, t.estado)}</select></label>`;
   }
   return "";
 }

@@ -95,6 +95,13 @@ El informe entrega además la **escala numérica 1–7** según la tabla de equi
 
 Con D (o dos C seguidas) el informe recuerda el ingreso al programa de acompañamiento (art. 41).
 
+### Evidencia válida
+
+La evidencia debe estar en la **carpeta individual (Drive)** de la persona. La información que la Oficina recoge de
+otras fuentes, como la carga académica, es un trabajo adicional y **no acredita cumplimiento**: se registra con
+`evidencia: {fuente: carga_academica}` y la tarea vale 0%. Quien no provee evidencias obtiene la calificación mínima.
+La carga académica sí sirve para las horas de la ponderación.
+
 ### 5. Situaciones especiales (art. 37)
 
 ```yaml
@@ -106,6 +113,9 @@ situacion_especial:
   detalle: texto libre
 ```
 
+- **Comisión de estudios:** depende del período y las condiciones con que se otorgó. Si tiene compromisos asociados
+  (`compromisos_asociados: true`), se evalúan esos compromisos en relación al `porcentaje_jornada`, aunque dure más
+  de 5 meses. Si no los tiene, se aplica la regla general de suspensión.
 - **Ausencia justificada de más de 5 meses continuos**, por cualquier motivo: la evaluación se **suspende**.
   No hay letra ni puntaje.
 - **Cualquier otra situación** (incluidas las ausencias de 5 meses o menos): se evalúa en relación al

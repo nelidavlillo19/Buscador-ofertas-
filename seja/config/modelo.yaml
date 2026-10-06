@@ -65,6 +65,11 @@ situaciones_especiales:
     estudios: Estudios de postgrado o postdoctorado
     otra: Otra situación
   descripcion_suspension: Ausencia justificada de más de 5 meses continuos (art. 37)
+  # Motivos cuya situación se otorga con compromisos asociados (por ejemplo, la comisión de estudios): si
+  # existen (`compromisos_asociados: true`), se evalúan esos compromisos en relación al % de jornada, aunque
+  # la situación dure más de 5 meses. Si no se indica, la situación queda por definir según la duración y
+  # las condiciones con que se otorgó.
+  con_compromisos_asociados: [estudios]
   informar_a: la Oficina de Evaluación de Desempeño Académico y las autoridades correspondientes
 
 descripcion_letras:
@@ -84,6 +89,12 @@ escala_numerica:
   - [50, 3]
   - [40, 2]
   - [0, 1]
+
+# Evidencia válida: la que la persona sube a su carpeta individual (Drive). La información que la Oficina
+# recoge de otras fuentes, como la carga académica, no acredita cumplimiento: la tarea vale 0, y quien no
+# provee evidencias obtiene la calificación mínima.
+fuentes_no_validas:
+  carga_academica: Sólo carga académica, sin evidencia en la carpeta individual
 
 # Valor (0–100) de los estados de evidencia cuando no hay meta numérica.
 estados_evidencia:

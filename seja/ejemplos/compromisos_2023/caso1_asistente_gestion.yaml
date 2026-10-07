@@ -1,0 +1,50 @@
+# Caso 1 — tomado de un Compromiso de Desempeño 2023 real, ANONIMIZADO.
+# Sujeto 07 del ejercicio 2023. Asistente, jornada completa.
+# Las horas son las declaradas; los RESULTADOS de evaluación son FICTICIOS, sólo para probar el cálculo.
+#
+# Cómo se ordenó lo declarado:
+# - Docencia: el resumen decía 15 h, pero era la suma de los dos semestres (3 + 3 + 1,5 en cada uno).
+#   Se registran 7,5 h semanales por semestre.
+# - Gestión declaraba 27 h. La coordinación de unas jornadas nacionales de la disciplina (2 h) es
+#   producción de un evento académico, así que pasa a Vinculación con el Medio.
+# - Las asesorías externas (capacitaciones a dos instituciones) no tenían horas: se evalúan como tareas
+#   de VcM, pero no suman ponderación.
+academico: Sujeto 07
+periodo: 2023
+jerarquia: asistente
+perfil: vinculador   # supuesto: el formulario 2023 no pedía perfil
+jornada: completa
+
+horas:
+  docencia: [7.5, 7.5]   # primer y segundo semestre
+  gestion: 25            # UGCD 1,5 + reunión de departamento 1,5 + coordinación de prácticas 22
+  vinculacion: 2         # coordinación de jornadas nacionales
+
+tareas:
+  - ambito: docencia
+    subcategoria: cursos_pregrado
+    descripcion: Asignatura 1 (2 semestres)
+    instrumento: {nombre: Evaluación a la docencia de pregrado (estudiantes), cumple: 17, no_cumple: 2, no_aplica: 1}
+  - ambito: docencia
+    subcategoria: practicas
+    descripcion: Asignaturas 2 y 3 (talleres de práctica)
+    instrumento: {nombre: Encuesta de práctica profesional, cumple: 9, no_cumple: 1}
+  - ambito: gestion
+    subcategoria: coordinacion_practicas
+    descripcion: Coordinación de prácticas del departamento
+    instrumento: {nombre: Evaluación a la gestión, coordinador/a de prácticas, cumple: 10, no_cumple: 0}
+  - ambito: gestion
+    subcategoria: comisiones
+    descripcion: Unidad de gestión curricular del departamento (reuniones semanales)
+    evidencia: {estado: cumplido}
+  - ambito: vinculacion
+    subcategoria: iniciativas_vcm
+    descripcion: Coordinación de jornadas nacionales de la disciplina
+    evidencia: {estado: cumplido}
+  - ambito: vinculacion
+    subcategoria: extension
+    descripcion: Capacitaciones a instituciones externas (asesorías)
+    evidencia: {comprometido: 2, logrado: 2}
+
+autoevaluacion: {cumple: 18, no_cumple: 2}
+estudiantes: {cumple: 17, no_cumple: 2}

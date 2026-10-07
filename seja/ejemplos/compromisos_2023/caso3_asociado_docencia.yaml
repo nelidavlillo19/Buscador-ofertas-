@@ -1,0 +1,60 @@
+# Caso 3 — tomado de un Compromiso de Desempeño 2023 real, ANONIMIZADO.
+# Sujeto 09 del ejercicio 2023. Asociado/a, jornada completa.
+# Las horas son las declaradas; los RESULTADOS de evaluación son FICTICIOS, sólo para probar el cálculo.
+#
+# Cómo se ordenó lo declarado:
+# - Docencia: cada curso decía "4,5 + 4,5" (un valor por semestre) y el resumen indicaba 18 h, o sea
+#   las horas de un semestre.
+# - Gestión declaraba 5,5 h, pero incluía dos actividades de otros ámbitos según las definiciones SEJA:
+#     representar al país en una comisión internacional de divulgación de la disciplina (2 h)
+#     → Vinculación con el Medio (representación institucional);
+#     revisar artículos para una revista científica (2 h) → Investigación (redes académicas).
+#   En Gestión queda la reunión de departamento (1,5 h).
+academico: Sujeto 09
+periodo: 2023
+jerarquia: asociado
+perfil: investigador   # supuesto: el formulario 2023 no pedía perfil
+jornada: completa
+
+horas:
+  docencia: [18, 18]
+  investigacion: 14.5    # proyecto de innovación pedagógica 8 + artículo 4,5 + revisión de artículos 2
+  vinculacion: 4         # seminario de divulgación 2 + comisión internacional de divulgación 2
+  gestion: 1.5           # reunión de departamento
+
+tareas:
+  - ambito: docencia
+    subcategoria: cursos_pregrado
+    descripcion: Asignaturas 1 a 6 (pregrado)
+    instrumento: {nombre: Evaluación a la docencia de pregrado (estudiantes), cumple: 52, no_cumple: 8, no_aplica: 6}
+  - ambito: investigacion
+    subcategoria: proyectos
+    descripcion: Proyecto de innovación pedagógica con financiamiento externo (responsable)
+    instrumento: {nombre: Evaluación de ICI (Dirección de Investigación), cumple: 8, no_cumple: 1, no_aplica: 1}
+  - ambito: investigacion
+    subcategoria: publicaciones
+    descripcion: 1 artículo
+    evidencia: {comprometido: 1, logrado: 0}
+  - ambito: investigacion
+    subcategoria: presentaciones
+    descripcion: Ponencia en congreso internacional y charlas de divulgación
+    evidencia: {comprometido: 2, logrado: 2}
+  - ambito: investigacion
+    subcategoria: redes
+    descripcion: Revisión de artículos para una revista científica
+    evidencia: {estado: cumplido}
+  - ambito: vinculacion
+    subcategoria: iniciativas_vcm
+    descripcion: Seminario de divulgación (organización)
+    evidencia: {estado: cumplido}
+  - ambito: vinculacion
+    subcategoria: representacion
+    descripcion: Comisión internacional de divulgación de la disciplina
+    evidencia: {estado: cumplido}
+  - ambito: gestion
+    subcategoria: comisiones
+    descripcion: Reunión de departamento
+    evidencia: {estado: cumplido}
+
+autoevaluacion: {cumple: 17, no_cumple: 3}
+estudiantes: {cumple: 52, no_cumple: 8}

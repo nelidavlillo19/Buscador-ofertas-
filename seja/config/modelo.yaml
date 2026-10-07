@@ -1,0 +1,246 @@
+# Modelo de calificación académica SEJA-UMCE
+#
+# Estructura: ÁMBITO (área de desarrollo, art. 34) → SUBCATEGORÍA (rol / función) → TAREA.
+# Cada tarea se evalúa con un instrumento estandarizado y/o con la evidencia del compromiso,
+# las tareas se promedian dentro de su ámbito y los ámbitos se ponderan según el % declarado
+# en el Compromiso de Desempeño Académico de cada persona.
+#
+# ⚠️ Los umbrales de las letras son PROVISORIOS: ajústalos cuando la Oficina de Evaluación
+# de Desempeño Académico los defina.
+
+# Componentes fijos (fracción del total). El resto (80%) se reparte entre los ámbitos
+# según lo declarado en el compromiso.
+componentes_fijos:
+  autoevaluacion: 0.10
+  estudiantes: 0.10
+
+# Horas semanales de cada jornada, para advertir si el compromiso las supera.
+horas_jornada:
+  completa: 44
+  media: 22
+
+# Carga de docencia (% del compromiso) que indica el Reglamento de Carrera Académica para cada
+# jerarquía y perfil (art. 14, 18, 19, 23, 24, 28 y 29). Fuera de rango, el informe lo advierte.
+carga_docente:
+  instructor:
+    todos: [60, 80]
+  asistente:
+    investigador: [50, 70]
+    vinculador: [60, 70]
+  asociado:
+    investigador: [40, 60]
+    vinculador: [50, 60]
+  titular:
+    investigador: [30, 50]
+    vinculador: [40, 60]
+
+# % mínimo de cumplimiento para cada letra, de mayor a menor. Bajo C → D.
+# Sobre 100% sólo se llega con excedentes validados (logrado > comprometido).
+umbrales:
+  A+: 101  # Sobresaliente: supera el compromiso
+  A: 90    # 90% a 100%: cumplimiento pleno del compromiso
+  B: 75    # 75% a 89%: cumplimiento bueno
+  C: 55    # 55% a 74%: cumplimiento parcial (requiere mejora)
+  D: 0     # menos de 55%: insuficiente
+
+# Tope (% de cumplimiento) con que cuenta una tarea con excedente validado. Lo que la supera no sube
+# la nota, pero queda registrado como destacado para el reconocimiento institucional.
+tope_excedente: 120
+
+# Situaciones especiales (art. 37 del Reglamento de Carrera Académica).
+# - Ausencia justificada de más de `meses_suspension` meses continuos, por cualquier motivo: la evaluación
+#   se suspende.
+# - Cualquier otra situación: se evalúa en relación al % de la jornada comprometida que la persona dedicó
+#   al cumplimiento de sus funciones (las metas de la evidencia se ajustan a ese %).
+# En ambos casos se informa a la Oficina y a las autoridades.
+situaciones_especiales:
+  meses_suspension: 5
+  motivos:
+    enfermedad: Licencia médica por enfermedad
+    maternidad: Permiso o licencia por maternidad
+    parental: Permiso postnatal parental o cuidados parentales
+    permiso_sin_goce: Permiso sin goce de remuneraciones
+    comision_servicio: Comisión de servicio
+    cargo_directivo: Cargo en la planta directiva
+    estudios: Estudios de postgrado o postdoctorado
+    otra: Otra situación
+  descripcion_suspension: Ausencia justificada de más de 5 meses continuos (art. 37)
+  # Motivos cuya situación se otorga con compromisos asociados (por ejemplo, la comisión de estudios): si
+  # existen (`compromisos_asociados: true`), se evalúan esos compromisos en relación al % de jornada, aunque
+  # la situación dure más de 5 meses. Si no se indica, la situación queda por definir según la duración y
+  # las condiciones con que se otorgó.
+  con_compromisos_asociados: [estudios]
+  informar_a: la Oficina de Evaluación de Desempeño Académico y las autoridades correspondientes
+
+descripcion_letras:
+  A+: Sobresaliente, cumplimiento sobre lo comprometido (desde 101%), acreditado y validado
+  A: Cumplimiento pleno del compromiso académico
+  B: Cumplimiento bueno
+  C: Cumplimiento parcial (requiere mejora)
+  D: Insuficiente
+
+# Tabla de equivalencia del % de cumplimiento a la escala numérica 1–7
+# (Jornada Modelo de Evaluación SEJA 2024). % mínimo → nota; bajo 40% → 1.
+escala_numerica:
+  - [90, 7]
+  - [80, 6]
+  - [70, 5]
+  - [60, 4]
+  - [50, 3]
+  - [40, 2]
+  - [0, 1]
+
+# Evidencia válida: la que la persona sube a su carpeta individual (Drive). La información que la Oficina
+# recoge de otras fuentes, como la carga académica, no acredita cumplimiento: la tarea vale 0, y quien no
+# provee evidencias obtiene la calificación mínima.
+fuentes_no_validas:
+  carga_academica: Sólo carga académica, sin evidencia en la carpeta individual
+
+# Valor (0–100) de los estados de evidencia cuando no hay meta numérica.
+estados_evidencia:
+  cumplido: 100
+  parcial: 50
+  no_cumplido: 0
+  sin_evidencia: 0
+
+# Evidencia por etapa del proceso (como en los Informes de Cierre 2023): se compara la etapa comprometida
+# con la evidenciada dentro de su secuencia.
+# - Llegar a la etapa comprometida (o más allá) → 100.
+# - Quedar en una etapa anterior → `etapa_anterior` (avance parcial).
+# - Sin evidencia → 0.
+# Pasar a una etapa posterior a la comprometida (por ejemplo, comprometer el envío y publicar) no sube el
+# puntaje, pero si está validado se registra como destacado para el reconocimiento institucional.
+etapas:
+  etapa_anterior: 50
+  secuencias:
+    proyecto: [formulacion, postulacion, adjudicacion, ejecucion, cierre]
+    publicacion: [en_preparacion, enviada, aceptada, publicada]
+    actividad: [planificacion, ejecucion, finalizada]
+  nombres:
+    formulacion: Formulación
+    postulacion: Postulación
+    adjudicacion: Adjudicación
+    ejecucion: Ejecución
+    cierre: Cierre
+    en_preparacion: En preparación
+    enviada: Enviada
+    aceptada: Aceptada
+    publicada: Publicada
+    planificacion: Planificación
+    finalizada: Finalizada
+
+# Ámbitos (art. 34 del Reglamento de Carrera Académica) y sus subcategorías (roles y funciones).
+# Cada subcategoría indica su nombre, cómo se evalúa y cada cuánto, según la Jornada Modelo de
+# Evaluación SEJA 2024 (cuando la presentación no lo define, sólo se indica el nombre).
+ambitos:
+  docencia:
+    nombre: Docencia en los distintos niveles formativos
+    subcategorias:
+      cursos_pregrado:
+        nombre: Docencia de pregrado
+        instrumento: Evaluación de estudiantes, evaluación de la dirección de la unidad académica y autoevaluación
+        periodicidad: semestral
+      cursos_postgrado:
+        nombre: Docencia de postgrado
+        instrumento: Evaluación de estudiantes, evaluación de la dirección de la unidad académica y autoevaluación
+        periodicidad: semestral
+      direccion_titulacion:
+        nombre: Dirección de tesis, seminarios de título, memorias, tesinas o trabajos de grado
+        instrumento: Evaluación a la docencia de estudiantes (actividad curricular)
+        periodicidad: semestral
+      practicas: Orientación y supervisión de prácticas profesionales
+      tutoria: Tutoría y acompañamiento académico de estudiantes
+      ayudantes: Formación y acompañamiento de estudiantes ayudantes
+      formacion_academicos: Formación y desarrollo de académicos/as de jerarquía menor o equivalente
+      formacion_continua: Formación continua en la disciplina y/o en el ámbito educativo
+      otra: Otra actividad de docencia declarada en el compromiso
+
+  investigacion:
+    nombre: Investigación, Creación e Innovación
+    subcategorias:
+      proyectos:
+        nombre: Proyecto de investigación (responsable, co-investigador/a o colaborador/a; interno, externo nacional o internacional)
+        instrumento: Constancia de la entidad (postulación, adjudicación o cierre) y evaluación de la Dirección de Investigación
+        periodicidad: anual (interno) / bianual (externo)
+      publicaciones:
+        nombre: Artículo indexado (WoS, Scopus, SciELO u otros índices)
+        instrumento: Constancia de la revista, indexación, factor de impacto y copia de la publicación
+        periodicidad: anual
+      libros:
+        nombre: Libro o capítulo de libro
+        instrumento: Constancia editorial e identificación del comité evaluador
+        periodicidad: anual
+      creacion_artistica:
+        nombre: Exposición, concierto, interpretación, recreación o composición de obra
+        instrumento: Evidencias de la obra y su presentación pública; constancia de la Dirección de Investigación
+        periodicidad: anual
+      patentes_licencias:
+        nombre: Patente o licencia
+        instrumento: Certificado de registro INAPI
+        periodicidad: anual
+      presentaciones:
+        nombre: Divulgación en eventos científicos, artísticos o deportivos
+        instrumento: Certificado de la entidad organizadora
+        periodicidad: anual
+      innovacion: Desarrollo y transferencia de tecnologías, métodos, productos o soluciones
+      redes: Participación en redes académicas, artísticas, deportivas o profesionales
+      postulacion_fondos: Postulación a fondos con financiamiento externo
+      claustros_postgrado: Integración de núcleos o claustros de postgrado (estándares CNA)
+      equipos_interdisciplinarios: Equipos de investigación interdisciplinarios o multidisciplinarios
+      otra: Otra actividad de investigación, creación o innovación declarada en el compromiso
+
+  vinculacion:
+    nombre: Vinculación con el Medio y Extensión
+    subcategorias:
+      programas_vcm:
+        nombre: Programa de VcM (responsable o integrante)
+        instrumento: Constancia (postulación, adjudicación, cierre) y pauta de evaluación de la Dirección de VcM
+        periodicidad: anual
+      proyectos_vcm:
+        nombre: Proyecto de VcM con financiamiento interno o externo (responsable o integrante)
+        instrumento: Constancia (postulación, adjudicación, cierre), pauta y reporte de la Dirección de VcM
+        periodicidad: anual
+      iniciativas_vcm:
+        nombre: Iniciativas de VcM (talleres, encuentros, seminarios, capacitaciones)
+        instrumento: Constancia y evaluación de la Dirección de VcM y de la unidad académica
+        periodicidad: semestral
+      educacion_continua:
+        nombre: Diseño e implementación de educación continua
+        instrumento: Constancia y evaluación de la Dirección de VcM y DEC
+        periodicidad: anual
+      trabajo_asociativo:
+        nombre: Trabajo asociativo con investigadores/as o creadores/as para transferencia al medio
+        instrumento: Constancia y evaluación de las direcciones de VcM e Investigación
+      publicaciones_vcm:
+        nombre: Publicación de resultados de VcM (libros, capítulos, revistas)
+        instrumento: Constancia, copia de la publicación y comité editorial
+      difusion:
+        nombre: Presentaciones en eventos académicos
+        instrumento: Certificado de la entidad organizadora (nombre, rol, fecha, lugar y organización)
+      representacion:
+        nombre: Representación institucional
+        instrumento: Certificado o constancia y producto comprometido
+      actividades_relevantes: Actividades relevantes vinculadas a la educación física, el deporte, la recreación o las artes
+      redes: Participación en redes nacionales o internacionales
+      extension: Otras acciones de extensión hacia el entorno relevante
+      otra: Otra actividad de vinculación con el medio declarada en el compromiso
+
+  gestion:
+    nombre: Gestión Académica
+    subcategorias:
+      direccion: Dirección o coordinación de unidades académicas
+      coordinacion_practicas:
+        nombre: Coordinación de prácticas
+        instrumento: Evaluación a la gestión, coordinador/a de prácticas
+        periodicidad: anual
+      coordinacion_vcm:
+        nombre: Coordinación de VcM de facultad o departamental
+        instrumento: Evaluación a la gestión, coordinador/a de VcM y extensión (decano/a o director/a)
+        periodicidad: anual
+      gestion_curricular: Diseño, actualización y aseguramiento de la calidad de planes de estudio
+      gestion_investigacion: Gestión de líneas de investigación, proyectos y fondos concursables
+      gestion_vinculacion: Gestión de la vinculación con el medio y extensión
+      gestion_cuerpo_academico: Procesos de jerarquización, calificación y desarrollo de la carrera académica
+      aseguramiento_calidad: Autoevaluación, acreditación y mejora continua
+      comisiones: Comisiones y comités institucionales
+      otra: Otra actividad de gestión académica declarada en el compromiso

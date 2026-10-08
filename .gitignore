@@ -5,3 +5,6 @@ sitio/
 sitio-demo/
 data/demo.sqlite
 .venv/
+informe_sueldos/
+informe_sueldos_ejemplo/
+planillas_sueldos/

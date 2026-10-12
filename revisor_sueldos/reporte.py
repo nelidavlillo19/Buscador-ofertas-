@@ -75,6 +75,8 @@ def excel(resultado: dict, ruta: Path) -> None:
 
 def _tabla(filas: list[dict], columnas: list[tuple[str, str, str]], limite: int | None = None) -> str:
     """columnas: (clave, título, formato) con formato en {'pesos','mm','pct','num','txt','grupo'}"""
+    if not filas:
+        return ""
     fmt = {"pesos": pesos, "mm": millones, "pct": pct, "txt": lambda v: "—" if v is None else str(v),
            "num": lambda v: "—" if v is None else f"{v:,.1f}".replace(",", "X").replace(".", ",").replace("X", ".")
            if isinstance(v, float) and v % 1 else f"{v:,.0f}".replace(",", "."),
@@ -116,7 +118,10 @@ def _grafico_proyeccion(filas: list[dict]) -> str:
             partes.append(f"<circle cx='{x(i):.1f}' cy='{y(f[clave]):.1f}' r='4' class='punto {clase}'/>"
                           f"<circle cx='{x(i):.1f}' cy='{y(f[clave]):.1f}' r='12' class='hit' data-tip='{tip}'/>")
         u = tot[-1]
-        partes.append(f"<text x='{x(len(tot) - 1) + 10:.1f}' y='{y(u[clave]) + 4:.1f}' class='rotulo'>{etiqueta}</text>")
+        # separa los rótulos finales si las líneas terminan muy cerca
+        sep = 8 if abs(y(u["costo_base"]) - y(u["costo_reforma_total"])) < 16 else 0
+        desplaz = sep if (clave == "costo_base") == (u["costo_base"] <= u["costo_reforma_total"]) else -sep
+        partes.append(f"<text x='{x(len(tot) - 1) + 10:.1f}' y='{y(u[clave]) + 4 + desplaz:.1f}' class='rotulo'>{etiqueta}</text>")
     return (f"<svg viewBox='0 0 {ancho} {alto}' class='grafico' role='img' "
             f"aria-label='Costo anual total proyectado con y sin el nuevo sistema'>{''.join(partes)}</svg>")
 
@@ -138,8 +143,14 @@ def informe_html(resultado: dict, ruta: Path) -> None:
     anual = resultado["anual"]
     tray = resultado["trayectorias"]
     proy = resultado["proyeccion"]
-    ultimo_anio = max(a["anio"] for a in anual)
+    # año y mes de referencia: los más recientes con todos los tipos de contrato presentes
+    tipos_anio = {a["anio"]: a["meses_por_tipo"].count(",") + 1 for a in anual if a["grupo"] == "TOTAL"}
+    ultimo_anio = max(tipos_anio, key=lambda a: (tipos_anio[a], a))
     total_ult = next(a for a in anual if a["anio"] == ultimo_anio and a["grupo"] == "TOTAL")
+    tipos_periodo = {}
+    for t in resultado["tipo"]:
+        tipos_periodo.setdefault(t["periodo"], set()).add(t["tipo"])
+    periodo_ref = max(tipos_periodo, key=lambda p: (len(tipos_periodo[p] - {"honorarios"}), p))
     tot_proy = [f for f in proy["filas"] if f["grupo"] == "TOTAL"]
     fin = tot_proy[-1]
     acumulado = sum(f["diferencia"] for f in tot_proy)
@@ -174,13 +185,14 @@ disponibles (× 12), porque las planillas suelen faltar en meses distintos para 
                 ("dotacion_promedio", "Dotación prom.", "num"), ("bruto_anualizado", "Bruto anual", "mm"),
                 ("costo_empleador_anualizado", "Costo empleador", "mm"),
                 ("costo_medio_por_persona_anual", "Costo medio/persona", "pesos"), ("variacion_anual", "Var. anual", "pct")])}
-<h3>Último período ({periodos[-1]})</h3>
-{_tabla([p for p in resultado["periodo"] if p["periodo"] == periodos[-1]],
+<h3>Período de referencia ({periodo_ref}: último mes con planta y contrata)</h3>
+{_tabla([p for p in resultado["periodo"] if p["periodo"] == periodo_ref],
         [("grupo", "Grupo", "grupo"), ("dotacion", "Personas", "num"), ("total_bruto", "Total bruto", "mm"),
          ("promedio", "Promedio", "pesos"), ("mediana", "Mediana", "pesos"), ("p10", "P10", "pesos"),
          ("p90", "P90", "pesos"), ("maximo", "Máximo", "pesos")])}
 </section>
 <section><h2>2. Revisión hacia atrás: ascensos y movilidad</h2>
+{"" if tray["tasas"] else "<p><strong>Sin seguimiento posible:</strong> las planillas no traen apellidos (o hay un solo período), así que no se puede saber quién es la misma persona entre meses. Use nóminas con nombre completo para medir ascensos.</p>"}
 <p>Se compara a cada persona entre los cortes {", ".join(tray["cortes"])}. Ascenso = sube de grado EUS,
 sube de jerarquía académica o pasa a un estamento superior. La tasa anual corrige por la distancia en meses.
 El premio de ascenso es el aumento mediano de los ascendidos menos el del resto.</p>
@@ -200,9 +212,7 @@ El premio de ascenso es el aumento mediano de los ascendidos menos el del resto.
                               ("jerarquia_final", "Jerarquía", "txt"), ("variacion_bruto", "Var. bruto", "pct")], 40)}
 </section>
 <section><h2>3. Proyección del nuevo sistema de jerarquización y evaluación</h2>
-<p>Base: {proy["periodo_base"]}. Brecha mensual inicial para llevar a todos al piso de su nivel:
-<strong>{pesos(proy["brecha_total_mensual"])}</strong> ({millones(proy["brecha_total_mensual"] * 12)} al año a régimen,
-antes de reajustes). Ver supuestos al final.</p>
+<p>Base: {proy["periodo_base"]}. {f"Brecha mensual inicial para llevar a todos al piso de su nivel: <strong>{pesos(proy['brecha_total_mensual'])}</strong> ({millones(proy['brecha_total_mensual'] * 12)} al año a régimen, antes de reajustes)." if proy["brecha_total_mensual"] else "Nadie queda bajo el piso de su nivel: el costo adicional proviene de los ascensos y la evaluación."} Ver supuestos al final.</p>
 <h3>Costo anual total: con y sin nuevo sistema</h3>
 <div class='leyenda'><span><i class='m s1'></i>Sin reforma</span><span><i class='m s2'></i>Con nuevo sistema (incluye incentivo por evaluación)</span></div>
 {_grafico_proyeccion(proy["filas"])}

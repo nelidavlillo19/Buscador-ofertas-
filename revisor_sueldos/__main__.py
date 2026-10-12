@@ -27,6 +27,7 @@ def analizar(rutas: list[Path], config: dict, fuente: str) -> dict:
         "periodo": costeo.por_periodo(registros, config),
         "tipo": costeo.por_tipo(registros, config),
         "anual": costeo.anual(registros, config),
+        "jerarquia": costeo.por_jerarquia(registros, config),
         "hallazgos": costeo.hallazgos(registros, config),
         "trayectorias": tray,
         "proyeccion": proyeccion.proyectar(trayectorias.consolidar(registros), tray["resumen"], config),

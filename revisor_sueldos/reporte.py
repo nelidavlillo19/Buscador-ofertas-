@@ -6,7 +6,9 @@ from pathlib import Path
 
 NOMBRES_GRUPO = {"academicos": "Académicos", "directivos": "Directivos", "profesionales": "Profesionales",
                  "tecnicos": "Técnicos", "administrativos": "Administrativos", "auxiliares": "Auxiliares",
-                 "sin_clasificar": "Sin clasificar", "honorarios_otros": "Honorarios (otras funciones)",
+                 "sin_clasificar": "Sin clasificar", "honorarios_docentes": "Honorarios docentes",
+                 "honorarios_docencia_sin_jerarquia": "Hon. docencia sin jerarquía",
+                 "honorarios_profesionales": "Honorarios profesionales",
                  "TOTAL": "TOTAL"}
 PORCENTAJES = ("tasa", "variacion", "diferencia_pct", "premio", "aumento", "incentivo_medio")
 
@@ -38,6 +40,7 @@ def excel(resultado: dict, ruta: Path) -> None:
         ("Costeo anual", resultado["anual"]),
         ("Costeo mensual", resultado["periodo"]),
         ("Costeo por contrato", resultado["tipo"]),
+        ("Costeo por jerarquía", resultado["jerarquia"]),
         ("Tasas de ascenso", resultado["trayectorias"]["tasas"]),
         ("Movimientos", resultado["trayectorias"]["movimientos"]),
         ("Proyección", resultado["proyeccion"]["filas"]),
@@ -190,6 +193,14 @@ disponibles (× 12), porque las planillas suelen faltar en meses distintos para 
         [("grupo", "Grupo", "grupo"), ("dotacion", "Personas", "num"), ("total_bruto", "Total bruto", "mm"),
          ("promedio", "Promedio", "pesos"), ("mediana", "Mediana", "pesos"), ("p10", "P10", "pesos"),
          ("p90", "P90", "pesos"), ("maximo", "Máximo", "pesos")])}
+<h3>Por jerarquía académica (planta, contrata y honorarios docentes)</h3>
+<p>Honorario docente: contrato que sólo hace clases y tiene una jerarquía homologada (Instructor, Asistente, Asociado
+o Titular). Los demás honorarios se separan en «docencia sin jerarquía» (clases sin homologación) y «profesionales»
+(temporales o permanentes durante el año académico). Promedios sobre los meses con datos de cada tipo de contrato.</p>
+{_tabla(resultado["jerarquia"], [("anio", "Año", "txt"), ("tipo", "Contrato", "txt"), ("jerarquia", "Jerarquía", "txt"),
+                                 ("meses_con_datos", "Meses", "num"), ("dotacion_promedio", "Personas/mes", "num"),
+                                 ("masa_mensual_promedio", "Masa mensual", "mm"), ("promedio", "Promedio", "pesos"),
+                                 ("mediana", "Mediana", "pesos")])}
 </section>
 <section><h2>2. Revisión hacia atrás: ascensos y movilidad</h2>
 {"" if tray["tasas"] else "<p><strong>Sin seguimiento posible:</strong> las planillas no traen apellidos (o hay un solo período), así que no se puede saber quién es la misma persona entre meses. Use nóminas con nombre completo para medir ascensos.</p>"}

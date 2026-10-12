@@ -82,6 +82,20 @@ def clasificar_grupo(estamento: str, cargo: str, reglas: dict[str, list[str]]) -
     return "sin_clasificar"
 
 
+def clasificar_honorario(funcion: str, config: dict) -> str:
+    """Honorario docente = sólo hace clases y tiene una jerarquía homologada (la descripción parte con
+    "Instructor/Asistente/Asociado/Titular, docencia ..."). El resto son profesionales a honorarios."""
+    cfg = config.get("honorarios", {})
+    t = sin_tildes(funcion)
+    docencia = re.search(cfg.get("docencia", r"docen|clase|asignatura|catedra"), t)
+    homologado = re.search(cfg.get("jerarquia_homologada", r"^\W*(instructora?|asistente|asociad[oa]|titular)\b"), t)
+    if docencia and homologado:
+        return "honorarios_docentes"
+    if docencia and re.search(cfg.get("clases_sin_jerarquia", r"docencia y evaluacion"), t):
+        return "honorarios_docencia_sin_jerarquia"
+    return "honorarios_profesionales"
+
+
 def jerarquia(texto: str, rangos: dict[str, int]) -> tuple[str | None, int | None]:
     t = sin_tildes(texto)
     mejor = (None, None)
@@ -223,9 +237,10 @@ def leer_archivo(ruta: Path, config: dict) -> list[dict]:
             cargo = " ".join(str(val(fila, c) or "") for c in ("cargo", "calificacion")).strip()
             jer, rango = jerarquia(f"{estamento} {cargo}", rangos)
             tipo = tipo_desde_texto(str(val(fila, "tipo") or "")) or tipo_arch or "sin_tipo"
-            grupo = clasificar_grupo(estamento, cargo, reglas)
-            if grupo == "sin_clasificar" and tipo == "honorarios":
-                grupo = "honorarios_otros"  # honorarios cuya función no corresponde a ningún estamento
+            grupo = (clasificar_honorario(cargo, config) if tipo == "honorarios"
+                     else clasificar_grupo(estamento, cargo, reglas))
+            if tipo == "honorarios" and grupo != "honorarios_docentes":
+                jer, rango = None, None  # "asistente administrativo" no es una jerarquía académica
             registros.append({
                 "periodo": f"{anio:04d}-{mes:02d}", "anio": anio, "mes": mes, "tipo": tipo,
                 "estamento": estamento.strip(), "grupo": grupo,

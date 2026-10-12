@@ -142,3 +142,27 @@ def test_premio_por_nivel_y_tasa_distinta_con_reforma(tmp_path):
     acad = {f["anio"]: f for f in res["filas"] if f["grupo"] == "academicos"}
     assert acad[2026]["costo_base"] == pytest.approx(2000000 * 12)  # sin reforma no asciende
     assert acad[2026]["costo_reforma_total"] == pytest.approx((0.5 * 2000000 + 0.5 * 2400000) * 12)
+
+
+def test_honorario_docente_requiere_clases_y_jerarquia_homologada():
+    c = lambda t: cargar.clasificar_honorario(t, CONFIG)  # noqa: E731
+    assert c("Instructor, docencia y evaluación correspondiente en la asignatura de Práctica IV") == "honorarios_docentes"
+    assert c("Asociado, docencia y evaluación en la asignatura de Didáctica") == "honorarios_docentes"
+    assert c("Profesional desempeñe labores de docencia y evaluación correspondiente a la asignatura Inglés I") \
+        == "honorarios_docencia_sin_jerarquia"
+    assert c("Profesional para realizar labores de asistente administrativo para el proyecto") == "honorarios_profesionales"
+    assert c("Experta realice labores de ayudante meritante en la asignatura de Química") == "honorarios_profesionales"
+    assert c("Profesional realice labores de centro de atención al estudiante") == "honorarios_profesionales"
+
+
+def test_costeo_por_jerarquia_de_honorarios_docentes(tmp_path):
+    enc = "Año;Mes;Nombres;Descripción de la función;Honorario bruto mensual ($)"
+    a = _csv(tmp_path / "honorarios_raw.csv", [
+        enc, "2025;Marzo;Ana;Titular, docencia y evaluación en la asignatura X;900.000",
+        "2025;Marzo;Luis;Asistente, docencia y evaluación en la asignatura Y;500.000",
+        "2025;Marzo;Rosa;Profesional realice labores de asistente de gestión;800.000"])
+    registros = cargar.cargar([a], CONFIG)
+    assert [r["grupo"] for r in registros] == ["honorarios_docentes", "honorarios_docentes", "honorarios_profesionales"]
+    tabla = {(f["tipo"], f["jerarquia"]): f for f in costeo.por_jerarquia(registros, CONFIG)}
+    assert set(tabla) == {("honorarios", "titular"), ("honorarios", "asistente")}
+    assert tabla[("honorarios", "titular")]["promedio"] == 900000

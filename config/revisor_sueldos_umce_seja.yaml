@@ -17,6 +17,15 @@ grupos:
 # alguno de estos textos.
 excluir_hojas: [resumen, comision, notas, proyecci, departamentos, duplicados]
 
+# Honorarios: sólo es "honorario docente" quien hace clases y tiene una jerarquía homologada; la
+# descripción de la función parte con la jerarquía ("Instructor, docencia y evaluación ... asignatura").
+# Quien hace clases sin jerarquía homologada queda como "docencia sin jerarquía"; el resto son
+# profesionales a honorarios (temporales o permanentes). Expresiones sobre texto sin tildes y en minúsculas.
+honorarios:
+  jerarquia_homologada: '^\W*(instructora?|asistente|asociad[oa]|titular)\b'
+  docencia: 'docen|clase|asignatura|catedra'
+  clases_sin_jerarquia: 'docencia y evaluacion'
+
 # Jerarquías académicas reconocidas en cargo/estamento y su rango (mayor = más alta)
 jerarquias_academicas:
   ayudante: 1

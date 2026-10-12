@@ -93,6 +93,27 @@ def anual(registros: list[dict], config: dict) -> list[dict]:
     return salida
 
 
+def por_jerarquia(registros: list[dict], config: dict) -> list[dict]:
+    """Por año, tipo de contrato y jerarquía académica (planta, contrata y honorarios docentes homologados):
+    meses con datos, dotación y masa mensual promedio, y remuneración promedio."""
+    meses = defaultdict(set)
+    datos = defaultdict(list)
+    for r in registros:
+        meses[(r["anio"], r["tipo"])].add(r["mes"])
+        if r["jerarquia"]:
+            datos[(r["anio"], r["tipo"], r["grupo"], r["rango_jerarquia"], r["jerarquia"])].append(r)
+    salida = []
+    for (anio, tipo, grupo, _, jer), filas in sorted(datos.items()):
+        n = len(meses[(anio, tipo)])
+        brutos = [f["bruto"] for f in filas]
+        salida.append({
+            "anio": anio, "tipo": tipo, "grupo": grupo, "jerarquia": jer, "meses_con_datos": n,
+            "dotacion_promedio": len(filas) / n, "masa_mensual_promedio": sum(brutos) / n,
+            "promedio": mean(brutos), "mediana": median(brutos),
+        })
+    return salida
+
+
 def hallazgos(registros: list[dict], config: dict) -> list[dict]:
     """Observaciones de revisión: datos faltantes, duplicados y remuneraciones atípicas."""
     umbral = config.get("revision", {}).get("desvios_atipico", 3.0)

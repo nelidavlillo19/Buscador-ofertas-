@@ -51,6 +51,9 @@ Calificación profesional, Cargo o función, Remuneración bruta mensualizada, R
   a Año/Mes.
 - Si la planilla trae sólo el primer nombre, las filas se costean pero no se siguen en el tiempo (no hay forma
   de saber si dos "Ana" son la misma persona).
+- Honorarios: es **honorario docente** quien sólo hace clases y tiene una jerarquía homologada (Instructor,
+  Asistente, Asociado o Titular), y su honorario se costea por esa jerarquía. Quien hace clases sin jerarquía queda
+  como «docencia sin jerarquía» y el resto como **profesionales a honorarios** (sección `honorarios` del YAML).
 - Las planillas de Transparencia suelen faltar en meses distintos para planta, contrata y honorarios: cada tipo
   se anualiza con el promedio de sus propios meses.
 

@@ -6,7 +6,8 @@ from pathlib import Path
 
 NOMBRES_GRUPO = {"academicos": "Académicos", "directivos": "Directivos", "profesionales": "Profesionales",
                  "tecnicos": "Técnicos", "administrativos": "Administrativos", "auxiliares": "Auxiliares",
-                 "sin_clasificar": "Sin clasificar", "TOTAL": "TOTAL"}
+                 "sin_clasificar": "Sin clasificar", "honorarios_otros": "Honorarios (otras funciones)",
+                 "TOTAL": "TOTAL"}
 PORCENTAJES = ("tasa", "variacion", "diferencia_pct", "premio", "aumento", "incentivo_medio")
 
 
@@ -146,7 +147,7 @@ def informe_html(resultado: dict, ruta: Path) -> None:
     kpis = [
         ("Períodos revisados", f"{len(periodos)}", f"{periodos[0]} a {periodos[-1]}"),
         (f"Costo bruto anual {ultimo_anio}", millones(total_ult["bruto_anualizado"]),
-         f"{total_ult['meses_con_datos']} meses con datos" + (" (anualizado)" if total_ult["meses_con_datos"] < 12 else "")),
+         f"meses con datos: {total_ult['meses_por_tipo']}"),
         ("Dotación promedio", f"{total_ult['dotacion_promedio']:,.0f}".replace(",", "."), "personas por mes"),
         (f"Costo adicional {fin['anio']}", millones(fin["diferencia"]), f"{pct(fin['diferencia_pct'])} sobre escenario sin reforma"),
         ("Costo adicional acumulado", millones(acumulado), f"{tot_proy[1]['anio']}–{fin['anio']}"),
@@ -165,10 +166,11 @@ def informe_html(resultado: dict, ruta: Path) -> None:
     secciones = f"""
 <section><h2>1. Costeo por grupo de trabajadores</h2>
 <p>Remuneración bruta mensualizada informada en las planillas. El costo para el empleador agrega los aportes
-configurados por tipo de contrato. Años incompletos se anualizan con el promedio de los meses disponibles.</p>
+configurados por tipo de contrato. Cada tipo de contrato se anualiza con el promedio de sus propios meses
+disponibles (× 12), porque las planillas suelen faltar en meses distintos para planta, contrata y honorarios.</p>
 <h3>Costo bruto anual {ultimo_anio} por grupo</h3>
 {_grafico_barras(costo_grupos, millones)}
-{_tabla(anual, [("anio", "Año", "txt"), ("grupo", "Grupo", "grupo"), ("meses_con_datos", "Meses", "num"),
+{_tabla(anual, [("anio", "Año", "txt"), ("grupo", "Grupo", "grupo"), ("meses_por_tipo", "Meses con datos", "txt"),
                 ("dotacion_promedio", "Dotación prom.", "num"), ("bruto_anualizado", "Bruto anual", "mm"),
                 ("costo_empleador_anualizado", "Costo empleador", "mm"),
                 ("costo_medio_por_persona_anual", "Costo medio/persona", "pesos"), ("variacion_anual", "Var. anual", "pct")])}

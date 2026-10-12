@@ -46,6 +46,13 @@ Calificación profesional, Cargo o función, Remuneración bruta mensualizada, R
 - El tipo de contrato se toma de una columna "tipo/calidad jurídica" o del nombre del archivo
   (`planta`, `contrata`, `honorarios`, `codigo_del_trabajo`).
 - Montos en formato chileno (`$ 1.234.567`) o numérico; CSV con `;` o `,`, UTF-8 o Latin-1.
+- También sirven libros consolidados (p. ej. `Planta_Raw`, `Contrata_Raw`, `Honorarios_Raw`): las hojas sin
+  nombres de personas (resúmenes) y las listadas en `excluir_hojas` se omiten, y un `Período` `AAAA-MM` reemplaza
+  a Año/Mes.
+- Si la planilla trae sólo el primer nombre, las filas se costean pero no se siguen en el tiempo (no hay forma
+  de saber si dos "Ana" son la misma persona).
+- Las planillas de Transparencia suelen faltar en meses distintos para planta, contrata y honorarios: cada tipo
+  se anualiza con el promedio de sus propios meses.
 
 ## Configuración (`config/revisor_sueldos.yaml`)
 
@@ -58,6 +65,11 @@ Calificación profesional, Cargo o función, Remuneración bruta mensualizada, R
 | `proyeccion` | Horizonte, reajuste, gradualidad, garantía de no disminución, tasas de ascenso (históricas o fijas). |
 | `proyeccion.evaluacion` | Distribución esperada de calificaciones, % de incentivo y efecto sobre la tasa de ascenso. |
 | `proyeccion.jerarquizacion` | Niveles del nuevo sistema por grupo, criterio de encasillamiento (jerarquía, grado o percentil) y piso de cada nivel. |
+
+`config/revisor_sueldos_umce_seja.yaml` es la configuración para la UMCE: compara la carrera académica del
+Reglamento SEJA con la Res. 320/93 usando la Escala de Remuneraciones 2024–2025 (el valor de cada ascenso va en
+`premio` de cada nivel), una tasa de ascenso actual (`tasas_ascenso`) y otra con el SEJA (`tasas_ascenso_reforma`,
+por los plazos máximos de permanencia), y las letras de la calificación SEJA (A+ a D).
 
 Los pisos, porcentajes y factores del archivo son **valores de ejemplo** que deben reemplazarse por la propuesta
 institucional y validarse con Finanzas y Recursos Humanos.

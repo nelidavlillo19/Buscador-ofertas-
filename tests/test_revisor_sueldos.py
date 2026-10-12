@@ -93,3 +93,52 @@ def test_ejemplo_completo_genera_informe_y_excel(tmp_path):
     assert (tmp_path / "salida" / "revision_sueldos.xlsx").exists()
     assert {g for g in resultado["trayectorias"]["resumen"]} >= {"academicos", "profesionales", "auxiliares"}
     assert any("doble vínculo" in h["observacion"] for h in resultado["hallazgos"])
+
+
+def test_planilla_sin_apellidos_se_costea_pero_no_se_sigue(tmp_path):
+    enc = "Año;Mes;Estamento;Primer nombre;Remuneración bruta mensual ($)"
+    a = _csv(tmp_path / "planta_raw.csv", [enc, "2025;Enero;Auxiliar;Ana;600.000", "2025;Enero;Auxiliar;Ana;610.000"])
+    registros = cargar.cargar([a], CONFIG)
+    assert len({r["persona"] for r in registros}) == 2  # dos personas distintas aunque compartan nombre
+    assert not costeo.hallazgos(registros, CONFIG)  # sin columna de grado no se reclama el grado
+    assert trayectorias.analizar(registros, CONFIG)["tasas"] == []
+
+
+def test_hojas_de_resumen_se_omiten(tmp_path):
+    from openpyxl import Workbook
+    libro = Workbook()
+    resumen = libro.active
+    resumen.title = "Hoja 01"
+    resumen.append(["Año", "Mes", "Estamento", "Grado", "Rem. Bruta Planta ($)"])
+    resumen.append(["TOTAL", "Todos", "", "", 999])
+    nomina = libro.create_sheet("Contrata_Raw")
+    nomina.append(["Período", "Estamento", "Apellido Paterno", "Nombres", "Grado", "Rem. Bruta ($)"])
+    nomina.append(["2025-08", "Técnico", "Soto", "Ana", 18, 1000000])
+    libro.create_sheet("Comisiones").append(["Período", "Nombres", "Apellido Paterno", "Gasto Bruto ($)"])
+    libro.save(tmp_path / "libro.xlsx")
+    filas = cargar.leer_archivo(tmp_path / "libro.xlsx", CONFIG)
+    assert [(f["periodo"], f["tipo"], f["grupo"], f["bruto"]) for f in filas] == [("2025-08", "contrata", "tecnicos", 1000000)]
+
+
+def test_anualiza_cada_tipo_con_sus_propios_meses(tmp_path):
+    p1 = _csv(tmp_path / "planta_2025_01.csv", [ENC, "Auxiliar;A;B;C;25;Aux;600.000"])
+    p2 = _csv(tmp_path / "planta_2025_02.csv", [ENC, "Auxiliar;A;B;C;25;Aux;600.000"])
+    c1 = _csv(tmp_path / "contrata_2025_02.csv", [ENC, "Auxiliar;D;E;F;25;Aux;500.000"])
+    total = next(x for x in costeo.anual(cargar.cargar([p1, p2, c1], CONFIG), CONFIG) if x["grupo"] == "TOTAL")
+    # planta: 2 meses de 600.000; contrata: 1 mes de 500.000 → ambos a 12 meses
+    assert total["bruto_anualizado"] == pytest.approx(600000 * 12 + 500000 * 12)
+    assert total["meses_por_tipo"] == "contrata 1, planta 2"
+
+
+def test_premio_por_nivel_y_tasa_distinta_con_reforma(tmp_path):
+    a = _csv(tmp_path / "planta_2025_12.csv", [ENC, "Académico;A;B;C;44 horas;Profesor Asociado;2.000.000"])
+    proy = {**CONFIG["proyeccion"], "reajuste_anual": 0.0, "evaluacion": {}, "gradualidad": [1.0], "horizonte_anios": 1,
+            "tasas_ascenso": {"academicos": 0.0}, "tasas_ascenso_reforma": {"academicos": 0.5},
+            "jerarquizacion": {"academicos": {"criterio": "jerarquia", "niveles": [
+                {"nombre": "Asociado", "jerarquias": ["asociado"], "piso": 0},
+                {"nombre": "Titular", "jerarquias": ["titular"], "piso": 0, "premio": 0.2}]}}}
+    cfg = {**CONFIG, "proyeccion": proy}
+    res = proyeccion.proyectar(trayectorias.consolidar(cargar.cargar([a], cfg)), {}, cfg)
+    acad = {f["anio"]: f for f in res["filas"] if f["grupo"] == "academicos"}
+    assert acad[2026]["costo_base"] == pytest.approx(2000000 * 12)  # sin reforma no asciende
+    assert acad[2026]["costo_reforma_total"] == pytest.approx((0.5 * 2000000 + 0.5 * 2400000) * 12)

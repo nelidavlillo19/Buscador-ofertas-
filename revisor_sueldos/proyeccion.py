@@ -7,7 +7,9 @@ Supuestos (todos configurables en el YAML):
   con garantía de no disminución nunca baja de la actual.
 - La brecha hacia el objetivo del nivel inicial se cierra gradualmente según 'gradualidad' (fracción acumulada
   por año); la diferencia por ascender a un nivel superior se paga completa desde que ocurre.
-- Subir un nivel aumenta al menos el premio de ascenso histórico (o 'premio_ascenso_defecto').
+- Subir un nivel aumenta al menos el 'premio' del nivel (p. ej. la diferencia de la escala entre jerarquías)
+  o, si no se indica, el premio de ascenso histórico (o 'premio_ascenso_defecto').
+- 'tasas_ascenso_reforma' permite que la tasa de ascenso con el nuevo sistema difiera de la histórica.
 - Cada año una fracción (tasa de ascenso × efecto de la evaluación) pasa al nivel siguiente
   (cálculo en valor esperado, sin azar).
 - Incentivo por evaluación = remuneración anual × Σ(distribución × % incentivo).
@@ -97,7 +99,9 @@ def proyectar(por_periodo: dict, resumen_historico: dict, config: dict) -> dict:
             tasa, origen_tasa = cfg.get("tasa_ascenso_defecto", 0.05), "por defecto"
         premio = hist.get("premio_ascenso")
         premio = premio if premio is not None and premio > 0 else premio_defecto
-        tasa_reforma = min(tasa * efecto_ascenso, 1.0)
+        # con el nuevo sistema la tasa puede cambiar (p. ej. plazos máximos de permanencia en la jerarquía)
+        tasa_nueva = cfg.get("tasas_ascenso_reforma", {}).get(grupo, tasa)
+        tasa_reforma = min(tasa_nueva * efecto_ascenso, 1.0)
         supuestos.append({"grupo": grupo, "personas": len(gente), "tasa_ascenso_historica": tasa,
                           "origen_tasa": origen_tasa, "tasa_ascenso_con_evaluacion": tasa_reforma,
                           "premio_ascenso": premio, "incentivo_medio": incentivo_medio if cfg_grupo else 0.0,
@@ -114,8 +118,8 @@ def proyectar(por_periodo: dict, resumen_historico: dict, config: dict) -> dict:
                 if not garantia:
                     obj = n.get("piso", 0) * fj or p["bruto_total"]
                 objetivos.append(obj)
-            for i in range(k0 + 1, len(objetivos)):  # subir de nivel nunca vale menos que el premio histórico
-                objetivos[i] = max(objetivos[i], objetivos[i - 1] * (1 + premio))
+            for i in range(k0 + 1, len(objetivos)):  # subir de nivel vale al menos el premio del nivel o el histórico
+                objetivos[i] = max(objetivos[i], objetivos[i - 1] * (1 + niveles[i].get("premio", premio)))
             inicio = [1.0 if i == k0 else 0.0 for i in range(len(niveles))]
             estado.append({"p": p, "k0": k0, "objetivos": objetivos, "dist": inicio, "dist_base": list(inicio)})
             encasillamiento.append({
@@ -138,8 +142,11 @@ def proyectar(por_periodo: dict, resumen_historico: dict, config: dict) -> dict:
                 actual = e["p"]["bruto_total"]
                 f = 1 + factor_empleador(e["p"]["tipo"], config)
                 if cfg_grupo:
-                    # sin reforma: misma escala de niveles, cada ascenso vale el premio histórico
-                    b = sum(prob * actual * (1 + premio) ** max(i - e["k0"], 0)
+                    # sin reforma: misma escala de niveles y mismo valor de cada ascenso, a la tasa histórica
+                    base_nivel = [actual]
+                    for i in range(e["k0"] + 1, len(niveles)):
+                        base_nivel.append(base_nivel[-1] * (1 + niveles[i].get("premio", premio)))
+                    b = sum(prob * base_nivel[max(i - e["k0"], 0)]
                             for i, prob in enumerate(e["dist_base"])) * r * 12 * d
                 else:
                     b = actual * r * (1 + tasa * premio) ** t * 12 * d

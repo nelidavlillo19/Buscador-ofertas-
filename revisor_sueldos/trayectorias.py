@@ -64,8 +64,11 @@ def analizar(registros: list[dict], config: dict) -> dict:
     orden = cfg.get("orden_grupos", ["auxiliares", "administrativos", "tecnicos", "profesionales",
                                      "academicos", "directivos"])
     contar_planta = cfg.get("paso_a_planta_cuenta_como_ascenso", False)
-    por_periodo = consolidar(registros)
-    sel = cortes(list(por_periodo), cfg.get("mes_corte"))
+    por_periodo = consolidar([r for r in registros if r.get("identificable", True)])
+    if not por_periodo:
+        return {"cortes": [], "tasas": [], "movimientos": [], "resumen": {}}
+    sel = ([c for c in cfg["cortes"] if c in por_periodo] if cfg.get("cortes")
+           else cortes(list(por_periodo), cfg.get("mes_corte")))
     tasas, movimientos = [], []
     for desde, hasta in zip(sel, sel[1:]):
         a, b = por_periodo[desde], por_periodo[hasta]

@@ -12,6 +12,10 @@ grupos:
   administrativos: ["administrativ"]   # si prefieres sumarlos a auxiliares, mueve este patrón a esa lista
   auxiliares: ["auxiliar", "servicio", "mayordom", "portero", "chofer"]
 
+# Hojas que no son nóminas (resúmenes, comisiones de servicio, notas): se omiten si su nombre contiene
+# alguno de estos textos.
+excluir_hojas: [resumen, comision, notas, proyecci, departamentos, duplicados]
+
 # Jerarquías académicas reconocidas en cargo/estamento y su rango (mayor = más alta)
 jerarquias_academicas:
   ayudante: 1

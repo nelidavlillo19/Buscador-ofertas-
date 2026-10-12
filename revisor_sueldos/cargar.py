@@ -4,7 +4,8 @@ Cada fila queda como un dict normalizado:
     periodo ("AAAA-MM"), anio, mes, tipo (planta/contrata/honorarios/codigo_trabajo),
     estamento (texto original), grupo (académicos, directivos, ...), persona (clave),
     nombre, grado (int o None), jornada (horas o None), jerarquia (texto o None), rango_jerarquia (int o None),
-    cargo, bruto (float), liquido (float o None), archivo.
+    cargo, bruto (float), liquido (float o None), archivo, identificable (False si la planilla
+    no trae apellidos: la fila se costea pero no se sigue en el tiempo).
 """
 from __future__ import annotations
 
@@ -25,6 +26,7 @@ MESES = {
 COLUMNAS = {
     "anio": ["ano", "anio", "año"],
     "mes": ["mes"],
+    "periodo": ["periodo", "periodo (aaaa-mm)"],
     "estamento": ["estamento", "planta o escalafon", "escalafon"],
     "apellido_paterno": ["apellido paterno"],
     "apellido_materno": ["apellido materno"],
@@ -32,8 +34,8 @@ COLUMNAS = {
     "grado": ["grado eus", "grado", "jornada"],
     "calificacion": ["calificacion profesional", "formacion"],
     "cargo": ["cargo o funcion", "cargo", "funcion"],
-    "bruto": ["remuneracion bruta", "bruta mensualizada", "honorario total bruto", "renta bruta", "bruto"],
-    "liquido": ["remuneracion liquida", "liquida mensualizada", "liquido"],
+    "bruto": ["remuneracion bruta", "bruta mensualizada", "honorario total bruto", "renta bruta", "rem. bruta", "bruto"],
+    "liquido": ["remuneracion liquida", "liquida mensualizada", "rem. liquida", "liquido"],
     "tipo": ["tipo de contrato", "tipo contrato", "calidad juridica", "tipo"],
 }
 
@@ -176,7 +178,9 @@ def _fila_encabezado(filas: list[list]) -> int | None:
     mejor, idx = 0, None
     for i, fila in enumerate(filas[:30]):
         mapa = _mapear_encabezado(fila)
-        puntaje = len(mapa) + (3 if "bruto" in mapa else 0)
+        if "bruto" not in mapa or not {"nombres", "apellido_paterno"} & set(mapa):
+            continue  # una nómina tiene montos por persona; sin nombres es una hoja de resumen
+        puntaje = len(mapa) + 3
         if puntaje > mejor:
             mejor, idx = puntaje, i
     return idx if mejor >= 5 else None
@@ -186,7 +190,10 @@ def leer_archivo(ruta: Path, config: dict) -> list[dict]:
     reglas = config["grupos"]
     rangos = config.get("jerarquias_academicas", {})
     registros = []
+    excluir = [sin_tildes(x) for x in config.get("excluir_hojas", [])]
     for nombre_hoja, filas in _hojas(ruta):
+        if any(x in sin_tildes(nombre_hoja) for x in excluir):
+            continue
         i = _fila_encabezado(filas)
         if i is None:
             continue
@@ -194,16 +201,19 @@ def leer_archivo(ruta: Path, config: dict) -> list[dict]:
         anio_arch, mes_arch = periodo_desde_texto(f"{ruta.stem} {nombre_hoja}")
         tipo_arch = tipo_desde_texto(f"{ruta.stem} {nombre_hoja}")
         val = lambda fila, c: fila[mapa[c]] if c in mapa and mapa[c] < len(fila) else None  # noqa: E731
-        for fila in filas[i + 1:]:
+        # sin apellidos (p. ej. sólo "Primer nombre") no se puede seguir a la persona entre meses
+        identificable = "apellido_paterno" in mapa or "completo" in sin_tildes(filas[i][mapa.get("nombres", 0)])
+        for n_fila, fila in enumerate(filas[i + 1:], start=i + 2):
             if not fila or all(v in (None, "") for v in fila):
                 continue
             bruto = monto(val(fila, "bruto"))
             if bruto is None:
                 continue
-            anio = grado(val(fila, "anio")) or anio_arch
+            anio_p, mes_p = periodo_desde_texto(str(val(fila, "periodo") or ""))
+            anio = grado(val(fila, "anio")) or anio_p or anio_arch
             mes_v = val(fila, "mes")
             mes = (int(mes_v) if isinstance(mes_v, (int, float)) else periodo_desde_texto(f"2000 {mes_v}")[1]
-                   if mes_v not in (None, "") else None) or mes_arch
+                   if mes_v not in (None, "") else None) or mes_p or mes_arch
             if not anio or not mes:
                 raise ValueError(f"{ruta.name}: no se pudo determinar año/mes (agrega columnas Año/Mes "
                                  "o pon el período en el nombre del archivo, p. ej. 'planta_2025_03.csv')")
@@ -213,11 +223,17 @@ def leer_archivo(ruta: Path, config: dict) -> list[dict]:
             cargo = " ".join(str(val(fila, c) or "") for c in ("cargo", "calificacion")).strip()
             jer, rango = jerarquia(f"{estamento} {cargo}", rangos)
             tipo = tipo_desde_texto(str(val(fila, "tipo") or "")) or tipo_arch or "sin_tipo"
+            grupo = clasificar_grupo(estamento, cargo, reglas)
+            if grupo == "sin_clasificar" and tipo == "honorarios":
+                grupo = "honorarios_otros"  # honorarios cuya función no corresponde a ningún estamento
             registros.append({
                 "periodo": f"{anio:04d}-{mes:02d}", "anio": anio, "mes": mes, "tipo": tipo,
-                "estamento": estamento.strip(), "grupo": clasificar_grupo(estamento, cargo, reglas),
-                "persona": re.sub(r"\s+", " ", sin_tildes(nombre)).upper(), "nombre": nombre,
-                "grado": grado(val(fila, "grado")), "jornada": jornada(val(fila, "grado")), "jerarquia": jer, "rango_jerarquia": rango,
+                "estamento": estamento.strip(), "grupo": grupo,
+                "persona": (re.sub(r"\s+", " ", sin_tildes(nombre)).upper() if identificable
+                            else f"{ruta.name}:{nombre_hoja}:{n_fila}"),
+                "nombre": nombre, "identificable": identificable,
+                "grado": grado(val(fila, "grado")), "jornada": jornada(val(fila, "grado")),
+                "grado_informado": "grado" in mapa, "jerarquia": jer, "rango_jerarquia": rango,
                 "cargo": cargo, "bruto": bruto, "liquido": monto(val(fila, "liquido")),
                 "archivo": ruta.name,
             })

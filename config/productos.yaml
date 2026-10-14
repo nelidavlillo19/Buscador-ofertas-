@@ -137,6 +137,19 @@ categorias:
     buscar: [nenuco, muñeca nenuco, nenuco unicorn birthday]
     incluir: [nenuco]
 
+  bicicleta_aro16:
+    nombre: 🚲 Bicicleta aro 16 niño (sin rueditas, 4,5+ estrellas)
+    buscar: [bicicleta aro 16, bicicleta aro 16 niño, bicicleta infantil aro 16]
+    incluir: [bicicleta, bici, bike]
+    incluir_tambien: [aro 16, "16\"", 16 pulgadas, r16, rin 16, aro16]
+    # "sin rueditas": se descartan las que dicen traer ruedas de apoyo
+    excluir: [rueditas, ruedas de apoyo, ruedas laterales, ruedas entrenamiento, estabilizador, equilibrio,
+              niña, nina, electrica, eléctrica, repuesto, camara, neumatico, asiento, canasto, casco, soporte,
+              aro 12, aro 14, aro 20]
+    calificacion_minima: 4.5        # avisa si tiene 4,5+ estrellas y cualquier descuento
+    evaluaciones_minimas: 5
+    solo_bien_evaluadas: true       # sin evaluación suficiente no avisa, aunque tenga 30%
+
   # La cocina Scoop de la foto: $69.990 con 46% de descuento en Falabella.
   cocina_juguete_madera:
     nombre: 🍳 Cocina de juguete de madera (tipo Scoop)

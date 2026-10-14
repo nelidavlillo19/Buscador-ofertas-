@@ -101,6 +101,8 @@ def detectar(con: sqlite3.Connection, fecha: str, umbral: float, dias_historial:
         # referencia = precio por unidad redondeado (p. ej. por foto); $999,9 cuenta como $1.000
         if n_unidades and round(f["precio"] / n_unidades) < maximo_unidad:
             candidatos.append(("por_unidad", round(f["precio"] / n_unidades)))
+        if cat_cfg.get("solo_bien_evaluadas") and not bien_evaluada:
+            continue  # p. ej. bicicletas: sólo interesan las de 4,5+ estrellas
         minimo = minimo_previo(con, f["id"], fecha)
         for tipo, referencia in candidatos:
             nota = ""

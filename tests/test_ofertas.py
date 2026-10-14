@@ -343,3 +343,16 @@ def test_pampers_por_panal_y_talla_l():
     assert contar("Pañal Pants XXG CS x46ud") == 46 and contar("Premium Care XXG 56 pañales") == 56
     assert _talla_coincide("Polera L", ["L"]) and not _talla_coincide("Polera XL", ["L"])
     assert not _talla_coincide("Polera Lila M", ["L"])
+
+
+def test_bicicleta_solo_avisa_bien_evaluadas_y_sin_rueditas(tmp_path):
+    cats = yaml.safe_load((Path(__file__).parent.parent / "config/productos.yaml").read_text())["categorias"]
+    cat = cats["bicicleta_aro16"]
+    assert not aplicar_filtro(Producto("f", "r", "Bicicleta Aro 16 Niño con Ruedas de Apoyo", "u", 1), cat)
+    con = db.conectar(tmp_path / "x.sqlite")
+    for sku, cal, ev in (("buena", 4.7, 20), ("sin_nota", None, 0)):
+        p = Producto("falabella", sku, "Bicicleta Aro 16 Niño Azul", "u", 60000, 120000, calificacion=cal, evaluaciones=ev)
+        p.categoria = "bicicleta_aro16"
+        db.guardar(con, p, "2026-10-14")
+    res = alertas.detectar(con, "2026-10-14", 30, 60, cats)
+    assert {a.producto_id for a in res} == {"falabella:buena"}

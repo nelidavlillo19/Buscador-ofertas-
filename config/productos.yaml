@@ -103,7 +103,8 @@ categorias:
     buscar: [jugo de naranja, jugo naranja]
     incluir: [jugo]
     incluir_tambien: [naranja]
-    excluir: [polvo, sobre, exprimidor, juguera, jugera, extractor]
+    excluir: [polvo, sobre, exprimidor, juguera, jugera, extractor, piña, pina, mango, zanahoria, frutilla,
+              platano, plátano, durazno, maracuya, maracuyá, manzana]
 
   mini_color_stack:
     nombre: Juego Mini Color Stack
@@ -158,7 +159,7 @@ categorias:
     incluir: [cocina, cocinita]
     incluir_tambien: [madera, wood, scoop, kidkraft]
     excluir: [libro de cocina, utensilio, delantal, accesorio, set de, juego de te, corta fruta, alimentos, pizza,
-              batidora, caja registradora, comedor]
+              batidora, caja registradora, comedor, microondas, magnetico, magnético, lavaplatos]
     alerta_precio_maximo: 75000   # avisar si una cocina completa cuesta $75.000 o menos...
     precio_minimo: 35000          # ...(bajo esto suelen ser accesorios o mini cocinas)
     calificacion_minima: 4.5      # o si una cocina con 4,5+ estrellas tiene cualquier descuento

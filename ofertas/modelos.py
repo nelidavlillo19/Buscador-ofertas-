@@ -31,6 +31,8 @@ class Producto:
     disponible: bool = True
     variantes: list[Variante] = field(default_factory=list)
     categoria: str = ""
+    calificacion: float | None = None   # estrellas (0-5) que muestra la tienda, si las tiene
+    evaluaciones: int = 0               # cuántas opiniones respaldan esa nota
 
     @property
     def id(self) -> str:

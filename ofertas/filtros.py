@@ -23,7 +23,9 @@ def _talla_coincide(nombre_variante: str, tallas: list[str]) -> bool:
     for talla in tallas:
         t = re.escape(normalizar(talla))
         # "2" no debe coincidir con "12" ni con "24M"; "6" tampoco con "6-9M" o "3-6M" (meses)
-        for m in re.finditer(rf"(?<![0-9a-z]){t}(?![0-9])", texto):
+        # tallas con letra ("L") deben ir solas: no cuentan dentro de "XL" ni de "Lila"
+        fin = "(?![0-9a-z])" if t[-1:].isalpha() else "(?![0-9])"
+        for m in re.finditer(rf"(?<![0-9a-z]){t}{fin}", texto):
             if not re.match(r"\s*(-\s*\d+)?\s*m(?![a-z]*a)", texto[m.end():]):
                 return True
     return False
@@ -35,6 +37,8 @@ def aplicar_filtro(producto: Producto, categoria: dict) -> Producto | None:
     if categoria.get("incluir") and not _contiene(nombre, categoria["incluir"]):
         return None
     if categoria.get("incluir_tambien") and not _contiene(nombre, categoria["incluir_tambien"]):
+        return None
+    if categoria.get("incluir_ademas") and not _contiene(nombre, categoria["incluir_ademas"]):
         return None
     if categoria.get("excluir") and _contiene(nombre, categoria["excluir"]):
         return None

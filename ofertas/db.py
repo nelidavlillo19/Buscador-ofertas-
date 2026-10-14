@@ -17,7 +17,9 @@ CREATE TABLE IF NOT EXISTS productos (
     imagen TEXT,
     categoria TEXT,
     primera_vez TEXT,
-    ultima_vez TEXT
+    ultima_vez TEXT,
+    calificacion REAL,
+    evaluaciones INTEGER
 );
 CREATE TABLE IF NOT EXISTS precios (
     producto_id TEXT NOT NULL REFERENCES productos(id),
@@ -46,16 +48,25 @@ def conectar(ruta: str | Path) -> sqlite3.Connection:
     con = sqlite3.connect(ruta)
     con.row_factory = sqlite3.Row
     con.executescript(ESQUEMA)
+    # bases creadas antes de guardar las evaluaciones
+    columnas = {f["name"] for f in con.execute("PRAGMA table_info(productos)")}
+    for col, tipo in (("calificacion", "REAL"), ("evaluaciones", "INTEGER")):
+        if col not in columnas:
+            con.execute(f"ALTER TABLE productos ADD COLUMN {col} {tipo}")
     return con
 
 
 def guardar(con: sqlite3.Connection, p: Producto, fecha: str) -> None:
     con.execute(
-        """INSERT INTO productos (id, tienda, sku, nombre, url, marca, imagen, categoria, primera_vez, ultima_vez)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """INSERT INTO productos (id, tienda, sku, nombre, url, marca, imagen, categoria, primera_vez, ultima_vez,
+                                calificacion, evaluaciones)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
            ON CONFLICT(id) DO UPDATE SET nombre=excluded.nombre, url=excluded.url, marca=excluded.marca,
-               imagen=excluded.imagen, categoria=excluded.categoria, ultima_vez=excluded.ultima_vez""",
-        (p.id, p.tienda, p.sku, p.nombre, p.url, p.marca, p.imagen, p.categoria, fecha, fecha),
+               imagen=excluded.imagen, categoria=excluded.categoria, ultima_vez=excluded.ultima_vez,
+               calificacion=COALESCE(excluded.calificacion, calificacion),
+               evaluaciones=COALESCE(excluded.evaluaciones, evaluaciones)""",
+        (p.id, p.tienda, p.sku, p.nombre, p.url, p.marca, p.imagen, p.categoria, fecha, fecha,
+         p.calificacion, p.evaluaciones if p.calificacion is not None else None),
     )
     # Si un producto aparece varias veces el mismo día se guarda el menor precio.
     con.execute(

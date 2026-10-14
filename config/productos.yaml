@@ -19,11 +19,40 @@ umbral_descuento: 30        # % mínimo para generar alerta
 dias_historial: 60          # ventana para calcular el "precio habitual"
 
 categorias:
+  # Trekking para ella: calzado 37-38, poleras talla L y pantalones talla 44.
+  # (Las tallas se revisan donde la tienda las publica; en Falabella/Líder/Tottus no vienen en la búsqueda.)
+  trekking_calzado_mujer:
+    nombre: 🥾 Trekking mujer · calzado 37-38
+    buscar: [zapatilla trekking mujer, bota trekking mujer, zapatilla outdoor mujer, zapatilla hiking mujer]
+    incluir: [trekking, outdoor, hiking, senderismo, montaña, montana, trail]
+    incluir_tambien: [zapatilla, zapato, bota, botin, botín]
+    incluir_ademas: [mujer, dama, women, woman, wmns]
+    excluir: [perro, mascota, juguete, niña, nina, niño, nino, kids, calcetin, plantilla, cordon]
+    tallas: ["37", "38", "37.5", "37,5"]
+
+  trekking_polera_mujer:
+    nombre: 🥾 Trekking mujer · poleras talla L
+    buscar: [polera trekking mujer, polera outdoor mujer, polera secado rapido mujer, primera capa mujer]
+    incluir: [trekking, outdoor, hiking, senderismo, montaña, montana, secado rapido, dry, primera capa, termica]
+    incluir_tambien: [polera, camiseta, top, primera capa, manga larga]
+    incluir_ademas: [mujer, dama, women, woman]
+    excluir: [niña, nina, niño, nino, kids]
+    tallas: ["L"]
+
+  trekking_pantalon_mujer:
+    nombre: 🥾 Trekking mujer · pantalones talla 44
+    buscar: [pantalon trekking mujer, pantalon outdoor mujer, pantalon desmontable mujer, calza trekking mujer]
+    incluir: [trekking, outdoor, hiking, senderismo, montaña, montana, desmontable, cargo]
+    incluir_tambien: [pantalon, pantalón, calza, short]
+    incluir_ademas: [mujer, dama, women, woman]
+    excluir: [niña, nina, niño, nino, kids]
+    tallas: ["44"]
+
   trekking:
-    nombre: 🥾 Trekking (zapatillas, botas, mochilas y bastones)
-    buscar: [zapatilla trekking, bota trekking, zapatilla outdoor, mochila trekking, bastones trekking]
+    nombre: 🥾 Trekking (mochilas y bastones)
+    buscar: [mochila trekking, bastones trekking]
     incluir: [trekking, outdoor, hiking, senderismo, montaña, montana, baston]
-    incluir_tambien: [zapatilla, zapato, bota, botin, mochila, baston, bastón]
+    incluir_tambien: [mochila, baston, bastón]
     excluir: [perro, mascota, juguete, macetero, libro]
 
   # ---------- Viaje: CANCELADO a pedido (activa: false). Para reactivar, borra esas líneas y
@@ -63,9 +92,18 @@ categorias:
 
   jugo_naranja_quillayes:
     nombre: Jugo de naranja Quillayes
+    umbral_descuento: 1       # avisar CUALQUIER oferta
     buscar: [jugo naranja quillayes, quillayes naranja, jugo de naranja quillayes]
     incluir: [quillayes, quillalles]
     incluir_tambien: [naranja]
+
+  jugo_naranja:
+    nombre: Jugos de naranja (todas las marcas)
+    umbral_descuento: 1       # avisar CUALQUIER oferta
+    buscar: [jugo de naranja, jugo naranja]
+    incluir: [jugo]
+    incluir_tambien: [naranja]
+    excluir: [polvo, sobre, exprimidor, juguera, jugera, extractor]
 
   mini_color_stack:
     nombre: Juego Mini Color Stack
@@ -99,8 +137,21 @@ categorias:
     buscar: [nenuco, muñeca nenuco, nenuco unicorn birthday]
     incluir: [nenuco]
 
+  # La cocina Scoop de la foto: $69.990 con 46% de descuento en Falabella.
+  cocina_juguete_madera:
+    nombre: 🍳 Cocina de juguete de madera (tipo Scoop)
+    buscar: [cocina scoop, cocina de juego infantil de madera, cocina de madera infantil, cocina juguete madera]
+    incluir: [cocina, cocinita]
+    incluir_tambien: [madera, wood, scoop, kidkraft]
+    excluir: [libro de cocina, utensilio, delantal, accesorio, set de, juego de te, corta fruta, alimentos, pizza,
+              batidora, caja registradora, comedor]
+    alerta_precio_maximo: 75000   # avisar si una cocina completa cuesta $75.000 o menos...
+    precio_minimo: 35000          # ...(bajo esto suelen ser accesorios o mini cocinas)
+    calificacion_minima: 4.5      # o si una cocina con 4,5+ estrellas tiene cualquier descuento
+    evaluaciones_minimas: 5
+
   cocina_juguete:
-    nombre: Cocina de juguete infantil (madera)
+    nombre: Cocina de juguete infantil
     buscar: [cocina de juguete, cocina de juego infantil, cocina juguete madera, cocinita infantil]
     incluir: [cocina, cocinita]
     incluir_tambien: [juguete, juego, infantil, niño, nino, niña, nina, kids]
@@ -172,6 +223,7 @@ categorias:
     buscar: [pampers xxg, pañales pampers xxg, pampers premium care xxg, pampers confort sec xxg]
     incluir: [pampers]
     incluir_tambien: [<xxg>, <xx-g>, <xxl>]   # palabra completa: XXXG no cuenta
+    precio_maximo_por_unidad: 200   # avisar también si cada pañal cuesta menos de $200
     excluir: [toallita, toallitas, wipes, xxxg]
 
   cargador_portatil:

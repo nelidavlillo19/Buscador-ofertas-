@@ -60,14 +60,18 @@ def detectar(con: sqlite3.Connection, fecha: str, umbral: float, dias_historial:
 
     * por_unidad: la categoría tiene `precio_maximo_por_unidad` (p. ej. película Instax a $1.000
       por foto) y el precio dividido por las unidades del pack queda bajo ese valor.
-    * precio_bajo: la tienda tiene `alerta_precio_maximo` (p. ej. IKEA 10000) y el producto
-      cuesta eso o menos, tenga o no descuento.
+    * precio_bajo: la tienda (p. ej. IKEA 10000) o la categoría tiene `alerta_precio_maximo` y el
+      producto cuesta eso o menos, tenga o no descuento. En la categoría, `precio_minimo` deja fuera
+      lo más barato (accesorios sueltos).
+    * bien_evaluada: la categoría tiene `calificacion_minima` (p. ej. 4.5 estrellas, con al menos
+      `evaluaciones_minimas` opiniones) y el producto así evaluado tiene cualquier descuento.
     """
     hoy = date.fromisoformat(fecha)
     desde = (hoy - timedelta(days=dias_historial)).isoformat()
     ayer = (hoy - timedelta(days=1)).isoformat()
     filas = con.execute(
-        """SELECT p.id, p.nombre, p.tienda, p.url, p.categoria, pr.precio, pr.precio_lista
+        """SELECT p.id, p.nombre, p.tienda, p.url, p.categoria, p.calificacion, p.evaluaciones,
+                  pr.precio, pr.precio_lista
            FROM precios pr JOIN productos p ON p.id = pr.producto_id
            WHERE pr.fecha = ? AND pr.disponible = 1""",
         (fecha,),
@@ -81,10 +85,17 @@ def detectar(con: sqlite3.Connection, fecha: str, umbral: float, dias_historial:
         previos = db.historial(con, f["id"], desde, fecha)
         if len(previos) >= MIN_DIAS_HISTORIAL:
             candidatos.append(("historico", statistics.median(previos)))
+        cat_cfg = (categorias or {}).get(f["categoria"], {})
         limite = (tiendas or {}).get(f["tienda"], {}).get("alerta_precio_maximo")
+        if cat_cfg.get("alerta_precio_maximo") and f["precio"] >= cat_cfg.get("precio_minimo", 0):
+            limite = max(limite or 0, cat_cfg["alerta_precio_maximo"])
         if limite and f["precio"] <= limite:
             candidatos.append(("precio_bajo", max(f["precio_lista"] or 0, f["precio"])))
-        cat_cfg = (categorias or {}).get(f["categoria"], {})
+        estrellas = cat_cfg.get("calificacion_minima")
+        bien_evaluada = (estrellas and (f["calificacion"] or 0) >= estrellas
+                         and (f["evaluaciones"] or 0) >= cat_cfg.get("evaluaciones_minimas", 5))
+        if bien_evaluada and f["precio_lista"] and f["precio_lista"] > f["precio"]:
+            candidatos.append(("bien_evaluada", f["precio_lista"]))
         maximo_unidad = cat_cfg.get("precio_maximo_por_unidad")
         n_unidades = unidades.contar(f["nombre"]) if maximo_unidad else None
         # referencia = precio por unidad redondeado (p. ej. por foto); $999,9 cuenta como $1.000
@@ -93,7 +104,7 @@ def detectar(con: sqlite3.Connection, fecha: str, umbral: float, dias_historial:
         minimo = minimo_previo(con, f["id"], fecha)
         for tipo, referencia in candidatos:
             nota = ""
-            if tipo == "declarado" and minimo:
+            if tipo == "declarado" and minimo or tipo == "bien_evaluada" and minimo:
                 if f["precio"] > minimo * (1 + TOLERANCIA):
                     # "Oferta" sobre un precio inflado: hace poco estuvo más barato. No se avisa.
                     continue
@@ -101,13 +112,17 @@ def detectar(con: sqlite3.Connection, fecha: str, umbral: float, dias_historial:
                     nota = "mismo precio de los últimos días (descuento permanente)"
                 else:
                     nota = f"precio más bajo en 30 días (antes {_clp(minimo)})"
+            if bien_evaluada:
+                nota = (f"⭐ {f['calificacion']:.1f} ({f['evaluaciones']} opiniones)" + (". " + nota if nota else ""))
             if tipo == "por_unidad":
                 lista = f["precio_lista"] or 0
                 descuento = round(100 * (1 - f["precio"] / lista), 1) if lista > f["precio"] else 0.0
             else:
                 descuento = round(100 * (1 - f["precio"] / referencia), 1)
-            minimo = (categorias or {}).get(f["categoria"], {}).get("umbral_descuento", umbral)
-            if tipo not in ("precio_bajo", "por_unidad") and (descuento <= 0 or descuento < minimo):
+            umbral_cat = cat_cfg.get("umbral_descuento", umbral)
+            if tipo == "bien_evaluada" and descuento <= 0:
+                continue
+            if tipo not in ("precio_bajo", "por_unidad", "bien_evaluada") and (descuento <= 0 or descuento < umbral_cat):
                 continue
             ya_avisada = con.execute(
                 "SELECT 1 FROM alertas WHERE producto_id=? AND tipo=? AND fecha BETWEEN ? AND ? AND precio<=?",
@@ -159,7 +174,7 @@ def _clp(valor: float) -> str:
 
 
 def resumen_markdown(alertas: list[Alerta], fecha: str, categorias: dict) -> str:
-    etiquetas = {"declarado": "desc. tienda", "historico": "vs. precio habitual", "precio_bajo": "precio bajo", "por_unidad": "precio por foto"}
+    etiquetas = {"declarado": "desc. tienda", "historico": "vs. precio habitual", "precio_bajo": "precio bajo", "por_unidad": "precio por unidad", "bien_evaluada": "bien evaluada"}
     lineas = [f"# Ofertas del {fecha}", ""]
     if not alertas:
         return "\n".join(lineas + ["Hoy no hubo productos con el descuento mínimo."])
@@ -195,7 +210,7 @@ def seleccionar_para_aviso(alertas: list[Alerta], categorias: dict | None = None
 def resumen_html(alertas: list[Alerta], fecha: str, categorias: dict, url_panel: str = "") -> str:
     """Correo legible: una fila por oferta, con botón para ver el producto."""
     etiquetas = {"declarado": "descuento de la tienda", "historico": "más barato que lo habitual",
-                 "precio_bajo": "precio bajo", "por_unidad": "precio por foto"}
+                 "precio_bajo": "precio bajo", "por_unidad": "precio por unidad", "bien_evaluada": "bien evaluada"}
     filas = []
     for a in alertas:
         cat = categorias.get(a.categoria, {}).get("nombre", a.categoria)
@@ -217,13 +232,13 @@ def resumen_html(alertas: list[Alerta], fecha: str, categorias: dict, url_panel:
 
 def insignia(a: Alerta) -> str:
     if a.tipo == "por_unidad":
-        return f"{_clp(a.referencia)} c/foto"
+        return f"{_clp(a.referencia)} c/{'foto' if a.categoria.startswith('pelicula') else 'u'}"
     return f"-{a.descuento:.0f}%" if a.descuento >= 1 else "precio bajo"
 
 
 def _fila_html(a: Alerta, categorias: dict, nombres: dict) -> str:
     etiquetas = {"declarado": "descuento de la tienda", "historico": "más barato que lo habitual",
-                 "precio_bajo": "precio bajo", "por_unidad": "precio por foto"}
+                 "precio_bajo": "precio bajo", "por_unidad": "precio por unidad", "bien_evaluada": "bien evaluada"}
     cat = categorias.get(a.categoria, {}).get("nombre", a.categoria)
     antes = (f' <span style="color:#7a7974;text-decoration:line-through">{_clp(a.referencia)}</span>'
              if a.tipo != "por_unidad" and a.referencia > a.precio else "")

@@ -53,6 +53,11 @@ def extraer(pagina: str, tienda: str, base: str = "") -> list[Producto]:
             # Sodimac no marca el precio tachado: el mayor es el normal
             tachados, vigentes = [max(vigentes)], [min(vigentes)]
         vendedor = r.get("sellerName") or ""
+        try:
+            calificacion = float(r["rating"]) if r.get("rating") else None
+            evaluaciones = int(r.get("totalReviews") or 0)
+        except (TypeError, ValueError):
+            calificacion, evaluaciones = None, 0
         productos.append(Producto(
             tienda=tienda, sku=str(r.get("skuId") or r.get("productId")),
             nombre=r.get("displayName", "") + (
@@ -61,6 +66,7 @@ def extraer(pagina: str, tienda: str, base: str = "") -> list[Producto]:
             precio=min(vigentes),
             precio_lista=max([t for t in tachados if t and t > min(vigentes)], default=None),
             marca=r.get("brand", ""), imagen=(r.get("mediaUrls") or [""])[0],
+            calificacion=calificacion, evaluaciones=evaluaciones,
         ))
     return productos
 

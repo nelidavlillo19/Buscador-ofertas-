@@ -313,3 +313,33 @@ def test_hm_usa_departamento_para_saber_si_es_de_nina():
     mujer = Vtex({"id": "hm", "url": "https://cl.hm.com", "nombre_con_categoria": True}, None)._producto(
         {**datos, "categories": ["/MUJER/VESTIDOS/"]})
     assert clasificar(mujer, cats, ["calzado_mujer"]) is None
+
+
+def test_cocina_madera_avisa_precio_bajo_o_bien_evaluada_con_descuento(tmp_path):
+    cats = yaml.safe_load((Path(__file__).parent.parent / "config/productos.yaml").read_text())["categorias"]
+    con = db.conectar(tmp_path / "x.sqlite")
+    hoy = "2026-10-14"
+    prods = [
+        ("scoop", "Cocina De Juego Infantil De Madera", 69990, 129990, 4.3, 27),   # precio bajo
+        ("bandu", "Cocina de Juguete Infantil Madera Bandú", 99000, 110000, 4.9, 38),  # bien evaluada
+        ("muvter", "Cocina de Madera Infantil Dream Kitchen", 129990, None, 4.7, 18),  # sin descuento
+        ("form", "Cocina Infantil de Madera Maia", 119900, 139900, 5.0, 2),           # pocas opiniones
+        ("mini", "Cocina madera mini", 18990, 19990, None, 0),                         # muy barata
+    ]
+    for sku, nombre, precio, lista, cal, ev in prods:
+        p = Producto("falabella", sku, nombre, "u", precio, lista, calificacion=cal, evaluaciones=ev)
+        p.categoria = aplicar_filtro(p, cats["cocina_juguete_madera"]) and "cocina_juguete_madera"
+        db.guardar(con, p, hoy)
+    res = alertas.detectar(con, hoy, 30, 60, cats)
+    tipos = {(a.producto_id, a.tipo) for a in res}
+    assert ("falabella:scoop", "precio_bajo") in tipos and ("falabella:bandu", "bien_evaluada") in tipos
+    assert not {pid for pid, _ in tipos} & {"falabella:muvter", "falabella:form", "falabella:mini"}
+    assert "4.9" in next(a.nota for a in res if a.tipo == "bien_evaluada")
+
+
+def test_pampers_por_panal_y_talla_l():
+    from ofertas.filtros import _talla_coincide
+    from ofertas.unidades import contar
+    assert contar("Pañal Pants XXG CS x46ud") == 46 and contar("Premium Care XXG 56 pañales") == 56
+    assert _talla_coincide("Polera L", ["L"]) and not _talla_coincide("Polera XL", ["L"])
+    assert not _talla_coincide("Polera Lila M", ["L"])

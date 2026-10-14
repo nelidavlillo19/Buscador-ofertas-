@@ -141,10 +141,11 @@ categorias:
     nombre: 🚲 Bicicleta aro 16 niño (sin rueditas, 4,5+ estrellas)
     buscar: [bicicleta aro 16, bicicleta aro 16 niño, bicicleta infantil aro 16]
     incluir: [bicicleta, bici, bike]
-    incluir_tambien: [aro 16, "16\"", 16 pulgadas, r16, rin 16, aro16]
+    incluir_tambien: [aro 16, "16\"", 16 pulgadas, r16, rin 16, aro16, <16>]
     # "sin rueditas": se descartan las que dicen traer ruedas de apoyo
-    excluir: [rueditas, ruedas de apoyo, ruedas laterales, ruedas entrenamiento, estabilizador, equilibrio,
-              niña, nina, electrica, eléctrica, repuesto, camara, neumatico, asiento, canasto, casco, soporte,
+    excluir: [rueditas, ruedas de apoyo, ruedas apoyo, ruedas de aprendizaje, aprendizaje, ruedas laterales,
+              ruedas entrenamiento, estabilizador, equilibrio, triciclo,
+              niña, nina, princesa, frozen, rosado, rosada, unicornio, barbie, beauty, electrica, eléctrica, repuesto, camara, neumatico, asiento, canasto, casco, soporte,
               aro 12, aro 14, aro 20]
     calificacion_minima: 4.5        # avisa si tiene 4,5+ estrellas y cualquier descuento
     evaluaciones_minimas: 5

@@ -1,11 +1,2 @@
-# bicicletas: tiendas de marca
-https://www.roda.cl/products.json?limit=2
-https://rodabikes.cl/products.json?limit=2
-https://www.kugan.cl/products.json?limit=2
-https://kuganbikes.cl/products.json?limit=2
-https://www.kugan.cl/api/catalog_system/pub/products/search?ft=bicicleta&_from=0&_to=1
-https://www.bianchi.cl/api/catalog_system/pub/products/search?ft=aro%2016&_from=0&_to=1
-https://www.bianchi.cl/products.json?limit=2
-https://www.totembikes.cl/products.json?limit=2
-https://www.oxfordstore.cl/api/catalog_system/pub/products/search?ft=aro%2016&_from=0&_to=1
-https://www.easy.cl/bicicleta-roda-pro-16-v4-mk25wvhbff/p
+https://www.roda.cl/products.json?limit=250
+https://www.kugan.cl/products.json?limit=250

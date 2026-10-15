@@ -1,0 +1,6 @@
+00 ERROR SSLError https://bianchi.cl/products.json?limit=2
+01 ERROR SSLError https://bianchi.cl/api/catalog_system/pub/products/search?ft=aro%2016&_from=0&_to=1
+02 ERROR ConnectionError https://www.oxfordbikes.cl/products.json?limit=2
+03 200 924157 https://oxfordstore.cl/ <- https://www.oxford.cl/api/catalog_system/pub/products/search?ft=aro%2016&_from=0&_to=1
+04 ERROR ConnectionError https://totembike.cl/products.json?limit=2
+05 200 527686 https://www.lider.cl/ip/juegos-de-exterior/bicicleta-infantil-aro-16-miss-lilly-color-fucs <- https://www.lider.cl/ip/juegos-de-exterior/bicicleta-infantil-aro-16-miss-lilly-color-fucsia/00045073370625

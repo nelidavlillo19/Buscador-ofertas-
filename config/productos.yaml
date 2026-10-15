@@ -147,9 +147,9 @@ categorias:
     incluir: [bicicleta, bike]
     incluir_tambien: &aro16 [aro 16, "16\"", 16 pulgadas, r16, rin 16, aro16, <16>]
     excluir: &excluir_bici_marcas [rueditas, ruedas de apoyo, ruedas apoyo, ruedas de aprendizaje, repuesto, pedales,
-              puños, punos, manubrio, apoya pies, pata, casco, rodilleras, guantes, timbre, canasto, electrica,
-              eléctrica, moto, niña, nina, princesa, frozen, barbie, kitty, unicornio, rosado, rosada, fucsia,
-              miss lilly, little rouse]
+              puños, punos, manubrio, apoya pies, pata, casco, rodilleras, guantes, timbre, canasto, soporte,
+              electrica, eléctrica, <moto>, princesa, frozen, barbie, kitty, unicornio, beauty, rosado, rosada,
+              fucsia, miss lilly, little rouse]   # "niña" no: Roda dice "para niños niñas" (unisex)
 
   bicicleta_nino_marcas_retail:
     nombre: 🚲 Bicicleta niño aro 16 de marca en otras tiendas

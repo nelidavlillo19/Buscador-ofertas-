@@ -1,0 +1,2 @@
+00 200 396455 https://www.roda.cl/products.json?limit=250 <- https://www.roda.cl/products.json?limit=250
+01 200 124314 https://www.kugan.cl/products.json?limit=250 <- https://www.kugan.cl/products.json?limit=250

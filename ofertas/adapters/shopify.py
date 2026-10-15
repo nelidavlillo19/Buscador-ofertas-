@@ -61,8 +61,10 @@ class Shopify(Adaptador):
 
     def catalogo(self) -> list[Producto]:
         productos = []
+        # coleccion: recorre sólo esa colección de la tienda (p. ej. Oxford "aro-16")
+        base = f"{self.url}/collections/{self.tienda['coleccion']}" if self.tienda.get("coleccion") else self.url
         for pagina in range(1, MAX_PAGINAS + 1):
-            datos = self.cliente.json(f"{self.url}/products.json?limit=250&page={pagina}")
+            datos = self.cliente.json(f"{base}/products.json?limit=250&page={pagina}")
             lote = (datos or {}).get("products") or []
             if not lote:
                 break

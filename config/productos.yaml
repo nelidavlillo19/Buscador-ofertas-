@@ -138,23 +138,27 @@ categorias:
     buscar: [nenuco, muñeca nenuco, nenuco unicorn birthday]
     incluir: [nenuco]
 
-  # Bicicletas de marca livianas (Roda, Kugan y similares), de equilibrio o de pedales, aro 12 a 16.
+  # Bicicletas de marca (Roda, Kugan, Oxford, Bianchi, Totem, Strider, Woom, Early Rider), aro 16, sin rueditas.
   # Sus tiendas no muestran estrellas: se avisa desde 10% de descuento.
   bicicleta_nino_marcas:
-    nombre: 🚲 Bicicleta niño Roda / Kugan (sin rueditas)
+    nombre: 🚲 Bicicleta niño aro 16 de marca (tiendas Roda, Kugan, Oxford)
     umbral_descuento: 10
-    buscar: [bicicleta]
+    buscar: [bicicleta aro 16, bicicleta 16]
     incluir: [bicicleta, bike]
+    incluir_tambien: &aro16 [aro 16, "16\"", 16 pulgadas, r16, rin 16, aro16, <16>]
     excluir: &excluir_bici_marcas [rueditas, ruedas de apoyo, ruedas apoyo, ruedas de aprendizaje, repuesto, pedales,
-              puños, punos, manubrio, apoya pies, pata, casco, rodilleras, guantes, timbre, canasto, <20>, aro 20,
-              <24>, aro 24, <26>, electrica, eléctrica, moto]
+              puños, punos, manubrio, apoya pies, pata, casco, rodilleras, guantes, timbre, canasto, electrica,
+              eléctrica, moto, niña, nina, princesa, frozen, barbie, kitty, unicornio, rosado, rosada, fucsia,
+              miss lilly, little rouse]
 
   bicicleta_nino_marcas_retail:
-    nombre: 🚲 Bicicleta niño Roda / Kugan / Strider en otras tiendas
+    nombre: 🚲 Bicicleta niño aro 16 de marca en otras tiendas
     umbral_descuento: 10
-    buscar: [bicicleta roda, bicicleta kugan, bicicleta strider, bicicleta equilibrio roda, woom bicicleta]
+    buscar: [bicicleta bianchi aro 16, bicicleta totem aro 16, bicicleta oxford aro 16, bicicleta roda 16,
+             bicicleta kugan 16, bicicleta strider 16, woom 16, early rider 16]
     incluir: [bicicleta, bike]
-    incluir_tambien: [roda, kugan, strider, woom, early rider, kokua, puky]
+    incluir_tambien: [roda, kugan, oxford, bianchi, totem, strider, woom, early rider]
+    incluir_ademas: *aro16
     excluir: *excluir_bici_marcas
 
   bicicleta_aro16:

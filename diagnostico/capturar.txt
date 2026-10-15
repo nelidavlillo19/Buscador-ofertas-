@@ -1,6 +1,2 @@
-https://bianchi.cl/products.json?limit=2
-https://bianchi.cl/api/catalog_system/pub/products/search?ft=aro%2016&_from=0&_to=1
-https://www.oxfordbikes.cl/products.json?limit=2
-https://www.oxford.cl/api/catalog_system/pub/products/search?ft=aro%2016&_from=0&_to=1
-https://totembike.cl/products.json?limit=2
-https://www.lider.cl/ip/juegos-de-exterior/bicicleta-infantil-aro-16-miss-lilly-color-fucsia/00045073370625
+https://oxfordstore.cl/collections/aro-16/products.json?limit=250
+https://www.roda.cl/products.json?limit=250&page=2

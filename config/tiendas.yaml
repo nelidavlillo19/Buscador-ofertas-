@@ -118,6 +118,14 @@ tiendas:
     catalogo_completo: true
     categorias: [bicicleta_nino_marcas]
 
+  - id: oxford
+    nombre: Oxford
+    url: https://oxfordstore.cl
+    plataforma: shopify
+    catalogo_completo: true
+    coleccion: aro-16
+    categorias: [bicicleta_nino_marcas]
+
   - id: decathlon
     nombre: Decathlon
     url: https://www.decathlon.cl

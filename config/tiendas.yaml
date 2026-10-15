@@ -103,6 +103,21 @@ tiendas:
                  cargador_portatil, organizacion_hogar, rompecabezas, dinosaurios, juguetes_ninos, marcos_fotos,
                  pelicula_instax_mini]
 
+  # Marcas de bicicletas infantiles livianas (Shopify)
+  - id: roda
+    nombre: Roda
+    url: https://www.roda.cl
+    plataforma: shopify
+    catalogo_completo: true
+    categorias: [bicicleta_nino_marcas]
+
+  - id: kugan
+    nombre: Kugan
+    url: https://www.kugan.cl
+    plataforma: shopify
+    catalogo_completo: true
+    categorias: [bicicleta_nino_marcas]
+
   - id: decathlon
     nombre: Decathlon
     url: https://www.decathlon.cl
@@ -148,14 +163,14 @@ tiendas:
     nombre: Falabella
     url: https://www.falabella.com/falabella-cl
     plataforma: falabella
-    categorias: [bicicleta_aro16, trekking_calzado_mujer, trekking_polera_mujer, trekking_pantalon_mujer, trekking, maleta_cabina, organizadores_equipaje, banano_documentos, jugo_naranja_quillayes, jugo_naranja, mini_color_stack, mr_bubble, focuswing, nee_doh, super_mario_juguetes, nenuco, cocina_juguete_madera, cocina_juguete, kh7_quitamanchas, snacks_bebe_marcas, pelicula_polaroid, hot_wheels_mario_kart, cuboro, juegos_escalada, sillas_infantiles, marcos_fotos, panales_pampers_xxg, cargador_portatil, pelicula_instax_mini]
+    categorias: [bicicleta_nino_marcas_retail, bicicleta_aro16, trekking_calzado_mujer, trekking_polera_mujer, trekking_pantalon_mujer, trekking, maleta_cabina, organizadores_equipaje, banano_documentos, jugo_naranja_quillayes, jugo_naranja, mini_color_stack, mr_bubble, focuswing, nee_doh, super_mario_juguetes, nenuco, cocina_juguete_madera, cocina_juguete, kh7_quitamanchas, snacks_bebe_marcas, pelicula_polaroid, hot_wheels_mario_kart, cuboro, juegos_escalada, sillas_infantiles, marcos_fotos, panales_pampers_xxg, cargador_portatil, pelicula_instax_mini]
 
   # ---------- Construcción / pinturas ----------
   - id: sodimac
     nombre: Sodimac
     url: https://www.sodimac.cl/sodimac-cl
     plataforma: falabella
-    categorias: [bicicleta_aro16, limpiapies, juegos_escalada, cargador_portatil, pintura_antihongos]
+    categorias: [bicicleta_nino_marcas_retail, bicicleta_aro16, limpiapies, juegos_escalada, cargador_portatil, pintura_antihongos]
 
   - id: easy
     nombre: Easy
@@ -236,7 +251,7 @@ tiendas:
     nombre: Líder
     url: https://super.lider.cl
     plataforma: walmart
-    categorias: [bicicleta_aro16, trekking_calzado_mujer, trekking_polera_mujer, trekking_pantalon_mujer, trekking, maleta_cabina, organizadores_equipaje, banano_documentos, yoguito, jugo_naranja_quillayes, jugo_naranja, panales_pampers_xxg, snacks_bebe_marcas, compotas, jugos_sin_azucar,
+    categorias: [bicicleta_nino_marcas_retail, bicicleta_aro16, trekking_calzado_mujer, trekking_polera_mujer, trekking_pantalon_mujer, trekking, maleta_cabina, organizadores_equipaje, banano_documentos, yoguito, jugo_naranja_quillayes, jugo_naranja, panales_pampers_xxg, snacks_bebe_marcas, compotas, jugos_sin_azucar,
                  cereales_infantiles, barritas, galletas_colacion, cafe_grano, alimento_mascotas, crema_cuerpo_ninos,
                  kh7_quitamanchas, mr_bubble, nenuco]
 
@@ -245,6 +260,6 @@ tiendas:
     url: https://www.tottus.cl/tottus-cl
     plataforma: falabella   # mismo sistema que Falabella
     ruta_busqueda: /buscar?Ntt={q}
-    categorias: [bicicleta_aro16, trekking_calzado_mujer, trekking_polera_mujer, trekking_pantalon_mujer, trekking, maleta_cabina, organizadores_equipaje, banano_documentos, yoguito, jugo_naranja_quillayes, jugo_naranja, panales_pampers_xxg, snacks_bebe_marcas, compotas, jugos_sin_azucar,
+    categorias: [bicicleta_nino_marcas_retail, bicicleta_aro16, trekking_calzado_mujer, trekking_polera_mujer, trekking_pantalon_mujer, trekking, maleta_cabina, organizadores_equipaje, banano_documentos, yoguito, jugo_naranja_quillayes, jugo_naranja, panales_pampers_xxg, snacks_bebe_marcas, compotas, jugos_sin_azucar,
                  cereales_infantiles, barritas, galletas_colacion, cafe_grano, alimento_mascotas, crema_cuerpo_ninos,
                  kh7_quitamanchas, mr_bubble, nenuco]

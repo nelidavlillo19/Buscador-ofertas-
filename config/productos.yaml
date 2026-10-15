@@ -138,6 +138,25 @@ categorias:
     buscar: [nenuco, muñeca nenuco, nenuco unicorn birthday]
     incluir: [nenuco]
 
+  # Bicicletas de marca livianas (Roda, Kugan y similares), de equilibrio o de pedales, aro 12 a 16.
+  # Sus tiendas no muestran estrellas: se avisa desde 10% de descuento.
+  bicicleta_nino_marcas:
+    nombre: 🚲 Bicicleta niño Roda / Kugan (sin rueditas)
+    umbral_descuento: 10
+    buscar: [bicicleta]
+    incluir: [bicicleta, bike]
+    excluir: &excluir_bici_marcas [rueditas, ruedas de apoyo, ruedas apoyo, ruedas de aprendizaje, repuesto, pedales,
+              puños, punos, manubrio, apoya pies, pata, casco, rodilleras, guantes, timbre, canasto, <20>, aro 20,
+              <24>, aro 24, <26>, electrica, eléctrica, moto]
+
+  bicicleta_nino_marcas_retail:
+    nombre: 🚲 Bicicleta niño Roda / Kugan / Strider en otras tiendas
+    umbral_descuento: 10
+    buscar: [bicicleta roda, bicicleta kugan, bicicleta strider, bicicleta equilibrio roda, woom bicicleta]
+    incluir: [bicicleta, bike]
+    incluir_tambien: [roda, kugan, strider, woom, early rider, kokua, puky]
+    excluir: *excluir_bici_marcas
+
   bicicleta_aro16:
     nombre: 🚲 Bicicleta aro 16 niño (sin rueditas, 4,5+ estrellas)
     buscar: [bicicleta aro 16, bicicleta aro 16 niño, bicicleta infantil aro 16]

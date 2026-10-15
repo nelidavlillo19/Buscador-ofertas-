@@ -1,0 +1,2 @@
+00 200 33000 https://oxfordstore.cl/collections/aro-16/products.json?limit=250 <- https://oxfordstore.cl/collections/aro-16/products.json?limit=250
+01 200 203337 https://www.roda.cl/products.json?limit=250&page=2 <- https://www.roda.cl/products.json?limit=250&page=2

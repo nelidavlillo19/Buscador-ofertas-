@@ -138,23 +138,25 @@ categorias:
     buscar: [nenuco, muñeca nenuco, nenuco unicorn birthday]
     incluir: [nenuco]
 
-  # Bicicletas de marca (Roda, Kugan, Oxford, Bianchi, Totem, Strider, Woom, Early Rider), aro 16, sin rueditas.
+  # Bicicletas de marca (Roda, Kugan, Oxford, Bianchi, Totem, Strider, Woom, Early Rider), aro 14 o 16 (niño de 1,10 m), sin rueditas.
   # Sus tiendas no muestran estrellas: se avisa desde 10% de descuento.
   bicicleta_nino_marcas:
-    nombre: 🚲 Bicicleta niño aro 16 de marca (tiendas Roda, Kugan, Oxford)
+    nombre: 🚲 Bicicleta niño aro 14-16 de marca (tiendas Roda, Kugan, Oxford)
     umbral_descuento: 10
-    buscar: [bicicleta aro 16, bicicleta 16]
+    buscar: [bicicleta aro 16, bicicleta 16, bicicleta aro 14, bicicleta 14]
     incluir: [bicicleta, bike]
-    incluir_tambien: &aro16 [aro 16, "16\"", 16 pulgadas, r16, rin 16, aro16, <16>]
+    incluir_tambien: &aro16 [aro 16, "16\"", 16 pulgadas, r16, rin 16, aro16, <16>,
+                           aro 14, "14\"", 14 pulgadas, r14, rin 14, aro14, <14>]
     excluir: &excluir_bici_marcas [rueditas, ruedas de apoyo, ruedas apoyo, ruedas de aprendizaje, repuesto, pedales,
               puños, punos, manubrio, apoya pies, pata, casco, rodilleras, guantes, timbre, canasto, soporte,
               electrica, eléctrica, <moto>, princesa, frozen, barbie, kitty, unicornio, beauty, rosado, rosada,
               fucsia, miss lilly, little rouse]   # "niña" no: Roda dice "para niños niñas" (unisex)
 
   bicicleta_nino_marcas_retail:
-    nombre: 🚲 Bicicleta niño aro 16 de marca en otras tiendas
+    nombre: 🚲 Bicicleta niño aro 14-16 de marca en otras tiendas
     umbral_descuento: 10
     buscar: [bicicleta bianchi aro 16, bicicleta totem aro 16, bicicleta oxford aro 16, bicicleta roda 16,
+             bicicleta bianchi aro 14, bicicleta totem aro 14, bicicleta oxford aro 14, bicicleta roda 14, bicicleta kugan 14,
              bicicleta kugan 16, bicicleta strider 16, woom 16, early rider 16]
     incluir: [bicicleta, bike]
     incluir_tambien: [roda, kugan, oxford, bianchi, totem, strider, woom, early rider]
@@ -162,15 +164,15 @@ categorias:
     excluir: *excluir_bici_marcas
 
   bicicleta_aro16:
-    nombre: 🚲 Bicicleta aro 16 niño (sin rueditas, 4,5+ estrellas)
-    buscar: [bicicleta aro 16, bicicleta aro 16 niño, bicicleta infantil aro 16]
+    nombre: 🚲 Bicicleta aro 14-16 niño (sin rueditas, 4,5+ estrellas)
+    buscar: [bicicleta aro 16, bicicleta aro 16 niño, bicicleta infantil aro 16, bicicleta aro 14 niño, bicicleta infantil aro 14]
     incluir: [bicicleta, bici, bike]
-    incluir_tambien: [aro 16, "16\"", 16 pulgadas, r16, rin 16, aro16, <16>]
+    incluir_tambien: *aro16
     # "sin rueditas": se descartan las que dicen traer ruedas de apoyo
     excluir: [rueditas, ruedas de apoyo, ruedas apoyo, ruedas de aprendizaje, aprendizaje, ruedas laterales,
               ruedas entrenamiento, estabilizador, equilibrio, triciclo,
               niña, nina, princesa, frozen, rosado, rosada, unicornio, barbie, beauty, electrica, eléctrica, repuesto, camara, neumatico, asiento, canasto, casco, soporte,
-              aro 12, aro 14, aro 20]
+              aro 12, aro 20]
     calificacion_minima: 4.5        # avisa si tiene 4,5+ estrellas y cualquier descuento
     evaluaciones_minimas: 5
     solo_bien_evaluadas: true       # sin evaluación suficiente no avisa, aunque tenga 30%
@@ -370,11 +372,11 @@ categorias:
     tallas: ["2", "2A", "2 años", "24M", "18-24M", "2T"]
 
   traje_bano_nino_t6:
-    nombre: Traje de baño niño talla 6
+    nombre: Traje de baño niño talla 5-6
     buscar: [traje de baño niño, short de baño niño, polera uv niño]
     incluir: [traje de bano, traje bano, short de bano, bañador, banador, uv, swim]
     incluir_tambien: [niño, nino, boy]
-    tallas: ["6", "6A", "6 años", "6T"]
+    tallas: ["5", "5A", "5 años", "5T", "6", "6A", "6 años", "6T"]
 
   ropa_nina_t2:
     nombre: Ropa de niña talla 2
@@ -384,11 +386,11 @@ categorias:
     tallas: ["2", "2A", "2 años", "24M", "18-24M", "2T"]
 
   ropa_nino_t6:
-    nombre: Ropa de niño talla 6
+    nombre: Ropa de niño talla 5-6
     buscar: [polera niño, pantalon niño, poleron niño, pijama niño, short niño]
     incluir: [niño, nino, boy]
     excluir: [zapat, calzado, bota, sandalia]
-    tallas: ["6", "6A", "6 años", "6T"]
+    tallas: ["5", "5A", "5 años", "5T", "6", "6A", "6 años", "6T"]
 
   crema_cuerpo_ninos:
     nombre: Crema de cuerpo para niños

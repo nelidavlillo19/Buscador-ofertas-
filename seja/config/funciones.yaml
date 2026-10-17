@@ -1,0 +1,110 @@
+# Funciones de cada jerarquía y perfil según la propuesta de Reglamento de Carrera Académica UMCE (Título II).
+# El Informe de Cierre marca cada función como cumplida si hay al menos una tarea evidenciada (puntaje > 0)
+# en alguna de sus subcategorías ("ambito.subcategoria", o "ambito.*" para todo el ámbito).
+# Las funciones `opcional: true` no se marcan como pendientes si no se declararon.
+
+grupos:
+  docencia_cursos: &docencia_cursos [docencia.cursos_pregrado, docencia.cursos_postgrado]
+  direccion: &direccion [docencia.direccion_titulacion]
+  formacion_academicos: &formacion_academicos [docencia.formacion_academicos]
+  formacion_continua: &formacion_continua [docencia.formacion_continua]
+  proyectos_ici: &proyectos_ici [investigacion.proyectos, investigacion.creacion_artistica, investigacion.innovacion]
+  publicar: &publicar [investigacion.publicaciones, investigacion.libros, investigacion.creacion_artistica,
+                       investigacion.patentes_licencias]
+  presentar: &presentar [investigacion.presentaciones, vinculacion.difusion]
+  redes: &redes [investigacion.redes, vinculacion.redes]
+  vcm: &vcm [vinculacion.programas_vcm, vinculacion.proyectos_vcm, vinculacion.iniciativas_vcm,
+             vinculacion.actividades_relevantes, vinculacion.educacion_continua, vinculacion.trabajo_asociativo,
+             vinculacion.extension]
+  difusion_vcm: &difusion_vcm [vinculacion.difusion, vinculacion.publicaciones_vcm, vinculacion.representacion,
+                               investigacion.presentaciones]
+  gestion: &gestion [gestion.*]
+  investigacion: &investigacion [investigacion.*]
+  vinculacion: &vinculacion [vinculacion.*]
+
+jerarquias:
+  instructor:
+    articulo: 14
+    todos:
+      - {funcion: "Impartir docencia de pregrado y/o postgrado", subcategorias: *docencia_cursos}
+      - {funcion: "Colaborar en la supervisión de trabajos de titulación y/o graduación", subcategorias: *direccion}
+      - {funcion: "Contribuir a la formación y acompañamiento de estudiantes ayudantes", subcategorias: [docencia.ayudantes]}
+      - {funcion: "Presentar trabajos en eventos científicos, artísticos o deportivos, o publicar", subcategorias: [investigacion.presentaciones, investigacion.publicaciones, investigacion.libros, investigacion.creacion_artistica, vinculacion.difusion]}
+      - {funcion: "Colaborar en iniciativas, proyectos o programas de vinculación con el medio", subcategorias: *vcm}
+      - {funcion: "Cumplir con acciones de gestión asignadas", subcategorias: *gestion}
+
+  asistente:
+    articulo: {investigador: 18, vinculador: 19}
+    investigador:
+      - {funcion: "Impartir docencia de pregrado y/o postgrado", subcategorias: *docencia_cursos}
+      - {funcion: "Dirigir trabajos conducentes a grados académicos y/o títulos profesionales", subcategorias: *direccion}
+      - {funcion: "Colaborar en la formación y desarrollo de académicos/as de jerarquía menor o equivalente", subcategorias: *formacion_academicos}
+      - {funcion: "Participar como investigador/a principal o co-investigador/a en proyectos de investigación, innovación o creación", subcategorias: *proyectos_ici}
+      - {funcion: "Publicar resultados de investigación o difundir obra", subcategorias: *publicar}
+      - {funcion: "Presentar trabajos en eventos científicos, artísticos o deportivos", subcategorias: *presentar}
+      - {funcion: "Participar en redes académicas, artísticas, deportivas o profesionales", subcategorias: *redes}
+      - {funcion: "Coordinar en roles de gestión académica-administrativa", subcategorias: *gestion}
+      - {funcion: "Acreditar formación continua", subcategorias: *formacion_continua}
+      - {funcion: "Participar en iniciativas, proyectos o programas de vinculación con el medio", subcategorias: *vinculacion, opcional: true}
+    vinculador:
+      - {funcion: "Impartir docencia de pregrado y/o postgrado", subcategorias: *docencia_cursos}
+      - {funcion: "Dirigir trabajos conducentes a grados académicos y/o títulos profesionales", subcategorias: *direccion}
+      - {funcion: "Colaborar en la formación y desarrollo de académicos/as de jerarquía menor o equivalente", subcategorias: *formacion_academicos}
+      - {funcion: "Participar, al menos como co-responsable, en iniciativas, proyectos o programas de VcM", subcategorias: *vcm}
+      - {funcion: "Divulgar trabajos, experiencias de VcM o producciones en eventos", subcategorias: *difusion_vcm}
+      - {funcion: "Participar en redes académicas, artísticas, deportivas o profesionales", subcategorias: *redes}
+      - {funcion: "Coordinar en roles de gestión académica-administrativa", subcategorias: *gestion}
+      - {funcion: "Acreditar formación continua", subcategorias: *formacion_continua}
+      - {funcion: "Participar en proyectos de investigación y/o innovación tecnológica", subcategorias: *investigacion, opcional: true}
+
+  asociado:
+    articulo: {investigador: 23, vinculador: 24}
+    investigador:
+      - {funcion: "Impartir docencia de pregrado y/o postgrado", subcategorias: *docencia_cursos}
+      - {funcion: "Dirigir trabajos conducentes a título profesional y/o grados académicos de pre y postgrado", subcategorias: *direccion}
+      - {funcion: "Colaborar en la formación y desarrollo de académicos/as de jerarquía menor o equivalente", subcategorias: *formacion_academicos}
+      - {funcion: "Liderar proyectos de investigación, innovación o creación como investigador/a principal", subcategorias: *proyectos_ici}
+      - {funcion: "Publicar como autor/a principal resultados de investigación o difundir obra", subcategorias: *publicar}
+      - {funcion: "Presentar trabajos en eventos científicos, artísticos o deportivos", subcategorias: *presentar}
+      - {funcion: "Participar en redes nacionales e internacionales", subcategorias: *redes}
+      - {funcion: "Formar parte de equipos de investigación interdisciplinarios o multidisciplinarios", subcategorias: [investigacion.equipos_interdisciplinarios]}
+      - {funcion: "Acreditar formación continua", subcategorias: *formacion_continua}
+      - {funcion: "Realizar tareas de coordinación en la gestión académica-administrativa", subcategorias: *gestion}
+      - {funcion: "Formar parte de iniciativas, proyectos o programas de vinculación con el medio", subcategorias: *vinculacion, opcional: true}
+    vinculador:
+      - {funcion: "Impartir docencia de pregrado y/o postgrado", subcategorias: *docencia_cursos}
+      - {funcion: "Dirigir trabajos conducentes a título profesional y/o grados académicos de pre y postgrado", subcategorias: *direccion}
+      - {funcion: "Colaborar en la formación y desarrollo de académicos/as de jerarquía menor o equivalente", subcategorias: *formacion_academicos}
+      - {funcion: "Liderar iniciativas, proyectos o programas de VcM competitivos o de relevancia regional o nacional", subcategorias: *vcm}
+      - {funcion: "Exponer, presentar o difundir actividades académicas y de VcM", subcategorias: *difusion_vcm}
+      - {funcion: "Participar en redes nacionales e internacionales", subcategorias: *redes}
+      - {funcion: "Acreditar formación continua", subcategorias: *formacion_continua}
+      - {funcion: "Realizar tareas de coordinación en la gestión académica-administrativa", subcategorias: *gestion}
+      - {funcion: "Participar en proyectos de investigación y/o innovación tecnológica", subcategorias: *investigacion, opcional: true}
+
+  titular:
+    articulo: {investigador: 28, vinculador: 29}
+    investigador:
+      - {funcion: "Impartir docencia de pregrado y postgrado", subcategorias: *docencia_cursos}
+      - {funcion: "Dirigir trabajos conducentes a título profesional y/o grados académicos de pre y postgrado", subcategorias: *direccion}
+      - {funcion: "Liderar actividades para la formación y desarrollo de académicos/as de jerarquía menor", subcategorias: *formacion_academicos}
+      - {funcion: "Liderar proyectos de investigación, innovación o creación competitivos", subcategorias: *proyectos_ici}
+      - {funcion: "Postular a fondos de proyectos con financiamiento externo", subcategorias: [investigacion.postulacion_fondos, investigacion.proyectos]}
+      - {funcion: "Integrar núcleos o claustros de postgrado (estándares CNA)", subcategorias: [investigacion.claustros_postgrado]}
+      - {funcion: "Publicar como autor/a principal resultados de investigación o difundir obra", subcategorias: *publicar}
+      - {funcion: "Presentar trabajos en eventos a nivel internacional", subcategorias: *presentar}
+      - {funcion: "Participar en redes a nivel internacional", subcategorias: *redes}
+      - {funcion: "Acreditar formación continua", subcategorias: *formacion_continua}
+      - {funcion: "Realizar tareas de coordinación en la gestión académica-administrativa", subcategorias: *gestion}
+      - {funcion: "Formar parte de iniciativas, proyectos o programas de vinculación con el medio", subcategorias: *vinculacion, opcional: true}
+    vinculador:
+      - {funcion: "Impartir docencia de pregrado y/o postgrado", subcategorias: *docencia_cursos}
+      - {funcion: "Dirigir trabajos conducentes a título profesional y/o grados académicos de pre y postgrado", subcategorias: *direccion}
+      - {funcion: "Liderar actividades para la formación y desarrollo de académicos/as de jerarquía menor", subcategorias: *formacion_academicos}
+      - {funcion: "Liderar iniciativas, proyectos o programas de VcM competitivos con financiamiento externo", subcategorias: *vcm}
+      - {funcion: "Liderar la exposición, presentación o difusión de actividades académicas y de VcM", subcategorias: *difusion_vcm}
+      - {funcion: "Integrar núcleos y claustros de programas de postgrado (estándares CNA)", subcategorias: [investigacion.claustros_postgrado]}
+      - {funcion: "Participar en redes a nivel internacional", subcategorias: *redes}
+      - {funcion: "Acreditar formación continua", subcategorias: *formacion_continua}
+      - {funcion: "Realizar tareas de coordinación en la gestión académica-administrativa", subcategorias: *gestion}
+      - {funcion: "Participar en proyectos de investigación y/o innovación tecnológica", subcategorias: *investigacion, opcional: true}

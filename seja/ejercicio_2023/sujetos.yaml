@@ -1,0 +1,609 @@
+# Ejercicio de calificación SEJA con los registros 2023, ANONIMIZADO.
+#
+# Fuentes: Reportes de Compromiso de Desempeño (octubre 2023), Informes de Cierre (marzo 2024) y
+# formularios de Compromiso de Desempeño 2023. No se registran nombres de personas, jefaturas,
+# departamentos, asignaturas ni proyectos.
+#
+# Sujetos 01–06: compromiso + informe de cierre (hay cumplimiento por actividad, pero no horas).
+# Sujetos 07–09: formulario de compromiso con horas (no hay informe de cierre).
+#
+# Evidencia: se transcribe la etapa comprometida y la evidenciada del informe de cierre. Una actividad
+# "sin evidencia" queda sin etapa evidenciada (0%). Se considera validada la evidencia que tiene un
+# mecanismo de respaldo (carta, constancia, certificado, informe, registro).
+
+con_cierre:
+  - sujeto: "01"
+    jerarquia: asociado
+    jerarquia_reporte: asociado
+    perfil_supuesto: vinculador
+    jornada: completa
+    ingreso: 2020
+    mayoria_reporte: [gestion]
+    funciones_reporte: [docencia, investigacion, gestion]
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Asignaturas 1 y 2 (pregrado)",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Registro UCampus}}
+      - {ambito: docencia, subcategoria: direccion_titulacion, descripcion: "Asignatura 3 (investigación de pregrado)",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Registro UCampus}}
+      - {ambito: docencia, subcategoria: direccion_titulacion, descripcion: "Asignaturas 4 y 5 (investigación de postgrado)",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Registro UCampus}}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto con financiamiento externo (ANID)",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: ejecucion, mecanismo: Carta de aprobación}}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto de creación con financiamiento externo",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: ejecucion, mecanismo: Carta de aprobación}}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto con financiamiento interno",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: ejecucion, mecanismo: Carta compromiso}}
+      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "3 artículos (2 enviados y 1 publicado)",
+         evidencia: {etapa_comprometida: enviada, etapa_evidenciada: publicada, mecanismo: Certificados y cartas, validado: true}}
+      - {ambito: vinculacion, subcategoria: iniciativas_vcm, descripcion: "1 coloquio",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Afiches y programas}}
+      - {ambito: vinculacion, subcategoria: iniciativas_vcm, descripcion: "2 seminarios",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Afiches y programas}}
+      - {ambito: vinculacion, subcategoria: actividades_relevantes, descripcion: "2 exposiciones",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Afiches y programas}}
+      - {ambito: vinculacion, subcategoria: difusion, descripcion: "1 actividad de difusión",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Afiches y programas}}
+      - {ambito: vinculacion, subcategoria: extension, descripcion: "1 asesoría externa",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Notificación por correo}}
+      - {ambito: gestion, subcategoria: direccion, descripcion: "Coordinación de biblioteca de la unidad",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Carga académica}}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Comité ejecutivo de magíster",
+         evidencia: {etapa_comprometida: ejecucion, mecanismo: Informe del magíster}}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Consejo académico del departamento",
+         evidencia: {etapa_comprometida: ejecucion, mecanismo: Informe de la carrera}}
+    informe_2023: "Todas las funciones de la Res. 320/93 cumplidas (5 de 5). Gestión: 2 de 3 actividades sin evidencia."
+    hallazgos:
+      - "El resumen del reporte declara funciones de docencia, investigación y gestión, pero la tabla del mismo reporte incluye 6 iniciativas de VcM y 1 asesoría externa."
+      - "El reporte indica que la gestión es mayoritaria en horas, aunque el compromiso declara 3 actividades de gestión frente a 5 de docencia y 7 de VcM: sin horas no es verificable."
+
+  - sujeto: "02"
+    jerarquia: titular
+    jerarquia_reporte: titular
+    perfil_supuesto: investigador
+    jornada: completa
+    ingreso: 2014
+    mayoria_reporte: [investigacion]
+    funciones_reporte: [docencia, investigacion, vinculacion, gestion]
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Asignaturas 1 y 2 (pregrado)",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Registro UCampus}}
+      - {ambito: docencia, subcategoria: direccion_titulacion, descripcion: "9 trabajos de memoria de título",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Registro UCampus}}
+      - {ambito: docencia, subcategoria: cursos_postgrado, descripcion: "Asignaturas 3 a 12 (postgrado)",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Registro UCampus}}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto con financiamiento externo (ANID)",
+         evidencia: {etapa_comprometida: ejecucion}}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto con financiamiento interno",
+         evidencia: {etapa_comprometida: ejecucion}}
+      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "1 publicación",
+         evidencia: {etapa_comprometida: enviada}}
+      - {ambito: gestion, subcategoria: direccion, descripcion: "Coordinación de programa de magíster",
+         evidencia: {etapa_comprometida: ejecucion}}
+      - {ambito: gestion, subcategoria: gestion_cuerpo_academico, descripcion: "Comisión de jerarquización",
+         evidencia: {etapa_comprometida: ejecucion}}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Consejo de departamento",
+         evidencia: {etapa_comprometida: ejecucion}}
+    informe_2023: "3 de 7 funciones de la Res. 320/93 cumplidas. Investigación y gestión: ninguna actividad evidenciada. El texto del informe afirma que las actividades declaradas son las exigidas para la jerarquía."
+    hallazgos:
+      - "El resumen del reporte menciona vinculación con el medio, pero no se declaran actividades de VcM en la tabla ni en el informe."
+      - "El reporte señala 9 actividades curriculares y práctica; el informe de cierre evalúa 2 de pregrado, 9 memorias y 10 de postgrado (21)."
+      - "El informe concluye que las actividades son las exigidas para la jerarquía aunque marca 4 funciones como no cumplidas."
+
+  - sujeto: "03"
+    jerarquia: asociado
+    jerarquia_reporte: asociado
+    perfil_supuesto: vinculador
+    jornada: completa
+    ingreso: 2016
+    mayoria_reporte: [docencia]
+    funciones_reporte: [docencia, investigacion, vinculacion, gestion, perfeccionamiento]
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Asignaturas 1 a 7 (pregrado)",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Registro UCampus}}
+      - {ambito: docencia, subcategoria: direccion_titulacion, descripcion: "1 actividad de memorias",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Registro UCampus}}
+      - {ambito: docencia, subcategoria: direccion_titulacion, descripcion: "Asignaturas 8 a 10 (investigación de postgrado)",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Registro UCampus}}
+      - {ambito: docencia, subcategoria: formacion_continua, descripcion: "Apoyo a la formación académica (perfeccionamiento)",
+         evidencia: {etapa_comprometida: ejecucion}}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto con financiamiento interno",
+         evidencia: {etapa_comprometida: postulacion, etapa_evidenciada: adjudicacion, mecanismo: Carta, validado: true}}
+      - {ambito: investigacion, subcategoria: postulacion_fondos, descripcion: "Postulación a proyecto con financiamiento externo (ANID)",
+         evidencia: {etapa_comprometida: postulacion, etapa_evidenciada: postulacion, mecanismo: Carta de recepción}}
+      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "1 artículo",
+         evidencia: {etapa_comprometida: en_preparacion, etapa_evidenciada: enviada, mecanismo: Carta, validado: true}}
+      - {ambito: vinculacion, subcategoria: proyectos_vcm, descripcion: "1 proyecto de extensión",
+         evidencia: {etapa_comprometida: ejecucion}}
+      - {ambito: vinculacion, subcategoria: difusion, descripcion: "1 ponencia",
+         evidencia: {etapa_comprometida: ejecucion}}
+      - {ambito: vinculacion, subcategoria: extension, descripcion: "1 asesoría externa",
+         evidencia: {etapa_comprometida: ejecucion}}
+      - {ambito: gestion, subcategoria: direccion, descripcion: "Coordinación de unidad académica",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: ejecucion, mecanismo: Constancia}}
+    informe_2023: "3 de 5 funciones de la Res. 320/93 cumplidas. VcM y perfeccionamiento sin evidencia."
+    hallazgos:
+      - "El reporte declara una «tenencia» en VcM que no aparece en el informe de cierre; el informe evalúa una ponencia que el reporte no menciona."
+      - "La «colaboración con el departamento» declarada en gestión no se evalúa en el informe de cierre."
+      - "El perfeccionamiento se registra como un área aparte; en SEJA corresponde a formación continua (docencia)."
+
+  - sujeto: "04"
+    jerarquia: titular
+    jerarquia_reporte: titular
+    perfil_supuesto: investigador
+    jornada: completa
+    ingreso: 2020
+    mayoria_reporte: [investigacion]
+    funciones_reporte: [docencia, investigacion, vinculacion, gestion, perfeccionamiento]
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Asignaturas 1 a 3 (pregrado)",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Registro UCampus}}
+      - {ambito: docencia, subcategoria: direccion_titulacion, descripcion: "3 actividades de memorias",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Registro UCampus}}
+      - {ambito: docencia, subcategoria: cursos_postgrado, descripcion: "Asignatura 4 (postgrado)",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Registro UCampus}}
+      - {ambito: docencia, subcategoria: formacion_continua, descripcion: "Curso de formación de la unidad de desarrollo académico",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Constancia}}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "2 proyectos en ejecución",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: ejecucion, mecanismo: Constancia y carta}}
+      - {ambito: investigacion, subcategoria: postulacion_fondos, descripcion: "Postulación a proyecto con financiamiento externo (ANID)",
+         evidencia: {etapa_comprometida: postulacion}}
+      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "3 artículos",
+         evidencia: {etapa_comprometida: publicada, etapa_evidenciada: publicada, mecanismo: Documento}}
+      - {ambito: vinculacion, subcategoria: difusion, descripcion: "2 ponencias",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Certificado}}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Claustro académico de magíster",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: ejecucion, mecanismo: Constancia}}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Integrante de núcleo de investigación",
+         evidencia: {etapa_comprometida: ejecucion}}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Claustro académico de doctorado",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: ejecucion, mecanismo: Constancia}}
+    informe_2023: "6 de 7 funciones de la Res. 320/93 cumplidas. Pendiente: colaborar en planes de perfeccionamiento de ayudantes y académicos de jerarquía menor."
+    hallazgos:
+      - "Los claustros de magíster y doctorado y el núcleo de investigación se registraron en gestión; en el catálogo SEJA los claustros de postgrado corresponden a investigación."
+      - "Las ponencias se registran en VcM; el catálogo SEJA las admite en investigación (divulgación) o en VcM (presentaciones)."
+
+  - sujeto: "05"
+    jerarquia: titular
+    jerarquia_reporte: asociado
+    perfil_supuesto: investigador
+    jornada: completa
+    ingreso: null
+    mayoria_reporte: [investigacion, gestion]
+    funciones_reporte: [docencia, investigacion, vinculacion, gestion]
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Asignaturas 1 y 2 (pregrado)",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Registro UCampus}}
+      - {ambito: docencia, subcategoria: direccion_titulacion, descripcion: "12 actividades de memorias",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Registro UCampus}}
+      - {ambito: docencia, subcategoria: cursos_postgrado, descripcion: "Asignaturas 3 a 5 (postgrado)",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Registro UCampus}}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto con financiamiento interno",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: cierre, mecanismo: Informe, validado: true}}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto con financiamiento externo",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: cierre, mecanismo: Informe, validado: true}}
+      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "1 artículo",
+         evidencia: {etapa_comprometida: enviada}}
+      - {ambito: vinculacion, subcategoria: proyectos_vcm, descripcion: "Proyecto de convenio marco",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Informe}}
+      - {ambito: vinculacion, subcategoria: difusion, descripcion: "Ponencias (2 comprometidas, 3 realizadas)",
+         evidencia: {comprometido: 2, logrado: 3, validado: true, mecanismo: Afiche}}
+      - {ambito: gestion, subcategoria: direccion, descripcion: "Coordinación de un observatorio",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Constancia}}
+      - {ambito: gestion, subcategoria: gestion_curricular, descripcion: "Creación de un programa de magíster",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Constancia}}
+      - {ambito: gestion, subcategoria: aseguramiento_calidad, descripcion: "Comité de autoevaluación de magíster",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Constancia}}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Comité académico de núcleo de magíster",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Constancia}}
+    informe_2023: "6 de 7 funciones de la Res. 320/93 cumplidas. Pendiente: colaborar en planes de perfeccionamiento de ayudantes y académicos de jerarquía menor."
+    hallazgos:
+      - "El reporte de octubre registra la jerarquía Asociado y el informe de cierre registra Titular."
+      - "El reporte declara 2 ponencias y el informe evidencia 3: es un excedente que el informe 2023 no distingue."
+
+  - sujeto: "06"
+    jerarquia: asociado
+    jerarquia_reporte: asociado
+    perfil_supuesto: investigador
+    jornada: completa
+    ingreso: null
+    mayoria_reporte: [docencia, investigacion]
+    funciones_reporte: [docencia, vinculacion, investigacion, gestion]
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_postgrado, descripcion: "Asignaturas 1 a 7 (postgrado)",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Registro UCampus}}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto de postdoctorado",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: cierre, mecanismo: Artículo, validado: true}}
+      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "3 publicaciones",
+         evidencia: {etapa_comprometida: en_preparacion, etapa_evidenciada: publicada, mecanismo: Artículo, validado: true}}
+      - {ambito: vinculacion, subcategoria: difusion, descripcion: "3 ponencias",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Certificados}}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Presidencia de comité científico de conferencia internacional",
+         evidencia: {etapa_comprometida: ejecucion, etapa_evidenciada: finalizada, mecanismo: Certificado de participación}}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Comisión de investigación",
+         evidencia: {etapa_comprometida: ejecucion}}
+    informe_2023: "5 de 5 funciones de la Res. 320/93 cumplidas. Gestión: 1 de 2 actividades sin evidencia."
+    hallazgos:
+      - "El reporte declara dirección de trabajos de tesis de postgrado; el informe de cierre no la evalúa (no se sabe si se cumplió)."
+      - "La presidencia de un comité científico internacional es una actividad de redes o VcM más que de gestión académica."
+
+solo_compromiso:
+  - sujeto: "07"
+    jerarquia: asistente
+    perfil_supuesto: vinculador
+    jornada: completa
+    declarado: {docencia: 15, gestion: 27}
+    horas: {docencia: [7.5, 7.5], gestion: 25, vinculacion: 2}
+    actividades:
+      docencia: "Asignatura 1 (3 h) y talleres de práctica: asignaturas 2 y 3 (3 h y 1,5 h), en cada semestre"
+      gestion: "Unidad de gestión curricular (1,5 h), reunión de departamento (1,5 h), coordinación de prácticas (22 h)"
+      vinculacion: "Coordinación de jornadas nacionales de la disciplina (2 h, declarada en gestión); 2 capacitaciones a instituciones externas (sin horas)"
+    notas:
+      - "El resumen declaró 15 h de docencia sumando los dos semestres; en horas semanales son 7,5."
+      - "La organización de un evento académico nacional se declaró en gestión; corresponde a VcM."
+  - sujeto: "08"
+    jerarquia: asociado
+    perfil_supuesto: investigador
+    jornada: completa
+    declarado: {docencia: 17, investigacion: 8, vinculacion: 16, gestion: 9}
+    horas: {docencia: [17, 16.75], investigacion: 8, vinculacion: 16, gestion: 9}
+    actividades:
+      docencia: "1.er semestre: asignaturas 1 y 2 (pregrado), asignatura 3 (postgrado), dirección de 3 tesis; 2.º semestre: seminario de título, asignatura 4 (postgrado), dirección de 2 tesis"
+      investigacion: "4 proyectos (1 cierre y 3 postulaciones, 1 h c/u) y 3 publicaciones (4 h)"
+      vinculacion: "3 proyectos de extensión o creación (4 h c/u), 1 evento internacional (2 h), 2 redes internacionales (1 h c/u)"
+      gestion: "Núcleo de magíster (2 h), comité de doctorado (5 h), reunión de departamento (1,5 h), comisión de concurso (0,5 h)"
+    notas:
+      - "«16.45» y «3.45» horas se interpretan como 16 h 45 min y 3 h 45 min."
+      - "4 ponencias y la revisión de artículos se declararon sin horas: se evalúan, pero no ponderan."
+  - sujeto: "09"
+    jerarquia: asociado
+    perfil_supuesto: investigador
+    jornada: completa
+    declarado: {docencia: 18, investigacion: 12.5, vinculacion: 2, gestion: 5.5}
+    horas: {docencia: [18, 18], investigacion: 14.5, vinculacion: 4, gestion: 1.5}
+    actividades:
+      docencia: "Asignaturas 1 a 6 (pregrado), 18 h semanales en cada semestre"
+      investigacion: "Proyecto de innovación pedagógica con financiamiento externo (8 h), 1 artículo (4,5 h), revisión de artículos para revista científica (2 h, declarada en gestión)"
+      vinculacion: "Seminario de divulgación (2 h), representación en comisión internacional de divulgación (2 h, declarada en gestión)"
+      gestion: "Reunión de departamento (1,5 h)"
+    notas:
+      - "Dos actividades declaradas en gestión pertenecen a otros ámbitos según el catálogo SEJA."
+
+# Compromisos de Desempeño 2024 (formulario QuestionPro/UCampus), ANONIMIZADOS. Aún sin informe de cierre.
+# Los sujetos 02 y 09 son las mismas personas del ejercicio 2023. El formulario 2024 no pide jerarquía, perfil
+# ni jornada, y su resumen tiene sólo docencia, investigación y VcM: las horas de gestión se toman de los
+# textos libres u observaciones cuando la persona las indica.
+compromisos_2024:
+  - sujeto: "02"
+    jerarquia: titular
+    completo: false
+    declarado: "Sin resumen de horas (el formulario termina en docencia)."
+    horas: {}
+    actividades:
+      docencia: "Asignaturas 1 y 2 (pregrado) y dirección de 2 tesis"
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Asignaturas 1 y 2 (pregrado)", etapa: ejecucion}
+      - {ambito: docencia, subcategoria: direccion_titulacion, descripcion: "Dirección de 2 tesis", etapa: ejecucion}
+    notas:
+      - "El formulario llega sólo hasta docencia: no declara investigación, VcM, gestión ni horas. En 2023 este sujeto comprometió proyectos, una publicación y coordinación de un magíster."
+  - sujeto: "09"
+    jerarquia: asociado
+    completo: true
+    declarado: "Docencia 23 · Investigación 12 · VcM 2 · Total 37"
+    horas: {docencia: 23, investigacion: 15, vinculacion: 2, gestion: 1.5}
+    actividades:
+      docencia: "Asignaturas 1 a 3 (pregrado), asignatura 4 (postgrado), dirección de 1 tesis de pregrado y 1 de postgrado, curso en escuela de invierno"
+      investigacion: "Proyecto interno como investigadora principal (2024–2026); postulación como co-investigadora a un fondo externo; 1 artículo por enviar (SciELO); comité editorial de una revista (3 h, en observaciones)"
+      vinculacion: "Representación en una comisión internacional de divulgación de la disciplina (2 h)"
+      gestion: "Reunión de departamento (1,5 h, en observaciones)"
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Asignaturas 1 a 3 (pregrado)", etapa: ejecucion}
+      - {ambito: docencia, subcategoria: cursos_postgrado, descripcion: "Asignatura 4 (postgrado)", etapa: ejecucion}
+      - {ambito: docencia, subcategoria: direccion_titulacion, descripcion: "Dirección de 2 tesis (pregrado y postgrado)", etapa: ejecucion}
+      - {ambito: docencia, subcategoria: otra, descripcion: "Curso en escuela de invierno", etapa: ejecucion}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto interno (investigadora principal)", etapa: ejecucion}
+      - {ambito: investigacion, subcategoria: postulacion_fondos, descripcion: "Postulación a fondo externo (co-investigadora)", etapa: postulacion}
+      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "1 artículo", etapa: enviada}
+      - {ambito: investigacion, subcategoria: redes, descripcion: "Comité editorial de revista", etapa: ejecucion}
+      - {ambito: vinculacion, subcategoria: representacion, descripcion: "Comisión internacional de divulgación", etapa: ejecucion}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Reunión de departamento", etapa: ejecucion}
+    notas:
+      - "El total declarado (37 h) no incluye 3 h de comité editorial ni 1,5 h de reunión de departamento, que la persona indica en observaciones: con ellas son 41,5 h."
+      - "La representación internacional se declaró como gestión de VcM; según el catálogo es representación institucional (VcM). El comité editorial es una red académica (investigación)."
+    vinculo_2023: {docencia: 47.4, investigacion: 38.2, vinculacion: 10.5, gestion: 3.9}
+  - sujeto: "08"
+    jerarquia: asociado
+    completo: true
+    declarado: "Docencia 25 · Investigación 12 · VcM 8 · Total sin completar (45)"
+    horas: {docencia: 25, investigacion: 12, vinculacion: 8}
+    actividades:
+      docencia: "1.er semestre: asignatura 1 (pregrado) y asignaturas 2 y 3 (postgrado); 2.º semestre: seminario de título y asignatura 4 (postgrado)"
+      investigacion: "Proyecto interno como investigadora responsable (2024–2026); proyecto de creación artística como artista principal (2024–2025); 5 publicaciones (3 aceptadas, 2 por enviar); 2 postulaciones a fondos externos; 5 piezas artísticas para 3 exposiciones (2025); 4 conferencias internacionales y 1 mesa redonda; evaluación de artículos"
+      vinculacion: "3 iniciativas como colaboradora o invitada (talleres con instituciones públicas, encuentro con escuelas, clase en un programa de doctorado); postulación a un proyecto de VcM"
+      gestion: "Reunión de departamento, claustro de magíster, comisión de evaluación y comité de doctorado (declarados como actividades de docencia, sin horas)"
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Asignatura 1 y seminario de título (pregrado)", etapa: ejecucion}
+      - {ambito: docencia, subcategoria: cursos_postgrado, descripcion: "Asignaturas 2 a 4 (postgrado)", etapa: ejecucion}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto interno (responsable)", etapa: ejecucion}
+      - {ambito: investigacion, subcategoria: creacion_artistica, descripcion: "Proyecto de creación y 5 piezas artísticas", etapa: ejecucion}
+      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "3 publicaciones aceptadas", etapa: publicada}
+      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "2 artículos por enviar", etapa: enviada}
+      - {ambito: investigacion, subcategoria: postulacion_fondos, descripcion: "2 postulaciones a fondos externos", meta: 2}
+      - {ambito: investigacion, subcategoria: presentaciones, descripcion: "4 conferencias internacionales y 1 mesa redonda", meta: 5}
+      - {ambito: vinculacion, subcategoria: iniciativas_vcm, descripcion: "3 iniciativas de VcM", meta: 3}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Claustro, comisión y comité de doctorado; reunión de departamento", etapa: ejecucion}
+    notas:
+      - "La gestión (4 actividades) se declaró en la tabla de docencia y sin horas: no pondera."
+      - "Una de las conferencias declaradas corresponde a una fecha de 2023."
+    vinculo_2023: {docencia: 33.8, investigacion: 16.0, vinculacion: 32.1, gestion: 18.0}
+  - sujeto: "18"
+    completo: false
+    declarado: "Sin resumen de horas (el formulario termina en investigación)."
+    horas: {}
+    actividades:
+      docencia: "Asignatura 1 (pregrado), asignatura 2 (postgrado) y dirección de 2 tesis doctorales"
+      investigacion: "Sin proyectos («N/A»); postulaciones «pendiente»"
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Asignatura 1 (pregrado)", etapa: ejecucion}
+      - {ambito: docencia, subcategoria: cursos_postgrado, descripcion: "Asignatura 2 (postgrado)", etapa: ejecucion}
+      - {ambito: docencia, subcategoria: direccion_titulacion, descripcion: "Dirección de 2 tesis doctorales", etapa: ejecucion}
+    notas:
+      - "Formulario incompleto: llega hasta investigación, sin publicaciones, VcM ni horas."
+  - sujeto: "10"
+    completo: false
+    declarado: "Sin resumen de horas (el formulario termina en publicaciones)."
+    horas: {}
+    actividades:
+      docencia: "Asignaturas 1 y 2 (pregrado) y tutoría de práctica final (asignatura 3)"
+      investigacion: "2 proyectos internos (coordinadora de investigación): uno termina en julio 2024 y otro se inicia en marzo 2024; 1 artículo enviado; 1 capítulo de libro aceptado"
+      gestion: "Coordinación de la práctica final (declarada en el apartado de investigación)"
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Asignaturas 1 y 2 (pregrado)", etapa: ejecucion}
+      - {ambito: docencia, subcategoria: practicas, descripcion: "Asignatura 3 (tutoría de práctica final)", etapa: ejecucion}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto interno 1 (coordinación)", etapa: cierre}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto interno 2 (coordinación)", etapa: ejecucion}
+      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "1 artículo", etapa: enviada}
+      - {ambito: investigacion, subcategoria: libros, descripcion: "1 capítulo de libro", etapa: aceptada}
+      - {ambito: gestion, subcategoria: coordinacion_practicas, descripcion: "Coordinación de práctica final", etapa: ejecucion}
+    notas:
+      - "Formulario incompleto: no tiene VcM ni resumen de horas, por lo que no se puede ponderar."
+      - "La coordinación de práctica se declaró en el apartado de gestión de investigación; corresponde a gestión académica."
+      - "El artículo enviado y el capítulo aceptado ya están en esa etapa al declararse: conviene comprometer la etapa siguiente (aceptación o publicación)."
+  - sujeto: "11"
+    completo: true
+    declarado: "Docencia 24 (1.er sem.) / 20 (2.º sem.) · Investigación 12 · VcM 0 · Total 36 / 32"
+    horas: {docencia: [24, 20], investigacion: 12, gestion: 3}
+    actividades:
+      docencia: "Asignaturas 1 a 7 (pregrado), incluidos talleres y prácticas"
+      investigacion: "Proyecto interno como investigadora principal (2024–2025); 1 artículo enviado (Scopus); postulación de una ponencia a un congreso"
+      gestion: "Coordinación DAE (2 h todo el año) y coordinación de calidad (2 h el 2.º semestre), en observaciones; consejo de departamento y unidad de gestión curricular sin horas"
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Asignaturas 1 a 7 (pregrado)", etapa: ejecucion}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto interno (investigadora principal)", etapa: ejecucion}
+      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "1 artículo", etapa: aceptada}
+      - {ambito: investigacion, subcategoria: presentaciones, descripcion: "1 ponencia en congreso", etapa: postulacion}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Coordinación DAE", etapa: ejecucion}
+      - {ambito: gestion, subcategoria: aseguramiento_calidad, descripcion: "Coordinación de calidad (2.º semestre)", etapa: ejecucion}
+    notas:
+      - "La gestión (3 h semanales en promedio) no tiene casilla en el resumen 2024 y se declaró en observaciones."
+      - "La persona aclara que el artículo comprometido con su proyecto interno se entregará en 2025 y por eso no lo declaró."
+  - sujeto: "12"
+    completo: true
+    declarado: "Docencia 18 · Investigación 24 · VcM sin dato · Total 42"
+    horas: {docencia: 18, investigacion: 24}
+    actividades:
+      docencia: "Asignatura 1 (pregrado), 3 secciones"
+      investigacion: "Proyecto interno como co-investigador (2024–2025); 3 artículos publicados (2 Scopus, 1 WoS); 2 ponencias en congresos"
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Asignatura 1 (3 secciones)", etapa: ejecucion}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto interno (co-investigador)", etapa: ejecucion}
+      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "3 artículos", etapa: publicada}
+      - {ambito: investigacion, subcategoria: presentaciones, descripcion: "2 ponencias en congresos", meta: 2}
+    notas:
+      - "Los 3 artículos figuran como ya publicados al declararse: hay que verificar que correspondan al período 2024 y no a uno anterior."
+      - "No declara gestión ni VcM: la investigación pesa más que la docencia (57,1%)."
+  - sujeto: "13"
+    completo: true
+    declarado: "Docencia 15 (1.er sem.) / 14 (2.º sem.) · Investigación 6 · VcM 5 · Total 26 / 25"
+    horas: {docencia: [15, 14], investigacion: 7, vinculacion: 5, gestion: 5}
+    situacion_especial: {motivo: estudios, meses_ausencia: 0, porcentaje_jornada: 72.7,
+                         detalle: "12 h semanales asignadas a investigación doctoral"}
+    actividades:
+      docencia: "Asignaturas 1, 2, 4 y 5 (pregrado) y asignatura 3 (magíster)"
+      investigacion: "Proyecto con financiamiento externo (MINEDUC) como investigadora; 1 capítulo de libro publicado y 1 aceptado; claustro de magíster (1 h, en gestión)"
+      vinculacion: "2 proyectos de extensión como co-responsable"
+      gestion: "Unidad de gestión curricular (2 h) y reunión de departamento (3 h), declaradas en el apartado de docencia"
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Asignaturas 1, 2, 4 y 5 (pregrado)", etapa: ejecucion}
+      - {ambito: docencia, subcategoria: cursos_postgrado, descripcion: "Asignatura 3 (magíster)", etapa: ejecucion}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto con financiamiento externo", etapa: cierre}
+      - {ambito: investigacion, subcategoria: libros, descripcion: "2 capítulos de libro", etapa: publicada}
+      - {ambito: investigacion, subcategoria: claustros_postgrado, descripcion: "Claustro de magíster", etapa: ejecucion}
+      - {ambito: vinculacion, subcategoria: proyectos_vcm, descripcion: "2 proyectos de extensión (co-responsable)", etapa: finalizada}
+      - {ambito: gestion, subcategoria: gestion_curricular, descripcion: "Unidad de gestión curricular", etapa: ejecucion}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Reunión de departamento", etapa: ejecucion}
+    notas:
+      - "Tiene 12 h semanales para investigación doctoral: es una situación especial (art. 37). Se evalúa en relación al 72,7% de la jornada (32 de 44 h) y las metas con evidencia se ajustan a ese %."
+      - "Las horas de gestión (6 h) y del claustro se declararon en el texto de docencia y no en el resumen."
+  - sujeto: "14"
+    completo: false
+    declarado: "Sin horas por ámbito («–»); total 22 h."
+    horas: {}
+    situacion_especial: {motivo: estudios, meses_ausencia: 12, detalle: "comisión de estudios de doctorado"}
+    situacion_por_definir: "Comisión de estudios de doctorado: la evaluación depende del período y las condiciones con que se otorgó, y de los compromisos asociados (declara un proyecto interno como colaboradora y 22 h)."
+    actividades:
+      investigacion: "Proyecto interno como colaboradora (2024–2025)"
+    tareas:
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto interno (colaboradora)", etapa: ejecucion}
+    notas:
+      - "Está en comisión de estudios de doctorado. Se debe precisar por cuánto tiempo y en qué condiciones se otorgó, y qué compromisos tiene asociados: si los hay, se evalúan en relación a su jornada; si no, y la comisión supera los 5 meses continuos, la evaluación se suspende."
+  - sujeto: "15"
+    completo: true
+    declarado: "Docencia 18,5 · Investigación 18 · VcM 0 · Total 39,5"
+    horas: {docencia: 17, investigacion: 18, gestion: 4}
+    actividades:
+      docencia: "Asignaturas 1 y 2 (pregrado) y dirección de 1 tesina; coordinación de docencia (sin horas)"
+      investigacion: "5 artículos (2 publicados, 1 aceptado, 2 enviados; Scopus y WoS); postulación a un fondo externo"
+      vinculacion: "Representación institucional en una red nacional (sin horas)"
+      gestion: "Reunión de departamento (1,5 h, incluida en docencia), comisión central de jerarquización (1,5 h) y comité de doctorado (5 h en marzo y abril, en promedio 1 h)"
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Asignaturas 1 y 2 (pregrado)", etapa: ejecucion}
+      - {ambito: docencia, subcategoria: direccion_titulacion, descripcion: "Dirección de 1 tesina", etapa: ejecucion}
+      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "5 artículos", meta: 5}
+      - {ambito: investigacion, subcategoria: postulacion_fondos, descripcion: "Postulación a fondo externo", etapa: postulacion}
+      - {ambito: vinculacion, subcategoria: representacion, descripcion: "Representación en red nacional", etapa: ejecucion}
+      - {ambito: gestion, subcategoria: direccion, descripcion: "Coordinación de docencia", etapa: ejecucion}
+      - {ambito: gestion, subcategoria: gestion_cuerpo_academico, descripcion: "Comisión central de jerarquización", etapa: ejecucion}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Comité de doctorado (marzo y abril)", etapa: finalizada}
+    notas:
+      - "La reunión de departamento (1,5 h) se sumó a docencia; corresponde a gestión."
+      - "La comisión de jerarquización, el comité de doctorado y la representación institucional se indicaron en observaciones, fuera del resumen."
+      - "La coordinación de docencia y la representación institucional no tienen horas: se evalúan, pero no ponderan."
+  - sujeto: "16"
+    completo: true
+    declarado: "Docencia 38 · Investigación 0 · VcM 0 · Total 41,5"
+    horas: {docencia: 36, gestion: 5.5}
+    actividades:
+      docencia: "Asignaturas 1 a 6 (pregrado, 30 h, varias con 3 secciones) y 2 seminarios de título (6 h)"
+      gestion: "Coordinación de un área del departamento (2 h), coordinación DAE (2 h) y reuniones de departamento (1,5 h)"
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Asignaturas 1 a 6 (pregrado)", etapa: ejecucion}
+      - {ambito: docencia, subcategoria: direccion_titulacion, descripcion: "2 seminarios de título", etapa: ejecucion}
+      - {ambito: gestion, subcategoria: direccion, descripcion: "Coordinación de área", etapa: ejecucion}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Coordinación DAE", etapa: ejecucion}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Reuniones de departamento", etapa: ejecucion}
+    notas:
+      - "La docencia ocupa el 86,7% de lo comprometido, sobre el máximo del reglamento para cualquier jerarquía (80% en instructor/a)."
+      - "La persona deja constancia de que no puede comprometer investigación ni VcM porque su carga de docencia y gestión supera las 40 h. El caso requiere revisar la asignación de carga con la jefatura."
+      - "El total (41,5 h) incluye 3,5 h de gestión dentro de la casilla de docencia."
+  - sujeto: "17"
+    completo: true
+    declarado: "Docencia 23 · Investigación 6 · VcM 10 · Total 39"
+    horas: {docencia: 23, investigacion: 6, vinculacion: 10}
+    actividades:
+      docencia: "Asignaturas 1 a 3 (pregrado), asignatura 4 (doctorado, 3 sesiones), dirección de 2 memorias (sólo 1.er semestre definido)"
+      investigacion: "1 artículo por enviar (revista indexada), ligado al convenio"
+      vinculacion: "Convenio con el Ministerio de Educación: elaboración del marco teórico de una propuesta pedagógica (2024–2025)"
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Asignaturas 1 a 3 (pregrado)", etapa: ejecucion}
+      - {ambito: docencia, subcategoria: cursos_postgrado, descripcion: "Asignatura 4 (doctorado)", etapa: ejecucion}
+      - {ambito: docencia, subcategoria: direccion_titulacion, descripcion: "Dirección de 2 memorias", etapa: ejecucion}
+      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "1 artículo", etapa: enviada}
+      - {ambito: vinculacion, subcategoria: programas_vcm, descripcion: "Convenio ministerial (marco teórico de la propuesta)", etapa: ejecucion}
+    notas:
+      - "Sólo está definida la docencia del 1.er semestre: el compromiso del 2.º semestre debe completarse."
+      - "No declara gestión."
+
+# Informes de Cierre 2024, ANONIMIZADOS. En la mayoría, las horas y el 100% provienen de la carga académica
+# (Dirección de Docencia), «sin evidencia en la carpeta individual». `fuente: carga_academica` marca esas filas: en el
+# criterio SEJA estricto cuentan como sin evidencia.
+cierres_2024:
+  - sujeto: "03"
+    omitir: true
+    jerarquia: asociado
+    compromiso: "No se encontró el compromiso en la carpeta"
+    horas: {docencia: 20}
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Docencia de pregrado (20 h)", estado: cumplido, fuente: carga_academica}
+    notas:
+      - "Sólo registra 20 h de docencia en una jornada de 44 h: investigación, VcM y gestión sin actividad en la carga."
+      - "El informe 2024 registra como año de ingreso uno distinto del informe 2023."
+  - sujeto: "19"
+    omitir: true
+    jerarquia: titular
+    compromiso: "Sin compromiso de desempeño"
+    horas: {}
+    tareas: []
+    notas:
+      - "No hay compromiso ni actividades registradas: el informe concluye que no es posible evidenciar el período. Con el modelo SEJA no hay base para calificar."
+  - sujeto: "20"
+    jerarquia: asociado
+    ponderacion: igual
+    compromiso: "Compromiso con evidencias en la carpeta"
+    horas: {gestion: 8.5}
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Docencia de pregrado", estado: cumplido, mecanismo: "Programación académica"}
+      - {ambito: investigacion, subcategoria: postulacion_fondos, descripcion: "Postulación a fondo externo", estado: cumplido, mecanismo: "Comprobante de postulación"}
+      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "Artículo 1 (aceptado)", estado: cumplido, mecanismo: "Revista"}
+      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "Artículo 2 (publicado)", estado: cumplido, mecanismo: "DOI"}
+      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "Artículo 3 (publicado)", estado: cumplido, mecanismo: "Revista"}
+      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "Artículo 4 (enviado)", estado: cumplido, mecanismo: "Comprobante de envío"}
+      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "Artículo 5 (en revisión)", estado: cumplido, mecanismo: "Correo"}
+      - {ambito: investigacion, subcategoria: presentaciones, descripcion: "Charla", estado: cumplido, mecanismo: "Constancia"}
+      - {ambito: investigacion, subcategoria: redes, descripcion: "Evaluación de artículo para revista", estado: cumplido, mecanismo: "Constancia"}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto interno (en elaboración)", estado: parcial}
+      - {ambito: investigacion, subcategoria: presentaciones, descripcion: "Ponencias 1 a 3 (congresos)", estado: cumplido, mecanismo: "Certificado"}
+      - {ambito: investigacion, subcategoria: presentaciones, descripcion: "Ponencia 4 (jornada de investigación)", estado: sin_evidencia}
+      - {ambito: investigacion, subcategoria: presentaciones, descripcion: "Congresos de la disciplina", estado: cumplido}
+      - {ambito: vinculacion, subcategoria: difusion, descripcion: "Ponencia de VcM", estado: cumplido, mecanismo: "Constancia"}
+      - {ambito: vinculacion, subcategoria: iniciativas_vcm, descripcion: "Ciclo de talleres de extensión", estado: cumplido, mecanismo: "Afiche"}
+      - {ambito: vinculacion, subcategoria: proyectos_vcm, descripcion: "Adjudicación de proyecto de VcM para 2025", estado: cumplido, excedente: true, validado: true, mecanismo: "Carta de adjudicación"}
+    notas:
+      - "Es el único informe 2024 con evidencia en la carpeta para casi todas las actividades."
+      - "Varias filas no tienen etapa comprometida ni % (proyecto interno, una ponencia, un artículo en revisión). Se evaluaron así: con mecanismo, 100%; «en elaboración», parcial (50%); sin mecanismo, 0%."
+      - "La gestión tiene 8,5 h, pero ninguna actividad descrita: queda en 0%. Las demás áreas no tienen horas, así que se pondera con el escenario E1 (igual peso)."
+  - sujeto: "21"
+    omitir: true
+    jerarquia: titular
+    compromiso: "Actividades sólo en la carga académica"
+    horas: {docencia: 8.5, investigacion: 12, vinculacion: 2, gestion: 33.5}
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Docencia de pregrado (4,5 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: docencia, subcategoria: direccion_titulacion, descripcion: "Memorias (4 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: investigacion, subcategoria: postulacion_fondos, descripcion: "Postulación a proyecto interno (12 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: vinculacion, subcategoria: proyectos_vcm, descripcion: "Proyecto de extensión (2 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: gestion, subcategoria: direccion, descripcion: "Secretaría académica del departamento (30 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Coordinación de didáctica (2 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Reunión de departamento (1,5 h)", estado: cumplido, fuente: carga_academica}
+    notas:
+      - "La carga suma 56 h semanales en una jornada de 44 h."
+      - "La gestión ocupa el 59,8% de la carga; la docencia, el 15,2%."
+  - sujeto: "22"
+    omitir: true
+    jerarquia: asociado
+    compromiso: "No se encontró el compromiso en la carpeta"
+    horas: {docencia: 30, investigacion: 4, gestion: 11.5}
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Docencia de pregrado (30 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: investigacion, subcategoria: publicaciones, descripcion: "Artículo como investigador principal (4 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: gestion, subcategoria: direccion, descripcion: "Coordinación de área (4 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: gestion, subcategoria: gestion_curricular, descripcion: "Coordinación de gestión curricular (6 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Reunión de departamento (1,5 h)", estado: cumplido, fuente: carga_academica}
+    notas:
+      - "La identificación registra jerarquía Asociado, pero la tabla de funciones usa las de Profesor Titular."
+      - "La carga suma 45,5 h en una jornada de 44 h."
+  - sujeto: "23"
+    jerarquia: titular
+    compromiso: "Compromiso y carga académica, sin evidencia en la carpeta"
+    horas: {docencia: 8, investigacion: 28, gestion: 5}
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Docencia de pregrado (6 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: docencia, subcategoria: direccion_titulacion, descripcion: "Memorias (2 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto interno (6 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: investigacion, subcategoria: proyectos, descripcion: "Proyecto con financiamiento externo (22 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: gestion, subcategoria: direccion, descripcion: "Coordinación de unidad (2 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: gestion, subcategoria: comisiones, descripcion: "Claustro de doctorado (1 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: gestion, subcategoria: gestion_curricular, descripcion: "Unidad de gestión curricular (2 h)", estado: sin_evidencia}
+    notas:
+      - "La docencia (19,5%) queda bajo el rango del reglamento para titular (30–50% investigador)."
+      - "Una actividad de gestión aparece sin % en el informe."
+  - sujeto: "24"
+    omitir: true
+    jerarquia: asistente
+    compromiso: "No se encontró el compromiso en la carpeta"
+    horas: {docencia: 6}
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Docencia de pregrado (6 h)", estado: cumplido, fuente: carga_academica}
+    notas:
+      - "Sólo registra 6 h de docencia en una jornada de 44 h; sin investigación, VcM ni gestión."
+  - sujeto: "25"
+    omitir: true
+    jerarquia: asociado
+    compromiso: "No se encontró el compromiso; hay evidencia en la carpeta"
+    horas: {docencia: 18, vinculacion: 4}
+    tareas:
+      - {ambito: docencia, subcategoria: cursos_pregrado, descripcion: "Docencia de pregrado (18 h)", estado: cumplido, fuente: carga_academica}
+      - {ambito: investigacion, subcategoria: postulacion_fondos, descripcion: "Postulación a proyecto interno", estado: sin_evidencia}
+      - {ambito: vinculacion, subcategoria: iniciativas_vcm, descripcion: "Escuela de verano en otra universidad", estado: cumplido, mecanismo: "Constancia"}
+    notas:
+      - "La carga indica 4 h de VcM sin especificar la actividad."
+      - "La postulación a investigación no tiene horas: se evalúa, pero no pondera."

@@ -161,6 +161,27 @@ python -m seja cierre  ARCHIVO.yaml -o cierre.docx    # informe de cierre con la
 
 Se generan en Markdown, o en Word si está instalado [pandoc](https://pandoc.org).
 
+### Documentos institucionales del modelo
+
+Sin ejemplos de personas; los valores se leen de `config/modelo.yaml`:
+
+- **Modelo de Calificación Académica** (Word, con ecuaciones nativas) y **Requerimientos para UCampus**
+  (qué incorporar para evaluar, recoger y analizar resultados y emitir la calificación), desde
+  [`docs/fuentes/`](docs/fuentes):
+
+  ```bash
+  python -m seja.docs.generar_entregables SALIDA/   # requiere pandoc
+  ```
+
+- **Presentación** del proceso y del cálculo de la calificación final (PowerPoint):
+
+  ```bash
+  python3 seja/docs/presentacion/formulas.py FORMULAS/          # requiere matplotlib
+  node seja/docs/presentacion/presentacion.js SALIDA.pptx FORMULAS/   # requiere pptxgenjs, react-icons, sharp
+  ```
+
+  La paleta se escribe en el tema con `apply_theme.js` (variable `PPTX_SKILL_DIR`).
+
 ### Ejercicio con los registros 2023 y 2024
 
 [`ejercicio_2023/`](ejercicio_2023) aplica el modelo a los compromisos e informes de cierre 2023 y 2024 de 25 sujetos

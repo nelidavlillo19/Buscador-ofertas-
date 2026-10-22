@@ -1,0 +1,515 @@
+<title>Calificación Académica SEJA</title>
+<meta name="description" content="Calculadora de la calificación académica SEJA-UMCE por ámbito, tarea, autoevaluación y evaluación de estudiantes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,650&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: formulario del compromiso a la izquierda, acta de resultado fija a la derecha; una columna en teléfono. */
+:root {
+  --bg: #f5f6f8; --surface: #ffffff; --ink: #1b2433; --muted: #5d6879; --line: #d9dde5;
+  --accent: #1f4e8c; --accent-soft: #e6edf7;
+  --ok: #1e7a4c; --ok-soft: #e3f3ea; --mid: #2a6f86; --mid-soft: #e2f0f4;
+  --warn: #9a6400; --warn-soft: #fbf0d9; --bad: #b3471d; --bad-soft: #fbe7de; --crit: #a32035; --crit-soft: #f8e1e4;
+  --f-display: "Source Serif 4", Georgia, serif;
+  --f-body: "IBM Plex Sans", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11161f; --surface: #19202c; --ink: #e5e9f0; --muted: #9aa4b5; --line: #2c3545;
+  --accent: #8db4ec; --accent-soft: #1d2b40;
+  --ok: #6fcf9c; --ok-soft: #173326; --mid: #74c3db; --mid-soft: #15303a;
+  --warn: #e8b85a; --warn-soft: #362a12; --bad: #f09670; --bad-soft: #3a2118; --crit: #f08497; --crit-soft: #3a1820;
+  color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11161f; --surface: #19202c; --ink: #e5e9f0; --muted: #9aa4b5; --line: #2c3545;
+  --accent: #8db4ec; --accent-soft: #1d2b40;
+  --ok: #6fcf9c; --ok-soft: #173326; --mid: #74c3db; --mid-soft: #15303a;
+  --warn: #e8b85a; --warn-soft: #362a12; --bad: #f09670; --bad-soft: #3a2118; --crit: #f08497; --crit-soft: #3a1820;
+  color-scheme: dark }
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--f-body); margin: 0; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 48px; }
+header { display: grid; gap: 6px; margin-bottom: 22px; }
+.eyebrow { font: 500 12px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+h1 { font: 650 clamp(26px, 4vw, 34px)/1.15 var(--f-display); margin: 0; text-wrap: balance; }
+header p { margin: 0; color: var(--muted); max-width: 70ch; }
+h2 { font: 600 19px/1.3 var(--f-display); margin: 0; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 24px; align-items: start; }
+@media (max-width: 900px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+section.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 14px; }
+.stack { display: grid; gap: 18px; min-width: 0; }
+.hint { color: var(--muted); font-size: 13px; margin: 0; }
+label { display: grid; gap: 4px; font-size: 12px; color: var(--muted); font-weight: 500; }
+input, select { font: 14px var(--f-body); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 7px 9px; width: 100%; min-width: 0; }
+input[type=number] { font-family: var(--f-mono); }
+input[type=checkbox] { width: auto; }
+input:focus-visible, select:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.row { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+.compromiso { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+.compromiso label { grid-template-columns: 1fr 76px; align-items: center; gap: 8px; color: var(--ink); font-size: 13px; }
+.suma { font: 500 13px var(--f-mono); }
+.suma.mal { color: var(--crit); }
+.tarea { border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: grid; gap: 10px; }
+.tarea-top { display: grid; gap: 10px; grid-template-columns: 1fr 1.3fr auto; align-items: end; }
+@media (max-width: 600px) { .tarea-top { grid-template-columns: 1fr; } }
+.tarea-eval { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); align-items: end; }
+.tarea-eval label:first-child { grid-column: span 2; }
+.chk { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--ink); padding-bottom: 8px; }
+.tarea-pie { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+.tarea-pie b { font: 500 14px var(--f-mono); color: var(--ink); }
+button { font: 500 13px var(--f-body); border-radius: 6px; padding: 7px 12px; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+button.primario { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+button.quitar { color: var(--crit); border-color: transparent; background: transparent; padding: 7px 8px; }
+.acciones { display: flex; gap: 8px; flex-wrap: wrap; }
+.grupo-ambito { display: grid; gap: 10px; }
+.grupo-ambito h3 { margin: 4px 0 0; font: 600 13px var(--f-body); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; }
+
+aside { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); }
+@media (max-width: 900px) { aside { position: static; } }
+.acta { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.acta-head { padding: 18px; display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; border-bottom: 1px solid var(--line); }
+.letra { font: 650 46px/1 var(--f-display); width: 84px; height: 84px; border-radius: 10px; display: grid; place-items: center; }
+.L-Ap { background: var(--ok); color: var(--surface); }
+.L-A { background: var(--ok-soft); color: var(--ok); }
+.L-B { background: var(--mid-soft); color: var(--mid); }
+.L-C { background: var(--warn-soft); color: var(--warn); }
+.L-D { background: var(--bad-soft); color: var(--bad); }
+.puntaje { font: 500 28px/1.1 var(--f-mono); font-variant-numeric: tabular-nums; }
+.puntaje small { font-size: 14px; color: var(--muted); }
+.desc { font-size: 13px; color: var(--muted); margin-top: 4px; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--line); }
+th:first-child, td:first-child { padding-left: 18px; } th:last-child, td:last-child { padding-right: 18px; }
+th { font: 500 11px var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+td.n { font-family: var(--f-mono); text-align: right; white-space: nowrap; }
+th.n { text-align: right; }
+.chip { display: inline-block; min-width: 28px; text-align: center; font: 600 12px var(--f-mono); border-radius: 4px; padding: 1px 5px; }
+.bar { height: 4px; background: var(--line); border-radius: 2px; margin-top: 5px; }
+.bar i { display: block; height: 100%; border-radius: 2px; background: var(--accent); }
+.obs { padding: 14px 18px; display: grid; gap: 6px; font-size: 13px; }
+.obs p { margin: 0; }
+.obs .err { color: var(--crit); font-weight: 500; }
+.formula { padding: 12px 18px; font: 12px/1.6 var(--f-mono); color: var(--muted); border-top: 1px solid var(--line); }
+.escala { display: grid; grid-template-columns: auto 1fr; gap: 6px 10px; font-size: 13px; align-items: baseline; }
+@media (prefers-reduced-motion: no-preference) { .bar i { transition: width .25s ease; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">SEJA · Reglamento de Carrera Académica, Título III</span>
+    <h1>Calificación Académica SEJA</h1>
+    <p>Cada tarea del Compromiso de Desempeño se evalúa con un instrumento estandarizado o con su evidencia. Las tareas se promedian por ámbito, los ámbitos pesan según el % declarado (80% del total) y la autoevaluación y la evaluación de estudiantes aportan 10% cada una. Se carga un caso de ejemplo; edítalo libremente.</p>
+  </header>
+
+  <div class="layout">
+    <div class="stack">
+      <section class="panel">
+        <h2>Académico/a y período</h2>
+        <div class="row">
+          <label for="academico">Nombre<input id="academico" value="Académica de ejemplo"></label>
+          <label for="periodo">Período<input id="periodo" value="2026"></label>
+          <label for="jerarquia">Jerarquía<select id="jerarquia"><option value="instructor">Instructor/a</option><option value="asistente" selected>Asistente</option><option value="asociado">Asociado/a</option><option value="titular">Titular</option></select></label>
+          <label for="perfil">Perfil<select id="perfil"><option value="investigador" selected>Investigador/a</option><option value="vinculador">Vinculador/a</option></select></label>
+          <label for="jornada">Jornada<select id="jornada"><option value="completa" selected>Completa (44 h)</option><option value="media">Media (22 h)</option></select></label>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Compromiso de Desempeño: % declarado por ámbito</h2>
+        <label for="unidad" style="max-width:280px">Ingresar como<select id="unidad"><option value="pct" selected>% del compromiso (suma 100)</option><option value="horas">Horas semanales (se calcula el %)</option></select></label>
+        <p class="hint">Un ámbito en 0 no se evalúa. Los % resultantes se aplican sobre el 80% del total. En horas, usa el promedio semanal de los dos semestres.</p>
+        <div class="compromiso" id="compromiso"></div>
+        <div class="suma" id="suma"></div>
+      </section>
+
+      <section class="panel">
+        <div class="tarea-pie"><h2>Tareas evaluadas</h2>
+          <div class="acciones"><button class="primario" id="agregar">Agregar tarea</button><button id="limpiar">Vaciar</button><button id="ejemplo">Cargar ejemplo</button></div>
+        </div>
+        <p class="hint">Instrumento: pauta de afirmaciones (% = cumple ÷ (cumple + no cumple); los “no aplica” no cuentan), puntaje en su escala o porcentaje. Evidencia: meta comprometida vs. lograda, o estado. Un logro sobre la meta, marcado como validado, cuenta sobre 100% (sin validar se considera 100%). A+ se alcanza desde 101% de cumplimiento final.</p>
+        <div id="tareas" class="stack"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Componentes fijos</h2>
+        <div class="row">
+          <label for="auto-p">Autoevaluación (10%)<input id="auto-p" type="number" step="0.1" value="6.5"></label>
+          <label for="auto-min">mín.<input id="auto-min" type="number" value="1"></label>
+          <label for="auto-max">máx.<input id="auto-max" type="number" value="7"></label>
+        </div>
+        <div class="row">
+          <label for="est-p">Evaluación de estudiantes (10%)<input id="est-p" type="number" step="0.1" value="3.7"></label>
+          <label for="est-min">mín.<input id="est-min" type="number" value="1"></label>
+          <label for="est-max">máx.<input id="est-max" type="number" value="4"></label>
+        </div>
+        <label class="chk" for="exento"><input id="exento" type="checkbox"> Eximido/a de docencia (art. 37 a): sin evaluación de estudiantes, su 10% pasa a los ámbitos</label>
+      </section>
+
+      <section class="panel">
+        <h2>Situación especial (art. 37)</h2>
+        <p class="hint">Con una ausencia justificada de más de 5 meses continuos, por cualquier motivo, la evaluación se suspende. En otros casos se evalúa en relación al % de la jornada que dedicó a sus funciones: las metas con evidencia se ajustan a ese %. En ambos casos se informa a la Oficina y a las autoridades.</p>
+        <div class="row">
+          <label for="sit-motivo">Motivo<select id="sit-motivo"><option value="" selected>Sin situación especial</option></select></label>
+          <label for="sit-meses">Meses continuos de ausencia<input id="sit-meses" type="number" min="0" step="0.5" value="0"></label>
+          <label for="sit-pct">% de jornada dedicado<input id="sit-pct" type="number" min="0" max="100" value="100"></label>
+        </div>
+        <label class="chk" for="sit-asociados"><input id="sit-asociados" type="checkbox"> Comisión de estudios con compromisos asociados (se evalúan aunque dure más de 5 meses)</label>
+      </section>
+    </div>
+
+    <aside>
+      <div class="acta" id="acta"></div>
+    </aside>
+  </div>
+</div>
+
+<script>
+// Mismo modelo que seja/config/modelo.yaml. El catálogo de ámbitos se genera desde ese archivo.
+const MODELO = {
+  fijos: { autoevaluacion: 0.10, estudiantes: 0.10 },
+  umbrales: [["A+", 101], ["A", 90], ["B", 75], ["C", 55], ["D", 0]],
+  tope: 120,  // % máximo con que cuenta una tarea con excedente validado
+  situaciones: {
+    mesesSuspension: 5,
+    motivos: {
+      enfermedad: "Licencia médica por enfermedad", maternidad: "Permiso o licencia por maternidad",
+      parental: "Permiso postnatal parental o cuidados parentales", permiso_sin_goce: "Permiso sin goce de remuneraciones",
+      comision_servicio: "Comisión de servicio", cargo_directivo: "Cargo en la planta directiva",
+      estudios: "Estudios de postgrado o postdoctorado", otra: "Otra situación",
+    },
+    informarA: "la Oficina de Evaluación de Desempeño Académico y las autoridades correspondientes",
+  },
+  letras: {
+    "A+": "Sobresaliente: cumplimiento sobre lo comprometido",
+    A: "Cumplimiento pleno del compromiso académico", B: "Cumplimiento bueno",
+    C: "Cumplimiento parcial (requiere mejora)", D: "Insuficiente",
+  },
+  estados: { cumplido: 100, parcial: 50, no_cumplido: 0, sin_evidencia: 0 },
+  // Tabla de equivalencia % → escala numérica 1–7 (Jornada Modelo de Evaluación SEJA 2024).
+  jornada: { completa: 44, media: 22 },
+  // % de docencia que indica el Reglamento de Carrera Académica por jerarquía y perfil.
+  cargaDocente: {
+    instructor: { investigador: [60, 80], vinculador: [60, 80] },
+    asistente: { investigador: [50, 70], vinculador: [60, 70] },
+    asociado: { investigador: [40, 60], vinculador: [50, 60] },
+    titular: { investigador: [30, 50], vinculador: [40, 60] },
+  },
+  escala: [[90, 7], [80, 6], [70, 5], [60, 4], [50, 3], [40, 2], [0, 1]],
+  ambitos: {
+    docencia: { nombre: "Docencia", subs: {
+      cursos_pregrado: {"n": "Docencia de pregrado", "i": "Evaluación de estudiantes, evaluación de la dirección de la unidad académica y autoevaluación", "p": "semestral"},
+      cursos_postgrado: {"n": "Docencia de postgrado", "i": "Evaluación de estudiantes, evaluación de la dirección de la unidad académica y autoevaluación", "p": "semestral"},
+      direccion_titulacion: {"n": "Dirección de tesis, seminarios de título, memorias, tesinas o trabajos de grado", "i": "Evaluación a la docencia de estudiantes (actividad curricular)", "p": "semestral"},
+      practicas: {"n": "Orientación y supervisión de prácticas profesionales"},
+      tutoria: {"n": "Tutoría y acompañamiento académico de estudiantes"},
+      ayudantes: {"n": "Formación y acompañamiento de estudiantes ayudantes"},
+      formacion_academicos: {"n": "Formación y desarrollo de académicos/as de jerarquía menor o equivalente"},
+      formacion_continua: {"n": "Formación continua en la disciplina y/o en el ámbito educativo"},
+      otra: {"n": "Otra actividad de docencia declarada en el compromiso"},
+    } },
+    investigacion: { nombre: "Investigación, Creación e Innovación", subs: {
+      proyectos: {"n": "Proyecto de investigación (responsable, co-investigador/a o colaborador/a; interno, externo nacional o internacional)", "i": "Constancia de la entidad (postulación, adjudicación o cierre) y evaluación de la Dirección de Investigación", "p": "anual (interno) / bianual (externo)"},
+      publicaciones: {"n": "Artículo indexado (WoS, Scopus, SciELO u otros índices)", "i": "Constancia de la revista, indexación, factor de impacto y copia de la publicación", "p": "anual"},
+      libros: {"n": "Libro o capítulo de libro", "i": "Constancia editorial e identificación del comité evaluador", "p": "anual"},
+      creacion_artistica: {"n": "Exposición, concierto, interpretación, recreación o composición de obra", "i": "Evidencias de la obra y su presentación pública; constancia de la Dirección de Investigación", "p": "anual"},
+      patentes_licencias: {"n": "Patente o licencia", "i": "Certificado de registro INAPI", "p": "anual"},
+      presentaciones: {"n": "Divulgación en eventos científicos, artísticos o deportivos", "i": "Certificado de la entidad organizadora", "p": "anual"},
+      innovacion: {"n": "Desarrollo y transferencia de tecnologías, métodos, productos o soluciones"},
+      redes: {"n": "Participación en redes académicas, artísticas, deportivas o profesionales"},
+      postulacion_fondos: {"n": "Postulación a fondos con financiamiento externo"},
+      claustros_postgrado: {"n": "Integración de núcleos o claustros de postgrado (estándares CNA)"},
+      equipos_interdisciplinarios: {"n": "Equipos de investigación interdisciplinarios o multidisciplinarios"},
+      otra: {"n": "Otra actividad de investigación, creación o innovación declarada en el compromiso"},
+    } },
+    vinculacion: { nombre: "Vinculación con el Medio y Extensión", subs: {
+      programas_vcm: {"n": "Programa de VcM (responsable o integrante)", "i": "Constancia (postulación, adjudicación, cierre) y pauta de evaluación de la Dirección de VcM", "p": "anual"},
+      proyectos_vcm: {"n": "Proyecto de VcM con financiamiento interno o externo (responsable o integrante)", "i": "Constancia (postulación, adjudicación, cierre), pauta y reporte de la Dirección de VcM", "p": "anual"},
+      iniciativas_vcm: {"n": "Iniciativas de VcM (talleres, encuentros, seminarios, capacitaciones)", "i": "Constancia y evaluación de la Dirección de VcM y de la unidad académica", "p": "semestral"},
+      educacion_continua: {"n": "Diseño e implementación de educación continua", "i": "Constancia y evaluación de la Dirección de VcM y DEC", "p": "anual"},
+      trabajo_asociativo: {"n": "Trabajo asociativo con investigadores/as o creadores/as para transferencia al medio", "i": "Constancia y evaluación de las direcciones de VcM e Investigación"},
+      publicaciones_vcm: {"n": "Publicación de resultados de VcM (libros, capítulos, revistas)", "i": "Constancia, copia de la publicación y comité editorial"},
+      difusion: {"n": "Presentaciones en eventos académicos", "i": "Certificado de la entidad organizadora (nombre, rol, fecha, lugar y organización)"},
+      representacion: {"n": "Representación institucional", "i": "Certificado o constancia y producto comprometido"},
+      actividades_relevantes: {"n": "Actividades relevantes vinculadas a la educación física, el deporte, la recreación o las artes"},
+      redes: {"n": "Participación en redes nacionales o internacionales"},
+      extension: {"n": "Otras acciones de extensión hacia el entorno relevante"},
+      otra: {"n": "Otra actividad de vinculación con el medio declarada en el compromiso"},
+    } },
+    gestion: { nombre: "Gestión Académica", subs: {
+      direccion: {"n": "Dirección o coordinación de unidades académicas"},
+      coordinacion_practicas: {"n": "Coordinación de prácticas", "i": "Evaluación a la gestión, coordinador/a de prácticas", "p": "anual"},
+      coordinacion_vcm: {"n": "Coordinación de VcM de facultad o departamental", "i": "Evaluación a la gestión, coordinador/a de VcM y extensión (decano/a o director/a)", "p": "anual"},
+      gestion_curricular: {"n": "Diseño, actualización y aseguramiento de la calidad de planes de estudio"},
+      gestion_investigacion: {"n": "Gestión de líneas de investigación, proyectos y fondos concursables"},
+      gestion_vinculacion: {"n": "Gestión de la vinculación con el medio y extensión"},
+      gestion_cuerpo_academico: {"n": "Procesos de jerarquización, calificación y desarrollo de la carrera académica"},
+      aseguramiento_calidad: {"n": "Autoevaluación, acreditación y mejora continua"},
+      comisiones: {"n": "Comisiones y comités institucionales"},
+      otra: {"n": "Otra actividad de gestión académica declarada en el compromiso"},
+    } },
+  },
+};
+
+const EJEMPLO = {
+  compromiso: { docencia: 55, investigacion: 30, vinculacion: 5, gestion: 10 },
+  tareas: [
+    { ambito: "docencia", sub: "cursos_pregrado", desc: "Didáctica de la Historia I", tipo: "escala", puntaje: 3.9, min: 1, max: 4 },
+    { ambito: "docencia", sub: "cursos_postgrado", desc: "Seminario de investigación (Magíster)", tipo: "escala", puntaje: 6.9, min: 1, max: 7 },
+    { ambito: "docencia", sub: "direccion_titulacion", desc: "Guía de tesis de licenciatura", tipo: "meta", comprometido: 3, logrado: 4, validado: true },
+    { ambito: "investigacion", sub: "proyectos", desc: "Proyecto FONDECYT de Iniciación (co-investigadora)", tipo: "estado", estado: "cumplido" },
+    { ambito: "investigacion", sub: "publicaciones", desc: "Artículos en revistas indexadas", tipo: "meta", comprometido: 2, logrado: 3, validado: true },
+    { ambito: "investigacion", sub: "presentaciones", desc: "Ponencia en congreso internacional", tipo: "porcentaje", porcentaje: 95 },
+    { ambito: "vinculacion", sub: "proyectos_vcm", desc: "Taller con escuelas del territorio", tipo: "meta", comprometido: 4, logrado: 5, validado: true },
+    { ambito: "gestion", sub: "comisiones", desc: "Comisión de autoevaluación de carrera", tipo: "estado", estado: "cumplido" },
+  ],
+};
+
+let estado = JSON.parse(JSON.stringify(EJEMPLO));
+const $ = (id) => document.getElementById(id);
+const num = (v) => (v === "" || v == null ? NaN : Number(v));
+const fmt = (x, d = 1) => x.toLocaleString("es-CL", { minimumFractionDigits: d, maximumFractionDigits: d });
+const claseLetra = (l) => "L-" + l.replace("+", "p");
+
+function escalar(p, min, max) {
+  if ([p, min, max].some(Number.isNaN) || max <= min || p < min || p > max) return null;
+  return (p - min) / (max - min) * 100;
+}
+
+// Situación especial (art. 37): suspende la evaluación o ajusta las metas al % de jornada.
+function situacion() {
+  const motivo = $("sit-motivo").value;
+  if (!motivo) return { factor: 1 };
+  const S = MODELO.situaciones, meses = num($("sit-meses").value) || 0;
+  let texto = S.motivos[motivo] + (meses ? `, ${fmt(meses, 0)} meses` : "");
+  const asociados = motivo === "estudios" && $("sit-asociados").checked;
+  if (meses > S.mesesSuspension && !asociados) return { suspendida: true, factor: 1, texto };
+  const pct = num($("sit-pct").value);
+  if (asociados) texto += "; se evalúan los compromisos asociados";
+  if (!(pct > 0 && pct <= 100)) return { factor: 1, texto, error: "Situación especial: indica el % de la jornada dedicado a sus funciones (mayor que 0 y hasta 100)." };
+  return { factor: pct / 100, texto: `${texto}; evaluada en relación al ${fmt(pct, 0)}% de la jornada` };
+}
+
+function evaluarTarea(t) {
+  const r = evaluarBase(t, situacion().factor);
+  if (r.puntaje == null) return r;
+  return { ...r, real: r.puntaje, puntaje: Math.min(r.puntaje, MODELO.tope) };
+}
+
+function evaluarBase(t, factor) {
+  switch (t.tipo) {
+    case "escala": return { puntaje: escalar(num(t.puntaje), num(t.min), num(t.max)), excedente: false };
+    case "porcentaje": { const p = num(t.porcentaje); return { puntaje: p >= 0 && p <= 100 ? p : null, excedente: false }; }
+    case "pauta": {
+      const c = num(t.cumple), nc = num(t.no_cumple);
+      return { puntaje: c >= 0 && nc >= 0 && c + nc > 0 ? c / (c + nc) * 100 : null, excedente: false };
+    }
+    case "meta": {
+      const c = num(t.comprometido), l = num(t.logrado);
+      if (!(c > 0) || !(l >= 0)) return { puntaje: null, excedente: false };
+      const meta = c * factor, excedente = l > c && !!t.validado;
+      return { puntaje: (excedente ? l / meta : Math.min(l / meta, 1)) * 100, excedente };
+    }
+    case "estado": return { puntaje: MODELO.estados[t.estado] ?? null, excedente: false };
+  }
+  return { puntaje: null, excedente: false };
+}
+
+function clasificar(p) {
+  for (const [l, m] of MODELO.umbrales) if (p >= m) return l;
+  return MODELO.umbrales.at(-1)[0];
+}
+
+function calcular() {
+  const errores = [], obs = [];
+  const sit = situacion();
+  if (sit.suspendida) return { suspendida: true, texto: sit.texto, errores, obs, ambitos: [] };
+  if (sit.error) errores.push(sit.error);
+  else if (sit.texto) obs.push(`Situación especial (art. 37): ${sit.texto}. Informar a ${MODELO.situaciones.informarA}.`);
+  const enHoras = $("unidad").value === "horas";
+  let declarado = Object.entries(estado.compromiso).filter(([, v]) => num(v) > 0);
+  const suma = declarado.reduce((s, [, v]) => s + num(v), 0);
+  if (!declarado.length) errores.push(`Declara ${enHoras ? "las horas" : "el %"} de al menos un ámbito.`);
+  else if (enHoras) {
+    declarado = declarado.map(([k, v]) => [k, num(v) / suma * 100]);
+    const jornada = MODELO.jornada[$("jornada").value];
+    if (suma > jornada) obs.push(`Las horas declaradas (${fmt(suma)} h semanales) superan la jornada de ${jornada} h.`);
+  } else if (Math.abs(suma - 100) > 0.01) errores.push(`Los % del compromiso suman ${fmt(suma, 0)}; deben sumar 100.`);
+  const jer = $("jerarquia").value, per = $("perfil").value;
+  const rango = MODELO.cargaDocente[jer][per];
+  const doc = (declarado.find(([k]) => k === "docencia") || [, 0])[1];
+  if (declarado.length && (Math.round(doc * 10) / 10 < rango[0] || Math.round(doc * 10) / 10 > rango[1]))
+    obs.push(`La docencia pesa ${fmt(doc)}% del compromiso; para ${$("jerarquia").selectedOptions[0].text} ${$("perfil").selectedOptions[0].text.toLowerCase()} el reglamento indica entre ${rango[0]}% y ${rango[1]}%.`);
+
+  const auto = escalar(num($("auto-p").value), num($("auto-min").value), num($("auto-max").value));
+  if (auto == null) errores.push("Autoevaluación: puntaje fuera de su escala.");
+  const exento = $("exento").checked;
+  let pEst = MODELO.fijos.estudiantes, est = null;
+  if (exento) { pEst = 0; obs.push("Eximido/a de docencia: el 10% de estudiantes se redistribuye entre los ámbitos."); }
+  else {
+    est = escalar(num($("est-p").value), num($("est-min").value), num($("est-max").value));
+    if (est == null) errores.push("Evaluación de estudiantes: puntaje fuera de su escala.");
+  }
+  const pComp = 1 - MODELO.fijos.autoevaluacion - pEst;
+
+  const evaluadas = estado.tareas.map((t, i) => {
+    const r = evaluarTarea(t);
+    if (r.puntaje == null) errores.push(`Tarea ${i + 1} (${t.desc || "sin descripción"}): datos de evaluación incompletos o fuera de rango.`);
+    return { ...t, ...r };
+  });
+
+  const ambitos = declarado.map(([clave, pct]) => {
+    const propias = evaluadas.filter((t) => t.ambito === clave && t.puntaje != null);
+    let puntaje = 0;
+    if (propias.length) {
+      const pesos = propias.reduce((s, t) => s + (num(t.peso) > 0 ? num(t.peso) : 1), 0);
+      puntaje = propias.reduce((s, t) => s + t.puntaje * (num(t.peso) > 0 ? num(t.peso) : 1), 0) / pesos;
+    } else obs.push(`${MODELO.ambitos[clave].nombre}: declarado sin tareas evaluadas (puntaje 0).`);
+    return { clave, nombre: MODELO.ambitos[clave].nombre, pct: num(pct), pond: pComp * num(pct) / 100,
+             puntaje, letra: clasificar(puntaje), excedente: propias.some((t) => t.excedente), n: propias.length };
+  });
+  const declaradas = new Set(declarado.map(([k]) => k));
+  evaluadas.filter((t) => !declaradas.has(t.ambito)).forEach((t) =>
+    obs.push(`“${t.desc || "Tarea"}” es de ${MODELO.ambitos[t.ambito].nombre}, que tiene 0% en el compromiso: no se considera.`));
+
+  if (errores.length) return { errores, obs, ambitos };
+  const total = Math.round((ambitos.reduce((s, a) => s + a.puntaje * a.pond, 0)
+    + auto * MODELO.fijos.autoevaluacion + (est || 0) * pEst) * 10) / 10;
+  const letra = clasificar(total);
+  if (letra === "D") obs.push("Ingresa al programa de acompañamiento y fortalecimiento académico (art. 41).");
+  if (letra === "A+") obs.push("Desempeño sobresaliente: candidato/a a reconocimiento institucional.");
+  const destacados = evaluadas.filter((t) => t.excedente && declaradas.has(t.ambito));
+  return { errores, obs, ambitos, total, letra, auto, est, pEst, destacados };
+}
+
+function opciones(obj, sel) {
+  return Object.entries(obj).map(([k, v]) => `<option value="${k}"${k === sel ? " selected" : ""}>${v}</option>`).join("");
+}
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+function camposEval(t, i) {
+  const n = (campo, etiqueta, paso = "any") =>
+    `<label for="t${i}-${campo}">${etiqueta}<input id="t${i}-${campo}" data-i="${i}" data-campo="${campo}" type="number" step="${paso}" value="${esc(t[campo])}"></label>`;
+  switch (t.tipo) {
+    case "escala": return n("puntaje", "Puntaje") + n("min", "mín.") + n("max", "máx.");
+    case "porcentaje": return n("porcentaje", "% logrado");
+    case "pauta": return n("cumple", "Cumple", 1) + n("no_cumple", "No cumple", 1) + n("no_aplica", "No aplica", 1);
+    case "meta": return n("comprometido", "Comprometido") + n("logrado", "Logrado") +
+      `<label class="chk" for="t${i}-validado"><input id="t${i}-validado" type="checkbox" data-i="${i}" data-campo="validado"${t.validado ? " checked" : ""}> Excedente validado</label>`;
+    case "estado": return `<label for="t${i}-estado">Estado<select id="t${i}-estado" data-i="${i}" data-campo="estado">${opciones({ cumplido: "Cumplido (100)", parcial: "Parcial (50)", no_cumplido: "No cumplido (0)", sin_evidencia: "Sin evidencia en la carpeta (0)" }, t.estado)}</select></label>`;
+  }
+  return "";
+}
+
+function hintSub(t) {
+  const s = MODELO.ambitos[t.ambito].subs[t.sub];
+  if (!s || !s.i) return "";
+  return `<p class="hint">Se evalúa con: ${esc(s.i)}${s.p ? ` · Periodicidad ${esc(s.p)}` : ""}</p>`;
+}
+
+function aEscala(p) {
+  for (const [m, n] of MODELO.escala) if (p >= m) return n;
+  return 1;
+}
+
+function pintarCompromiso() {
+  $("compromiso").innerHTML = Object.entries(MODELO.ambitos).map(([k, a]) =>
+    `<label for="c-${k}">${a.nombre}<input id="c-${k}" data-amb="${k}" type="number" min="0" max="100" value="${estado.compromiso[k] ?? 0}"></label>`).join("");
+}
+
+function pintarTareas() {
+  const grupos = Object.keys(MODELO.ambitos).map((amb) => {
+    const idx = estado.tareas.map((t, i) => [t, i]).filter(([t]) => t.ambito === amb);
+    if (!idx.length) return "";
+    return `<div class="grupo-ambito"><h3><span>${MODELO.ambitos[amb].nombre}</span><span>${idx.length} tarea${idx.length > 1 ? "s" : ""}</span></h3>` +
+      idx.map(([t, i]) => {
+        const r = evaluarTarea(t);
+        return `<div class="tarea">
+          <div class="tarea-top">
+            <label for="t${i}-ambito">Ámbito<select id="t${i}-ambito" data-i="${i}" data-campo="ambito">${opciones(Object.fromEntries(Object.entries(MODELO.ambitos).map(([k, a]) => [k, a.nombre])), t.ambito)}</select></label>
+            <label for="t${i}-sub">Subcategoría (rol o función)<select id="t${i}-sub" data-i="${i}" data-campo="sub">${opciones(Object.fromEntries(Object.entries(MODELO.ambitos[t.ambito].subs).map(([k, s]) => [k, s.n])), t.sub)}</select></label>
+            <button class="quitar" data-quitar="${i}" aria-label="Quitar tarea ${i + 1}">Quitar</button>
+          </div>
+          ${hintSub(t)}
+          <label for="t${i}-desc">Descripción<input id="t${i}-desc" data-i="${i}" data-campo="desc" value="${esc(t.desc)}"></label>
+          <div class="tarea-eval">
+            <label for="t${i}-tipo">Evaluada por<select id="t${i}-tipo" data-i="${i}" data-campo="tipo">${opciones({ pauta: "Pauta: cumple / no cumple", escala: "Instrumento (escala)", porcentaje: "Instrumento (%)", meta: "Evidencia: meta", estado: "Evidencia: estado" }, t.tipo)}</select></label>
+            ${camposEval(t, i)}
+            <label for="t${i}-peso">Peso<input id="t${i}-peso" data-i="${i}" data-campo="peso" type="number" min="0" step="any" value="${esc(t.peso ?? 1)}"></label>
+          </div>
+          <div class="tarea-pie"><span>Puntaje de la tarea</span><b id="t${i}-res">${r.puntaje == null ? "—" : fmt(r.puntaje)}${r.real > MODELO.tope ? ` (real ${fmt(r.real, 0)}%, tope ${MODELO.tope}%)` : ""}${r.excedente ? " ★ destaca" : ""}</b></div>
+        </div>`;
+      }).join("") + "</div>";
+  }).join("");
+  $("tareas").innerHTML = grupos || `<p class="hint">Sin tareas. Agrega la primera con “Agregar tarea”.</p>`;
+}
+
+function pintarActa() {
+  const r = calcular();
+  if (r.suspendida) {
+    $("acta").innerHTML = `<div class="acta-head"><div class="letra L-C">—</div><div><div class="puntaje">Suspendida</div>
+      <div class="desc">Ausencia justificada de más de 5 meses continuos (art. 37): ${esc(r.texto)}.</div></div></div>
+      <div class="obs"><p>Informar a ${MODELO.situaciones.informarA}.</p></div>`;
+    return;
+  }
+  const suma = Object.values(estado.compromiso).reduce((s, v) => s + (num(v) || 0), 0);
+  const enHoras = $("unidad").value === "horas";
+  $("suma").textContent = enHoras ? `Total: ${fmt(suma)} h semanales` : `Suma declarada: ${fmt(suma, 0)}%`;
+  $("suma").className = "suma" + (!enHoras && Math.abs(suma - 100) > 0.01 ? " mal" : "");
+  estado.tareas.forEach((t, i) => {
+    const el = $(`t${i}-res`); if (!el) return;
+    const e = evaluarTarea(t);
+    el.textContent = (e.puntaje == null ? "—" : fmt(e.puntaje)) + (e.real > MODELO.tope ? ` (real ${fmt(e.real, 0)}%, tope ${MODELO.tope}%)` : "") + (e.excedente ? " ★ destaca" : "");
+  });
+
+  const filas = r.ambitos.map((a) => `<tr><td>${a.nombre}<div class="bar"><i style="width:${Math.min(a.puntaje, 100)}%"></i></div></td>
+      <td class="n">${fmt(a.pond * 100)}%</td><td class="n">${fmt(a.puntaje)}</td>
+      <td class="n"><span class="chip ${claseLetra(a.letra)}">${a.letra}</span>${a.excedente ? " ★" : ""}</td></tr>`).join("");
+  const fijos = r.errores.length ? "" :
+    `<tr><td>Autoevaluación</td><td class="n">10,0%</td><td class="n">${fmt(r.auto)}</td><td></td></tr>` +
+    (r.est != null ? `<tr><td>Evaluación de estudiantes</td><td class="n">10,0%</td><td class="n">${fmt(r.est)}</td><td></td></tr>` : "");
+
+  const destaca = (r.destacados || []).length
+    ? `<div class="obs"><p><b>Reconocimiento institucional: destaca en</b></p>${r.destacados.map((d) =>
+        `<p>★ ${esc(d.desc || "Tarea")} (${esc(MODELO.ambitos[d.ambito].subs[d.sub]?.n || d.sub)}): ${fmt(d.real, 0)}% de lo comprometido</p>`).join("")}</div>`
+    : "";
+  const cabeza = r.errores.length
+    ? `<div class="acta-head"><div class="letra L-D">?</div><div><div class="puntaje">Sin calificar</div><div class="desc">Corrige los datos marcados abajo.</div></div></div>`
+    : `<div class="acta-head"><div class="letra ${claseLetra(r.letra)}">${r.letra}</div>
+        <div><div class="puntaje">${fmt(r.total)}% <small>cumplimiento</small></div>
+        <div class="desc">${MODELO.letras[r.letra]}</div>
+        <div class="desc">Escala numérica ${aEscala(r.total)}</div></div></div>`;
+  const notas = [...r.errores.map((e) => `<p class="err">${esc(e)}</p>`), ...r.obs.map((o) => `<p>${esc(o)}</p>`)].join("");
+
+  $("acta").innerHTML = cabeza +
+    `<div style="overflow-x:auto"><table><thead><tr><th>Componente</th><th class="n">Pondera</th><th class="n">Puntaje</th><th class="n">Letra</th></tr></thead><tbody>${filas}${fijos}</tbody></table></div>` +
+    destaca + (notas ? `<div class="obs">${notas}</div>` : "") +
+    `<div class="obs"><div class="escala">${MODELO.umbrales.map(([l, m]) => `<span class="chip ${claseLetra(l)}">${l}</span><span>${l === "D" ? "menos de 55%" : "desde " + m + "%"} · ${MODELO.letras[l]}</span>`).join("")}</div></div>` +
+    `<div class="formula">Final = Σ(ámbito × %declarado × ${fmt(1 - MODELO.fijos.autoevaluacion - (r.pEst ?? MODELO.fijos.estudiantes), 2)}) + auto × 0,10${r.pEst === 0 ? "" : " + estudiantes × 0,10"}<br>Una tarea con excedente cuenta hasta ${MODELO.tope}%; lo que la supera queda registrado como destacado.</div>`;
+}
+
+function todo() { pintarCompromiso(); pintarTareas(); pintarActa(); }
+$("sit-motivo").insertAdjacentHTML("beforeend", Object.entries(MODELO.situaciones.motivos).map(([k, v]) => `<option value="${k}">${v}</option>`).join(""));
+
+document.addEventListener("input", (e) => {
+  const el = e.target;
+  if (el.dataset.amb) { estado.compromiso[el.dataset.amb] = el.value; pintarActa(); return; }
+  if (el.dataset.i != null) {
+    const t = estado.tareas[+el.dataset.i], campo = el.dataset.campo;
+    t[campo] = el.type === "checkbox" ? el.checked : el.value;
+    if (campo === "ambito") { t.sub = Object.keys(MODELO.ambitos[t.ambito].subs)[0]; pintarTareas(); $(`t${el.dataset.i}-ambito`)?.focus(); }
+    if (campo === "tipo" || campo === "sub") { pintarTareas(); $(`t${el.dataset.i}-${campo}`)?.focus(); }
+  }
+  pintarActa();
+});
+document.addEventListener("click", (e) => {
+  const q = e.target.dataset?.quitar;
+  if (q != null) { estado.tareas.splice(+q, 1); pintarTareas(); pintarActa(); }
+});
+$("agregar").onclick = () => {
+  estado.tareas.push({ ambito: "docencia", sub: "cursos_pregrado", desc: "", tipo: "pauta", cumple: "", no_cumple: "", no_aplica: 0 });
+  pintarTareas(); pintarActa(); $(`t${estado.tareas.length - 1}-desc`)?.focus();
+};
+$("limpiar").onclick = () => { estado.tareas = []; todo(); };
+$("ejemplo").onclick = () => { estado = JSON.parse(JSON.stringify(EJEMPLO)); todo(); };
+todo();
+</script>

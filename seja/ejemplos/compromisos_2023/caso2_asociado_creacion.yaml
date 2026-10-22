@@ -1,0 +1,75 @@
+# Caso 2 — tomado de un Compromiso de Desempeño 2023 real, ANONIMIZADO.
+# Sujeto 08 del ejercicio 2023. Asociado/a, jornada completa.
+# Las horas son las declaradas; los RESULTADOS de evaluación son FICTICIOS, sólo para probar el cálculo.
+#
+# Cómo se ordenó lo declarado:
+# - Docencia: 17 h el primer semestre y "16.45" el segundo. Se interpretó como 16 h 45 min, porque un
+#   curso figuraba con "3.45" horas. Se registran ambos semestres y se promedian.
+# - El total declarado (50 h y 48,75 h) supera la jornada completa: el informe lo advierte.
+# - Los proyectos de investigación y las publicaciones declaraban 1 a 2 h cada uno (8 h en total).
+# - Las ponencias (4) y la revisión de artículos no tenían horas: se evalúan como tareas, pero no
+#   suman ponderación.
+academico: Sujeto 08
+periodo: 2023
+jerarquia: asociado
+perfil: investigador   # supuesto: el formulario 2023 no pedía perfil
+jornada: completa
+
+horas:
+  docencia: [17, 16.75]
+  investigacion: 8
+  vinculacion: 16
+  gestion: 9
+
+tareas:
+  - ambito: docencia
+    subcategoria: cursos_pregrado
+    descripcion: Asignaturas 1 y 2 (pregrado)
+    instrumento: {nombre: Evaluación a la docencia de pregrado (estudiantes), cumple: 19, no_cumple: 1}
+  - ambito: docencia
+    subcategoria: cursos_postgrado
+    descripcion: Asignaturas 3 y 4 (postgrado)
+    instrumento: {nombre: Evaluación a la docencia de postgrado (estudiantes), cumple: 11, no_cumple: 0}
+  - ambito: docencia
+    subcategoria: direccion_titulacion
+    descripcion: Dirección de tesis (pregrado, magíster y doctorado)
+    evidencia: {comprometido: 5, logrado: 5}
+  - ambito: investigacion
+    subcategoria: postulacion_fondos
+    descripcion: Postulaciones a 3 fondos concursables
+    evidencia: {comprometido: 3, logrado: 3}
+  - ambito: investigacion
+    subcategoria: proyectos
+    descripcion: Cierre de proyecto con financiamiento interno (responsable)
+    evidencia: {estado: cumplido}
+  - ambito: investigacion
+    subcategoria: publicaciones
+    descripcion: 3 publicaciones (artículos y reseña)
+    evidencia: {comprometido: 3, logrado: 4, validado: true}
+  - ambito: investigacion
+    subcategoria: presentaciones
+    descripcion: Ponencias y talleres en eventos nacionales e internacionales
+    evidencia: {comprometido: 4, logrado: 4}
+  - ambito: vinculacion
+    subcategoria: proyectos_vcm
+    descripcion: Proyectos de extensión y creación artística ligados a cursos
+    instrumento: {nombre: Pauta de evaluación de VcM (dirección de unidad), cumple: 7, no_cumple: 1, no_aplica: 2}
+  - ambito: vinculacion
+    subcategoria: iniciativas_vcm
+    descripcion: Encuentro con escuelas y liceos, y coloquio internacional
+    evidencia: {estado: cumplido}
+  - ambito: vinculacion
+    subcategoria: redes
+    descripcion: Grupo de investigación y colaboración internacionales
+    evidencia: {estado: cumplido}
+  - ambito: gestion
+    subcategoria: comisiones
+    descripcion: Núcleo de magíster y comité de doctorado
+    evidencia: {estado: cumplido}
+  - ambito: gestion
+    subcategoria: gestion_cuerpo_academico
+    descripcion: Comisión evaluadora de concurso académico
+    evidencia: {estado: cumplido}
+
+autoevaluacion: {cumple: 19, no_cumple: 1}
+estudiantes: {cumple: 30, no_cumple: 1}

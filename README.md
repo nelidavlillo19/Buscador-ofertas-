@@ -116,3 +116,7 @@ tests/             pruebas (python -m pytest)
 ```
 
 Buenas prácticas: el programa espera 1,5 s entre peticiones a una misma tienda y consulta una vez al día.
+
+## Calificación académica SEJA
+
+El directorio [`seja/`](seja) contiene el motor de calificación académica SEJA-UMCE (ámbitos, tareas, autoevaluación, evaluación de estudiantes y clasificación A+ a D). Ver [`seja/README.md`](seja/README.md).

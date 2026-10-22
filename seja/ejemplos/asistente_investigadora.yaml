@@ -1,0 +1,57 @@
+# Ejemplo: académica Asistente, perfil Investigador/a.
+# El % de cada ámbito es el declarado en su Compromiso de Desempeño (debe sumar 100).
+academico: Académica de ejemplo
+periodo: 2026
+jerarquia: asistente
+perfil: investigador
+
+compromiso:
+  docencia: 55
+  investigacion: 30
+  vinculacion: 5
+  gestion: 10
+
+tareas:
+  # Docencia: evaluada con instrumentos estandarizados (rúbrica 1–4 o nota 1–7).
+  - ambito: docencia
+    subcategoria: cursos_pregrado
+    descripcion: Didáctica de la Historia I
+    instrumento: {nombre: Pauta de observación de clases, puntaje: 3.9, min: 1, max: 4}
+  - ambito: docencia
+    subcategoria: cursos_postgrado
+    descripcion: Seminario de investigación (Magíster)
+    instrumento: {nombre: Pauta programa de curso, puntaje: 6.9, min: 1, max: 7}
+  - ambito: docencia
+    subcategoria: direccion_titulacion
+    descripcion: Guía de tesis de licenciatura
+    evidencia: {comprometido: 3, logrado: 4, validado: true}   # excedente validado
+
+  # Investigación, creación e innovación: evidencia del compromiso.
+  - ambito: investigacion
+    subcategoria: proyectos
+    descripcion: Proyecto FONDECYT de Iniciación (co-investigadora)
+    evidencia: {estado: cumplido}
+  - ambito: investigacion
+    subcategoria: publicaciones
+    descripcion: Artículos en revistas indexadas (Scopus/SciELO)
+    evidencia: {comprometido: 2, logrado: 3, validado: true}   # excedente validado
+  - ambito: investigacion
+    subcategoria: presentaciones
+    descripcion: Ponencia en congreso internacional
+    instrumento: {nombre: Pauta de evaluación de ponencias, porcentaje: 95}
+
+  # Vinculación con el medio.
+  - ambito: vinculacion
+    subcategoria: proyectos_vcm
+    descripcion: Taller con escuelas del territorio
+    evidencia: {comprometido: 4, logrado: 5, validado: true}  # excedente validado
+
+  # Gestión académica.
+  - ambito: gestion
+    subcategoria: comisiones
+    descripcion: Comisión de autoevaluación de carrera
+    evidencia: {estado: cumplido}
+
+# Componentes fijos: 10% cada uno.
+autoevaluacion: {puntaje: 6.5, min: 1, max: 7}
+estudiantes: {puntaje: 3.7, min: 1, max: 4}

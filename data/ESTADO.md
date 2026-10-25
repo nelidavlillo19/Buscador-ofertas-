@@ -1,26 +1,26 @@
-# Última revisión: 2026-10-24
+# Última revisión: 2026-10-25
 
-- Hora: 09:44 (Chile)
-- Ofertas encontradas: 750 (71 nuevas)
-- Avisos: correo enviado (50 ofertas nuevas)
+- Hora: 10:19 (Chile)
+- Ofertas encontradas: 738 (57 nuevas)
+- Avisos: correo enviado (30 ofertas nuevas)
 
 | Tienda | Productos |
 |---|---|
 | Pichintun | 645 |
-| Colloky | 380 |
+| Colloky | 384 |
 | Uma Baby | 507 |
-| Casa Ideas | 208 |
-| IKEA | 288 |
-| SuperZoo | 215 |
+| Casa Ideas | 207 |
+| IKEA | 287 |
+| SuperZoo | 214 |
 | Fernapet | 176 |
 | Casa Royal | 59 |
-| H&M | 1225 |
-| Limonada | 633 |
+| H&M | 1219 |
+| Limonada | 628 |
 | Miniso | 240 |
 | Roda | 4 |
 | Kugan | 4 |
 | Oxford | 4 |
-| Falabella | 1070 |
+| Falabella | 1086 |
 | Sodimac | 78 |
 | Kuna Foods | 83 |
 | Eaty | 16 |
@@ -30,5 +30,5 @@
 | Farmacias Ahumada | 11 |
 | Jumbo | 485 |
 | Santa Isabel | 0 ⚠️ |
-| Líder | 589 |
+| Líder | 597 |
 | Tottus | 0 ⚠️ |

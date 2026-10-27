@@ -173,6 +173,9 @@ Sin ejemplos de personas; los valores se leen de `config/modelo.yaml`:
   python -m seja.docs.generar_entregables SALIDA/   # requiere pandoc
   ```
 
+- **Resultado de la Calificación: formato para la Comisión Central** (Word): instrucciones, informe individual
+  de resultado, acta de la sesión y un ejemplo hipotético completado; se genera con el mismo comando.
+
 - **Presentación** del proceso y del cálculo de la calificación final (PowerPoint):
 
   ```bash

@@ -4,6 +4,7 @@ Uso: python -m seja.docs.generar_entregables CARPETA_DE_SALIDA
 
 - Modelo_de_Calificacion_Academica_SEJA.docx
 - Requerimientos_UCampus_Evaluacion_SEJA.docx
+- Resultado_Calificacion_Formato_Comision_SEJA.docx (formato de informe para la Comisión Central)
 
 Los valores (umbrales, tope, ponderaciones, rangos, catálogo) se leen de seja/config/modelo.yaml, así que los
 documentos siempre coinciden con lo que calcula el sistema. Las ecuaciones se escriben en LaTeX y pandoc las
@@ -28,6 +29,7 @@ MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto
 DOCUMENTOS = {
     "modelo_calificacion.md": "Modelo_de_Calificacion_Academica_SEJA.docx",
     "requerimientos_ucampus.md": "Requerimientos_UCampus_Evaluacion_SEJA.docx",
+    "informe_comision.md": "Resultado_Calificacion_Formato_Comision_SEJA.docx",
 }
 AZUL = "1F3864"
 
@@ -116,6 +118,7 @@ def valores(modelo: dict) -> dict[str, str]:
         "TOPE": str(modelo["tope_excedente"]),
         "ETAPA_ANTERIOR": str(modelo["etapas"]["etapa_anterior"]),
         "MESES": str(modelo["situaciones_especiales"]["meses_suspension"]),
+        "INFORMAR_A": modelo["situaciones_especiales"]["informar_a"][:1].upper() + modelo["situaciones_especiales"]["informar_a"][1:],
         "JORNADAS": jornadas,
         "P_AE": tex(p_ae), "P_EE": tex(p_ee),
         "ALFA": tex(1 - p_ae - p_ee), "ALFA_EXENTO": tex(1 - p_ae),

@@ -13,12 +13,12 @@ evalúa, con qué instrumentos y evidencias, cómo se pondera cada ámbito, cóm
 se clasifica.
 
 El modelo es **flexible**: cada persona compromete sus propias actividades y su propia distribución de horas, según
-su jerarquía, perfil y jornada. Por eso no hay una ponderación única: la calificación se calcula con la combinación
+su jerarquía y su jornada. Por eso no hay una ponderación única: la calificación se calcula con la combinación
 de tareas y horas que cada persona declaró y que su jefatura aprobó.
 
 # 2. Marco normativo
 
-- **Reglamento de Carrera Académica UMCE** (propuesta): jerarquías, perfiles, funciones y carga docente (Título II);
+- **Reglamento de Carrera Académica UMCE** (propuesta): jerarquías, funciones y carga docente (Título II). La carrera académica UMCE tiene un **único perfil**;
   evaluación académica (Título III), en particular los artículos 31 a 41.
 - **Síntesis de avances y principales definiciones SEJA** (agosto 2026): definiciones de los cuatro ámbitos
   evaluables.
@@ -143,14 +143,15 @@ $$h_a = \frac{1}{|S|} \sum_{s \in S} h_{a,s}$$
 
 $$w_a = \frac{h_a}{\sum_b h_b}, \qquad \sum_a w_a = 1$$
 
-Las actividades sin horas (por ejemplo, una ponencia) se evalúan dentro de su ámbito, pero no aportan horas a la
-ponderación. Cada actividad cuenta en el ámbito de su subcategoría, no en la sección del formulario donde se escribió.
+Las horas que se comprometen son las de la jornada **menos el horario de almuerzo** (1 hora diaria):
+{{JORNADAS}}. Las actividades sin horas (por ejemplo, una ponencia) se evalúan dentro de su ámbito, pero no aportan
+horas a la ponderación. Cada actividad cuenta en el ámbito de su subcategoría, no en la sección del formulario donde se escribió.
 
 **Validaciones del compromiso.** Al calcular la ponderación se advierte a la jefatura si:
 
-- la suma de horas supera la jornada ({{JORNADAS}});
-- el peso de la docencia, $w_{\text{docencia}}$, queda fuera del rango que el reglamento fija para la jerarquía y el
-  perfil:
+- la suma de horas no coincide con las horas a justificar de la jornada (39 h o 20 h);
+- el peso de la docencia, $w_{\text{docencia}}$, queda fuera del rango esperado para la jerarquía (provisional,
+  mientras el reglamento lo fija para el perfil único):
 
 {{RANGOS}}
 
@@ -162,13 +163,15 @@ El cumplimiento del compromiso es el promedio de los ámbitos ponderado por las 
 
 $$C = \sum_a w_a \, S_a$$
 
-La calificación final agrega la autoevaluación ($AE$) y la evaluación de estudiantes ($EE$), ambas de 0 a 100%:
+La calificación final agrega la autoevaluación ($AE$) y la evaluación de estudiantes ($EE$), ambas de 0 a 100%.
+Las dos tienen **siempre el mismo peso** $p$: al fijar el de una, el de la otra es el mismo. El valor de $p$
+**aún no está definido**; mientras tanto se usa $p = {{P}}$ como valor provisional.
 
-$$F = \alpha \sum_a w_a \, S_a + {{P_AE}} \cdot AE + {{P_EE}} \cdot EE = \alpha \cdot C + {{P_AE}} \cdot AE + {{P_EE}} \cdot EE$$
+$$F = \alpha \sum_a w_a \, S_a + p \cdot AE + p \cdot EE = \alpha \cdot C + p \cdot AE + p \cdot EE, \qquad \alpha = 1 - 2p$$
 
-con $\alpha = {{ALFA}}$. Si la persona está eximida de docencia y no tiene evaluación de estudiantes, ese
-{{PCT_EE}}% se suma a los ámbitos: $\alpha = {{ALFA_EXENTO}}$ y $F = \alpha \cdot C + {{P_AE}} \cdot AE$. El peso
-efectivo de cada ámbito en la calificación final es:
+Si la persona está eximida de docencia y no tiene evaluación de estudiantes, ese peso se suma a los ámbitos:
+$\alpha = 1 - p$ y $F = \alpha \cdot C + p \cdot AE$. El peso efectivo de cada ámbito en la calificación final
+es:
 
 $$\omega_a = \alpha \cdot w_a$$
 
@@ -189,8 +192,7 @@ Para la equivalencia con la escala de 1 a 7 (Jornada 2024):
 
 - **A+:** desempeño sobresaliente; la persona es candidata a reconocimiento institucional, junto con el registro de
   lo que destaca.
-- **A en los dos últimos procesos:** requisito para ascender de jerarquía (art. 11) y para cambiar de perfil
-  (art. 8, A o B).
+- **A en los dos últimos procesos:** requisito para ascender de jerarquía (art. 11).
 - **D, o C en dos procesos consecutivos:** ingreso obligatorio al programa institucional de acompañamiento y
   fortalecimiento académico (art. 41).
 
@@ -212,18 +214,20 @@ la Oficina de Evaluación de Desempeño Académico y a las autoridades correspon
 # 10. Funciones de la jerarquía
 
 Además de la calificación, el informe de cierre revisa si las actividades evidenciadas cubren las funciones que el
-Reglamento de Carrera Académica asigna a la jerarquía y al perfil (art. 14, 18, 19, 23, 24, 28 y 29). Cada función se
+Reglamento de Carrera Académica asigna a la jerarquía (art. 14, 18-19, 23-24 y 28-29; con perfil único, cada jerarquía
+reúne las funciones de los antiguos perfiles). Cada función se
 marca como **cumplida**, **sin evidencia** o **no declarada**; las funciones opcionales se indican aparte. Esta
 revisión orienta el desarrollo profesional y la jerarquización; no modifica la calificación.
 
 # 11. Ejemplo ilustrativo de cálculo
 
-Ejemplo hipotético, sólo para mostrar el cálculo. Un académico compromete 22 h de docencia, 12 h de investigación,
-4 h de vinculación con el medio y 6 h de gestión (44 h semanales).
+Ejemplo hipotético, sólo para mostrar el cálculo. Un académico con jornada completa (44 h de contrato,
+39 h a justificar) compromete 20 h de docencia, 11 h de investigación, 3 h de vinculación con el medio y 5 h de
+gestión. Se usa el valor provisional $p = 0{,}10$.
 
 **Ponderación (sección 7):**
 
-$$w_{\text{Doc}} = \frac{22}{44} = 0{,}500 \quad w_{\text{ICI}} = \frac{12}{44} = 0{,}273 \quad w_{\text{VcM}} = \frac{4}{44} = 0{,}091 \quad w_{\text{Gest}} = \frac{6}{44} = 0{,}136$$
+$$w_{\text{Doc}} = \frac{20}{39} = 0{,}513 \quad w_{\text{ICI}} = \frac{11}{39} = 0{,}282 \quad w_{\text{VcM}} = \frac{3}{39} = 0{,}077 \quad w_{\text{Gest}} = \frac{5}{39} = 0{,}128$$
 
 **Tareas y ámbitos (secciones 5 y 6):**
 
@@ -236,9 +240,9 @@ $$w_{\text{Doc}} = \frac{22}{44} = 0{,}500 \quad w_{\text{ICI}} = \frac{12}{44} 
 
 **Cumplimiento del compromiso y calificación final (sección 8)**, con $AE = 90\%$ y $EE = 88\%$ (los pesos se muestran redondeados; el cálculo usa las fracciones exactas):
 
-$$C = 0{,}500 \cdot 95{,}0 + 0{,}273 \cdot 75{,}0 + 0{,}091 \cdot 120{,}0 + 0{,}136 \cdot 100{,}0 = 92{,}5\%$$
+$$C = 0{,}513 \cdot 95{,}0 + 0{,}282 \cdot 75{,}0 + 0{,}077 \cdot 120{,}0 + 0{,}128 \cdot 100{,}0 = 91{,}9\%$$
 
-$$F = 0{,}80 \cdot 92{,}5 + 0{,}10 \cdot 90 + 0{,}10 \cdot 88 = 91{,}8\%$$
+$$F = 0{,}80 \cdot 91{,}9 + 0{,}10 \cdot 90 + 0{,}10 \cdot 88 = 91{,}3\%$$
 
 Resultado: **A** (cumplimiento pleno), escala numérica 7. El taller excedente queda registrado como destacado para el
 reconocimiento institucional.

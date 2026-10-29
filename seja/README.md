@@ -12,7 +12,7 @@ TAREA ──(instrumento estandarizado y/o evidencia)──► % de cumplimiento
 ÁMBITO ──► % del ámbito ──► letra del ámbito (A+–D)
    │  ponderado por el % declarado en el Compromiso de Desempeño
    ▼
-FINAL = 80% Σ (ámbito × % declarado)  +  10% autoevaluación  +  10% evaluación de estudiantes
+FINAL = (1 − 2p) Σ (ámbito × % declarado)  +  p · autoevaluación  +  p · evaluación de estudiantes
    ▼
 CLASIFICACIÓN: A+ · A · B · C · D
 ```
@@ -60,16 +60,19 @@ cuente más dentro de su ámbito; si no se indica, el ámbito es un promedio sim
 
 ### 3. Ponderación
 
-- **80%**: los ámbitos, cada uno según el % declarado en el Compromiso de Desempeño (los % deben sumar 100).
-  Ejemplo: docencia 55%, ICI 30%, VcM 5%, gestión 10% → pesan 44%, 24%, 4% y 8% del total.
+- **1 − 2p** (80% con el valor provisional): los ámbitos, cada uno según el % declarado en el Compromiso de
+  Desempeño (los % deben sumar 100). Ejemplo con p = 10%: docencia 55%, ICI 30%, VcM 5%, gestión 10% → pesan 44%,
+  24%, 4% y 8% del total.
 - El % de cada ámbito se ingresa directo (`compromiso:`) o se calcula desde las **horas semanales** (`horas:`):
   % = horas del ámbito ÷ total de horas. Si la docencia cambia por semestre se ingresa una lista
-  (`docencia: [17, 16.75]`) y se promedia. El informe advierte si las horas superan la jornada
-  (`jornada: completa` = 44 h, `media` = 22 h) o si la docencia queda fuera del rango del reglamento para la
-  jerarquía y el perfil (`jerarquia:`, `perfil:`). Ver [el análisis de los compromisos](docs/analisis_compromisos.md).
-- **10%**: autoevaluación.
-- **10%**: evaluación de los estudiantes.
-- Si la persona está eximida de docencia (art. 37 a), se marca `exento_estudiantes: true` y ese 10% pasa a los ámbitos.
+  (`docencia: [17, 16.75]`) y se promedia. El informe advierte si las horas no coinciden con las horas
+  a justificar de la jornada (`jornada: completa` = 44 h de contrato y **39 h** a justificar; `media` = 22 h y
+  **20 h**; se descuenta 1 hora diaria de almuerzo) o si la docencia queda fuera del rango esperado para la
+  jerarquía (`jerarquia:`). La carrera académica UMCE tiene un **único perfil**. Ver [el análisis de los compromisos](docs/analisis_compromisos.md).
+- **p**: autoevaluación, y **p**: evaluación de los estudiantes. Ambas pesan siempre lo mismo; el % aún **no está
+  definido** y se configura en un solo valor (`componentes_fijos.peso_instrumentos`, 10% provisional), que se
+  aplica a las dos. Un compromiso puede simular otro valor con `peso_instrumentos:`.
+- Si la persona está eximida de docencia (art. 37 a), se marca `exento_estudiantes: true` y ese peso pasa a los ámbitos.
 
 ### 4. Clasificación
 
@@ -203,11 +206,16 @@ la tabla de equivalencia a la escala 1–7 y el catálogo de instrumentos y peri
 definiciones actuales en:
 
 - **Ámbitos**: son 4, incluida la **Gestión Académica** (la Jornada 2024 evaluaba 3).
-- **Ponderación**: 10% autoevaluación + 10% estudiantes + 80% compromiso (la Jornada 2024 indicaba 15/15/70).
+- **Ponderación**: autoevaluación y estudiantes con el mismo peso p, por definir (10% provisional); compromiso
+  1 − 2p (la Jornada 2024 indicaba 15/15/70).
 - **Letras**: A+ desde 101% de cumplimiento (la Jornada 2024 asignaba A+ a la nota 7, es decir desde 90%).
 
 ## Definiciones confirmadas
 
+- Carrera académica UMCE con un **único perfil**.
+- Jornada completa de 44 h con **39 h a justificar**, y media jornada de 22 h con **20 h a justificar** (1 hora
+  diaria de almuerzo).
+- La autoevaluación y la evaluación de estudiantes pesan **siempre lo mismo**: al fijar una, la otra queda igual.
 - Tope de excedente por tarea: 120%.
 - Sin mínimo de exigencia por ámbito ni combinaciones de logro entre ámbitos: la letra depende sólo del %
   de cumplimiento final.
@@ -215,4 +223,7 @@ definiciones actuales en:
 
 ## Pendiente de definir
 
+- **% de la autoevaluación y de la evaluación de estudiantes** (el mismo para ambas; 10% provisional).
+- Rango de docencia esperado por jerarquía con el perfil único (se usa provisionalmente el rango que cubría los
+  dos perfiles anteriores) y redacción de las funciones de cada jerarquía.
 - Instrumentos estandarizados de cada subcategoría y su escala.

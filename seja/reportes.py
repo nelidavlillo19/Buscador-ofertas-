@@ -17,7 +17,7 @@ from pathlib import Path
 import yaml
 
 from seja.calificacion import (ErrorCompromiso, Resultado, calificar, cargar_modelo, nombre_subcategoria,
-                               ponderacion_compromiso, texto_destacado)
+                               peso_instrumentos, ponderacion_compromiso, texto_destacado)
 
 FUNCIONES = Path(__file__).parent / "config" / "funciones.yaml"
 
@@ -72,8 +72,7 @@ def _identificacion(datos: dict, fecha_etiqueta: str, fecha: str) -> str:
              ["Nombre jefatura", datos.get("jefatura")],
              ["Facultad", datos.get("facultad")],
              ["Unidad académica", datos.get("unidad")],
-             ["Jerarquía y perfil", " · ".join(str(x).capitalize() for x in
-                                               (datos.get("jerarquia"), datos.get("perfil")) if x)],
+             ["Jerarquía", str(datos.get("jerarquia", "")).capitalize()],
              ["Tipo de jornada", str(datos.get("jornada", "")).capitalize()],
              ["Tipo de contrato", datos.get("contrato")],
              ["Año de ingreso", datos.get("ingreso")],
@@ -108,8 +107,8 @@ def reporte_compromiso(datos: dict, modelo: dict | None = None) -> str:
     modelo = modelo or cargar_modelo()
     alertas: list[str] = []
     declarado = ponderacion_compromiso(datos, modelo, alertas)
-    fijos = modelo["componentes_fijos"]
-    p_compromiso = 1 - fijos["autoevaluacion"] - (0 if datos.get("exento_estudiantes") else fijos["estudiantes"])
+    p = peso_instrumentos(modelo, datos)
+    p_compromiso = 1 - p - (0 if datos.get("exento_estudiantes") else p)
     tareas = datos.get("tareas") or []
     for t in tareas:
         if t.get("ambito") not in modelo["ambitos"]:
@@ -118,8 +117,7 @@ def reporte_compromiso(datos: dict, modelo: dict | None = None) -> str:
     maximo = max(declarado.values())
     dominantes = [NOMBRES_CORTOS[k].split(",")[0].lower() for k, v in declarado.items() if maximo - v < 1]
     funciones = [NOMBRES_CORTOS[k].lower() for k in modelo["ambitos"] if k in declarado]
-    perfil = f", perfil {datos['perfil']}" if datos.get("perfil") else ""
-    resumen = (f"Académico/a con jerarquía {str(datos.get('jerarquia', 'sin informar')).capitalize()}{perfil}, "
+    resumen = (f"Académico/a con jerarquía {str(datos.get('jerarquia', 'sin informar')).capitalize()}, "
                f"jornada {datos.get('jornada', 'sin informar')} y contrato {datos.get('contrato', 'sin informar')}. "
                f"En el compromiso declara funciones de {_lista(funciones)}. Según las horas comprometidas, "
                f"{_lista(dominantes)} concentra{'n' if len(dominantes) > 1 else ''} la mayor parte "
@@ -162,17 +160,14 @@ def _info_adicional(datos: dict, cierre: bool = False) -> str:
 
 
 def funciones_jerarquia(datos: dict, resultado: Resultado, funciones: dict | None = None) -> tuple[str, list]:
-    """(título, filas [función, estado]) de las funciones del reglamento para la jerarquía y el perfil."""
+    """(título, filas [función, estado]) de las funciones del reglamento para la jerarquía (perfil único)."""
     funciones = funciones or cargar_funciones()
     jerarquia = str(datos.get("jerarquia", "")).lower()
-    perfil = str(datos.get("perfil", "")).lower()
     reglas = funciones["jerarquias"].get(jerarquia)
-    if not reglas:
+    if not reglas or not reglas.get("funciones"):
         return "", []
-    lista = reglas.get("todos") or reglas.get(perfil)
-    if not lista:
-        return "", []
-    articulo = reglas["articulo"] if isinstance(reglas["articulo"], int) else reglas["articulo"][perfil]
+    lista = reglas["funciones"]
+    articulo = reglas["articulo"]
     tareas = [t for a in resultado.ambitos for t in a.tareas]
     filas = []
     for f in lista:
@@ -187,7 +182,7 @@ def funciones_jerarquia(datos: dict, resultado: Resultado, funciones: dict | Non
         else:
             estado = "Opcional, no declarada" if f.get("opcional") else "No declarada"
         filas.append([f["funcion"], estado])
-    titulo = f"{jerarquia.capitalize()}{', perfil ' + perfil if 'todos' not in reglas else ''} (art. {articulo})"
+    titulo = f"{jerarquia.capitalize()} (art. {articulo})"
     return titulo, filas
 
 
@@ -270,7 +265,7 @@ def _oportunidades_fortalezas(r: Resultado, filas_func: list) -> str:
                       _lista([f[0].lower() + f[1:] for f in faltan]) + ".")
     elif filas_func:
         textos.append("Las actividades declaradas cubren las funciones que la normativa establece para su "
-                      "jerarquía y perfil.")
+                      "jerarquía.")
     textos += r.observaciones
     return "\n\n".join(textos)
 

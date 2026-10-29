@@ -65,8 +65,8 @@ y 3,9% en el sujeto 09.
 - **Ámbito.** Cada actividad pertenece al ámbito de su subcategoría en el catálogo SEJA, no a la sección del
   formulario donde se escribió.
 - **Ingreso directo.** También se puede ingresar el % de cada ámbito si ya viene calculado (`compromiso:`).
-- **Advertencias.** El informe avisa si las horas superan la jornada (44 h completa, 22 h media) o si la docencia
-  queda fuera del rango de la jerarquía y el perfil. No bloquea la calificación: deja la observación para la
+- **Advertencias.** El informe avisa si las horas no coinciden con las horas a justificar (39 h en
+  jornada completa y 20 h en media jornada, descontado el almuerzo) o si la docencia queda fuera del rango de la jerarquía. No bloquea la calificación: deja la observación para la
   comisión.
 - **Rango de docencia** (% del compromiso, según el Reglamento de Carrera Académica):
 
@@ -84,5 +84,6 @@ y 3,9% en el sujeto 09.
 2. Agregar **Gestión Académica** como cuarta área, con horas, en el formulario y en el resumen.
 3. Elegir el **tipo de actividad desde el catálogo** de subcategorías, para que cada actividad caiga en su ámbito.
 4. Usar campos numéricos con decimales (0,5 = media hora), no texto libre.
-5. Mostrar al llenar el formulario el **rango de docencia** de la jerarquía y el perfil, y el total frente a la jornada.
-6. Pedir el **perfil** (investigador/a o vinculador/a), que el formulario 2023 no tenía.
+5. Mostrar al llenar el formulario el **rango de docencia** de la jerarquía y el total frente a las horas a justificar
+   (39 h o 20 h).
+6. Pedir la **jornada** (completa o media); la carrera académica tiene un único perfil.

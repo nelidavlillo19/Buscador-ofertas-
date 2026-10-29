@@ -119,7 +119,7 @@ async function main() {
   const niveles = [
     [fa.FaTasks, "Tarea", "Cada actividad comprometida: un curso, un proyecto, una publicación, una coordinación.", "Se evalúa con un instrumento o con la evidencia de la carpeta individual.", "pₜ"],
     [fa.FaLayerGroup, "Ámbito", "Docencia · Investigación, Creación e Innovación · Vinculación con el Medio · Gestión Académica.", "Promedio de las tareas del ámbito.", "Sₐ"],
-    [fa.FaFlagCheckered, "Calificación final", "80% ámbitos ponderados por horas, 10% autoevaluación y 10% evaluación de estudiantes.", "Se clasifica en A+, A, B, C o D.", "F"],
+    [fa.FaFlagCheckered, "Calificación final", "Ámbitos ponderados por horas, más autoevaluación y evaluación de estudiantes con el mismo peso p (por definir).", "Se clasifica en A+, A, B, C o D.", "F"],
   ];
   for (let i = 0; i < 3; i++) {
     const x = 0.6 + i * 4.2;
@@ -185,11 +185,11 @@ async function main() {
   texto(s, "Peso del ámbito", { x: 0.9, y: 3.3, w: 5.1, h: 0.4, fontSize: 15, bold: true });
   formula(s, "peso", 0.9, 3.75, 1.0);
   texto(s, [
-    { text: "Se alerta si las horas superan la jornada (44 h o 22 h).", options: { bullet: true, breakLine: true } },
-    { text: "Y si la docencia queda fuera del rango de la jerarquía y el perfil.", options: { bullet: true } },
+    { text: "Se justifican 39 h (jornada completa de 44 h) o 20 h (media de 22 h): 1 h diaria es almuerzo.", options: { bullet: true, breakLine: true } },
+    { text: "Se alerta si la docencia queda fuera del rango esperado para la jerarquía.", options: { bullet: true } },
   ], { x: 0.9, y: 5.0, w: 5.2, h: 1.3, fontSize: 14, color: C.text2, paraSpaceAfter: 4 });
-  s.addChart(pres.charts.BAR, [{ name: "Peso del ámbito", labels: ["Docencia (22 h)", "Investigación (12 h)", "Vinculación (4 h)", "Gestión (6 h)"], values: [50.0, 27.3, 9.1, 13.6] }], {
-    x: 6.6, y: 1.6, w: 6.1, h: 4.95, barDir: "bar", showTitle: true, title: "Ejemplo: 44 h comprometidas → peso de cada ámbito (%)",
+  s.addChart(pres.charts.BAR, [{ name: "Peso del ámbito", labels: ["Docencia (20 h)", "Investigación (11 h)", "Vinculación (3 h)", "Gestión (5 h)"], values: [51.3, 28.2, 7.7, 12.8] }], {
+    x: 6.6, y: 1.6, w: 6.1, h: 4.95, barDir: "bar", showTitle: true, title: "Ejemplo: 39 h a justificar → peso de cada ámbito (%)",
     titleFontSize: 14, titleColor: HEX.dk1, titleFontFace: "+mn-lt", chartColors: [HEX.accent3], showValue: true, dataLabelPosition: "outEnd",
     dataLabelFormatCode: '0.0"%"', dataLabelFontSize: 13, dataLabelColor: HEX.dk1, dataLabelFontFace: "+mn-lt",
     catAxisLabelColor: HEX.dk2, catAxisLabelFontSize: 13, catAxisLabelFontFace: "+mn-lt", catAxisOrientation: "maxMin",
@@ -251,7 +251,7 @@ async function main() {
   tarjeta(s, 6.95, 1.6, 5.75, 4.95, "Cumplimiento del compromiso");
   texto(s, "Cumplimiento del compromiso", { x: 7.25, y: 1.85, w: 5.2, h: 0.45, fontSize: 18, bold: true });
   formula(s, "compromiso", 7.25, 2.75, 1.0);
-  texto(s, "Promedio de los ámbitos ponderado por las horas. Es el 80% de la calificación final.", { x: 7.25, y: 4.5, w: 5.2, h: 1.6, fontSize: 14, color: C.text2 });
+  texto(s, "Promedio de los ámbitos ponderado por las horas. Pesa 1 − 2p en la calificación final (80% con p = 10%).", { x: 7.25, y: 4.5, w: 5.2, h: 1.6, fontSize: 14, color: C.text2 });
   s.addNotes("S de cada ámbito y C del compromiso. La letra no exige mínimos por ámbito ni combinaciones entre ámbitos.");
 
   // 9. Calificación final
@@ -259,22 +259,23 @@ async function main() {
   s.addText("La calificación final", { placeholder: "title" });
   tarjeta(s, 0.6, 1.55, 12.1, 1.3, "Fórmula final");
   formula(s, "final", 1.0, 1.85, 0.7, 11.3);
-  s.addChart(pres.charts.DOUGHNUT, [{ name: "Composición", labels: ["Ámbitos del compromiso", "Autoevaluación", "Evaluación de estudiantes"], values: [80, 10, 10] }], {
+  s.addChart(pres.charts.DOUGHNUT, [{ name: "Composición", labels: ["Ámbitos (1 − 2p)", "Autoevaluación (p)", "Estudiantes (p)"], values: [80, 10, 10] }], {
     x: 0.6, y: 3.05, w: 5.4, h: 3.6, holeSize: 55, chartColors: [HEX.dk1, HEX.accent2, HEX.accent3], showPercent: true, showValue: false,
     dataLabelColor: HEX.lt1, dataLabelFontSize: 13, dataLabelFontFace: "+mn-lt", showLegend: true, legendPos: "r", legendFontSize: 12,
-    legendColor: HEX.dk2, legendFontFace: "+mn-lt", showTitle: false,
+    legendColor: HEX.dk2, legendFontFace: "+mn-lt", showTitle: true, title: "Con p = 10% (provisional)",
+    titleFontSize: 13, titleColor: HEX.dk2, titleFontFace: "+mn-lt",
   });
   const comp = [
-    ["C · cumplimiento del compromiso", "80%: ámbitos ponderados por horas."],
-    ["AE · autoevaluación", "10%: pauta Cumple / No cumple / No aplica."],
-    ["EE · evaluación de estudiantes", "10%: promedio de sus secciones."],
-    ["Eximido/a de docencia", "Sin EE: los ámbitos pesan 90% y AE 10%."],
+    ["C · cumplimiento del compromiso", "1 − 2p: ámbitos ponderados por horas."],
+    ["AE · autoevaluación", "p: pauta Cumple / No cumple / No aplica."],
+    ["EE · evaluación de estudiantes", "p, el mismo de AE: promedio de sus secciones."],
+    ["p aún no está definido", "Al fijar el de una, la otra toma el mismo. Provisional: 10%."],
   ];
   for (let i = 0; i < comp.length; i++) {
     texto(s, comp[i][0], { x: 6.4, y: 3.1 + i * 0.88, w: 6.3, h: 0.4, fontSize: 16, bold: true });
     texto(s, comp[i][1], { x: 6.4, y: 3.48 + i * 0.88, w: 6.3, h: 0.4, fontSize: 14, color: C.text2 });
   }
-  s.addNotes("Fórmula final: 80% compromiso, 10% autoevaluación y 10% estudiantes. Si está eximido de docencia, 90% y 10%.");
+  s.addNotes("Fórmula final: compromiso 1 − 2p, autoevaluación p y estudiantes p, siempre iguales. El % aún no está definido (10% provisional). Si está eximido de docencia, el compromiso pesa 1 − p.");
 
   // 10. Clasificación
   pres.addSection({ title: "Resultados" });
@@ -308,21 +309,21 @@ async function main() {
   s.addText("Ejemplo de cálculo", { placeholder: "title" });
   const cab = ["Ámbito", "Horas", "wₐ", "Sₐ", "wₐ · Sₐ"].map((t) => ({ text: t, options: { bold: true, color: C.background1, fill: { color: C.text1 } } }));
   const filas = [
-    ["Docencia", "22", "50,0%", "95,0", "47,5"],
-    ["Investigación, Creación e Innovación", "12", "27,3%", "75,0", "20,5"],
-    ["Vinculación con el Medio", "4", "9,1%", "120,0 ★", "10,9"],
-    ["Gestión Académica", "6", "13,6%", "100,0", "13,6"],
+    ["Docencia", "20", "51,3%", "95,0", "48,7"],
+    ["Investigación, Creación e Innovación", "11", "28,2%", "75,0", "21,2"],
+    ["Vinculación con el Medio", "3", "7,7%", "120,0 ★", "9,2"],
+    ["Gestión Académica", "5", "12,8%", "100,0", "12,8"],
   ].map((f) => f.map((t, j) => ({ text: t, options: { align: j === 0 ? "left" : "right", fill: { color: C.background2 } } })));
-  filas.push(["Compromiso (C)", "44", "100%", "", "92,5"].map((t, j) => ({ text: t, options: { bold: true, align: j === 0 ? "left" : "right", fill: { color: C.background1 } } })));
+  filas.push(["Compromiso (C)", "39", "100%", "", "91,9"].map((t, j) => ({ text: t, options: { bold: true, align: j === 0 ? "left" : "right", fill: { color: C.background1 } } })));
   s.addTable([cab, ...filas], { x: 0.6, y: 1.6, w: 7.6, colW: [3.4, 0.9, 1.1, 1.1, 1.1], fontSize: 14, color: C.text1, border: { type: "solid", pt: 1, color: HEX.lt1 }, rowH: 0.55, objectName: "Tabla ejemplo" });
   texto(s, "Hipotético. ★ Dos talleres comprometidos, tres realizados y validados: 150%, cuenta 120% y queda como destacado.", { x: 0.6, y: 5.15, w: 7.6, h: 0.8, fontSize: 13, color: C.text2 });
   tarjeta(s, 8.6, 1.6, 4.1, 4.95, "Resultado ejemplo", C.text1);
-  texto(s, "Con AE = 90% y EE = 88%", { x: 8.9, y: 1.85, w: 3.5, h: 0.4, fontSize: 14, color: C.background2 });
-  texto(s, "F = 0,8 · 92,5 + 0,1 · 90 + 0,1 · 88", { x: 8.9, y: 2.3, w: 3.5, h: 0.8, fontSize: 16, color: C.background1 });
-  texto(s, "91,8%", { x: 8.9, y: 3.15, w: 3.5, h: 1.1, fontSize: 54, bold: true, color: C.accent2 });
+  texto(s, "AE = 90%, EE = 88%, p = 10% (provisional)", { x: 8.9, y: 1.85, w: 3.5, h: 0.4, fontSize: 14, color: C.background2 });
+  texto(s, "F = 0,8 · 91,9 + 0,1 · 90 + 0,1 · 88", { x: 8.9, y: 2.3, w: 3.5, h: 0.8, fontSize: 16, color: C.background1 });
+  texto(s, "91,3%", { x: 8.9, y: 3.15, w: 3.5, h: 1.1, fontSize: 54, bold: true, color: C.accent2 });
   texto(s, "Calificación A", { x: 8.9, y: 4.3, w: 3.5, h: 0.55, fontSize: 24, bold: true, color: C.background1 });
   texto(s, "Cumplimiento pleno · escala 7", { x: 8.9, y: 4.85, w: 3.5, h: 0.45, fontSize: 15, color: C.background2 });
-  s.addNotes("Ejemplo hipotético con 44 horas. El taller excedente cuenta con tope y queda registrado para reconocimiento.");
+  s.addNotes("Ejemplo hipotético con jornada completa: 39 horas a justificar. El taller excedente cuenta con tope y queda registrado para reconocimiento.");
 
   // 12. Situaciones especiales
   s = pres.addSlide({ masterName: "CONTENIDO", sectionTitle: "Resultados" });
@@ -349,7 +350,7 @@ async function main() {
   s.addText("Qué significa cada resultado", { placeholder: "title" });
   const cons = [
     [fa.FaAward, "A+", "Desempeño sobresaliente. Candidato/a a reconocimiento institucional, con el registro de lo que destaca.", C.accent3],
-    [fa.FaArrowCircleUp, "A en dos procesos", "Requisito para ascender de jerarquía (art. 11). A o B en los dos últimos, para cambiar de perfil (art. 8).", C.accent6],
+    [fa.FaArrowCircleUp, "A en dos procesos", "Requisito para ascender de jerarquía (art. 11).", C.accent6],
     [fa.FaHandsHelping, "D, o C dos veces seguidas", "Ingreso obligatorio al programa institucional de acompañamiento y fortalecimiento académico (art. 41).", C.accent5],
   ];
   for (let i = 0; i < 3; i++) {
@@ -360,7 +361,7 @@ async function main() {
     texto(s, cons[i][2], { x: x + 0.3, y: 3.6, w: 3.3, h: 1.5, fontSize: 14, color: C.text2 });
   }
   tarjeta(s, 0.6, 5.45, 12.1, 1.1, "Funciones de la jerarquía");
-  texto(s, "El informe de cierre revisa también las funciones de la jerarquía y el perfil (cumplida, sin evidencia o no declarada). Orienta el desarrollo profesional; no cambia la calificación.", { x: 0.9, y: 5.55, w: 11.5, h: 0.9, fontSize: 14, valign: "middle" });
+  texto(s, "El informe de cierre revisa también las funciones de la jerarquía, con perfil único (cumplida, sin evidencia o no declarada). Orienta el desarrollo profesional; no cambia la calificación.", { x: 0.9, y: 5.55, w: 11.5, h: 0.9, fontSize: 14, valign: "middle" });
   s.addNotes("Consecuencias según el reglamento: reconocimiento, ascenso y acompañamiento.");
 
   // 14. Próximos pasos

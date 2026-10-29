@@ -98,7 +98,7 @@ th.n { text-align: right; }
   <header>
     <span class="eyebrow">SEJA · Reglamento de Carrera Académica, Título III</span>
     <h1>Calificación Académica SEJA</h1>
-    <p>Cada tarea del Compromiso de Desempeño se evalúa con un instrumento estandarizado o con su evidencia. Las tareas se promedian por ámbito, los ámbitos pesan según el % declarado (80% del total) y la autoevaluación y la evaluación de estudiantes aportan 10% cada una. Se carga un caso de ejemplo; edítalo libremente.</p>
+    <p>Cada tarea del Compromiso de Desempeño se evalúa con un instrumento estandarizado o con su evidencia. Las tareas se promedian por ámbito, los ámbitos pesan según el % declarado y la autoevaluación y la evaluación de estudiantes pesan siempre lo mismo (% aún por definir; 10% provisional). Se carga un caso de ejemplo; edítalo libremente.</p>
   </header>
 
   <div class="layout">
@@ -109,15 +109,14 @@ th.n { text-align: right; }
           <label for="academico">Nombre<input id="academico" value="Académica de ejemplo"></label>
           <label for="periodo">Período<input id="periodo" value="2026"></label>
           <label for="jerarquia">Jerarquía<select id="jerarquia"><option value="instructor">Instructor/a</option><option value="asistente" selected>Asistente</option><option value="asociado">Asociado/a</option><option value="titular">Titular</option></select></label>
-          <label for="perfil">Perfil<select id="perfil"><option value="investigador" selected>Investigador/a</option><option value="vinculador">Vinculador/a</option></select></label>
-          <label for="jornada">Jornada<select id="jornada"><option value="completa" selected>Completa (44 h)</option><option value="media">Media (22 h)</option></select></label>
+          <label for="jornada">Jornada<select id="jornada"><option value="completa" selected>Completa (44 h · 39 h a justificar)</option><option value="media">Media (22 h · 20 h a justificar)</option></select></label>
         </div>
       </section>
 
       <section class="panel">
         <h2>Compromiso de Desempeño: % declarado por ámbito</h2>
         <label for="unidad" style="max-width:280px">Ingresar como<select id="unidad"><option value="pct" selected>% del compromiso (suma 100)</option><option value="horas">Horas semanales (se calcula el %)</option></select></label>
-        <p class="hint">Un ámbito en 0 no se evalúa. Los % resultantes se aplican sobre el 80% del total. En horas, usa el promedio semanal de los dos semestres.</p>
+        <p class="hint">Un ámbito en 0 no se evalúa. Los % resultantes se aplican sobre el peso de los ámbitos (1 − 2p del total). En horas, usa el promedio semanal de los dos semestres; se justifican 39 h en jornada completa y 20 h en media jornada (descontado 1 h diaria de almuerzo).</p>
         <div class="compromiso" id="compromiso"></div>
         <div class="suma" id="suma"></div>
       </section>
@@ -131,18 +130,23 @@ th.n { text-align: right; }
       </section>
 
       <section class="panel">
-        <h2>Componentes fijos</h2>
+        <h2>Autoevaluación y evaluación de estudiantes</h2>
+        <p class="hint">Su % aún no está definido. Ambas pesan siempre lo mismo: al elegir el peso de una, la otra toma el mismo valor.</p>
         <div class="row">
-          <label for="auto-p">Autoevaluación (10%)<input id="auto-p" type="number" step="0.1" value="6.5"></label>
+          <label for="peso-auto">Peso autoevaluación (%)<input id="peso-auto" type="number" min="0" max="49" step="1" value="10"></label>
+          <label for="peso-est">Peso evaluación de estudiantes (%)<input id="peso-est" type="number" min="0" max="49" step="1" value="10"></label>
+        </div>
+        <div class="row">
+          <label for="auto-p">Autoevaluación (puntaje)<input id="auto-p" type="number" step="0.1" value="6.5"></label>
           <label for="auto-min">mín.<input id="auto-min" type="number" value="1"></label>
           <label for="auto-max">máx.<input id="auto-max" type="number" value="7"></label>
         </div>
         <div class="row">
-          <label for="est-p">Evaluación de estudiantes (10%)<input id="est-p" type="number" step="0.1" value="3.7"></label>
+          <label for="est-p">Evaluación de estudiantes (puntaje)<input id="est-p" type="number" step="0.1" value="3.7"></label>
           <label for="est-min">mín.<input id="est-min" type="number" value="1"></label>
           <label for="est-max">máx.<input id="est-max" type="number" value="4"></label>
         </div>
-        <label class="chk" for="exento"><input id="exento" type="checkbox"> Eximido/a de docencia (art. 37 a): sin evaluación de estudiantes, su 10% pasa a los ámbitos</label>
+        <label class="chk" for="exento"><input id="exento" type="checkbox"> Eximido/a de docencia (art. 37 a): sin evaluación de estudiantes, su peso pasa a los ámbitos</label>
       </section>
 
       <section class="panel">
@@ -166,7 +170,8 @@ th.n { text-align: right; }
 <script>
 // Mismo modelo que seja/config/modelo.yaml. El catálogo de ámbitos se genera desde ese archivo.
 const MODELO = {
-  fijos: { autoevaluacion: 0.10, estudiantes: 0.10 },
+  // Peso común de la autoevaluación y de la evaluación de estudiantes: por definir (valor provisional).
+  pesoInstrumentos: 0.10,
   umbrales: [["A+", 101], ["A", 90], ["B", 75], ["C", 55], ["D", 0]],
   tope: 120,  // % máximo con que cuenta una tarea con excedente validado
   situaciones: {
@@ -186,14 +191,10 @@ const MODELO = {
   },
   estados: { cumplido: 100, parcial: 50, no_cumplido: 0, sin_evidencia: 0 },
   // Tabla de equivalencia % → escala numérica 1–7 (Jornada Modelo de Evaluación SEJA 2024).
-  jornada: { completa: 44, media: 22 },
-  // % de docencia que indica el Reglamento de Carrera Académica por jerarquía y perfil.
-  cargaDocente: {
-    instructor: { investigador: [60, 80], vinculador: [60, 80] },
-    asistente: { investigador: [50, 70], vinculador: [60, 70] },
-    asociado: { investigador: [40, 60], vinculador: [50, 60] },
-    titular: { investigador: [30, 50], vinculador: [40, 60] },
-  },
+  // Horas de contrato y horas a justificar (se descuenta 1 h diaria de almuerzo).
+  jornada: { completa: { contrato: 44, justificar: 39 }, media: { contrato: 22, justificar: 20 } },
+  // % de docencia esperado por jerarquía; carrera académica con perfil único (rango provisional).
+  cargaDocente: { instructor: [60, 80], asistente: [50, 70], asociado: [40, 60], titular: [30, 60] },
   escala: [[90, 7], [80, 6], [70, 5], [60, 4], [50, 3], [40, 2], [0, 1]],
   ambitos: {
     docencia: { nombre: "Docencia", subs: {
@@ -331,25 +332,29 @@ function calcular() {
   if (!declarado.length) errores.push(`Declara ${enHoras ? "las horas" : "el %"} de al menos un ámbito.`);
   else if (enHoras) {
     declarado = declarado.map(([k, v]) => [k, num(v) / suma * 100]);
-    const jornada = MODELO.jornada[$("jornada").value];
-    if (suma > jornada) obs.push(`Las horas declaradas (${fmt(suma)} h semanales) superan la jornada de ${jornada} h.`);
+    const j = MODELO.jornada[$("jornada").value];
+    if (Math.round(suma * 10) / 10 !== j.justificar)
+      obs.push(`Las horas declaradas (${fmt(suma)} h semanales) ${suma > j.justificar ? "superan" : "no completan"} las ${j.justificar} h que se justifican en la jornada ${$("jornada").value} (${j.contrato} h de contrato menos el almuerzo).`);
   } else if (Math.abs(suma - 100) > 0.01) errores.push(`Los % del compromiso suman ${fmt(suma, 0)}; deben sumar 100.`);
-  const jer = $("jerarquia").value, per = $("perfil").value;
-  const rango = MODELO.cargaDocente[jer][per];
+  const jer = $("jerarquia").value;
+  const rango = MODELO.cargaDocente[jer];
   const doc = (declarado.find(([k]) => k === "docencia") || [, 0])[1];
   if (declarado.length && (Math.round(doc * 10) / 10 < rango[0] || Math.round(doc * 10) / 10 > rango[1]))
-    obs.push(`La docencia pesa ${fmt(doc)}% del compromiso; para ${$("jerarquia").selectedOptions[0].text} ${$("perfil").selectedOptions[0].text.toLowerCase()} el reglamento indica entre ${rango[0]}% y ${rango[1]}%.`);
+    obs.push(`La docencia pesa ${fmt(doc)}% del compromiso; para la jerarquía ${$("jerarquia").selectedOptions[0].text} se espera entre ${rango[0]}% y ${rango[1]}%.`);
 
   const auto = escalar(num($("auto-p").value), num($("auto-min").value), num($("auto-max").value));
   if (auto == null) errores.push("Autoevaluación: puntaje fuera de su escala.");
   const exento = $("exento").checked;
-  let pEst = MODELO.fijos.estudiantes, est = null;
-  if (exento) { pEst = 0; obs.push("Eximido/a de docencia: el 10% de estudiantes se redistribuye entre los ámbitos."); }
+  const p = num($("peso-auto").value) / 100;
+  if (!(p >= 0 && p < 0.5)) errores.push("El peso de la autoevaluación y de los estudiantes debe estar entre 0% y 49%.");
+  const pAuto = p;
+  let pEst = p, est = null;
+  if (exento) { pEst = 0; obs.push("Eximido/a de docencia: el peso de la evaluación de estudiantes se redistribuye entre los ámbitos."); }
   else {
     est = escalar(num($("est-p").value), num($("est-min").value), num($("est-max").value));
     if (est == null) errores.push("Evaluación de estudiantes: puntaje fuera de su escala.");
   }
-  const pComp = 1 - MODELO.fijos.autoevaluacion - pEst;
+  const pComp = 1 - pAuto - pEst;
 
   const evaluadas = estado.tareas.map((t, i) => {
     const r = evaluarTarea(t);
@@ -373,12 +378,12 @@ function calcular() {
 
   if (errores.length) return { errores, obs, ambitos };
   const total = Math.round((ambitos.reduce((s, a) => s + a.puntaje * a.pond, 0)
-    + auto * MODELO.fijos.autoevaluacion + (est || 0) * pEst) * 10) / 10;
+    + auto * pAuto + (est || 0) * pEst) * 10) / 10;
   const letra = clasificar(total);
   if (letra === "D") obs.push("Ingresa al programa de acompañamiento y fortalecimiento académico (art. 41).");
   if (letra === "A+") obs.push("Desempeño sobresaliente: candidato/a a reconocimiento institucional.");
   const destacados = evaluadas.filter((t) => t.excedente && declaradas.has(t.ambito));
-  return { errores, obs, ambitos, total, letra, auto, est, pEst, destacados };
+  return { errores, obs, ambitos, total, letra, auto, est, pAuto, pEst, destacados };
 }
 
 function opciones(obj, sel) {
@@ -465,8 +470,8 @@ function pintarActa() {
       <td class="n">${fmt(a.pond * 100)}%</td><td class="n">${fmt(a.puntaje)}</td>
       <td class="n"><span class="chip ${claseLetra(a.letra)}">${a.letra}</span>${a.excedente ? " ★" : ""}</td></tr>`).join("");
   const fijos = r.errores.length ? "" :
-    `<tr><td>Autoevaluación</td><td class="n">10,0%</td><td class="n">${fmt(r.auto)}</td><td></td></tr>` +
-    (r.est != null ? `<tr><td>Evaluación de estudiantes</td><td class="n">10,0%</td><td class="n">${fmt(r.est)}</td><td></td></tr>` : "");
+    `<tr><td>Autoevaluación</td><td class="n">${fmt(r.pAuto * 100)}%</td><td class="n">${fmt(r.auto)}</td><td></td></tr>` +
+    (r.est != null ? `<tr><td>Evaluación de estudiantes</td><td class="n">${fmt(r.pEst * 100)}%</td><td class="n">${fmt(r.est)}</td><td></td></tr>` : "");
 
   const destaca = (r.destacados || []).length
     ? `<div class="obs"><p><b>Reconocimiento institucional: destaca en</b></p>${r.destacados.map((d) =>
@@ -484,7 +489,7 @@ function pintarActa() {
     `<div style="overflow-x:auto"><table><thead><tr><th>Componente</th><th class="n">Pondera</th><th class="n">Puntaje</th><th class="n">Letra</th></tr></thead><tbody>${filas}${fijos}</tbody></table></div>` +
     destaca + (notas ? `<div class="obs">${notas}</div>` : "") +
     `<div class="obs"><div class="escala">${MODELO.umbrales.map(([l, m]) => `<span class="chip ${claseLetra(l)}">${l}</span><span>${l === "D" ? "menos de 55%" : "desde " + m + "%"} · ${MODELO.letras[l]}</span>`).join("")}</div></div>` +
-    `<div class="formula">Final = Σ(ámbito × %declarado × ${fmt(1 - MODELO.fijos.autoevaluacion - (r.pEst ?? MODELO.fijos.estudiantes), 2)}) + auto × 0,10${r.pEst === 0 ? "" : " + estudiantes × 0,10"}<br>Una tarea con excedente cuenta hasta ${MODELO.tope}%; lo que la supera queda registrado como destacado.</div>`;
+    `<div class="formula">Final = Σ(ámbito × %declarado × ${fmt(1 - r.pAuto - r.pEst, 2)}) + auto × ${fmt(r.pAuto, 2)}${r.pEst === 0 ? "" : " + estudiantes × " + fmt(r.pEst, 2)} · p = ${fmt(r.pAuto * 100, 0)}% (por definir; igual para ambas)<br>Una tarea con excedente cuenta hasta ${MODELO.tope}%; lo que la supera queda registrado como destacado.</div>`;
 }
 
 function todo() { pintarCompromiso(); pintarTareas(); pintarActa(); }
@@ -492,6 +497,9 @@ $("sit-motivo").insertAdjacentHTML("beforeend", Object.entries(MODELO.situacione
 
 document.addEventListener("input", (e) => {
   const el = e.target;
+  // Autoevaluación y estudiantes pesan siempre lo mismo: al cambiar una, la otra toma el mismo valor.
+  if (el.id === "peso-auto") $("peso-est").value = el.value;
+  if (el.id === "peso-est") $("peso-auto").value = el.value;
   if (el.dataset.amb) { estado.compromiso[el.dataset.amb] = el.value; pintarActa(); return; }
   if (el.dataset.i != null) {
     const t = estado.tareas[+el.dataset.i], campo = el.dataset.campo;

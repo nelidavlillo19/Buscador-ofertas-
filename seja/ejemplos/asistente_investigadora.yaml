@@ -1,9 +1,8 @@
-# Ejemplo: académica Asistente, perfil Investigador/a.
+# Ejemplo: académica Asistente.
 # El % de cada ámbito es el declarado en su Compromiso de Desempeño (debe sumar 100).
 academico: Académica de ejemplo
 periodo: 2026
 jerarquia: asistente
-perfil: investigador
 
 compromiso:
   docencia: 55

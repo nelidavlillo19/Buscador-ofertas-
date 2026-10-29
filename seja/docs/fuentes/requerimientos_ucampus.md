@@ -16,7 +16,7 @@ Definir lo que UCampus debe incorporar para que la evaluación académica SEJA f
 
 **Por qué hace falta.** El formulario 2024 no permite calcular la calificación:
 
-- no pide jerarquía, perfil ni jornada;
+- no pide jerarquía ni jornada;
 - no tiene horas por actividad ni un área de gestión;
 - su resumen acepta "horas o porcentaje", lo que mezcla unidades;
 - los informes de cierre se elaboran a mano, a partir de documentos distintos.
@@ -45,8 +45,7 @@ UCampus debe disponer, para cada persona y período, de estos datos, sin que la 
 |---|---|
 | Unidad académica y facultad | Reportes por unidad y asignación de la jefatura que aprueba |
 | Jerarquía (instructor/a, asistente, asociado/a, titular) | Rango de carga docente y funciones de la jerarquía |
-| Perfil (investigador/a o vinculador/a) | Rango de carga docente y funciones del perfil |
-| Jornada y horas contratadas (44 h, 22 h u otra) | Validación de la suma de horas |
+| Jornada: completa (44 h de contrato, 39 h a justificar) o media (22 h de contrato, 20 h a justificar) | Validación de la suma de horas (se descuenta 1 hora diaria de almuerzo) |
 | Tipo de contrato y año de ingreso | Elegibilidad (art. 35: al menos dos semestres de ejercicio) |
 | Carga académica asignada por la Dirección de Docencia | Precarga de las actividades curriculares y sus horas |
 | Situación especial vigente (sección 7) | Suspensión o evaluación proporcional |
@@ -62,7 +61,7 @@ Tablas administradas por la Oficina, que el formulario usa como listas desplegab
   - publicación: en preparación → enviada → aceptada → publicada;
   - actividad: planificación → ejecución → finalizada.
 - **Instrumentos**, con sus afirmaciones y el formato Cumple / No cumple / No aplica.
-- **Funciones por jerarquía y perfil** del Reglamento de Carrera Académica.
+- **Funciones por jerarquía** del Reglamento de Carrera Académica (perfil único).
 
 ## 3.3 Parámetros del modelo
 
@@ -70,6 +69,12 @@ Configurables por la Oficina, con historial de cambios. Cada período queda calc
 ese período.
 
 {{PARAMETROS}}
+
+**Peso de la autoevaluación y de la evaluación de estudiantes.** Su % aún no está definido. Cuando se defina, la
+pantalla de parámetros tendrá **un solo campo**, $p$: al seleccionar el % de la autoevaluación, el de la evaluación de
+estudiantes toma automáticamente el mismo valor, y viceversa. El peso de los ámbitos se recalcula solo:
+$1 - 2p$, o $1 - p$ si la persona está eximida de docencia. El sistema no debe permitir guardar valores distintos
+para ambas.
 
 # 4. Módulo 1: Compromiso de Desempeño
 
@@ -113,8 +118,8 @@ El resumen muestra, por ámbito: horas semanales, % del compromiso ($w_a$) y pes
 
 | Validación | Acción |
 |---|---|
-| Suma de horas mayor que la jornada | Alerta a la persona y a la jefatura; requiere justificación |
-| Docencia fuera del rango de la jerarquía y el perfil | Alerta a la jefatura |
+| Suma de horas distinta de las horas a justificar (39 h en jornada completa, 20 h en media jornada) | Alerta a la persona y a la jefatura; requiere justificación |
+| Docencia fuera del rango esperado para la jerarquía | Alerta a la jefatura |
 | Ámbito con horas y sin actividades, o actividad sin subcategoría | Bloquea el envío |
 | Meta o etapa comprometida vacía en una actividad que la requiere | Bloquea el envío |
 | Etapa comprometida ya alcanzada al declarar (por ejemplo, un artículo ya publicado) | Sugiere comprometer la etapa siguiente o verificar que corresponda al período |
@@ -219,12 +224,12 @@ $$S_a = \frac{\sum_{t \in a} \pi_t\, p_t}{\sum_{t \in a} \pi_t}$$
 4. **Ponderación de cada ámbito**, desde las horas del compromiso aprobado: $w_a = h_a / \sum_b h_b$.
 5. **Cumplimiento del compromiso y calificación final:**
 
-$$C = \sum_a w_a S_a \qquad F = \alpha\, C + {{P_AE}}\, AE + {{P_EE}}\, EE$$
+$$C = \sum_a w_a S_a \qquad F = \alpha\, C + p\, AE + p\, EE, \qquad \alpha = 1 - 2p \ (1 - p \text{ si está eximido/a de docencia})$$
 
 6. **Clasificación** (A+, A, B, C, D) y escala numérica de 1 a 7, con los parámetros del período.
 7. **Destacados:** excedentes y avances validados, con su cumplimiento real.
 8. **Funciones de la jerarquía:** cumplida, sin evidencia o no declarada, por cada función del reglamento.
-9. **Alertas:** jornada excedida, docencia fuera de rango, D o segunda C consecutiva (art. 41), A en dos procesos
+9. **Alertas:** horas distintas de las horas a justificar, docencia fuera de rango, D o segunda C consecutiva (art. 41), A en dos procesos
    seguidos (requisito de ascenso, art. 11).
 
 **Trazabilidad.** Cada resultado guarda la versión del compromiso, de los parámetros y de las evidencias con que se
@@ -270,7 +275,7 @@ análisis institucional y para la acreditación.
 
 # 10. Análisis de resultados
 
-Tablero de la Oficina, con filtros por período, facultad, unidad, jerarquía y perfil:
+Tablero de la Oficina, con filtros por período, facultad, unidad, jerarquía y jornada:
 
 | Indicador | Para qué sirve |
 |---|---|
@@ -323,7 +328,7 @@ Las fechas definitivas las fija la Oficina en el calendario oficial aprobado por
 
 | Entidad | Campos principales |
 |---|---|
-| Académico | id, unidad, facultad, jerarquía, perfil, jornada, horas contratadas, contrato, ingreso |
+| Académico | id, unidad, facultad, jerarquía, jornada, horas de contrato, horas a justificar, contrato, ingreso |
 | Período | año, fechas del calendario, versión de parámetros |
 | Compromiso | id, académico, período, versión, estado (borrador, enviado, aprobado), fecha de aprobación, jefatura |
 | Actividad | id, compromiso, ámbito, subcategoría, descripción, código curricular, horas 1.er y 2.º semestre, forma de evaluación, meta, etapa comprometida, rol, financiamiento, fechas |

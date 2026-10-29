@@ -143,12 +143,42 @@ def test_ponderacion_desde_horas_promedia_semestres():
 def test_advierte_horas_sobre_la_jornada_y_docencia_fuera_de_rango():
     datos = academico(None, [tarea("docencia", evidencia={"estado": "cumplido"}),
                              tarea("vinculacion", evidencia={"estado": "cumplido"})],
-                      jerarquia="Asociado", perfil="investigador", jornada="completa")
+                      jerarquia="Asociado", jornada="completa")
     del datos["compromiso"]
     datos["horas"] = {"docencia": 15, "vinculacion": 35}
     obs = " ".join(calificar(datos).observaciones)
-    assert "superan la jornada completa (44 h)" in obs
+    assert "superan las 39 h que se justifican en la jornada completa (44 h de contrato" in obs
     assert "docencia pesa 30.0%" in obs and "entre 40% y 60%" in obs
+
+
+@pytest.mark.parametrize("jornada, horas, aviso", [
+    ("completa", {"docencia": 20, "investigacion": 19}, None),
+    ("media", {"docencia": 12, "investigacion": 8}, None),
+    ("media", {"docencia": 12, "investigacion": 10}, "superan las 20 h"),
+    ("completa", {"docencia": 20, "investigacion": 10}, "no completan las 39 h"),
+])
+def test_horas_a_justificar_descuentan_el_almuerzo(jornada, horas, aviso):
+    datos = academico(None, [tarea("docencia", evidencia={"estado": "cumplido"}),
+                             tarea("investigacion", evidencia={"estado": "cumplido"})], jornada=jornada)
+    del datos["compromiso"]
+    datos["horas"] = horas
+    obs = " ".join(calificar(datos).observaciones)
+    assert (aviso in obs) if aviso else "justifican" not in obs
+
+
+@pytest.mark.parametrize("p", [0.05, 0.15, 15])
+def test_autoevaluacion_y_estudiantes_pesan_siempre_lo_mismo(p):
+    r = calificar(academico({"docencia": 100}, [tarea("docencia", evidencia={"estado": "cumplido"})],
+                            auto=50, est=0, peso_instrumentos=p))
+    q = p / 100 if p > 1 else p
+    assert r.ponderacion_autoevaluacion == r.ponderacion_estudiantes == pytest.approx(q)
+    assert r.puntaje == pytest.approx((1 - 2 * q) * 100 + q * 50)
+
+
+def test_peso_instrumentos_fuera_de_rango_es_error():
+    with pytest.raises(ErrorCompromiso, match="peso_instrumentos"):
+        calificar(academico({"docencia": 100}, [tarea("docencia", evidencia={"estado": "cumplido"})],
+                            peso_instrumentos=0.6))
 
 
 def test_docencia_dentro_de_rango_no_advierte():
@@ -252,7 +282,7 @@ def test_reporte_del_compromiso():
     texto = reporte_compromiso(datos)
     assert "# Reporte: Compromiso de Desempeño Académico 2023" in texto
     assert "| Investigación, Creación e Innovación | 14 | 31,8% | 25,5% |" in texto
-    assert "## Alertas para la jefatura" in texto and "entre 30% y 50%" in texto
+    assert "## Alertas para la jefatura" in texto and "superan las 39 h" in texto and "entre 30% y 60%" in texto
 
 
 def test_informe_de_cierre():

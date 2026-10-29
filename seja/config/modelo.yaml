@@ -7,31 +7,27 @@
 #
 # Umbrales, tope y reglas del art. 37 definidos por la Oficina de Evaluación de Desempeño Académico.
 
-# Componentes fijos (fracción del total). El resto (80%) se reparte entre los ámbitos
-# según lo declarado en el compromiso.
+# Autoevaluación y evaluación de estudiantes. Su % AÚN NO ESTÁ DEFINIDO; cuando se defina, ambas pesan
+# siempre lo mismo: se fija un solo valor (`peso_instrumentos`) que se aplica a las dos. El resto
+# (1 − 2 × peso) se reparte entre los ámbitos según las horas del compromiso. 0.10 es un valor provisional.
 componentes_fijos:
-  autoevaluacion: 0.10
-  estudiantes: 0.10
+  peso_instrumentos: 0.10
+  definido: false
 
-# Horas semanales de cada jornada, para advertir si el compromiso las supera.
+# Jornada contratada y horas que se justifican en el compromiso. Se descuenta 1 hora diaria de almuerzo:
+# jornada completa 44 − 5 = 39 h; media jornada 22 − 2 = 20 h.
 horas_jornada:
-  completa: 44
-  media: 22
+  completa: {contrato: 44, justificar: 39}
+  media: {contrato: 22, justificar: 20}
 
-# Carga de docencia (% del compromiso) que indica el Reglamento de Carrera Académica para cada
-# jerarquía y perfil (art. 14, 18, 19, 23, 24, 28 y 29). Fuera de rango, el informe lo advierte.
+# Carrera académica UMCE con un único perfil. Carga de docencia (% del compromiso) esperada por jerarquía;
+# fuera de rango el informe lo advierte (no cambia la calificación). PROVISIONAL: se tomó el rango que
+# cubría los dos perfiles anteriores (art. 14, 18-19, 23-24 y 28-29) hasta que el reglamento lo fije.
 carga_docente:
-  instructor:
-    todos: [60, 80]
-  asistente:
-    investigador: [50, 70]
-    vinculador: [60, 70]
-  asociado:
-    investigador: [40, 60]
-    vinculador: [50, 60]
-  titular:
-    investigador: [30, 50]
-    vinculador: [40, 60]
+  instructor: [60, 80]
+  asistente: [50, 70]
+  asociado: [40, 60]
+  titular: [30, 60]
 
 # % mínimo de cumplimiento para cada letra, de mayor a menor. Bajo C → D.
 # Sobre 100% sólo se llega con excedentes validados (logrado > comprometido).

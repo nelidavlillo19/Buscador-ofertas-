@@ -43,9 +43,9 @@ $$w_a = \frac{h_a}{\sum_b h_b} \qquad C = \sum_a w_a \, S_a$$
 
 4. **Calificación final ($F$).** Suma el compromiso, la autoevaluación ($AE$) y la evaluación de estudiantes ($EE$):
 
-$$F = {{ALFA}} \cdot C + {{P_AE}} \cdot AE + {{P_EE}} \cdot EE$$
+$$F = (1 - 2p) \cdot C + p \cdot AE + p \cdot EE$$
 
-Si la persona está eximida de docencia y no tiene evaluación de estudiantes, la fórmula es $F = {{ALFA_EXENTO}} \cdot C + {{P_AE}} \cdot AE$.
+La autoevaluación y la evaluación de estudiantes pesan **siempre lo mismo**, $p$. Su valor aún no está definido; el informe indica el $p$ vigente en el período. Si la persona está eximida de docencia y no tiene evaluación de estudiantes, la fórmula es $F = (1 - p) \cdot C + p \cdot AE$.
 
 5. **Clasificación.** $F$ se clasifica así:
 
@@ -79,7 +79,7 @@ La Comisión **no exige mínimos por ámbito** ni combinaciones de logro entre �
 ## A5. Consecuencias que se informan
 
 - **A+:** candidatura a reconocimiento institucional, con el registro de lo que destaca (sección B6).
-- **A en los dos últimos procesos:** requisito para ascender de jerarquía (art. 11). Para cambiar de perfil se requiere A o B en esos procesos (art. 8).
+- **A en los dos últimos procesos:** requisito para ascender de jerarquía (art. 11).
 - **D, o C en dos procesos consecutivos:** ingreso obligatorio al programa institucional de acompañamiento y fortalecimiento académico (art. 41).
 
 \newpage
@@ -97,8 +97,8 @@ La Comisión **no exige mínimos por ámbito** ni combinaciones de logro entre �
 | Facultad | |
 | Departamento o unidad | |
 | Jerarquía | |
-| Perfil | |
-| Jornada (horas semanales) | |
+| Jornada | ☐ Completa (44 h de contrato, 39 h a justificar) ☐ Media (22 h de contrato, 20 h a justificar) |
+| Horas comprometidas en el compromiso | |
 | Período evaluado | |
 | Jefatura que aprobó el compromiso | |
 | Fecha de aprobación del compromiso (versión usada) | |
@@ -134,14 +134,16 @@ La Comisión **no exige mínimos por ámbito** ni combinaciones de logro entre �
 
 | Componente | Valor | Peso | Aporte |
 |------------------------------------|----------|----------|----------|
-| Cumplimiento del compromiso ($C$) | | ${{ALFA}}$ | |
-| Autoevaluación ($AE$) | | ${{P_AE}}$ | |
-| Evaluación de estudiantes ($EE$) | | ${{P_EE}}$ | |
+| Cumplimiento del compromiso ($C$) | | $1 - 2p$ | |
+| Autoevaluación ($AE$) | | $p$ | |
+| Evaluación de estudiantes ($EE$) | | $p$ (el mismo de la autoevaluación) | |
 | **Calificación final ($F$)** | | | |
 
 **Cálculo:**
 
-$$F = {{ALFA}} \cdot C + {{P_AE}} \cdot AE + {{P_EE}} \cdot EE = \underline{\qquad\qquad}\ \%$$
+Peso vigente de la autoevaluación y de la evaluación de estudiantes: $p$ = ________ (el mismo para ambas).
+
+$$F = (1 - 2p) \cdot C + p \cdot AE + p \cdot EE = \underline{\qquad\qquad}\ \%$$
 
 ## B5. Resultado calculado
 
@@ -194,7 +196,6 @@ Aquí se registran las tareas cuyo cumplimiento real superó lo comprometido y f
 |------------------------------------------------|--------------------|------------------------------------------|
 | Reconocimiento institucional (A+) | ☐ Sí ☐ No | |
 | Antecedente para ascenso de jerarquía (A en dos procesos, art. 11) | ☐ Sí ☐ No | |
-| Antecedente para cambio de perfil (A o B en dos procesos, art. 8) | ☐ Sí ☐ No | |
 | Programa de acompañamiento (D, o C en dos procesos consecutivos, art. 41) | ☐ Sí ☐ No | |
 
 **Recomendaciones de la Comisión para el próximo compromiso:**
@@ -262,23 +263,23 @@ Aquí se registran las tareas cuyo cumplimiento real superó lo comprometido y f
 
 # Anexo. Ejemplo de informe individual completado (caso hipotético)
 
-**B1. Identificación.** ID SEJA-000 (ficticio); jerarquía Asociado; perfil investigador; jornada 44 h; período 2025.
+**B1. Identificación.** ID SEJA-000 (ficticio); jerarquía Asociado; jornada completa (44 h de contrato, 39 h a justificar); período 2025; peso provisional $p = 0{,}10$.
 
 **B3. Cumplimiento por ámbito**
 
 | Ámbito | Horas | $w_a$ | $S_a$ | $w_a \cdot S_a$ | Letra |
 |------------------------------|--------|--------|--------|--------|--------|
-| Docencia | 22 | 50,0% | 95,0 | 47,5 | A |
-| Investigación, Creación e Innovación | 12 | 27,3% | 75,0 | 20,5 | B |
-| Vinculación con el Medio y Extensión | 4 | 9,1% | 120,0 | 10,9 | A+ |
-| Gestión Académica | 6 | 13,6% | 100,0 | 13,6 | A |
-| **Compromiso ($C$)** | **44** | **100%** | | **92,5** | |
+| Docencia | 20 | 51,3% | 95,0 | 48,7 | A |
+| Investigación, Creación e Innovación | 11 | 28,2% | 75,0 | 21,2 | B |
+| Vinculación con el Medio y Extensión | 3 | 7,7% | 120,0 | 9,2 | A+ |
+| Gestión Académica | 5 | 12,8% | 100,0 | 12,8 | A |
+| **Compromiso ($C$)** | **39** | **100%** | | **91,9** | |
 
 **B4. Calificación final**
 
-$$F = {{ALFA}} \cdot 92{,}5 + {{P_AE}} \cdot 90 + {{P_EE}} \cdot 88 = 91{,}8\%$$
+$$F = 0{,}80 \cdot 91{,}9 + 0{,}10 \cdot 90 + 0{,}10 \cdot 88 = 91{,}3\%$$
 
-**B5. Resultado calculado.** $F$ = 91,8%: **A** (cumplimiento pleno), escala numérica 7.
+**B5. Resultado calculado.** $F$ = 91,3%: **A** (cumplimiento pleno), escala numérica 7.
 
 **B6. Destacados.**
 

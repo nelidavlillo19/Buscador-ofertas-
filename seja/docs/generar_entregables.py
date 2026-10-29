@@ -21,7 +21,7 @@ import tempfile
 import zipfile
 from pathlib import Path
 
-from seja.calificacion import cargar_modelo
+from seja.calificacion import cargar_modelo, horas_jornada, peso_instrumentos
 
 FUENTES = Path(__file__).parent / "fuentes"
 MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre",
@@ -48,8 +48,8 @@ def tabla(encabezados: list[str], filas: list[list[str]], anchos: list[int]) -> 
 def valores(modelo: dict) -> dict[str, str]:
     from datetime import date
     hoy = date.today()
-    fijos = modelo["componentes_fijos"]
-    p_ae, p_ee = fijos["autoevaluacion"], fijos["estudiantes"]
+    p = peso_instrumentos(modelo)
+    p_estado = "por definir; valor provisional" if not modelo["componentes_fijos"].get("definido") else "definido"
     umbrales = modelo["umbrales"]
 
     catalogo = []
@@ -62,11 +62,7 @@ def valores(modelo: dict) -> dict[str, str]:
         catalogo.append(f"**{ambito['nombre']}**\n\n" +
                         tabla(["Subcategoría (rol o función)", "Se evalúa con", "Periodicidad"], filas, [30, 50, 20]))
 
-    rangos = []
-    for jer, r in modelo["carga_docente"].items():
-        inv = r.get("investigador") or r.get("todos")
-        vin = r.get("vinculador") or r.get("todos")
-        rangos.append([jer.capitalize(), f"{inv[0]}% a {inv[1]}%", f"{vin[0]}% a {vin[1]}%"])
+    rangos = [[jer.capitalize(), f"{r[0]}% a {r[1]}%"] for jer, r in modelo["carga_docente"].items()]
 
     letras = list(umbrales)
     filas_u = []
@@ -91,10 +87,13 @@ def valores(modelo: dict) -> dict[str, str]:
             rango = f"{minimo}% a {pares[i - 1][0] - 1}%"
         escala.append([rango, str(nota)])
 
-    jornadas = "; ".join(f"jornada {k} {v} h" for k, v in modelo["horas_jornada"].items())
+    jornadas = "; ".join(f"jornada {k}, {c:g} h de contrato y {j:g} h a justificar"
+                         for k, (c, j) in ((k, horas_jornada(modelo, k)) for k in modelo["horas_jornada"]))
     parametros = tabla(["Parámetro", "Valor"], [
-        ["Autoevaluación / evaluación de estudiantes", f"{p_ae:.0%} / {p_ee:.0%}"],
-        ["Ámbitos del compromiso ($\\alpha$)", f"{1 - p_ae - p_ee:.0%} ({1 - p_ae:.0%} si está eximido/a de docencia)"],
+        ["Autoevaluación y evaluación de estudiantes ($p$)",
+         f"El mismo % para ambas ({p_estado} {p:.0%} cada una)"],
+        ["Ámbitos del compromiso ($\\alpha$)", f"$1 - 2p$ ({1 - 2 * p:.0%}); $1 - p$ ({1 - p:.0%}) si está eximido/a de docencia"],
+        ["Perfil", "Único"],
         ["Ponderación de los ámbitos", "Horas semanales comprometidas en cada ámbito"],
         ["Tope por tarea con excedente validado", f"{modelo['tope_excedente']}%"],
         ["Etapa evidenciada anterior a la comprometida", f"{modelo['etapas']['etapa_anterior']}%"],
@@ -111,7 +110,7 @@ def valores(modelo: dict) -> dict[str, str]:
     return {
         "FECHA": f"{MESES[hoy.month - 1].capitalize()} de {hoy.year}",
         "CATALOGO": "\n\n".join(catalogo),
-        "RANGOS": tabla(["Jerarquía", "Perfil investigador/a", "Perfil vinculador/a"], rangos, [30, 35, 35]),
+        "RANGOS": tabla(["Jerarquía", "Docencia esperada (% del compromiso, provisional)"], rangos, [40, 60]),
         "UMBRALES": tabla(["Letra", "Cumplimiento final", "Desempeño"], filas_u, [12, 33, 55]),
         "ESCALA": tabla(["Cumplimiento", "Escala numérica"], escala, [60, 40]),
         "PARAMETROS": parametros,
@@ -120,9 +119,7 @@ def valores(modelo: dict) -> dict[str, str]:
         "MESES": str(modelo["situaciones_especiales"]["meses_suspension"]),
         "INFORMAR_A": modelo["situaciones_especiales"]["informar_a"][:1].upper() + modelo["situaciones_especiales"]["informar_a"][1:],
         "JORNADAS": jornadas,
-        "P_AE": tex(p_ae), "P_EE": tex(p_ee),
-        "ALFA": tex(1 - p_ae - p_ee), "ALFA_EXENTO": tex(1 - p_ae),
-        "PCT_EE": f"{p_ee * 100:.0f}",
+        "P": tex(p),
     }
 
 

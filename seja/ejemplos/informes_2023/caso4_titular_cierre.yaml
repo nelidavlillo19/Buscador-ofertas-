@@ -2,7 +2,6 @@
 # Sujeto 05 del ejercicio 2023. Titular, jornada completa.
 # Las actividades y sus etapas son las del informe de cierre. SUPUESTOS para probar el cálculo:
 # - las horas (el reporte sólo decía que "investigación y gestión son mayoría");
-# - el perfil (el formulario 2023 no lo pedía);
 # - la autoevaluación y la evaluación de estudiantes.
 academico: Sujeto 05
 jefatura: Dirección de departamento
@@ -11,7 +10,6 @@ contrato: Contrata
 ingreso: 2014
 periodo: 2023
 jerarquia: titular
-perfil: investigador
 jornada: completa
 fecha_compromiso: 2023-06-05
 fecha_reporte: 2023-10-05

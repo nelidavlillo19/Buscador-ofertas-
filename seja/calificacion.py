@@ -5,8 +5,9 @@ Flujo (Reglamento de Carrera Académica, Título III):
 1. Cada TAREA del Compromiso de Desempeño se evalúa con un instrumento estandarizado
    y/o con la evidencia del compromiso → puntaje 0–100.
 2. Las tareas se PROMEDIAN dentro de su ámbito → puntaje del ámbito, que se califica (A+–D).
-3. Los ámbitos se ponderan según el % declarado en el compromiso y ocupan el 80% del total;
-   la autoevaluación y la evaluación de estudiantes aportan un 10% fijo cada una.
+3. Los ámbitos se ponderan según el % declarado en el compromiso (o sus horas) y ocupan el resto del total;
+   la autoevaluación y la evaluación de estudiantes pesan siempre lo mismo (`peso_instrumentos`, % aún por
+   definir; 10% provisional).
 4. El % de cumplimiento final se clasifica en A+ (desde 101%, sobresaliente), A, B, C o D.
 
 Los excedentes validados (logrado > comprometido) cuentan sobre 100% hasta un tope por tarea, y quedan
@@ -33,6 +34,25 @@ class ErrorCompromiso(ValueError):
 
 def cargar_modelo(ruta: Path | str = MODELO) -> dict:
     return yaml.safe_load(Path(ruta).read_text(encoding="utf-8"))
+
+
+def peso_instrumentos(modelo: dict, datos: dict | None = None) -> float:
+    """Peso común de la autoevaluación y de la evaluación de estudiantes: al fijar uno, el otro es el mismo.
+
+    Se toma del modelo; un compromiso puede indicar ``peso_instrumentos`` para simular otro valor."""
+    p = (datos or {}).get("peso_instrumentos", modelo["componentes_fijos"]["peso_instrumentos"])
+    p = float(p) / 100 if float(p) > 1 else float(p)
+    if not 0 <= p < 0.5:
+        raise ErrorCompromiso(f"peso_instrumentos debe estar entre 0% y 50% (es {p:.0%})")
+    return p
+
+
+def horas_jornada(modelo: dict, jornada) -> tuple[float, float] | None:
+    """(horas de contrato, horas que se justifican en el compromiso) de la jornada, o None si no se indica."""
+    j = modelo["horas_jornada"].get(str(jornada or "").lower())
+    if j is None:
+        return None
+    return (j["contrato"], j["justificar"]) if isinstance(j, dict) else (j, j)
 
 
 @dataclass
@@ -285,10 +305,13 @@ def ponderacion_compromiso(datos: dict, modelo: dict, observaciones: list[str]) 
         horas = {k: h for k, h in horas.items() if h > 0}
         total = sum(horas.values())
         declarado = {k: h / total * 100 for k, h in horas.items()} if total else {}
-        jornada = modelo["horas_jornada"].get(str(datos.get("jornada", "")).lower())
-        if jornada and total > jornada:
-            observaciones.append(f"Las horas declaradas ({total:.1f} h semanales) superan la jornada "
-                                 f"{datos['jornada']} ({jornada} h).")
+        jornada = horas_jornada(modelo, datos.get("jornada"))
+        if jornada and round(total, 1) != jornada[1]:
+            contrato, justificar = jornada
+            relacion = "superan" if total > justificar else "no completan"
+            observaciones.append(f"Las horas declaradas ({total:.1f} h semanales) {relacion} las {justificar:g} h "
+                                 f"que se justifican en la jornada {datos['jornada']} ({contrato:g} h de contrato "
+                                 f"menos el horario de almuerzo).")
     else:
         declarado = {k: float(v) for k, v in (datos.get("compromiso") or {}).items() if float(v) > 0}
     for ambito in declarado:
@@ -299,14 +322,13 @@ def ponderacion_compromiso(datos: dict, modelo: dict, observaciones: list[str]) 
     if abs(sum(declarado.values()) - 100) > 0.01:
         raise ErrorCompromiso(f"Los % declarados en el compromiso suman {sum(declarado.values()):g}, deben sumar 100")
 
-    # Carga docente esperada según jerarquía y perfil (Reglamento de Carrera Académica, Título II).
-    jerarquia, perfil = str(datos.get("jerarquia", "")).lower(), str(datos.get("perfil", "")).lower()
-    rango = modelo["carga_docente"].get(jerarquia, {})
-    rango = rango.get(perfil) or rango.get("todos")
+    # Carga docente esperada según la jerarquía (carrera académica con un único perfil).
+    jerarquia = str(datos.get("jerarquia", "")).lower()
+    rango = modelo["carga_docente"].get(jerarquia)
     docencia = declarado.get("docencia", 0)
     if rango and not rango[0] <= round(docencia, 1) <= rango[1]:
-        observaciones.append(f"La docencia pesa {docencia:.1f}% del compromiso; para {jerarquia} "
-                             f"{perfil} el reglamento indica entre {rango[0]}% y {rango[1]}%.")
+        observaciones.append(f"La docencia pesa {docencia:.1f}% del compromiso; para la jerarquía {jerarquia} "
+                             f"se espera entre {rango[0]}% y {rango[1]}%.")
     return declarado
 
 
@@ -359,11 +381,10 @@ def calificar(datos: dict, modelo: dict | None = None) -> Resultado:
     # 1. Ponderación declarada en el compromiso (% de la carga por ámbito, o calculada desde las horas).
     declarado = ponderacion_compromiso(datos, modelo, observaciones)
 
-    # 2. Componentes fijos. Si la persona está eximida de docencia (art. 37 a) no hay
-    #    evaluación de estudiantes y su 10% se suma a los ámbitos del compromiso.
-    fijos = modelo["componentes_fijos"]
+    # 2. Autoevaluación y estudiantes, con el mismo peso. Si la persona está eximida de docencia (art. 37 a)
+    #    no hay evaluación de estudiantes y su peso se suma a los ámbitos del compromiso.
     auto = escalar(datos.get("autoevaluacion") or {}, "Autoevaluación")
-    p_auto, p_est = fijos["autoevaluacion"], fijos["estudiantes"]
+    p_auto = p_est = peso_instrumentos(modelo, datos)
     est = None
     if datos.get("estudiantes") is not None:
         est = escalar(datos["estudiantes"], "Evaluación de estudiantes")

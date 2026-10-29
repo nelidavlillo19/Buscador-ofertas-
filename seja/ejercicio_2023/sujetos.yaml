@@ -15,7 +15,6 @@ con_cierre:
   - sujeto: "01"
     jerarquia: asociado
     jerarquia_reporte: asociado
-    perfil_supuesto: vinculador
     jornada: completa
     ingreso: 2020
     mayoria_reporte: [gestion]
@@ -59,7 +58,6 @@ con_cierre:
   - sujeto: "02"
     jerarquia: titular
     jerarquia_reporte: titular
-    perfil_supuesto: investigador
     jornada: completa
     ingreso: 2014
     mayoria_reporte: [investigacion]
@@ -92,7 +90,6 @@ con_cierre:
   - sujeto: "03"
     jerarquia: asociado
     jerarquia_reporte: asociado
-    perfil_supuesto: vinculador
     jornada: completa
     ingreso: 2016
     mayoria_reporte: [docencia]
@@ -129,7 +126,6 @@ con_cierre:
   - sujeto: "04"
     jerarquia: titular
     jerarquia_reporte: titular
-    perfil_supuesto: investigador
     jornada: completa
     ingreso: 2020
     mayoria_reporte: [investigacion]
@@ -165,7 +161,6 @@ con_cierre:
   - sujeto: "05"
     jerarquia: titular
     jerarquia_reporte: asociado
-    perfil_supuesto: investigador
     jornada: completa
     ingreso: null
     mayoria_reporte: [investigacion, gestion]
@@ -203,7 +198,6 @@ con_cierre:
   - sujeto: "06"
     jerarquia: asociado
     jerarquia_reporte: asociado
-    perfil_supuesto: investigador
     jornada: completa
     ingreso: null
     mayoria_reporte: [docencia, investigacion]
@@ -229,7 +223,6 @@ con_cierre:
 solo_compromiso:
   - sujeto: "07"
     jerarquia: asistente
-    perfil_supuesto: vinculador
     jornada: completa
     declarado: {docencia: 15, gestion: 27}
     horas: {docencia: [7.5, 7.5], gestion: 25, vinculacion: 2}
@@ -242,7 +235,6 @@ solo_compromiso:
       - "La organización de un evento académico nacional se declaró en gestión; corresponde a VcM."
   - sujeto: "08"
     jerarquia: asociado
-    perfil_supuesto: investigador
     jornada: completa
     declarado: {docencia: 17, investigacion: 8, vinculacion: 16, gestion: 9}
     horas: {docencia: [17, 16.75], investigacion: 8, vinculacion: 16, gestion: 9}
@@ -256,7 +248,6 @@ solo_compromiso:
       - "4 ponencias y la revisión de artículos se declararon sin horas: se evalúan, pero no ponderan."
   - sujeto: "09"
     jerarquia: asociado
-    perfil_supuesto: investigador
     jornada: completa
     declarado: {docencia: 18, investigacion: 12.5, vinculacion: 2, gestion: 5.5}
     horas: {docencia: [18, 18], investigacion: 14.5, vinculacion: 4, gestion: 1.5}

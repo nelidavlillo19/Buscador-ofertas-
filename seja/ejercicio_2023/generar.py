@@ -50,7 +50,7 @@ def pesos(sujeto: dict, escenario: str) -> dict[str, float]:
 
 def evaluar(sujeto: dict, escenario: str, modelo: dict):
     datos = {"academico": f"Sujeto {sujeto['sujeto']}", "periodo": 2023, "jerarquia": sujeto["jerarquia"],
-             "perfil": sujeto["perfil_supuesto"], "compromiso": pesos(sujeto, escenario),
+             "compromiso": pesos(sujeto, escenario),
              "tareas": sujeto["tareas"],
              # La autoevaluación y la evaluación de estudiantes no están en los registros 2023: se calcula
              # aparte el cumplimiento del compromiso (C) y se completa con el supuesto neutro AE = EE = C.
@@ -100,10 +100,12 @@ $$h_a = \frac{1}{|S|} \sum_{s \in S} h_{a,s} \qquad\qquad w_a = \frac{h_a}{\sum_
 ### 3.4 Cumplimiento del compromiso ($C$) y calificación final ($F$)
 
 $$C = \sum_a w_a \, S_a$$
-$$F = \alpha \sum_a w_a \, S_a + 0{,}10 \cdot AE + 0{,}10 \cdot EE = \alpha \cdot C + 0{,}10 \cdot AE + 0{,}10 \cdot EE$$
+$$F = \alpha \sum_a w_a \, S_a + p \cdot AE + p \cdot EE = \alpha \cdot C + p \cdot AE + p \cdot EE$$
 
-$AE$ es la autoevaluación y $EE$ la evaluación de estudiantes, ambas de 0 a 100%. $\alpha = 0{,}80$ en general,
-y $\alpha = 0{,}90$ cuando la persona está eximida de docencia y no tiene evaluación de estudiantes. Así, el peso
+$AE$ es la autoevaluación y $EE$ la evaluación de estudiantes, ambas de 0 a 100%. Las dos pesan lo mismo, $p$, cuyo
+valor aún no está definido; este ejercicio usa $p = 0{,}10$ como valor provisional. $\alpha = 1 - 2p$ ($0{,}80$)
+en general, y $\alpha = 1 - p$ ($0{,}90$) cuando la persona está eximida de docencia y no tiene evaluación de
+estudiantes. Así, el peso
 efectivo de cada ámbito en la calificación es:
 $$\omega_a = \alpha \cdot w_a$$
 
@@ -142,10 +144,10 @@ def seccion_metodo() -> str:
    - **E2, según el reporte:** el o los ámbitos que el reporte declara mayoritarios en horas pesan el doble,
      $w_a = \dfrac{k_a}{\sum_b k_b}$, con $k_a = 2$ si el ámbito es mayoritario y $k_a = 1$ si no.
 4. **Autoevaluación y estudiantes.** No hay registro de $AE$ ni $EE$. Se informa $C$ y se usa el supuesto neutro
-   $AE = EE = C$, con el que $F = C$. Como referencia se informa $F_{\max} = 0{,}8\,C + 20$, la calificación si
+   $AE = EE = C$, con el que $F = C$. Como referencia se informa $F_{\max} = 0{,}8\,C + 20$ (con $p = 0{,}10$), la calificación si
    $AE = EE = 100\%$.
-5. **Perfil.** El formulario 2023 no pedía perfil. Se supone uno para revisar las funciones del Reglamento de
-   Carrera Académica, que dependen de la jerarquía y del perfil.
+5. **Perfil único.** La carrera académica UMCE tiene un solo perfil: las funciones del Reglamento de Carrera
+   Académica se revisan según la jerarquía.
 6. **Sujetos 07 a 09.** Tienen compromiso con horas, pero no informe de cierre. Con ellos se aplica la
    ponderación por horas (fórmula 3.3) y se revisan los registros."""
 
@@ -157,7 +159,7 @@ def seccion_sujeto(s: dict, modelo: dict) -> tuple[str, dict]:
     jer = s["jerarquia"].capitalize()
     nota_jer = "" if s["jerarquia"] == s["jerarquia_reporte"] else \
         f" (el reporte de octubre registra {s['jerarquia_reporte'].capitalize()})"
-    out.append(f"**Jerarquía:** {jer}{nota_jer} · **Perfil supuesto:** {s['perfil_supuesto']} · "
+    out.append(f"**Jerarquía:** {jer}{nota_jer} · "
                f"**Jornada:** {s['jornada']} · **Mayoría de horas según el reporte:** "
                f"{', '.join(NOMBRES_CORTOS[a] for a in s['mayoria_reporte'])}")
 
@@ -214,12 +216,11 @@ def escala(p: float, modelo: dict) -> int:
 
 def seccion_horas(s: dict, modelo: dict) -> str:
     out = [f"### Sujeto {s['sujeto']}"]
-    out.append(f"**Jerarquía:** {s['jerarquia'].capitalize()} · **Perfil supuesto:** {s['perfil_supuesto']} · "
+    out.append(f"**Jerarquía:** {s['jerarquia'].capitalize()} · "
                f"**Jornada:** {s['jornada']}")
     out.append("\n".join(f"- **{NOMBRES_CORTOS[a]}:** {txt}" for a, txt in s["actividades"].items()))
     obs: list[str] = []
-    datos = {"horas": s["horas"], "jornada": s["jornada"], "jerarquia": s["jerarquia"],
-             "perfil": s["perfil_supuesto"]}
+    datos = {"horas": s["horas"], "jornada": s["jornada"], "jerarquia": s["jerarquia"]}
     w = ponderacion_compromiso(datos, modelo, obs)
     total_decl = sum(s["declarado"].values())
     h = {a: (sum(v) / len(v) if isinstance(v, list) else v) for a, v in s["horas"].items()}
@@ -257,12 +258,11 @@ def _formula_horas(h: dict[str, float], w: dict[str, float]) -> str:
 def _rangos_docencia(jerarquia: str | None, w_doc: float, modelo: dict) -> str | None:
     if not jerarquia:
         return None
-    rangos = modelo["carga_docente"].get(jerarquia, {})
-    textos = [f"{p} {r[0]}–{r[1]}%" for p, r in rangos.items()]
-    dentro = [p for p, r in rangos.items() if r[0] <= round(w_doc, 1) <= r[1]]
-    estado = ("dentro del rango para " + _lista(dentro)) if dentro else "fuera del rango"
-    return (f"La docencia pesa {n(w_doc)}%: {estado} del reglamento para {jerarquia} "
-            f"({'; '.join(textos)}).")
+    r = modelo["carga_docente"].get(jerarquia)
+    if not r:
+        return None
+    estado = "dentro del rango" if r[0] <= round(w_doc, 1) <= r[1] else "fuera del rango"
+    return f"La docencia pesa {n(w_doc)}%: {estado} esperado para {jerarquia} ({r[0]}–{r[1]}%)."
 
 
 def seccion_compromiso_2024(s: dict, modelo: dict) -> tuple[str, dict]:
@@ -508,8 +508,8 @@ def generar() -> str:
         "## 5. Resultados de los sujetos con informe de cierre (01 a 06)",
         tabla_resumen,
         "$S$ es el cumplimiento de cada ámbito y $C$ el cumplimiento del compromiso. «—» indica que no hay actividades "
-        "en ese ámbito. Las funciones pendientes se cuentan según el Reglamento de Carrera Académica, con el perfil "
-        "supuesto.",
+        "en ese ámbito. Las funciones pendientes se cuentan según el Reglamento de Carrera Académica para la "
+        "jerarquía (perfil único).",
         *detalles,
         "## 6. Ponderación por horas (sujetos 07 a 09)",
         "Se compara el % que resulta de las horas tal como se declararon con el % que resulta de las horas ordenadas: "
@@ -549,7 +549,7 @@ def generar() -> str:
             "pertenecen a investigación o a VcM. El «perfeccionamiento» se registra como un área aparte.",
             "6. **Las horas se registran de tres formas.** Hay sumas de los dos semestres, valores «x + x» y horas con "
             "minutos escritas como decimales («16.45»).",
-            "7. **El formulario 2024 no permite ponderar.** No pide jerarquía, perfil ni jornada, no tiene casilla de "
+            "7. **El formulario 2024 no permite ponderar.** No pide jerarquía ni jornada, no tiene casilla de "
             "gestión y su resumen acepta «horas o porcentaje». Varios formularios quedaron incompletos (sin resumen, sin "
             "VcM o sólo con docencia), y las personas anotan horas en observaciones.",
             "8. **Los informes de cierre 2024 asignan 100% sin evidencia.** En la mayoría el 100% proviene de la carga "
@@ -559,7 +559,7 @@ def generar() -> str:
             "9. **Cargas académicas sin control.** Una docencia de 86,7% con una persona que deja constancia de no poder "
             "comprometer investigación ni VcM, y horas de gestión que quedan fuera de los resúmenes.",
             "10. **La normativa cambia.** Los informes 2023 revisan funciones de la Res. 320/93. La propuesta de "
-            "Reglamento de Carrera Académica define funciones por jerarquía y perfil, con carga docente esperada, lo que "
+            "Reglamento de Carrera Académica define funciones por jerarquía (perfil único), con carga docente esperada, lo que "
             "deja más funciones pendientes en varios sujetos (por ejemplo, formación de académicos, redes y formación "
             "continua)."]),
         "## 11. Recomendaciones",
@@ -568,8 +568,9 @@ def generar() -> str:
             "automáticamente con la fórmula 3.3.",
             "2. Declarar cada actividad eligiendo su **subcategoría del catálogo SEJA** y su **etapa comprometida**; al "
             "cierre, registrar la **etapa evidenciada** y el **mecanismo**.",
-            "3. Aplicar y registrar la **autoevaluación** y la **evaluación de estudiantes** (20% de la calificación).",
-            "4. Pedir el **perfil** (investigador/a o vinculador/a) y mostrar el rango de carga docente de la jerarquía.",
+            "3. Aplicar y registrar la **autoevaluación** y la **evaluación de estudiantes**, con el mismo peso (% por definir).",
+            "4. Pedir la **jerarquía** y la **jornada**, y mostrar el rango de carga docente esperado y las horas a "
+            "justificar (39 h en jornada completa, 20 h en media jornada).",
             "5. Generar el reporte de octubre y el informe de cierre **desde los mismos datos** (`python -m seja reporte` "
             "y `python -m seja cierre`), para evitar las inconsistencias entre documentos.",
             "6. Mantener el registro de **destacados** (excedentes y avances validados) para el reconocimiento "
@@ -580,20 +581,21 @@ def generar() -> str:
             "nadie quede sin compromiso de desempeño.",
             "9. Definir para cada **comisión de estudios** su duración, sus condiciones y los compromisos asociados que se "
             "evaluarán.",
-            "10. Validar al cerrar el compromiso que la suma de horas esté dentro de la jornada y que la docencia esté en el "
-            "rango de la jerarquía y el perfil; alertar a la jefatura si no.",
+            "10. Validar al cerrar el compromiso que la suma de horas coincida con las horas a justificar (39 h o 20 h) y "
+            "que la docencia esté en el rango de la jerarquía; alertar a la jefatura si no.",
             "11. Completar los documentos faltantes para cerrar la relación entre 2023 y 2024 (sección 9)."]),
         "## Anexo. Parámetros del modelo",
         tabla(["Parámetro", "Valor"], [
-            ["Autoevaluación / evaluación de estudiantes", "10% / 10%"],
-            ["Compromiso (ámbitos)", "80% (90% si está eximido/a de docencia)"],
+            ["Autoevaluación / evaluación de estudiantes", "Mismo % para ambas, por definir (10% provisional)"],
+            ["Compromiso (ámbitos)", "1 − 2 × ese % (80% provisional; 90% si está eximido/a de docencia)"],
             ["Tope por tarea con excedente validado", "120%"],
             ["Etapa evidenciada anterior a la comprometida", "50%"],
             ["Suspensión (art. 37)", "Ausencia justificada de más de 5 meses continuos"],
             ["Comisión de estudios", "Se evalúan los compromisos asociados; si no los hay, regla general de suspensión"],
             ["Evidencia válida", "Carpeta individual (Drive); la carga académica no acredita cumplimiento"],
             ["Umbrales", "A+ ≥ 101%; A 90–100%; B 75–89%; C 55–74%; D < 55%"],
-            ["Jornada", "Completa 44 h; media 22 h"]]),
+            ["Jornada", "Completa 44 h (39 h a justificar); media 22 h (20 h a justificar)"],
+            ["Perfil", "Único"]]),
     ]
     return "\n\n".join(partes) + "\n"
 

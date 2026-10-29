@@ -19,7 +19,7 @@ FORMULAS = {
     "horas": r"$h_a = \dfrac{1}{|S|}\sum_{s \in S} h_{a,s}$",
     "peso": r"$w_a = \dfrac{h_a}{\sum_b h_b}$",
     "compromiso": r"$C = \sum_a w_a \, S_a$",
-    "final": r"$F = 0{,}80 \cdot C \;+\; 0{,}10 \cdot AE \;+\; 0{,}10 \cdot EE$",
+    "final": r"$F = (1 - 2p) \cdot C \;+\; p \cdot AE \;+\; p \cdot EE$",
     "factor": r"$f = \dfrac{\%\ \mathrm{jornada\ dedicada}}{100}$",
 }
 

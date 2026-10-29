@@ -1,8 +1,7 @@
-# Ejemplo: académico Instructor/a, perfil Vinculador/a, con cumplimiento parcial.
+# Ejemplo: académico Instructor/a, con cumplimiento parcial.
 academico: Académico de ejemplo
 periodo: 2026
 jerarquia: instructor
-perfil: vinculador
 
 compromiso:
   docencia: 75

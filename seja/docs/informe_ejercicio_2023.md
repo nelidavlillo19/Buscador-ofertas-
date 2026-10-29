@@ -87,10 +87,12 @@ $$h_a = \frac{1}{|S|} \sum_{s \in S} h_{a,s} \qquad\qquad w_a = \frac{h_a}{\sum_
 ### 3.4 Cumplimiento del compromiso ($C$) y calificación final ($F$)
 
 $$C = \sum_a w_a \, S_a$$
-$$F = \alpha \sum_a w_a \, S_a + 0{,}10 \cdot AE + 0{,}10 \cdot EE = \alpha \cdot C + 0{,}10 \cdot AE + 0{,}10 \cdot EE$$
+$$F = \alpha \sum_a w_a \, S_a + p \cdot AE + p \cdot EE = \alpha \cdot C + p \cdot AE + p \cdot EE$$
 
-$AE$ es la autoevaluación y $EE$ la evaluación de estudiantes, ambas de 0 a 100%. $\alpha = 0{,}80$ en general,
-y $\alpha = 0{,}90$ cuando la persona está eximida de docencia y no tiene evaluación de estudiantes. Así, el peso
+$AE$ es la autoevaluación y $EE$ la evaluación de estudiantes, ambas de 0 a 100%. Las dos pesan lo mismo, $p$, cuyo
+valor aún no está definido; este ejercicio usa $p = 0{,}10$ como valor provisional. $\alpha = 1 - 2p$ ($0{,}80$)
+en general, y $\alpha = 1 - p$ ($0{,}90$) cuando la persona está eximida de docencia y no tiene evaluación de
+estudiantes. Así, el peso
 efectivo de cada ámbito en la calificación es:
 $$\omega_a = \alpha \cdot w_a$$
 
@@ -127,10 +129,10 @@ Escala numérica (tabla de equivalencia): 90–100% → 7; 80–89% → 6; 70–
    - **E2, según el reporte:** el o los ámbitos que el reporte declara mayoritarios en horas pesan el doble,
      $w_a = \dfrac{k_a}{\sum_b k_b}$, con $k_a = 2$ si el ámbito es mayoritario y $k_a = 1$ si no.
 4. **Autoevaluación y estudiantes.** No hay registro de $AE$ ni $EE$. Se informa $C$ y se usa el supuesto neutro
-   $AE = EE = C$, con el que $F = C$. Como referencia se informa $F_{\max} = 0{,}8\,C + 20$, la calificación si
+   $AE = EE = C$, con el que $F = C$. Como referencia se informa $F_{\max} = 0{,}8\,C + 20$ (con $p = 0{,}10$), la calificación si
    $AE = EE = 100\%$.
-5. **Perfil.** El formulario 2023 no pedía perfil. Se supone uno para revisar las funciones del Reglamento de
-   Carrera Académica, que dependen de la jerarquía y del perfil.
+5. **Perfil único.** La carrera académica UMCE tiene un solo perfil: las funciones del Reglamento de Carrera
+   Académica se revisan según la jerarquía.
 6. **Sujetos 07 a 09.** Tienen compromiso con horas, pero no informe de cierre. Con ellos se aplica la
    ponderación por horas (fórmula 3.3) y se revisan los registros.
 
@@ -138,18 +140,18 @@ Escala numérica (tabla de equivalencia): 90–100% → 7; 80–89% → 6; 70–
 
 | Sujeto | Jerarquía | $S$ Doc | $S$ ICI | $S$ VcM | $S$ Gest | $C$ E1 (letra) | $C$ E2 (letra) | Tareas sin evidencia | Destacados | Funciones pendientes |
 |---|---|---|---|---|---|---|---|---|---|---|
-| Sujeto 01 | Asociado | 100,0% | 100,0% | 100,0% | 33,3% | 83,3% (B) | 73,3% (C) | 2 de 15 | 1 | 3 |
-| Sujeto 02 | Titular | 100,0% | 0,0% | — | 0,0% | 33,3% (D) | 25,0% (D) | 6 de 9 | 0 | 9 |
-| Sujeto 03 | Asociado | 75,0% | 100,0% | 0,0% | 100,0% | 68,8% (C) | 70,0% (C) | 4 de 11 | 2 | 5 |
-| Sujeto 04 | Titular | 100,0% | 66,7% | 100,0% | 66,7% | 83,3% (B) | 80,0% (B) | 2 de 11 | 0 | 3 |
+| Sujeto 01 | Asociado | 100,0% | 100,0% | 100,0% | 33,3% | 83,3% (B) | 73,3% (C) | 2 de 15 | 1 | 4 |
+| Sujeto 02 | Titular | 100,0% | 0,0% | — | 0,0% | 33,3% (D) | 25,0% (D) | 6 de 9 | 0 | 11 |
+| Sujeto 03 | Asociado | 75,0% | 100,0% | 0,0% | 100,0% | 68,8% (C) | 70,0% (C) | 4 de 11 | 2 | 7 |
+| Sujeto 04 | Titular | 100,0% | 66,7% | 100,0% | 66,7% | 83,3% (B) | 80,0% (B) | 2 de 11 | 0 | 4 |
 | Sujeto 05 | Titular | 100,0% | 66,7% | 110,0% | 100,0% | 94,2% (A) | 90,6% (A) | 1 de 12 | 3 | 5 |
-| Sujeto 06 | Asociado | 100,0% | 100,0% | 100,0% | 50,0% | 87,5% (B) | 91,7% (A) | 1 de 6 | 2 | 5 |
+| Sujeto 06 | Asociado | 100,0% | 100,0% | 100,0% | 50,0% | 87,5% (B) | 91,7% (A) | 1 de 6 | 2 | 6 |
 
-$S$ es el cumplimiento de cada ámbito y $C$ el cumplimiento del compromiso. «—» indica que no hay actividades en ese ámbito. Las funciones pendientes se cuentan según el Reglamento de Carrera Académica, con el perfil supuesto.
+$S$ es el cumplimiento de cada ámbito y $C$ el cumplimiento del compromiso. «—» indica que no hay actividades en ese ámbito. Las funciones pendientes se cuentan según el Reglamento de Carrera Académica para la jerarquía (perfil único).
 
 ### Sujeto 01
 
-**Jerarquía:** Asociado · **Perfil supuesto:** vinculador · **Jornada:** completa · **Mayoría de horas según el reporte:** Gestión Académica
+**Jerarquía:** Asociado · **Jornada:** completa · **Mayoría de horas según el reporte:** Gestión Académica
 
 | Ámbito | Actividad | Comprometido | Evidenciado | Mecanismo | $p_t$ |
 |---|---|---|---|---|---|
@@ -187,7 +189,7 @@ $$C_{E2} = 0{,}200 \cdot 100{,}0 + 0{,}200 \cdot 100{,}0 + 0{,}200 \cdot 100{,}0
 
 **Destaca en** (registro para reconocimiento institucional): 3 artículos (2 enviados y 1 publicado): avanzó más allá de lo comprometido (Enviada → Publicada).
 
-**Funciones del Reglamento de Carrera Académica, Asociado, perfil vinculador (art. 24):** 6 cumplidas de 9. Pendientes: Colaborar en la formación y desarrollo de académicos/as de jerarquía menor o equivalente; Participar en redes nacionales e internacionales; Acreditar formación continua.
+**Funciones del Reglamento de Carrera Académica, Asociado (art. 23-24):** 8 cumplidas de 12. Pendientes: Colaborar en la formación y desarrollo de académicos/as de jerarquía menor o equivalente; Participar en redes nacionales e internacionales; Formar parte de equipos de investigación interdisciplinarios o multidisciplinarios; Acreditar formación continua.
 
 **Informe de cierre 2023 (Res. 320/93):** Todas las funciones de la Res. 320/93 cumplidas (5 de 5). Gestión: 2 de 3 actividades sin evidencia.
 
@@ -198,7 +200,7 @@ $$C_{E2} = 0{,}200 \cdot 100{,}0 + 0{,}200 \cdot 100{,}0 + 0{,}200 \cdot 100{,}0
 
 ### Sujeto 02
 
-**Jerarquía:** Titular · **Perfil supuesto:** investigador · **Jornada:** completa · **Mayoría de horas según el reporte:** Investigación, Creación e Innovación
+**Jerarquía:** Titular · **Jornada:** completa · **Mayoría de horas según el reporte:** Investigación, Creación e Innovación
 
 | Ámbito | Actividad | Comprometido | Evidenciado | Mecanismo | $p_t$ |
 |---|---|---|---|---|---|
@@ -227,7 +229,7 @@ $$C_{E2} = 0{,}250 \cdot 100{,}0 + 0{,}500 \cdot 0{,}0 + 0{,}250 \cdot 0{,}0 = 2
 | E1 igual peso | 33,3% | 33,3% | D | 1 | 46,6% | D |
 | E2 según reporte | 25,0% | 25,0% | D | 1 | 40,0% | D |
 
-**Funciones del Reglamento de Carrera Académica, Titular, perfil investigador (art. 28):** 2 cumplidas de 12. Pendientes: Liderar actividades para la formación y desarrollo de académicos/as de jerarquía menor; Liderar proyectos de investigación, innovación o creación competitivos; Postular a fondos de proyectos con financiamiento externo; Integrar núcleos o claustros de postgrado (estándares CNA); Publicar como autor/a principal resultados de investigación o difundir obra; Presentar trabajos en eventos a nivel internacional; Participar en redes a nivel internacional; Acreditar formación continua; Realizar tareas de coordinación en la gestión académica-administrativa.
+**Funciones del Reglamento de Carrera Académica, Titular (art. 28-29):** 2 cumplidas de 13. Pendientes: Liderar actividades para la formación y desarrollo de académicos/as de jerarquía menor; Liderar proyectos de investigación, innovación o creación competitivos; Postular a fondos de proyectos con financiamiento externo; Integrar núcleos o claustros de postgrado (estándares CNA); Publicar como autor/a principal resultados de investigación o difundir obra; Presentar trabajos en eventos a nivel internacional; Participar en redes a nivel internacional; Acreditar formación continua; Realizar tareas de coordinación en la gestión académica-administrativa; Liderar iniciativas, proyectos o programas de VcM competitivos con financiamiento externo; Liderar la exposición, presentación o difusión de actividades académicas y de VcM.
 
 **Informe de cierre 2023 (Res. 320/93):** 3 de 7 funciones de la Res. 320/93 cumplidas. Investigación y gestión: ninguna actividad evidenciada. El texto del informe afirma que las actividades declaradas son las exigidas para la jerarquía.
 
@@ -239,7 +241,7 @@ $$C_{E2} = 0{,}250 \cdot 100{,}0 + 0{,}500 \cdot 0{,}0 + 0{,}250 \cdot 0{,}0 = 2
 
 ### Sujeto 03
 
-**Jerarquía:** Asociado · **Perfil supuesto:** vinculador · **Jornada:** completa · **Mayoría de horas según el reporte:** Docencia
+**Jerarquía:** Asociado · **Jornada:** completa · **Mayoría de horas según el reporte:** Docencia
 
 | Ámbito | Actividad | Comprometido | Evidenciado | Mecanismo | $p_t$ |
 |---|---|---|---|---|---|
@@ -273,7 +275,7 @@ $$C_{E2} = 0{,}400 \cdot 75{,}0 + 0{,}200 \cdot 100{,}0 + 0{,}200 \cdot 0{,}0 + 
 
 **Destaca en** (registro para reconocimiento institucional): Proyecto con financiamiento interno: avanzó más allá de lo comprometido (Postulación → Adjudicación); 1 artículo: avanzó más allá de lo comprometido (En preparación → Enviada).
 
-**Funciones del Reglamento de Carrera Académica, Asociado, perfil vinculador (art. 24):** 4 cumplidas de 9. Pendientes: Colaborar en la formación y desarrollo de académicos/as de jerarquía menor o equivalente; Liderar iniciativas, proyectos o programas de VcM competitivos o de relevancia regional o nacional; Exponer, presentar o difundir actividades académicas y de VcM; Participar en redes nacionales e internacionales; Acreditar formación continua.
+**Funciones del Reglamento de Carrera Académica, Asociado (art. 23-24):** 5 cumplidas de 12. Pendientes: Colaborar en la formación y desarrollo de académicos/as de jerarquía menor o equivalente; Presentar trabajos en eventos científicos, artísticos o deportivos; Participar en redes nacionales e internacionales; Formar parte de equipos de investigación interdisciplinarios o multidisciplinarios; Acreditar formación continua; Liderar iniciativas, proyectos o programas de VcM competitivos o de relevancia regional o nacional; Exponer, presentar o difundir actividades académicas y de VcM.
 
 **Informe de cierre 2023 (Res. 320/93):** 3 de 5 funciones de la Res. 320/93 cumplidas. VcM y perfeccionamiento sin evidencia.
 
@@ -285,7 +287,7 @@ $$C_{E2} = 0{,}400 \cdot 75{,}0 + 0{,}200 \cdot 100{,}0 + 0{,}200 \cdot 0{,}0 + 
 
 ### Sujeto 04
 
-**Jerarquía:** Titular · **Perfil supuesto:** investigador · **Jornada:** completa · **Mayoría de horas según el reporte:** Investigación, Creación e Innovación
+**Jerarquía:** Titular · **Jornada:** completa · **Mayoría de horas según el reporte:** Investigación, Creación e Innovación
 
 | Ámbito | Actividad | Comprometido | Evidenciado | Mecanismo | $p_t$ |
 |---|---|---|---|---|---|
@@ -317,7 +319,7 @@ $$C_{E2} = 0{,}200 \cdot 100{,}0 + 0{,}400 \cdot 66{,}7 + 0{,}200 \cdot 100{,}0 
 | E1 igual peso | 83,3% | 83,3% | B | 6 | 86,6% | B |
 | E2 según reporte | 80,0% | 80,0% | B | 6 | 84,0% | B |
 
-**Funciones del Reglamento de Carrera Académica, Titular, perfil investigador (art. 28):** 9 cumplidas de 12. Pendientes: Liderar actividades para la formación y desarrollo de académicos/as de jerarquía menor; Integrar núcleos o claustros de postgrado (estándares CNA); Participar en redes a nivel internacional.
+**Funciones del Reglamento de Carrera Académica, Titular (art. 28-29):** 9 cumplidas de 13. Pendientes: Liderar actividades para la formación y desarrollo de académicos/as de jerarquía menor; Integrar núcleos o claustros de postgrado (estándares CNA); Participar en redes a nivel internacional; Liderar iniciativas, proyectos o programas de VcM competitivos con financiamiento externo.
 
 **Informe de cierre 2023 (Res. 320/93):** 6 de 7 funciones de la Res. 320/93 cumplidas. Pendiente: colaborar en planes de perfeccionamiento de ayudantes y académicos de jerarquía menor.
 
@@ -328,7 +330,7 @@ $$C_{E2} = 0{,}200 \cdot 100{,}0 + 0{,}400 \cdot 66{,}7 + 0{,}200 \cdot 100{,}0 
 
 ### Sujeto 05
 
-**Jerarquía:** Titular (el reporte de octubre registra Asociado) · **Perfil supuesto:** investigador · **Jornada:** completa · **Mayoría de horas según el reporte:** Investigación, Creación e Innovación, Gestión Académica
+**Jerarquía:** Titular (el reporte de octubre registra Asociado) · **Jornada:** completa · **Mayoría de horas según el reporte:** Investigación, Creación e Innovación, Gestión Académica
 
 | Ámbito | Actividad | Comprometido | Evidenciado | Mecanismo | $p_t$ |
 |---|---|---|---|---|---|
@@ -363,7 +365,7 @@ $$C_{E2} = 0{,}167 \cdot 100{,}0 + 0{,}333 \cdot 66{,}7 + 0{,}167 \cdot 110{,}0 
 
 **Destaca en** (registro para reconocimiento institucional): Proyecto con financiamiento interno: avanzó más allá de lo comprometido (Ejecución → Cierre); Proyecto con financiamiento externo: avanzó más allá de lo comprometido (Ejecución → Cierre); Ponencias (2 comprometidas, 3 realizadas): 150% de lo comprometido.
 
-**Funciones del Reglamento de Carrera Académica, Titular, perfil investigador (art. 28):** 7 cumplidas de 12. Pendientes: Liderar actividades para la formación y desarrollo de académicos/as de jerarquía menor; Integrar núcleos o claustros de postgrado (estándares CNA); Publicar como autor/a principal resultados de investigación o difundir obra; Participar en redes a nivel internacional; Acreditar formación continua.
+**Funciones del Reglamento de Carrera Académica, Titular (art. 28-29):** 8 cumplidas de 13. Pendientes: Liderar actividades para la formación y desarrollo de académicos/as de jerarquía menor; Integrar núcleos o claustros de postgrado (estándares CNA); Publicar como autor/a principal resultados de investigación o difundir obra; Participar en redes a nivel internacional; Acreditar formación continua.
 
 **Informe de cierre 2023 (Res. 320/93):** 6 de 7 funciones de la Res. 320/93 cumplidas. Pendiente: colaborar en planes de perfeccionamiento de ayudantes y académicos de jerarquía menor.
 
@@ -374,7 +376,7 @@ $$C_{E2} = 0{,}167 \cdot 100{,}0 + 0{,}333 \cdot 66{,}7 + 0{,}167 \cdot 110{,}0 
 
 ### Sujeto 06
 
-**Jerarquía:** Asociado · **Perfil supuesto:** investigador · **Jornada:** completa · **Mayoría de horas según el reporte:** Docencia, Investigación, Creación e Innovación
+**Jerarquía:** Asociado · **Jornada:** completa · **Mayoría de horas según el reporte:** Docencia, Investigación, Creación e Innovación
 
 | Ámbito | Actividad | Comprometido | Evidenciado | Mecanismo | $p_t$ |
 |---|---|---|---|---|---|
@@ -403,7 +405,7 @@ $$C_{E2} = 0{,}333 \cdot 100{,}0 + 0{,}333 \cdot 100{,}0 + 0{,}167 \cdot 100{,}0
 
 **Destaca en** (registro para reconocimiento institucional): Proyecto de postdoctorado: avanzó más allá de lo comprometido (Ejecución → Cierre); 3 publicaciones: avanzó más allá de lo comprometido (En preparación → Publicada).
 
-**Funciones del Reglamento de Carrera Académica, Asociado, perfil investigador (art. 23):** 6 cumplidas de 11. Pendientes: Dirigir trabajos conducentes a título profesional y/o grados académicos de pre y postgrado; Colaborar en la formación y desarrollo de académicos/as de jerarquía menor o equivalente; Participar en redes nacionales e internacionales; Formar parte de equipos de investigación interdisciplinarios o multidisciplinarios; Acreditar formación continua.
+**Funciones del Reglamento de Carrera Académica, Asociado (art. 23-24):** 6 cumplidas de 12. Pendientes: Dirigir trabajos conducentes a título profesional y/o grados académicos de pre y postgrado; Colaborar en la formación y desarrollo de académicos/as de jerarquía menor o equivalente; Participar en redes nacionales e internacionales; Formar parte de equipos de investigación interdisciplinarios o multidisciplinarios; Acreditar formación continua; Liderar iniciativas, proyectos o programas de VcM competitivos o de relevancia regional o nacional.
 
 **Informe de cierre 2023 (Res. 320/93):** 5 de 5 funciones de la Res. 320/93 cumplidas. Gestión: 1 de 2 actividades sin evidencia.
 
@@ -418,7 +420,7 @@ Se compara el % que resulta de las horas tal como se declararon con el % que res
 
 ### Sujeto 07
 
-**Jerarquía:** Asistente · **Perfil supuesto:** vinculador · **Jornada:** completa
+**Jerarquía:** Asistente · **Jornada:** completa
 
 - **Docencia:** Asignatura 1 (3 h) y talleres de práctica: asignaturas 2 y 3 (3 h y 1,5 h), en cada semestre
 - **Gestión Académica:** Unidad de gestión curricular (1,5 h), reunión de departamento (1,5 h), coordinación de prácticas (22 h)
@@ -438,11 +440,12 @@ $$w_{\text{Doc}} = \frac{7{,}5}{34{,}5} = 0{,}217 \qquad w_{\text{VcM}} = \frac{
 
 - El resumen declaró 15 h de docencia sumando los dos semestres; en horas semanales son 7,5.
 - La organización de un evento académico nacional se declaró en gestión; corresponde a VcM.
-- La docencia pesa 21,7% del compromiso; para asistente vinculador el reglamento indica entre 60% y 70%.
+- Las horas declaradas (34,5 h semanales) no completan las 39 h que se justifican en la jornada completa (44 h de contrato menos el horario de almuerzo).
+- La docencia pesa 21,7% del compromiso; para la jerarquía asistente se espera entre 50% y 70%.
 
 ### Sujeto 08
 
-**Jerarquía:** Asociado · **Perfil supuesto:** investigador · **Jornada:** completa
+**Jerarquía:** Asociado · **Jornada:** completa
 
 - **Docencia:** 1.er semestre: asignaturas 1 y 2 (pregrado), asignatura 3 (postgrado), dirección de 3 tesis; 2.º semestre: seminario de título, asignatura 4 (postgrado), dirección de 2 tesis
 - **Investigación, Creación e Innovación:** 4 proyectos (1 cierre y 3 postulaciones, 1 h c/u) y 3 publicaciones (4 h)
@@ -464,12 +467,12 @@ $$w_{\text{Doc}} = \frac{16{,}9}{49{,}9} = 0{,}338 \qquad w_{\text{ICI}} = \frac
 
 - «16.45» y «3.45» horas se interpretan como 16 h 45 min y 3 h 45 min.
 - 4 ponencias y la revisión de artículos se declararon sin horas: se evalúan, pero no ponderan.
-- Las horas declaradas (49,9 h semanales) superan la jornada completa (44 h).
-- La docencia pesa 33,8% del compromiso; para asociado investigador el reglamento indica entre 40% y 60%.
+- Las horas declaradas (49,9 h semanales) superan las 39 h que se justifican en la jornada completa (44 h de contrato menos el horario de almuerzo).
+- La docencia pesa 33,8% del compromiso; para la jerarquía asociado se espera entre 40% y 60%.
 
 ### Sujeto 09
 
-**Jerarquía:** Asociado · **Perfil supuesto:** investigador · **Jornada:** completa
+**Jerarquía:** Asociado · **Jornada:** completa
 
 - **Docencia:** Asignaturas 1 a 6 (pregrado), 18 h semanales en cada semestre
 - **Investigación, Creación e Innovación:** Proyecto de innovación pedagógica con financiamiento externo (8 h), 1 artículo (4,5 h), revisión de artículos para revista científica (2 h, declarada en gestión)
@@ -490,6 +493,7 @@ $$w_{\text{Doc}} = \frac{18{,}0}{38{,}0} = 0{,}474 \qquad w_{\text{ICI}} = \frac
 **Notas:**
 
 - Dos actividades declaradas en gestión pertenecen a otros ámbitos según el catálogo SEJA.
+- Las horas declaradas (38,0 h semanales) no completan las 39 h que se justifican en la jornada completa (44 h de contrato menos el horario de almuerzo).
 
 ## 7. Compromisos 2024
 
@@ -567,8 +571,8 @@ $$w_{\text{Doc}} = \frac{25{,}0}{45{,}0} = 0{,}556 \qquad w_{\text{ICI}} = \frac
 
 - La gestión (4 actividades) se declaró en la tabla de docencia y sin horas: no pondera.
 - Una de las conferencias declaradas corresponde a una fecha de 2023.
-- Las horas declaradas (45,0 h semanales) superan la jornada completa (44 h).
-- La docencia pesa 55,6%: dentro del rango para investigador y vinculador del reglamento para asociado (investigador 40–60%; vinculador 50–60%).
+- Las horas declaradas (45,0 h semanales) superan las 39 h que se justifican en la jornada completa (44 h de contrato menos el horario de almuerzo).
+- La docencia pesa 55,6%: dentro del rango esperado para asociado (40–60%).
 
 ### Sujeto 09 (también en 2023)
 
@@ -609,7 +613,8 @@ $$w_{\text{Doc}} = \frac{23{,}0}{41{,}5} = 0{,}554 \qquad w_{\text{ICI}} = \frac
 
 - El total declarado (37 h) no incluye 3 h de comité editorial ni 1,5 h de reunión de departamento, que la persona indica en observaciones: con ellas son 41,5 h.
 - La representación internacional se declaró como gestión de VcM; según el catálogo es representación institucional (VcM). El comité editorial es una red académica (investigación).
-- La docencia pesa 55,4%: dentro del rango para investigador y vinculador del reglamento para asociado (investigador 40–60%; vinculador 50–60%).
+- Las horas declaradas (41,5 h semanales) superan las 39 h que se justifican en la jornada completa (44 h de contrato menos el horario de almuerzo).
+- La docencia pesa 55,4%: dentro del rango esperado para asociado (40–60%).
 
 ### Sujeto 10
 
@@ -672,6 +677,7 @@ $$w_{\text{Doc}} = \frac{22{,}0}{37{,}0} = 0{,}595 \qquad w_{\text{ICI}} = \frac
 
 - La gestión (3 h semanales en promedio) no tiene casilla en el resumen 2024 y se declaró en observaciones.
 - La persona aclara que el artículo comprometido con su proyecto interno se entregará en 2025 y por eso no lo declaró.
+- Las horas declaradas (37,0 h semanales) no completan las 39 h que se justifican en la jornada completa (44 h de contrato menos el horario de almuerzo).
 
 ### Sujeto 12
 
@@ -702,6 +708,7 @@ $$w_{\text{Doc}} = \frac{18{,}0}{42{,}0} = 0{,}429 \qquad w_{\text{ICI}} = \frac
 
 - Los 3 artículos figuran como ya publicados al declararse: hay que verificar que correspondan al período 2024 y no a uno anterior.
 - No declara gestión ni VcM: la investigación pesa más que la docencia (57,1%).
+- Las horas declaradas (42,0 h semanales) superan las 39 h que se justifican en la jornada completa (44 h de contrato menos el horario de almuerzo).
 
 ### Sujeto 13
 
@@ -740,6 +747,7 @@ $$w_{\text{Doc}} = \frac{14{,}5}{31{,}5} = 0{,}460 \qquad w_{\text{ICI}} = \frac
 
 - Tiene 12 h semanales para investigación doctoral: es una situación especial (art. 37). Se evalúa en relación al 72,7% de la jornada (32 de 44 h) y las metas con evidencia se ajustan a ese %.
 - Las horas de gestión (6 h) y del claustro se declararon en el texto de docencia y no en el resumen.
+- Las horas declaradas (31,5 h semanales) no completan las 39 h que se justifican en la jornada completa (44 h de contrato menos el horario de almuerzo).
 - **Art. 37: evaluación proporcional, $f = 0{,}727$** — Estudios de postgrado o postdoctorado (12 h semanales asignadas a investigación doctoral); evaluada en relación al 72,7% de la jornada.
 
 ### Sujeto 14
@@ -830,6 +838,7 @@ $$w_{\text{Doc}} = \frac{36{,}0}{41{,}5} = 0{,}867 \qquad w_{\text{Gest}} = \fra
 - La docencia ocupa el 86,7% de lo comprometido, sobre el máximo del reglamento para cualquier jerarquía (80% en instructor/a).
 - La persona deja constancia de que no puede comprometer investigación ni VcM porque su carga de docencia y gestión supera las 40 h. El caso requiere revisar la asignación de carga con la jefatura.
 - El total (41,5 h) incluye 3,5 h de gestión dentro de la casilla de docencia.
+- Las horas declaradas (41,5 h semanales) superan las 39 h que se justifican en la jornada completa (44 h de contrato menos el horario de almuerzo).
 
 ### Sujeto 17
 
@@ -1015,35 +1024,36 @@ Documentos disponibles por sujeto. Un ciclo completo requiere, para cada año, e
 4. **Conclusiones que contradicen la tabla de funciones.** Un informe afirma que las actividades son las exigidas para la jerarquía aunque marca 4 funciones como no cumplidas (sujeto 02).
 5. **Clasificación de actividades.** Los claustros de postgrado, los núcleos de investigación, la revisión de artículos, las representaciones internacionales y la organización de eventos se registran en gestión, pero pertenecen a investigación o a VcM. El «perfeccionamiento» se registra como un área aparte.
 6. **Las horas se registran de tres formas.** Hay sumas de los dos semestres, valores «x + x» y horas con minutos escritas como decimales («16.45»).
-7. **El formulario 2024 no permite ponderar.** No pide jerarquía, perfil ni jornada, no tiene casilla de gestión y su resumen acepta «horas o porcentaje». Varios formularios quedaron incompletos (sin resumen, sin VcM o sólo con docencia), y las personas anotan horas en observaciones.
+7. **El formulario 2024 no permite ponderar.** No pide jerarquía ni jornada, no tiene casilla de gestión y su resumen acepta «horas o porcentaje». Varios formularios quedaron incompletos (sin resumen, sin VcM o sólo con docencia), y las personas anotan horas en observaciones.
 8. **Los informes de cierre 2024 asignan 100% sin evidencia.** En la mayoría el 100% proviene de la carga académica de la Dirección de Docencia y la carpeta individual no tiene evidencias. Con el criterio de evidencia en la carpeta esas actividades valen 0%. Además, seis informes corresponden a personas sin compromiso de desempeño, y uno marca funciones de titular para un asociado.
 9. **Cargas académicas sin control.** Una docencia de 86,7% con una persona que deja constancia de no poder comprometer investigación ni VcM, y horas de gestión que quedan fuera de los resúmenes.
-10. **La normativa cambia.** Los informes 2023 revisan funciones de la Res. 320/93. La propuesta de Reglamento de Carrera Académica define funciones por jerarquía y perfil, con carga docente esperada, lo que deja más funciones pendientes en varios sujetos (por ejemplo, formación de académicos, redes y formación continua).
+10. **La normativa cambia.** Los informes 2023 revisan funciones de la Res. 320/93. La propuesta de Reglamento de Carrera Académica define funciones por jerarquía (perfil único), con carga docente esperada, lo que deja más funciones pendientes en varios sujetos (por ejemplo, formación de académicos, redes y formación continua).
 
 ## 11. Recomendaciones
 
 1. Registrar en UCampus las **horas semanales por ámbito** (por semestre en docencia) y calcular el resumen automáticamente con la fórmula 3.3.
 2. Declarar cada actividad eligiendo su **subcategoría del catálogo SEJA** y su **etapa comprometida**; al cierre, registrar la **etapa evidenciada** y el **mecanismo**.
-3. Aplicar y registrar la **autoevaluación** y la **evaluación de estudiantes** (20% de la calificación).
-4. Pedir el **perfil** (investigador/a o vinculador/a) y mostrar el rango de carga docente de la jerarquía.
+3. Aplicar y registrar la **autoevaluación** y la **evaluación de estudiantes**, con el mismo peso (% por definir).
+4. Pedir la **jerarquía** y la **jornada**, y mostrar el rango de carga docente esperado y las horas a justificar (39 h en jornada completa, 20 h en media jornada).
 5. Generar el reporte de octubre y el informe de cierre **desde los mismos datos** (`python -m seja reporte` y `python -m seja cierre`), para evitar las inconsistencias entre documentos.
 6. Mantener el registro de **destacados** (excedentes y avances validados) para el reconocimiento institucional.
 7. Recordar que la **carpeta individual (Drive) es obligatoria**: sin evidencia, la actividad vale 0% y la calificación es la mínima. La carga académica sirve para las horas ($h_a$), no para el cumplimiento ($p_t$).
 8. Asegurar con el nivel central que la Oficina reciba la nómina completa para la **inducción**, de modo que nadie quede sin compromiso de desempeño.
 9. Definir para cada **comisión de estudios** su duración, sus condiciones y los compromisos asociados que se evaluarán.
-10. Validar al cerrar el compromiso que la suma de horas esté dentro de la jornada y que la docencia esté en el rango de la jerarquía y el perfil; alertar a la jefatura si no.
+10. Validar al cerrar el compromiso que la suma de horas coincida con las horas a justificar (39 h o 20 h) y que la docencia esté en el rango de la jerarquía; alertar a la jefatura si no.
 11. Completar los documentos faltantes para cerrar la relación entre 2023 y 2024 (sección 9).
 
 ## Anexo. Parámetros del modelo
 
 | Parámetro | Valor |
 |---|---|
-| Autoevaluación / evaluación de estudiantes | 10% / 10% |
-| Compromiso (ámbitos) | 80% (90% si está eximido/a de docencia) |
+| Autoevaluación / evaluación de estudiantes | Mismo % para ambas, por definir (10% provisional) |
+| Compromiso (ámbitos) | 1 − 2 × ese % (80% provisional; 90% si está eximido/a de docencia) |
 | Tope por tarea con excedente validado | 120% |
 | Etapa evidenciada anterior a la comprometida | 50% |
 | Suspensión (art. 37) | Ausencia justificada de más de 5 meses continuos |
 | Comisión de estudios | Se evalúan los compromisos asociados; si no los hay, regla general de suspensión |
 | Evidencia válida | Carpeta individual (Drive); la carga académica no acredita cumplimiento |
 | Umbrales | A+ ≥ 101%; A 90–100%; B 75–89%; C 55–74%; D < 55% |
-| Jornada | Completa 44 h; media 22 h |
+| Jornada | Completa 44 h (39 h a justificar); media 22 h (20 h a justificar) |
+| Perfil | Único |

@@ -7,11 +7,11 @@ lang: es
 
 # 1. Presentación
 
-Este documento corresponde a la **última etapa del proceso de evaluación**. En ella, la Oficina de Evaluación de Desempeño Académico entrega a la Comisión Central el resultado de la calificación de cada académico o académica. La Comisión lo revisa, se pronuncia y lo registra en un acta.
+Este documento corresponde a la **última etapa del proceso de evaluación**. En ella, la Oficina de Evaluación de Desempeño Académico entrega a la Comisión Central el resultado de la **evaluación** de cada académico o académica. La Comisión lo revisa, se pronuncia y lo registra en un acta.
 
 El documento tiene tres partes:
 
-- **Parte A. Instrucciones para la Comisión:** qué recibe, qué revisa y qué decisiones puede tomar.
+- **Parte A. Instrucciones para la Comisión:** qué recibe, qué revisa y qué decisiones puede y debe tomar.
 - **Parte B. Informe individual de resultado:** un formulario por persona. La Oficina completa las secciones B1 a B8 y la Comisión completa B9 a B11.
 - **Parte C. Acta de la sesión:** consolida los resultados de todas las personas calificadas en la sesión.
 
@@ -25,17 +25,23 @@ Por cada académico o académica, la Oficina entrega:
 
 1. El **informe individual de resultado** (Parte B), con las secciones B1 a B8 completas.
 2. El **Compromiso de Desempeño** aprobado por la jefatura (última versión).
-3. El acceso a la **carpeta individual de evidencias (Drive)**.
-4. Los resultados de los **instrumentos**: autoevaluación, evaluación de estudiantes y pautas de las direcciones.
+3. Un **documento digital con el enlace a las evidencias y medios de verificación** registrados en el **CV Académico de UCampus** (no en la carpeta de Drive).
+4. Los resultados de los **instrumentos de cada ámbito**:
+   - **Docencia:** autoevaluación y evaluación de estudiantes.
+   - **Investigación, Creación e Innovación:** informes de la Dirección de Investigación (DIUMCE) y una pauta de cumplimiento u otro instrumento *(por definir)*.
+   - **Vinculación con el Medio:** informes de la Dirección de Vinculación con el Medio y un instrumento acordado con esa dirección *(por definir)*.
+   - **Gestión Académica:** pautas de cotejo de las direcciones o unidades, definidas por la Oficina.
 5. El **informe de cierre** del período.
+
+**Fechas.** Cada etapa y documento debe registrar su fecha: la de suscripción de los documentos firmados, como el Compromiso de Desempeño; la de aplicación de cada instrumento, y la de carga de cada evidencia.
 
 ## A2. Cómo se obtiene el resultado
 
 El resultado se calcula en tres niveles, según el Modelo de Calificación Académica SEJA:
 
-1. **Cumplimiento de cada tarea ($p_t$).** Se calcula con el instrumento o con la evidencia de la carpeta individual. La información que la Oficina obtiene de la carga académica no acredita cumplimiento: la actividad sin evidencia en la carpeta vale 0%. Un excedente validado se reconoce hasta {{TOPE}}%.
+1. **Cumplimiento de cada tarea ($p_t$).** Se calcula con el instrumento o con la evidencia registrada en el CV Académico de UCampus. Un excedente validado se reconoce hasta {{TOPE}}%.
 
-2. **Cumplimiento de cada ámbito ($S_a$).** Es el promedio de las tareas del ámbito.
+2. **Cumplimiento de cada ámbito ($S_a$).** *Por definir:* ponderación por las horas de cada tarea del ámbito, o promedio simple de las tareas del ámbito.
 
 3. **Cumplimiento del compromiso ($C$).** Es el promedio de los ámbitos, ponderado por las horas comprometidas:
 
@@ -58,7 +64,7 @@ La autoevaluación y la evaluación de estudiantes pesan **siempre lo mismo**, $
 ## A3. Qué revisa la Comisión
 
 - **Antecedentes:** que estén completos y que el compromiso usado sea la versión aprobada.
-- **Evidencia:** que el cumplimiento de cada tarea se base en evidencia de la carpeta individual o en un instrumento aplicado.
+- **Evidencia:** que el cumplimiento de cada tarea se base en evidencia registrada en el CV Académico de UCampus o en un instrumento aplicado, con sus fechas.
 - **Excedentes:** que los excedentes estén validados y que el tope de {{TOPE}}% se haya aplicado.
 - **Situación especial (art. 37):**
   - una ausencia justificada de más de {{MESES}} meses continuos suspende la evaluación;
@@ -105,14 +111,16 @@ La Comisión **no exige mínimos por ámbito** ni combinaciones de logro entre �
 
 ## B2. Antecedentes revisados
 
-| Antecedente | Disponible | Observación |
-|------------------------------------------------|--------------------|------------------------------------------|
-| Compromiso de Desempeño aprobado | ☐ Sí ☐ No | |
-| Carpeta individual con evidencias (Drive) | ☐ Sí ☐ No | |
-| Autoevaluación | ☐ Sí ☐ No | |
-| Evaluación de estudiantes | ☐ Sí ☐ No ☐ Eximido/a | |
-| Pautas de direcciones o unidades | ☐ Sí ☐ No ☐ No aplica | |
-| Informe de cierre del período | ☐ Sí ☐ No | |
+| Antecedente | Disponible | Fecha | Observación |
+|------------------------------------------------|--------------------|------------|------------------------------|
+| Compromiso de Desempeño aprobado (fecha de suscripción) | ☐ Sí ☐ No | | |
+| CV Académico en UCampus con evidencias y medios de verificación (no carpeta en Drive) | ☐ Sí ☐ No | | |
+| Docencia: autoevaluación | ☐ Sí ☐ No | | |
+| Docencia: evaluación de estudiantes | ☐ Sí ☐ No ☐ Eximido/a | | |
+| Investigación: informes DIUMCE / pauta de cumplimiento (por definir) | ☐ Sí ☐ No ☐ No aplica | | |
+| Vinculación con el Medio: informes e instrumento de la Dirección de VcM (por definir) | ☐ Sí ☐ No ☐ No aplica | | |
+| Gestión: pautas de cotejo de direcciones o unidades | ☐ Sí ☐ No ☐ No aplica | | |
+| Informe de cierre del período | ☐ Sí ☐ No | | |
 
 ## B3. Cumplimiento por ámbito
 
@@ -124,7 +132,7 @@ La Comisión **no exige mínimos por ámbito** ni combinaciones de logro entre �
 | Gestión Académica | | | | | |
 | **Compromiso ($C$)** | | **100%** | | | |
 
-**Tareas con 0% por falta de evidencia en la carpeta individual:**
+**Tareas con 0% por falta de evidencia en el CV Académico de UCampus:**
 
 | Ámbito | Tarea | Motivo |
 |------------------------------|------------------------------------------------|------------------------------|

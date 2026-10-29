@@ -98,7 +98,8 @@ def valores(modelo: dict) -> dict[str, str]:
         ["Tope por tarea con excedente validado", f"{modelo['tope_excedente']}%"],
         ["Etapa evidenciada anterior a la comprometida", f"{modelo['etapas']['etapa_anterior']}%"],
         ["Estados de evidencia", "Cumplido 100; parcial 50; no cumplido 0; sin evidencia 0"],
-        ["Evidencia válida", "Carpeta individual (Drive); la carga académica no acredita cumplimiento"],
+        ["Evidencia válida", "Registrada en el CV Académico de UCampus; la carga académica no acredita cumplimiento"],
+        ["Cumplimiento del ámbito", "Promedio simple de las tareas comprometidas en el ámbito"],
         ["Umbrales", "; ".join(f"{l} desde {umbrales[l]}%" for l in letras[:-1]) +
          f"; {letras[-1]} bajo {umbrales[letras[-2]]}%"],
         ["Suspensión (art. 37)", f"Ausencia justificada de más de {modelo['situaciones_especiales']['meses_suspension']} "

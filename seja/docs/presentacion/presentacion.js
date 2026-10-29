@@ -117,8 +117,8 @@ async function main() {
   s = pres.addSlide({ masterName: "CONTENIDO", sectionTitle: "Introducción" });
   s.addText("De la tarea a la calificación final", { placeholder: "title" });
   const niveles = [
-    [fa.FaTasks, "Tarea", "Cada actividad comprometida: un curso, un proyecto, una publicación, una coordinación.", "Se evalúa con un instrumento o con la evidencia de la carpeta individual.", "pₜ"],
-    [fa.FaLayerGroup, "Ámbito", "Docencia · Investigación, Creación e Innovación · Vinculación con el Medio · Gestión Académica.", "Promedio de las tareas del ámbito.", "Sₐ"],
+    [fa.FaTasks, "Tarea", "Cada actividad comprometida: un curso, un proyecto, una publicación, una coordinación.", "Se evalúa con un instrumento o con la evidencia del CV Académico de UCampus.", "pₜ"],
+    [fa.FaLayerGroup, "Ámbito", "Docencia · Investigación, Creación e Innovación · Vinculación con el Medio · Gestión Académica.", "Promedio simple de las tareas comprometidas.", "Sₐ"],
     [fa.FaFlagCheckered, "Calificación final", "Ámbitos ponderados por horas, más autoevaluación y evaluación de estudiantes con el mismo peso p (por definir).", "Se clasifica en A+, A, B, C o D.", "F"],
   ];
   for (let i = 0; i < 3; i++) {
@@ -140,7 +140,7 @@ async function main() {
   s.addText("El ciclo de evaluación", { placeholder: "title" });
   const pasos = [
     [fa.FaFileSignature, "Compromiso", "Actividades, horas y metas; visto bueno de la jefatura"],
-    [fa.FaFolderOpen, "Evidencias", "Se suben a la carpeta individual (Drive)"],
+    [fa.FaFolderOpen, "Evidencias", "Se registran en el CV Académico de UCampus, con fecha"],
     [fa.FaClipboardCheck, "Instrumentos", "Estudiantes, dirección, autoevaluación y direcciones"],
     [fa.FaCalculator, "Calificación", "La Oficina calcula tareas, ámbitos y resultado final"],
     [fa.FaUsers, "Comisión Central", "Revisa el expediente y registra el acta"],
@@ -229,24 +229,24 @@ async function main() {
   s.addText("Evidencia válida, excedente y destacados", { placeholder: "title" });
   tarjeta(s, 0.6, 1.6, 5.95, 4.95, "Evidencia válida");
   await circuloIcono(s, fa.FaFolderOpen, 0.9, 1.9, 0.9, C.text1, "Evidencia");
-  texto(s, "Sólo cuenta la carpeta individual (Drive)", { x: 2.0, y: 1.9, w: 4.3, h: 0.9, fontSize: 19, bold: true, valign: "middle" });
+  texto(s, "Sólo cuenta lo registrado en el CV Académico (UCampus)", { x: 2.0, y: 1.9, w: 4.3, h: 0.9, fontSize: 19, bold: true, valign: "middle" });
   texto(s, "La información que la Oficina recoge de la carga académica es un trabajo adicional y no acredita cumplimiento.", { x: 0.9, y: 3.0, w: 5.4, h: 1.0, fontSize: 15, color: C.text2 });
   texto(s, "0%", { x: 0.9, y: 4.2, w: 1.9, h: 1.0, fontSize: 54, bold: true, color: C.accent5 });
-  texto(s, "para la actividad sin evidencia en la carpeta. Quien no provee evidencias obtiene la calificación mínima.", { x: 2.9, y: 4.3, w: 3.4, h: 1.9, fontSize: 14, color: C.text2 });
+  texto(s, "para la actividad sin evidencia en el CV Académico. Quien no provee evidencias obtiene la calificación mínima.", { x: 2.9, y: 4.3, w: 3.4, h: 1.9, fontSize: 14, color: C.text2 });
   tarjeta(s, 6.75, 1.6, 5.95, 4.95, "Excedente");
   await circuloIcono(s, fa.FaAward, 7.05, 1.9, 0.9, C.accent2, "Excedente");
   texto(s, "Excedente validado: hasta 120%", { x: 8.15, y: 1.9, w: 4.3, h: 0.9, fontSize: 19, bold: true, valign: "middle" });
   formula(s, "excedente", 7.05, 3.0, 0.8, 5.4);
   texto(s, "Lo que supera el tope no sube la calificación, pero queda registrado como destacado (tarea, subcategoría y cumplimiento real) para el reconocimiento institucional. Un excedente sin validar cuenta como 100%.", { x: 7.05, y: 4.1, w: 5.4, h: 2.2, fontSize: 14, color: C.text2 });
-  s.addNotes("Dos reglas clave: la evidencia sólo se acepta desde la carpeta individual, y el excedente se reconoce pero con tope.");
+  s.addNotes("Dos reglas clave: la evidencia sólo se acepta desde el CV Académico de UCampus, y el excedente se reconoce pero con tope.");
 
   // 8. Ámbito y compromiso
   s = pres.addSlide({ masterName: "CONTENIDO", sectionTitle: "Cálculo" });
   s.addText("Del cumplimiento de las tareas al del compromiso", { placeholder: "title" });
   tarjeta(s, 0.6, 1.6, 5.6, 4.95, "Cumplimiento del ámbito");
   texto(s, "Cumplimiento de cada ámbito", { x: 0.9, y: 1.85, w: 5.0, h: 0.45, fontSize: 18, bold: true });
-  formula(s, "ambito", 0.9, 2.45, 1.75);
-  texto(s, "Promedio de las tareas del ámbito. πₜ es un peso opcional (por defecto 1). Cada ámbito recibe también su letra.", { x: 0.9, y: 4.5, w: 5.0, h: 1.6, fontSize: 14, color: C.text2 });
+  formula(s, "ambito", 0.9, 2.6, 1.25);
+  texto(s, "Promedio simple de las nₐ tareas comprometidas en el ámbito: todas pesan lo mismo. Cada ámbito recibe también su letra.", { x: 0.9, y: 4.5, w: 5.0, h: 1.6, fontSize: 14, color: C.text2 });
   s.addShape(pres.shapes.CHEVRON, { x: 6.35, y: 3.75, w: 0.45, h: 0.7, fill: { color: C.accent4 }, line: { color: C.accent4, width: 0 }, objectName: "Flecha ámbito-compromiso" });
   tarjeta(s, 6.95, 1.6, 5.75, 4.95, "Cumplimiento del compromiso");
   texto(s, "Cumplimiento del compromiso", { x: 7.25, y: 1.85, w: 5.2, h: 0.45, fontSize: 18, bold: true });
@@ -370,7 +370,7 @@ async function main() {
   s.addText("Próximos pasos: implementación en UCampus", { placeholder: "title" });
   const fases = [
     ["Compromiso", "Formulario con horas, subcategorías, metas y etapas; resumen y validaciones automáticas"],
-    ["Evidencias", "Carpeta individual por actividad, validación y situaciones especiales"],
+    ["Evidencias", "CV Académico por actividad, con fechas, validación y situaciones especiales"],
     ["Instrumentos", "Pautas Cumple / No cumple / No aplica enlazadas a actividades y secciones"],
     ["Cálculo e informes", "Calificación automática, informe de cierre, expediente y notificación"],
     ["Análisis", "Tablero institucional, exportaciones y comparación entre períodos"],

@@ -85,11 +85,12 @@ escala_numerica:
   - [40, 2]
   - [0, 1]
 
-# Evidencia válida: la que la persona sube a su carpeta individual (Drive). La información que la Oficina
+# Evidencia válida: la que la persona registra, con sus medios de verificación y su fecha, en el CV Académico
+# de UCampus (ya no en una carpeta de Drive). La información que la Oficina
 # recoge de otras fuentes, como la carga académica, no acredita cumplimiento: la tarea vale 0, y quien no
 # provee evidencias obtiene la calificación mínima.
 fuentes_no_validas:
-  carga_academica: Sólo carga académica, sin evidencia en la carpeta individual
+  carga_academica: Sólo carga académica, sin evidencia aportada por la persona
 
 # Valor (0–100) de los estados de evidencia cuando no hay meta numérica.
 estados_evidencia:

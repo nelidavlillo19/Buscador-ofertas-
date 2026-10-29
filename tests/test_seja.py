@@ -28,16 +28,21 @@ def test_ponderacion_80_compromiso_10_auto_10_estudiantes():
     assert r.letra == "D"
 
 
+def test_las_tareas_no_llevan_peso():
+    with pytest.raises(ErrorCompromiso, match="promedio simple"):
+        calificar(academico({"docencia": 100}, [tarea("docencia", evidencia={"estado": "cumplido"}, peso=2)]))
+
+
 def test_tareas_se_promedian_dentro_del_ambito_y_ambito_se_califica():
     r = calificar(academico({"docencia": 100}, [
         tarea("docencia", "cursos_pregrado", instrumento={"puntaje": 3, "min": 1, "max": 4}),
         tarea("docencia", "practicas", evidencia={"comprometido": 4, "logrado": 2}),
-        tarea("docencia", "tutoria", evidencia={"estado": "cumplido"}, peso=2),
+        tarea("docencia", "tutoria", evidencia={"estado": "cumplido"}),
     ]))
     docencia = r.ambitos[0]
     assert [t.puntaje for t in docencia.tareas] == [66.67, 50.0, 100.0]
-    assert docencia.puntaje == round((66.67 + 50 + 200) / 4, 2)
-    assert docencia.letra == "B"
+    assert docencia.puntaje == round((66.67 + 50 + 100) / 3, 2)  # promedio simple: 72,2%
+    assert docencia.letra == "C"
 
 
 def test_pauta_cumple_no_cumple_ignora_no_aplica():

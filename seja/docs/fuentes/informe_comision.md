@@ -41,7 +41,7 @@ El resultado se calcula en tres niveles, según el Modelo de Calificación Acad�
 
 1. **Cumplimiento de cada tarea ($p_t$).** Se calcula con el instrumento o con la evidencia registrada en el CV Académico de UCampus. Un excedente validado se reconoce hasta {{TOPE}}%.
 
-2. **Cumplimiento de cada ámbito ($S_a$).** *Por definir:* ponderación por las horas de cada tarea del ámbito, o promedio simple de las tareas del ámbito.
+2. **Cumplimiento de cada ámbito ($S_a$).** Es el promedio simple de las tareas comprometidas en el ámbito: $S_a = \frac{1}{n_a} \sum_{t \in a} p_t$.
 
 3. **Cumplimiento del compromiso ($C$).** Es el promedio de los ámbitos, ponderado por las horas comprometidas:
 

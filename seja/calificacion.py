@@ -177,7 +177,7 @@ def evaluar_evidencia(datos: dict, modelo: dict, contexto: str,
     fuente = datos.get("fuente")
     if fuente in modelo["fuentes_no_validas"]:
         return 0.0, False, modelo["fuentes_no_validas"][fuente], {
-            "destaca": False, "comprometido": "—", "evidenciado": "Sin evidencia en la carpeta"}
+            "destaca": False, "comprometido": "—", "evidenciado": "Sin evidencia en el CV Académico"}
     if "etapa_comprometida" in datos:
         return evaluar_etapa(datos, modelo, contexto, validado)
     if "comprometido" in datos:
@@ -258,9 +258,10 @@ def evaluar_tarea(tarea: dict, modelo: dict, n: int, factor: float = 1.0) -> Res
     if not puntajes:
         raise ErrorCompromiso(f"{contexto}: debe tener 'instrumento' y/o 'evidencia'")
 
-    peso = float(tarea.get("peso", 1))
-    if peso <= 0:
-        raise ErrorCompromiso(f"{contexto}: el peso debe ser mayor que 0")
+    if "peso" in tarea:
+        raise ErrorCompromiso(f"{contexto}: el cumplimiento del ámbito es el promedio simple de sus tareas "
+                              "comprometidas; las tareas no llevan 'peso'")
+    peso = 1.0
     real = sum(puntajes) / len(puntajes)
     tope = modelo["tope_excedente"]
     detalle = " + ".join(detalles)
@@ -402,7 +403,7 @@ def calificar(datos: dict, modelo: dict | None = None) -> Resultado:
     for clave, pct in declarado.items():
         propias = [t for t in tareas if t.ambito == clave]
         if propias:
-            puntaje = sum(t.puntaje * t.peso for t in propias) / sum(t.peso for t in propias)
+            puntaje = sum(t.puntaje for t in propias) / len(propias)  # promedio simple de las tareas
         else:
             puntaje = 0.0
             observaciones.append(f"{modelo['ambitos'][clave]['nombre']}: declarado en el compromiso "

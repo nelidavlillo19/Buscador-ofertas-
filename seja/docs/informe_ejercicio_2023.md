@@ -26,7 +26,7 @@ Se aplicó el modelo de calificación SEJA a los registros 2023 y 2024 de **25 s
 
 - **Compromisos 2024.** 8 de 12 permiten calcular la ponderación por horas. Los demás no tienen resumen de horas o el formulario quedó incompleto. El formulario 2024 no tiene casilla de gestión, y las horas de gestión aparecen en observaciones o mezcladas con docencia.
 
-- **Informes de cierre 2024.** La evidencia válida es la de la carpeta individual (Drive). La información que la Oficina recoge de la carga académica es un trabajo adicional y no acredita cumplimiento: esas actividades valen 0%, y quien no provee evidencias obtiene la calificación mínima. Con ese criterio, el sujeto 20 obtiene 71,9% (C) y el sujeto 23 obtiene 0,0% (D). Se omiten los informes de cierre de 6 sujetos sin compromiso de desempeño, porque la falta puede deberse a que el nivel central no entregó toda la información a la Oficina para la inducción.
+- **Informes de cierre 2024.** La evidencia válida es la que aportó la persona (en 2023–2024, en la carpeta individual de Drive; en adelante, en el CV Académico de UCampus). La información que la Oficina recoge de la carga académica es un trabajo adicional y no acredita cumplimiento: esas actividades valen 0%, y quien no provee evidencias obtiene la calificación mínima. Con ese criterio, el sujeto 20 obtiene 71,9% (C) y el sujeto 23 obtiene 0,0% (D). Se omiten los informes de cierre de 6 sujetos sin compromiso de desempeño, porque la falta puede deberse a que el nivel central no entregó toda la información a la Oficina para la inducción.
 
 - **Carga fuera de rango.** Hay docencias fuera del rango del reglamento (86,7% en un compromiso y 19,5% en un cierre) y horas declaradas fuera de los resúmenes.
 
@@ -74,9 +74,9 @@ más allá de la etapa comprometida quedan **registrados como destacados** para 
 
 ### 3.2 Cumplimiento de cada ámbito ($S_a$)
 
-Las tareas se promedian dentro de su ámbito $a$ (docencia; investigación, creación e innovación; vinculación con
-el medio; gestión académica). $\pi_t$ es un peso opcional de la tarea, que por defecto vale 1:
-$$S_a = \frac{\sum_{t \in a} \pi_t \, p_t}{\sum_{t \in a} \pi_t}$$
+El cumplimiento de cada ámbito $a$ (docencia; investigación, creación e innovación; vinculación con el medio;
+gestión académica) es el promedio simple de sus $n_a$ tareas comprometidas:
+$$S_a = \frac{1}{n_a} \sum_{t \in a} p_t$$
 
 ### 3.3 Ponderación de cada ámbito ($w_a$)
 
@@ -896,7 +896,7 @@ _Sin horas por ámbito: no se puede calcular la ponderación $w_a$._
 
 ## 8. Informes de cierre 2024
 
-**Criterio de evidencia.** Es obligatorio subir la evidencia a la carpeta individual (Drive). Cuando la Oficina recoge información de la carga académica, se trata de un trabajo adicional que no acredita cumplimiento: esas actividades obtienen $p_t = 0$, y la persona que no provee evidencias obtiene la calificación mínima. La carga académica sí se usa para las horas $h_a$ de la ponderación (fórmula 3.3).
+**Criterio de evidencia.** Es obligatorio que la persona aporte la evidencia: en 2023–2024 se subía a la carpeta individual de Drive; en adelante se registra en el CV Académico de UCampus. Cuando la Oficina recoge información de la carga académica, se trata de un trabajo adicional que no acredita cumplimiento: esas actividades obtienen $p_t = 0$, y la persona que no provee evidencias obtiene la calificación mínima. La carga académica sí se usa para las horas $h_a$ de la ponderación (fórmula 3.3).
 
 **Sujetos omitidos.** Se omiten los informes de cierre de los sujetos 03, 19, 21, 22, 24 y 25, que no tienen compromiso de desempeño: la falta puede deberse a un error del nivel central, que no entregó toda la información a la Oficina para realizar la inducción.
 
@@ -956,12 +956,12 @@ $$C = 0{,}250 \cdot 100{,}0 + 0{,}250 \cdot 87{,}5 + 0{,}250 \cdot 100{,}0 + 0{,
 
 | Ámbito | Actividad | Evidencia | $p_t$ |
 |---|---|---|---|
-| Docencia | Docencia de pregrado (6 h) | Sólo carga académica, sin evidencia en la carpeta individual | 0,0% |
-| Docencia | Memorias (2 h) | Sólo carga académica, sin evidencia en la carpeta individual | 0,0% |
-| Investigación, Creación e Innovación | Proyecto interno (6 h) | Sólo carga académica, sin evidencia en la carpeta individual | 0,0% |
-| Investigación, Creación e Innovación | Proyecto con financiamiento externo (22 h) | Sólo carga académica, sin evidencia en la carpeta individual | 0,0% |
-| Gestión Académica | Coordinación de unidad (2 h) | Sólo carga académica, sin evidencia en la carpeta individual | 0,0% |
-| Gestión Académica | Claustro de doctorado (1 h) | Sólo carga académica, sin evidencia en la carpeta individual | 0,0% |
+| Docencia | Docencia de pregrado (6 h) | Sólo carga académica, sin evidencia aportada por la persona | 0,0% |
+| Docencia | Memorias (2 h) | Sólo carga académica, sin evidencia aportada por la persona | 0,0% |
+| Investigación, Creación e Innovación | Proyecto interno (6 h) | Sólo carga académica, sin evidencia aportada por la persona | 0,0% |
+| Investigación, Creación e Innovación | Proyecto con financiamiento externo (22 h) | Sólo carga académica, sin evidencia aportada por la persona | 0,0% |
+| Gestión Académica | Coordinación de unidad (2 h) | Sólo carga académica, sin evidencia aportada por la persona | 0,0% |
+| Gestión Académica | Claustro de doctorado (1 h) | Sólo carga académica, sin evidencia aportada por la persona | 0,0% |
 | Gestión Académica | Unidad de gestión curricular (2 h) | — | 0,0% |
 
 $$\sum_b h_b = 8{,}0 + 28{,}0 + 5{,}0 = 41{,}0 \text{ h semanales}$$
@@ -1037,7 +1037,7 @@ Documentos disponibles por sujeto. Un ciclo completo requiere, para cada año, e
 4. Pedir la **jerarquía** y la **jornada**, y mostrar el rango de carga docente esperado y las horas a justificar (39 h en jornada completa, 20 h en media jornada).
 5. Generar el reporte de octubre y el informe de cierre **desde los mismos datos** (`python -m seja reporte` y `python -m seja cierre`), para evitar las inconsistencias entre documentos.
 6. Mantener el registro de **destacados** (excedentes y avances validados) para el reconocimiento institucional.
-7. Recordar que la **carpeta individual (Drive) es obligatoria**: sin evidencia, la actividad vale 0% y la calificación es la mínima. La carga académica sirve para las horas ($h_a$), no para el cumplimiento ($p_t$).
+7. Recordar que el **registro de evidencias en el CV Académico de UCampus es obligatorio** (reemplaza a la carpeta de Drive): sin evidencia, la actividad vale 0% y la calificación es la mínima. La carga académica sirve para las horas ($h_a$), no para el cumplimiento ($p_t$).
 8. Asegurar con el nivel central que la Oficina reciba la nómina completa para la **inducción**, de modo que nadie quede sin compromiso de desempeño.
 9. Definir para cada **comisión de estudios** su duración, sus condiciones y los compromisos asociados que se evaluarán.
 10. Validar al cerrar el compromiso que la suma de horas coincida con las horas a justificar (39 h o 20 h) y que la docencia esté en el rango de la jerarquía; alertar a la jefatura si no.
@@ -1053,7 +1053,8 @@ Documentos disponibles por sujeto. Un ciclo completo requiere, para cada año, e
 | Etapa evidenciada anterior a la comprometida | 50% |
 | Suspensión (art. 37) | Ausencia justificada de más de 5 meses continuos |
 | Comisión de estudios | Se evalúan los compromisos asociados; si no los hay, regla general de suspensión |
-| Evidencia válida | Carpeta individual (Drive); la carga académica no acredita cumplimiento |
+| Evidencia válida | CV Académico de UCampus (en 2023–2024, carpeta de Drive); la carga académica no acredita cumplimiento |
+| Cumplimiento del ámbito | Promedio simple de las tareas comprometidas |
 | Umbrales | A+ ≥ 101%; A 90–100%; B 75–89%; C 55–74%; D < 55% |
 | Jornada | Completa 44 h (39 h a justificar); media 22 h (20 h a justificar) |
 | Perfil | Único |

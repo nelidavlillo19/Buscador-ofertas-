@@ -32,7 +32,7 @@ La calificación se construye en tres niveles:
 
 | Nivel | Qué es | Cómo se obtiene |
 |---|---|---|
-| **Tarea** | Cada actividad comprometida (un curso, un proyecto, una publicación, una coordinación) | Con un instrumento estandarizado y/o con la evidencia de la carpeta individual |
+| **Tarea** | Cada actividad comprometida (un curso, un proyecto, una publicación, una coordinación) | Con un instrumento estandarizado y/o con la evidencia registrada en el CV Académico de UCampus |
 | **Ámbito** | Docencia; Investigación, Creación e Innovación; Vinculación con el Medio y Extensión; Gestión Académica | Promedio de sus tareas |
 | **Calificación final** | Resultado del período | Ámbitos ponderados por las horas comprometidas (80%), más autoevaluación (10%) y evaluación de estudiantes (10%) |
 
@@ -48,8 +48,8 @@ instrumento o la evidencia con que se evalúa y su periodicidad.
 1. **Compromiso de Desempeño.** El académico o académica declara, de acuerdo con su dirección, sus actividades del
    período: cada una con su subcategoría, sus horas semanales y lo que compromete (una meta, una etapa del proceso o
    una actividad evaluada con instrumento). La jefatura da su visto bueno.
-2. **Evidencias.** Durante el período, la persona sube la evidencia de cada actividad a su **carpeta individual
-   (Drive)**.
+2. **Evidencias.** Durante el período, la persona registra la evidencia de cada actividad, con sus medios de
+   verificación y la fecha de carga, en su **CV Académico de UCampus**.
 3. **Aplicación de instrumentos.** La Oficina coordina la aplicación de las pautas a estudiantes, direcciones y
    unidades, y la autoevaluación.
 4. **Calificación.** La Oficina calcula el cumplimiento de cada tarea y de cada ámbito, y la calificación final, con
@@ -108,7 +108,8 @@ Si una tarea tiene instrumento y evidencia, $p_t$ es el promedio de ambos result
 
 ## 5.7 Evidencia válida
 
-La evidencia válida es la que la persona sube a su **carpeta individual (Drive)**. La información que la Oficina pueda
+La evidencia válida es la que la persona registra, con sus medios de verificación y su fecha, en su **CV Académico
+de UCampus** (no en una carpeta de Drive). La información que la Oficina pueda
 recoger de otras fuentes, como la carga académica, es un trabajo adicional y **no acredita cumplimiento**: la tarea
 vale $p_t = 0$. Quien no provee evidencias obtiene la calificación mínima. La carga académica sí se usa para las horas
 de la ponderación (sección 7).
@@ -127,9 +128,10 @@ validar cuenta como 100%.
 
 # 6. Cumplimiento de cada ámbito
 
-Las tareas de cada ámbito $a$ se promedian. $\pi_t$ es un peso opcional de la tarea, que por defecto vale 1:
+El cumplimiento de cada ámbito $a$ es el **promedio simple** de las $n_a$ tareas comprometidas en él (todas las
+tareas pesan lo mismo; las horas sólo se usan para ponderar los ámbitos, sección 7):
 
-$$S_a = \frac{\sum_{t \in a} \pi_t \, p_t}{\sum_{t \in a} \pi_t}$$
+$$S_a = \frac{1}{n_a} \sum_{t \in a} p_t$$
 
 Cada ámbito recibe además su propia letra, con los umbrales de la sección 8. Un ámbito con horas comprometidas y sin
 tareas evaluadas tiene $S_a = 0$.

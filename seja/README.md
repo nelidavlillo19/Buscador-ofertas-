@@ -100,7 +100,8 @@ Con D (o dos C seguidas) el informe recuerda el ingreso al programa de acompaña
 
 ### Evidencia válida
 
-La evidencia debe estar en la **carpeta individual (Drive)** de la persona. La información que la Oficina recoge de
+La evidencia debe estar registrada, con sus medios de verificación y su fecha, en el **CV Académico de UCampus**
+de la persona (ya no en una carpeta de Drive). La información que la Oficina recoge de
 otras fuentes, como la carga académica, es un trabajo adicional y **no acredita cumplimiento**: se registra con
 `evidencia: {fuente: carga_academica}` y la tarea vale 0%. Quien no provee evidencias obtiene la calificación mínima.
 La carga académica sí sirve para las horas de la ponderación.

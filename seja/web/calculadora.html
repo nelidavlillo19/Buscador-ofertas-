@@ -98,7 +98,7 @@ th.n { text-align: right; }
   <header>
     <span class="eyebrow">SEJA · Reglamento de Carrera Académica, Título III</span>
     <h1>Calificación Académica SEJA</h1>
-    <p>Cada tarea del Compromiso de Desempeño se evalúa con un instrumento estandarizado o con su evidencia. Las tareas se promedian por ámbito, los ámbitos pesan según el % declarado y la autoevaluación y la evaluación de estudiantes pesan siempre lo mismo (% aún por definir; 10% provisional). Se carga un caso de ejemplo; edítalo libremente.</p>
+    <p>Cada tarea del Compromiso de Desempeño se evalúa con un instrumento estandarizado o con su evidencia. Las tareas comprometidas se promedian (promedio simple) por ámbito, la evidencia se registra en el CV Académico de UCampus, los ámbitos pesan según el % declarado y la autoevaluación y la evaluación de estudiantes pesan siempre lo mismo (% aún por definir; 10% provisional). Se carga un caso de ejemplo; edítalo libremente.</p>
   </header>
 
   <div class="layout">
@@ -366,8 +366,8 @@ function calcular() {
     const propias = evaluadas.filter((t) => t.ambito === clave && t.puntaje != null);
     let puntaje = 0;
     if (propias.length) {
-      const pesos = propias.reduce((s, t) => s + (num(t.peso) > 0 ? num(t.peso) : 1), 0);
-      puntaje = propias.reduce((s, t) => s + t.puntaje * (num(t.peso) > 0 ? num(t.peso) : 1), 0) / pesos;
+      // Promedio simple de las tareas comprometidas en el ámbito.
+      puntaje = propias.reduce((s, t) => s + t.puntaje, 0) / propias.length;
     } else obs.push(`${MODELO.ambitos[clave].nombre}: declarado sin tareas evaluadas (puntaje 0).`);
     return { clave, nombre: MODELO.ambitos[clave].nombre, pct: num(pct), pond: pComp * num(pct) / 100,
              puntaje, letra: clasificar(puntaje), excedente: propias.some((t) => t.excedente), n: propias.length };
@@ -439,7 +439,6 @@ function pintarTareas() {
           <div class="tarea-eval">
             <label for="t${i}-tipo">Evaluada por<select id="t${i}-tipo" data-i="${i}" data-campo="tipo">${opciones({ pauta: "Pauta: cumple / no cumple", escala: "Instrumento (escala)", porcentaje: "Instrumento (%)", meta: "Evidencia: meta", estado: "Evidencia: estado" }, t.tipo)}</select></label>
             ${camposEval(t, i)}
-            <label for="t${i}-peso">Peso<input id="t${i}-peso" data-i="${i}" data-campo="peso" type="number" min="0" step="any" value="${esc(t.peso ?? 1)}"></label>
           </div>
           <div class="tarea-pie"><span>Puntaje de la tarea</span><b id="t${i}-res">${r.puntaje == null ? "—" : fmt(r.puntaje)}${r.real > MODELO.tope ? ` (real ${fmt(r.real, 0)}%, tope ${MODELO.tope}%)` : ""}${r.excedente ? " ★ destaca" : ""}</b></div>
         </div>`;

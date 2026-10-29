@@ -87,9 +87,9 @@ más allá de la etapa comprometida quedan **registrados como destacados** para 
 
 ### 3.2 Cumplimiento de cada ámbito ($S_a$)
 
-Las tareas se promedian dentro de su ámbito $a$ (docencia; investigación, creación e innovación; vinculación con
-el medio; gestión académica). $\pi_t$ es un peso opcional de la tarea, que por defecto vale 1:
-$$S_a = \frac{\sum_{t \in a} \pi_t \, p_t}{\sum_{t \in a} \pi_t}$$
+El cumplimiento de cada ámbito $a$ (docencia; investigación, creación e innovación; vinculación con el medio;
+gestión académica) es el promedio simple de sus $n_a$ tareas comprometidas:
+$$S_a = \frac{1}{n_a} \sum_{t \in a} p_t$$
 
 ### 3.3 Ponderación de cada ámbito ($w_a$)
 
@@ -476,7 +476,8 @@ def generar() -> str:
         f"- **Compromisos 2024.** {sum(1 for r in res_24k if r['w'])} de {len(res_24k)} permiten calcular la ponderación "
         "por horas. Los demás no tienen resumen de horas o el formulario quedó incompleto. El formulario 2024 no tiene "
         "casilla de gestión, y las horas de gestión aparecen en observaciones o mezcladas con docencia.",
-        "- **Informes de cierre 2024.** La evidencia válida es la de la carpeta individual (Drive). La información "
+        "- **Informes de cierre 2024.** La evidencia válida es la que aportó la persona (en 2023–2024, en la carpeta "
+        "individual de Drive; en adelante, en el CV Académico de UCampus). La información "
         "que la Oficina recoge de la carga académica es un trabajo adicional y no acredita cumplimiento: esas actividades "
         "valen 0%, y quien no provee evidencias obtiene la calificación mínima. Con ese criterio, "
         + _lista([f"el sujeto {r['sujeto']} obtiene {n(r['c'])}% ({r['l']})" for r in res_24c]) + ". "
@@ -523,7 +524,8 @@ def generar() -> str:
         tabla_24k,
         *det_24k,
         "## 8. Informes de cierre 2024",
-        "**Criterio de evidencia.** Es obligatorio subir la evidencia a la carpeta individual (Drive). Cuando la Oficina "
+        "**Criterio de evidencia.** Es obligatorio que la persona aporte la evidencia: en 2023–2024 se subía a la carpeta "
+        "individual de Drive; en adelante se registra en el CV Académico de UCampus. Cuando la Oficina "
         "recoge información de la carga académica, se trata de un trabajo adicional que no acredita cumplimiento: esas "
         "actividades obtienen $p_t = 0$, y la persona que no provee evidencias obtiene la calificación mínima. La carga "
         "académica sí se usa para las horas $h_a$ de la ponderación (fórmula 3.3).",
@@ -575,7 +577,8 @@ def generar() -> str:
             "y `python -m seja cierre`), para evitar las inconsistencias entre documentos.",
             "6. Mantener el registro de **destacados** (excedentes y avances validados) para el reconocimiento "
             "institucional.",
-            "7. Recordar que la **carpeta individual (Drive) es obligatoria**: sin evidencia, la actividad vale 0% y la "
+            "7. Recordar que el **registro de evidencias en el CV Académico de UCampus es obligatorio** (reemplaza a la carpeta "
+            "de Drive): sin evidencia, la actividad vale 0% y la "
             "calificación es la mínima. La carga académica sirve para las horas ($h_a$), no para el cumplimiento ($p_t$).",
             "8. Asegurar con el nivel central que la Oficina reciba la nómina completa para la **inducción**, de modo que "
             "nadie quede sin compromiso de desempeño.",
@@ -592,7 +595,8 @@ def generar() -> str:
             ["Etapa evidenciada anterior a la comprometida", "50%"],
             ["Suspensión (art. 37)", "Ausencia justificada de más de 5 meses continuos"],
             ["Comisión de estudios", "Se evalúan los compromisos asociados; si no los hay, regla general de suspensión"],
-            ["Evidencia válida", "Carpeta individual (Drive); la carga académica no acredita cumplimiento"],
+            ["Evidencia válida", "CV Académico de UCampus (en 2023–2024, carpeta de Drive); la carga académica no acredita cumplimiento"],
+            ["Cumplimiento del ámbito", "Promedio simple de las tareas comprometidas"],
             ["Umbrales", "A+ ≥ 101%; A 90–100%; B 75–89%; C 55–74%; D < 55%"],
             ["Jornada", "Completa 44 h (39 h a justificar); media 22 h (20 h a justificar)"],
             ["Perfil", "Único"]]),

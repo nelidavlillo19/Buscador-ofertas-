@@ -134,10 +134,11 @@ El resumen muestra, por ámbito: horas semanales, % del compromiso ($w_a$) y pes
 
 # 5. Módulo 2: Evidencias
 
-## 5.1 Carpeta individual
+## 5.1 Evidencias en el CV Académico
 
-Cada actividad comprometida tiene un espacio de evidencia dentro de la carpeta individual: integración con Google
-Drive o un repositorio de UCampus. Por actividad se registra:
+Cada actividad comprometida tiene su espacio de evidencia en el **CV Académico de UCampus** (no en una carpeta de
+Drive). Desde ahí se genera el documento digital con los enlaces a las evidencias y medios de verificación que recibe
+la Comisión. Por actividad se registra:
 
 | Campo | Descripción |
 |---|---|
@@ -145,14 +146,14 @@ Drive o un repositorio de UCampus. Por actividad se registra:
 | Mecanismo | Lista según la subcategoría (por ejemplo, "constancia de la revista", "carta de adjudicación") |
 | Etapa evidenciada | Si la actividad se comprometió por etapa |
 | Cantidad lograda | Si se comprometió una meta |
-| Fecha de la evidencia | Debe estar dentro del período |
+| Fecha de la evidencia y fecha de carga | Deben estar dentro del período; la fecha de carga la registra UCampus |
 | Estado de revisión | Pendiente, validada, observada o rechazada |
 | Validado por / fecha | Dirección o Oficina que revisó |
 | Excedente | Marca automática cuando lo logrado supera lo comprometido; requiere validación |
 
 ## 5.2 Reglas
 
-- **Sólo cuenta la evidencia de la carpeta individual.** UCampus no debe marcar una actividad como cumplida por estar
+- **Sólo cuenta la evidencia registrada en el CV Académico.** UCampus no debe marcar una actividad como cumplida por estar
   en la carga académica: si no hay evidencia, la actividad queda "sin evidencia" ($p_t = 0$).
 - Las evidencias se suben durante todo el período; la Oficina fija una fecha de cierre.
 - Antes del cierre, UCampus envía recordatorios a quienes tengan actividades sin evidencia.
@@ -219,7 +220,7 @@ UCampus ejecuta el cálculo al cierre del período (y en modo de simulación dur
 
 3. **Cumplimiento de cada ámbito:**
 
-$$S_a = \frac{\sum_{t \in a} \pi_t\, p_t}{\sum_{t \in a} \pi_t}$$
+$$S_a = \frac{1}{n_a} \sum_{t \in a} p_t \qquad \text{(promedio simple de las } n_a \text{ tareas comprometidas en el ámbito)}$$
 
 4. **Ponderación de cada ámbito**, desde las horas del compromiso aprobado: $w_a = h_a / \sum_b h_b$.
 5. **Cumplimiento del compromiso y calificación final:**
@@ -282,7 +283,7 @@ Tablero de la Oficina, con filtros por período, facultad, unidad, jerarquía y 
 | Distribución de letras (A+, A, B, C, D) y de cumplimiento final | Visión general del período |
 | Cumplimiento promedio por ámbito ($S_a$) | Detectar ámbitos débiles por unidad |
 | Distribución de horas por ámbito ($w_a$) frente al rango de la jerarquía | Revisar la asignación de carga |
-| % de actividades con evidencia validada / sin evidencia | Medir la adhesión a la carpeta individual |
+| % de actividades con evidencia validada / sin evidencia | Medir el registro de evidencias en el CV Académico |
 | Tasa de respuesta de los instrumentos | Confiabilidad de la evaluación de estudiantes |
 | Compromisos no presentados o incompletos | Seguimiento de la inducción |
 | Destacados por ámbito y subcategoría | Insumo para el reconocimiento institucional |
@@ -319,7 +320,7 @@ Las fechas definitivas las fija la Oficina en el calendario oficial aprobado por
 | Fase | Alcance |
 |---|---|
 | 1 | Ficha académica, catálogo y nuevo formulario de compromiso con horas, subcategorías, metas y etapas; resumen y validaciones automáticas |
-| 2 | Carpeta individual por actividad, revisión y validación de evidencias, situaciones especiales |
+| 2 | Evidencias por actividad en el CV Académico, revisión y validación, situaciones especiales |
 | 3 | Instrumentos en formato Cumple / No cumple / No aplica, enlazados a actividades y secciones |
 | 4 | Cálculo automático, informe de cierre, expediente y notificación |
 | 5 | Tablero de análisis, exportaciones y comparación entre períodos |

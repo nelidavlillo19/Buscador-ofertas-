@@ -1,0 +1,96 @@
+# Configuración UMCE / SEJA: proyección de la carrera académica del Reglamento SEJA frente a la Res. 320/93.
+# Uso: python -m revisor_sueldos analizar <planillas> --config config/revisor_sueldos_umce_seja.yaml
+# Todos los montos son mensuales brutos en pesos. Ajusta los valores a la realidad de la institución.
+
+# Clasificación de cada fila en un grupo de trabajadores. Se prueban en orden contra el estamento
+# (y, si no calza, contra el cargo); son expresiones regulares sobre texto sin tildes y en minúsculas.
+# Ojo: "profesor" contiene "profes", por eso académicos va antes que profesionales.
+grupos:
+  academicos: ["acad", "docen", "profesor", "investigador", "instructor"]
+  directivos: ["direct", "autoridad", "rector", "decan", "jefe superior", "vicerrect"]
+  profesionales: ["profesional"]
+  tecnicos: ["tecnic"]
+  administrativos: ["administrativ"]   # si prefieres sumarlos a auxiliares, mueve este patrón a esa lista
+  auxiliares: ["auxiliar", "servicio", "mayordom", "portero", "chofer"]
+
+# Hojas que no son nóminas (resúmenes, comisiones de servicio, notas): se omiten si su nombre contiene
+# alguno de estos textos.
+excluir_hojas: [resumen, comision, notas, proyecci, departamentos, duplicados]
+
+# Honorarios: sólo es "honorario docente" quien hace clases y tiene una jerarquía homologada; la
+# descripción de la función parte con la jerarquía ("Instructor, docencia y evaluación ... asignatura").
+# Quien hace clases sin jerarquía homologada queda como "docencia sin jerarquía"; el resto son
+# profesionales a honorarios (temporales o permanentes). Expresiones sobre texto sin tildes y en minúsculas.
+honorarios:
+  jerarquia_homologada: '^\W*(instructora?|asistente|asociad[oa]|titular)\b'
+  docencia: 'docen|clase|asignatura|catedra'
+  clases_sin_jerarquia: 'docencia y evaluacion'
+
+# Jerarquías académicas reconocidas en cargo/estamento y su rango (mayor = más alta)
+jerarquias_academicas:
+  ayudante: 1
+  instructor: 2
+  adjunto: 3
+  asistente: 4
+  asociado: 5
+  titular: 6
+
+# Factor de costo para el empleador sobre el bruto (aportes de cargo de la universidad:
+# seguro de accidentes, SIS, seguro de cesantía, etc.). Valores referenciales: ajústalos.
+costo_empleador:
+  planta: 0.024
+  contrata: 0.024
+  codigo_trabajo: 0.054
+  honorarios: 0.0
+  defecto: 0.024
+
+revision:
+  desvios_atipico: 3.0        # desviaciones estándar para marcar una remuneración atípica
+
+trayectorias:
+  mes_corte: null             # las nóminas UMCE disponibles no son continuas: último mes de cada año
+  # cortes: ["2025-09", "2026-02"]   # o fija los períodos a comparar (deben existir en las planillas)
+  paso_a_planta_cuenta_como_ascenso: false
+  orden_grupos: [auxiliares, administrativos, tecnicos, profesionales, academicos, directivos]
+
+proyeccion:
+  # Noviembre 2025 es el último mes con nómina de planta Y de contrata en las planillas disponibles.
+  periodo_base: "2025-11"
+  horizonte_anios: 10           # 2026–2035, igual que el Informe de Costeo SEJA v4
+  reajuste_anual: 0.038         # promedio de los reajustes supuestos en el Informe v4 (4,3% → 3,2%)
+  crecimiento_dotacion: 0.0
+  tipos_incluidos: [planta, contrata]   # honorarios se costean aparte (no entran a la carrera académica)
+  jornada_completa: 44
+  garantia_no_disminucion: true
+  gradualidad: [1.0]            # el SEJA no cambia la escala: no hay nivelación que graduar
+
+  # Tasa anual de ascenso con la Res. 320/93. Académicos: ~9 ascensos/año sobre ~250 académicos de
+  # planta y contrata, según las resoluciones exentas de jerarquización 2020–2025 (carpeta SEJA en Drive).
+  # Los demás estamentos no tienen historia comparable en las planillas (sin grado ni apellidos).
+  tasas_ascenso: {academicos: 0.04}
+  tasa_ascenso_defecto: 0.0
+  # Con el SEJA los plazos máximos de permanencia (Instructor ≤6, Asistente ≤10, Asociado ≤12 años)
+  # obligan a ascender o egresar: ≥ 1/6, 1/10 y 1/12 por año para quienes no son Titulares.
+  tasas_ascenso_reforma: {academicos: 0.10}
+  premio_ascenso_defecto: 0.0
+
+  evaluacion:
+    # Letras de la calificación SEJA (ver módulo seja/). Distribución SUPUESTA: reemplazar por los
+    # resultados del primer proceso de calificación.
+    distribucion: {A+: 0.10, A: 0.50, B: 0.25, C: 0.10, D: 0.05}
+    # El Reglamento SEJA no contempla incentivos pecuniarios por la calificación.
+    incentivo: {A+: 0.0, A: 0.0, B: 0.0, C: 0.0, D: 0.0}
+    # Para ascender se exige calificación A en los dos últimos procesos: sólo A+/A habilitan.
+    multiplicador_ascenso: {A+: 1.25, A: 1.0, B: 0.5, C: 0.0, D: 0.0}
+
+  # Sólo la carrera académica cambia con el SEJA. 'premio' = diferencia de la Escala de
+  # Remuneraciones 2024–2025 (jornada completa) entre una jerarquía y la anterior:
+  # Instructor $1.265.913 · Asistente $1.833.220 · Asociado $2.524.875 · Titular $3.029.790.
+  jerarquizacion:
+    academicos:
+      criterio: jerarquia
+      niveles:
+        - {nombre: "Instructor",         jerarquias: [ayudante, instructor, adjunto], piso: 0}
+        - {nombre: "Profesor Asistente", jerarquias: [asistente], piso: 0, premio: 0.448}
+        - {nombre: "Profesor Asociado",  jerarquias: [asociado],  piso: 0, premio: 0.377}
+        - {nombre: "Profesor Titular",   jerarquias: [titular],   piso: 0, premio: 0.200}

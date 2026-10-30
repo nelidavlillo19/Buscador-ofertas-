@@ -1,0 +1,84 @@
+# Funciones de cada jerarquía según la propuesta de Reglamento de Carrera Académica UMCE (Título II).
+# La carrera académica UMCE tiene un único perfil: cada jerarquía reúne las funciones de los antiguos perfiles
+# investigador/a y vinculador/a (PROVISIONAL, hasta que el reglamento fije la nueva redacción).
+# El Informe de Cierre marca cada función como cumplida si hay al menos una tarea evidenciada (puntaje > 0)
+# en alguna de sus subcategorías ("ambito.subcategoria", o "ambito.*" para todo el ámbito).
+# Las funciones `opcional: true` no se marcan como pendientes si no se declararon.
+
+grupos:
+  docencia_cursos: &docencia_cursos [docencia.cursos_pregrado, docencia.cursos_postgrado]
+  direccion: &direccion [docencia.direccion_titulacion]
+  formacion_academicos: &formacion_academicos [docencia.formacion_academicos]
+  formacion_continua: &formacion_continua [docencia.formacion_continua]
+  proyectos_ici: &proyectos_ici [investigacion.proyectos, investigacion.creacion_artistica, investigacion.innovacion]
+  publicar: &publicar [investigacion.publicaciones, investigacion.libros, investigacion.creacion_artistica,
+                       investigacion.patentes_licencias]
+  presentar: &presentar [investigacion.presentaciones, vinculacion.difusion]
+  redes: &redes [investigacion.redes, vinculacion.redes]
+  vcm: &vcm [vinculacion.programas_vcm, vinculacion.proyectos_vcm, vinculacion.iniciativas_vcm,
+             vinculacion.actividades_relevantes, vinculacion.educacion_continua, vinculacion.trabajo_asociativo,
+             vinculacion.extension]
+  difusion_vcm: &difusion_vcm [vinculacion.difusion, vinculacion.publicaciones_vcm, vinculacion.representacion,
+                               investigacion.presentaciones]
+  gestion: &gestion [gestion.*]
+  investigacion: &investigacion [investigacion.*]
+  vinculacion: &vinculacion [vinculacion.*]
+
+jerarquias:
+  instructor:
+    articulo: 14
+    funciones:
+      - {funcion: "Impartir docencia de pregrado y/o postgrado", subcategorias: [docencia.cursos_pregrado, docencia.cursos_postgrado]}
+      - {funcion: "Colaborar en la supervisión de trabajos de titulación y/o graduación", subcategorias: [docencia.direccion_titulacion]}
+      - {funcion: "Contribuir a la formación y acompañamiento de estudiantes ayudantes", subcategorias: [docencia.ayudantes]}
+      - {funcion: "Presentar trabajos en eventos científicos, artísticos o deportivos, o publicar", subcategorias: [investigacion.presentaciones, investigacion.publicaciones, investigacion.libros, investigacion.creacion_artistica, vinculacion.difusion]}
+      - {funcion: "Colaborar en iniciativas, proyectos o programas de vinculación con el medio", subcategorias: [vinculacion.programas_vcm, vinculacion.proyectos_vcm, vinculacion.iniciativas_vcm, vinculacion.actividades_relevantes, vinculacion.educacion_continua, vinculacion.trabajo_asociativo, vinculacion.extension]}
+      - {funcion: "Cumplir con acciones de gestión asignadas", subcategorias: [gestion.*]}
+
+  asistente:
+    articulo: "18-19"
+    funciones:
+      - {funcion: "Impartir docencia de pregrado y/o postgrado", subcategorias: [docencia.cursos_pregrado, docencia.cursos_postgrado]}
+      - {funcion: "Dirigir trabajos conducentes a grados académicos y/o títulos profesionales", subcategorias: [docencia.direccion_titulacion]}
+      - {funcion: "Colaborar en la formación y desarrollo de académicos/as de jerarquía menor o equivalente", subcategorias: [docencia.formacion_academicos]}
+      - {funcion: "Participar como investigador/a principal o co-investigador/a en proyectos de investigación, innovación o creación", subcategorias: [investigacion.proyectos, investigacion.creacion_artistica, investigacion.innovacion]}
+      - {funcion: "Publicar resultados de investigación o difundir obra", subcategorias: [investigacion.publicaciones, investigacion.libros, investigacion.creacion_artistica, investigacion.patentes_licencias]}
+      - {funcion: "Presentar trabajos en eventos científicos, artísticos o deportivos", subcategorias: [investigacion.presentaciones, vinculacion.difusion]}
+      - {funcion: "Participar en redes académicas, artísticas, deportivas o profesionales", subcategorias: [investigacion.redes, vinculacion.redes]}
+      - {funcion: "Coordinar en roles de gestión académica-administrativa", subcategorias: [gestion.*]}
+      - {funcion: "Acreditar formación continua", subcategorias: [docencia.formacion_continua]}
+      - {funcion: "Participar, al menos como co-responsable, en iniciativas, proyectos o programas de VcM", subcategorias: [vinculacion.programas_vcm, vinculacion.proyectos_vcm, vinculacion.iniciativas_vcm, vinculacion.actividades_relevantes, vinculacion.educacion_continua, vinculacion.trabajo_asociativo, vinculacion.extension]}
+      - {funcion: "Divulgar trabajos, experiencias de VcM o producciones en eventos", subcategorias: [vinculacion.difusion, vinculacion.publicaciones_vcm, vinculacion.representacion, investigacion.presentaciones]}
+
+  asociado:
+    articulo: "23-24"
+    funciones:
+      - {funcion: "Impartir docencia de pregrado y/o postgrado", subcategorias: [docencia.cursos_pregrado, docencia.cursos_postgrado]}
+      - {funcion: "Dirigir trabajos conducentes a título profesional y/o grados académicos de pre y postgrado", subcategorias: [docencia.direccion_titulacion]}
+      - {funcion: "Colaborar en la formación y desarrollo de académicos/as de jerarquía menor o equivalente", subcategorias: [docencia.formacion_academicos]}
+      - {funcion: "Liderar proyectos de investigación, innovación o creación como investigador/a principal", subcategorias: [investigacion.proyectos, investigacion.creacion_artistica, investigacion.innovacion]}
+      - {funcion: "Publicar como autor/a principal resultados de investigación o difundir obra", subcategorias: [investigacion.publicaciones, investigacion.libros, investigacion.creacion_artistica, investigacion.patentes_licencias]}
+      - {funcion: "Presentar trabajos en eventos científicos, artísticos o deportivos", subcategorias: [investigacion.presentaciones, vinculacion.difusion]}
+      - {funcion: "Participar en redes nacionales e internacionales", subcategorias: [investigacion.redes, vinculacion.redes]}
+      - {funcion: "Formar parte de equipos de investigación interdisciplinarios o multidisciplinarios", subcategorias: [investigacion.equipos_interdisciplinarios]}
+      - {funcion: "Acreditar formación continua", subcategorias: [docencia.formacion_continua]}
+      - {funcion: "Realizar tareas de coordinación en la gestión académica-administrativa", subcategorias: [gestion.*]}
+      - {funcion: "Liderar iniciativas, proyectos o programas de VcM competitivos o de relevancia regional o nacional", subcategorias: [vinculacion.programas_vcm, vinculacion.proyectos_vcm, vinculacion.iniciativas_vcm, vinculacion.actividades_relevantes, vinculacion.educacion_continua, vinculacion.trabajo_asociativo, vinculacion.extension]}
+      - {funcion: "Exponer, presentar o difundir actividades académicas y de VcM", subcategorias: [vinculacion.difusion, vinculacion.publicaciones_vcm, vinculacion.representacion, investigacion.presentaciones]}
+
+  titular:
+    articulo: "28-29"
+    funciones:
+      - {funcion: "Impartir docencia de pregrado y postgrado", subcategorias: [docencia.cursos_pregrado, docencia.cursos_postgrado]}
+      - {funcion: "Dirigir trabajos conducentes a título profesional y/o grados académicos de pre y postgrado", subcategorias: [docencia.direccion_titulacion]}
+      - {funcion: "Liderar actividades para la formación y desarrollo de académicos/as de jerarquía menor", subcategorias: [docencia.formacion_academicos]}
+      - {funcion: "Liderar proyectos de investigación, innovación o creación competitivos", subcategorias: [investigacion.proyectos, investigacion.creacion_artistica, investigacion.innovacion]}
+      - {funcion: "Postular a fondos de proyectos con financiamiento externo", subcategorias: [investigacion.postulacion_fondos, investigacion.proyectos]}
+      - {funcion: "Integrar núcleos o claustros de postgrado (estándares CNA)", subcategorias: [investigacion.claustros_postgrado]}
+      - {funcion: "Publicar como autor/a principal resultados de investigación o difundir obra", subcategorias: [investigacion.publicaciones, investigacion.libros, investigacion.creacion_artistica, investigacion.patentes_licencias]}
+      - {funcion: "Presentar trabajos en eventos a nivel internacional", subcategorias: [investigacion.presentaciones, vinculacion.difusion]}
+      - {funcion: "Participar en redes a nivel internacional", subcategorias: [investigacion.redes, vinculacion.redes]}
+      - {funcion: "Acreditar formación continua", subcategorias: [docencia.formacion_continua]}
+      - {funcion: "Realizar tareas de coordinación en la gestión académica-administrativa", subcategorias: [gestion.*]}
+      - {funcion: "Liderar iniciativas, proyectos o programas de VcM competitivos con financiamiento externo", subcategorias: [vinculacion.programas_vcm, vinculacion.proyectos_vcm, vinculacion.iniciativas_vcm, vinculacion.actividades_relevantes, vinculacion.educacion_continua, vinculacion.trabajo_asociativo, vinculacion.extension]}
+      - {funcion: "Liderar la exposición, presentación o difusión de actividades académicas y de VcM", subcategorias: [vinculacion.difusion, vinculacion.publicaciones_vcm, vinculacion.representacion, investigacion.presentaciones]}

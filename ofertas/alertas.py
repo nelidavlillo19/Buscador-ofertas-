@@ -432,15 +432,48 @@ def enviar_correo(asunto: str, texto: str, html: str) -> str:
     return "correo enviado"
 
 
+def separar_agrupadas(lista: list[Alerta], categorias: dict) -> tuple[list[Alerta], dict[str, list[Alerta]]]:
+    """Aparta las alertas de categorías con `aviso_agrupado` (p. ej. bicicletas): no van en el correo diario."""
+    normales, agrupadas = [], {}
+    for a in lista:
+        grupo = (categorias.get(a.categoria) or {}).get("aviso_agrupado")
+        if grupo:
+            agrupadas.setdefault(grupo, []).append(a)
+        else:
+            normales.append(a)
+    return normales, agrupadas
+
+
+def urgentes(lista: list[Alerta], categorias: dict) -> list[Alerta]:
+    """Ofertas nuevas que superan `aviso_inmediato_desde` (% de descuento) de su categoría."""
+    return [a for a in lista if a.nueva and (categorias.get(a.categoria) or {}).get("aviso_inmediato_desde")
+            and a.descuento >= categorias[a.categoria]["aviso_inmediato_desde"]]
+
+
+def correo_urgente(lista: list[Alerta], fecha: str, categorias: dict, nombres: dict, titulo: str,
+                   url_panel: str = "") -> tuple[str, str, str]:
+    elegidas = seleccionar_para_aviso(lista, categorias)
+    asunto = f"{titulo}: {len(elegidas)} con 50% o más de descuento ({fecha})"
+    boton = (f'<p><a href="{escape(url_panel)}" style="background:#2a78d6;color:#fff;padding:10px 16px;'
+             f'border-radius:8px;text-decoration:none">Ver panel con gráficos</a></p>') if url_panel else ""
+    html = (f'<div style="font-family:Arial,sans-serif;max-width:600px"><h2>{escape(titulo)} · {fecha}</h2>'
+            f'<table style="border-collapse:collapse;width:100%">'
+            + "".join(_fila_html(a, categorias, nombres) for a in elegidas) + f"</table>{boton}</div>")
+    texto = "\n".join([asunto, ""] + [f"- {a.nombre}: {_clp(a.precio)} (antes {_clp(a.referencia)}, "
+                                      f"-{a.descuento:.0f}%) {a.url}" for a in elegidas]) + "\n"
+    return asunto, texto, html
+
+
 def reporte_grupo(con: sqlite3.Connection, fecha: str, cats: dict, nombres: dict, lista: list[Alerta],
-                  revisadas: dict, titulo: str, url_panel: str = "", por_categoria: int = 6) -> tuple[str, str, str]:
+                  revisadas: dict, titulo: str, url_panel: str = "", por_categoria: int = 6,
+                  que: str = "de viaje", desde: str = "la revisión anterior") -> tuple[str, str, str]:
     """Reporte de un grupo de categorías (p. ej. viaje): ofertas nuevas y mejores precios vigentes."""
     nuevas = seleccionar_para_aviso([a for a in lista if a.categoria in cats], cats)
     hora = datetime.now(ZONA).strftime("%H:%M")
     asunto = f"{titulo} {fecha} {hora}: {len(nuevas)} ofertas nuevas"
     h = [f'<div style="font-family:Arial,sans-serif;max-width:640px;color:#0b0b0b">',
          f'<h2 style="margin-bottom:4px">{escape(titulo)} · {fecha} {hora}</h2>',
-         f'<p style="margin-top:0;color:#52514e">Revisamos <b>{sum(revisadas.values())}</b> productos de viaje en '
+         f'<p style="margin-top:0;color:#52514e">Revisamos <b>{sum(revisadas.values())}</b> productos {que} en '
          f'<b>{len(revisadas)}</b> tiendas · <b>{len(nuevas)}</b> ofertas nuevas</p>']
     t = [f"{titulo} {fecha} {hora}", f"Productos revisados: {sum(revisadas.values())} en {len(revisadas)} tiendas", ""]
     if url_panel:
@@ -451,7 +484,7 @@ def reporte_grupo(con: sqlite3.Connection, fecha: str, cats: dict, nombres: dict
                  + "".join(_fila_html(a, cats, nombres) for a in nuevas) + "</table>")
         t += ["OFERTAS NUEVAS"] + [f"- {a.nombre}: {_clp(a.precio)} ({insignia(a)}) {a.url}" for a in nuevas] + [""]
     else:
-        h.append("<p>No hay ofertas nuevas desde la revisión anterior. Estos son los mejores precios de ahora:</p>")
+        h.append(f"<p>No hay ofertas nuevas desde {desde}. Estos son los mejores precios de ahora:</p>")
     for cid, cat in cats.items():
         filas = con.execute(
             """SELECT p.nombre, p.tienda, p.url, pr.precio, pr.precio_lista FROM precios pr

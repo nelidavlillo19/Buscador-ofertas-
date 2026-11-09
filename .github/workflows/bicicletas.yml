@@ -1,0 +1,46 @@
+name: Reporte de bicicletas (lunes y jueves)
+
+# Usa los precios que ya guardó la revisión diaria: no vuelve a revisar las tiendas.
+on:
+  schedule:
+    - cron: "30 15 * * 1,4"   # lunes y jueves ~12:30 de Chile (GitHub puede atrasarlo un poco)
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["disparos/bicicletas.txt"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rastreo            # espera a que termine la revisión diaria si está corriendo
+  cancel-in-progress: false
+
+jobs:
+  bicicletas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Enviar el reporte de bicicletas
+        env:
+          GMAIL_USUARIO: ${{ secrets.GMAIL_USUARIO }}
+          GMAIL_CLAVE_APP: ${{ secrets.GMAIL_CLAVE_APP }}
+          CORREO_DESTINO: ${{ secrets.CORREO_DESTINO }}
+          URL_PANEL: ${{ vars.URL_PANEL }}
+        run: python -m ofertas reporte-agrupado bicicletas
+      - name: Guardar estado
+        run: |
+          git config user.name "buscador-ofertas"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/ESTADO_BICICLETAS.md
+          git diff --cached --quiet || git commit -m "Reporte de bicicletas $(TZ=America/Santiago date '+%F %H:%M')"
+          git pull --rebase -q origin main
+          git push

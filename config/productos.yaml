@@ -142,6 +142,8 @@ categorias:
   # Sus tiendas no muestran estrellas: se avisa desde 10% de descuento.
   bicicleta_nino_marcas:
     nombre: 🚲 Bicicleta niño aro 14-16 de marca (tiendas Roda, Kugan, Oxford)
+    aviso_agrupado: bicicletas      # fuera del correo diario: reporte lunes y jueves
+    aviso_inmediato_desde: 50       # salvo ofertas nuevas de 50%+: correo inmediato
     umbral_descuento: 10
     buscar: [bicicleta aro 16, bicicleta 16, bicicleta aro 14, bicicleta 14]
     incluir: [bicicleta, bike]
@@ -154,6 +156,8 @@ categorias:
 
   bicicleta_nino_marcas_retail:
     nombre: 🚲 Bicicleta niño aro 14-16 de marca en otras tiendas
+    aviso_agrupado: bicicletas      # fuera del correo diario: reporte lunes y jueves
+    aviso_inmediato_desde: 50       # salvo ofertas nuevas de 50%+: correo inmediato
     umbral_descuento: 10
     buscar: [bicicleta bianchi aro 16, bicicleta totem aro 16, bicicleta oxford aro 16, bicicleta roda 16,
              bicicleta bianchi aro 14, bicicleta totem aro 14, bicicleta oxford aro 14, bicicleta roda 14, bicicleta kugan 14,
@@ -165,6 +169,8 @@ categorias:
 
   bicicleta_aro16:
     nombre: 🚲 Bicicleta aro 14-16 niño (sin rueditas, 4,5+ estrellas)
+    aviso_agrupado: bicicletas      # fuera del correo diario: reporte lunes y jueves
+    aviso_inmediato_desde: 50       # salvo ofertas nuevas de 50%+: correo inmediato
     buscar: [bicicleta aro 16, bicicleta aro 16 niño, bicicleta infantil aro 16, bicicleta aro 14 niño, bicicleta infantil aro 14]
     incluir: [bicicleta, bici, bike]
     incluir_tambien: *aro16

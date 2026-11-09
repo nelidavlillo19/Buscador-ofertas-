@@ -10,7 +10,7 @@ import argparse
 import logging
 import os
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -144,8 +144,18 @@ def cmd_rastrear(args) -> int:
             nombres = {t["nombre"]: t["id"] for t in config["tiendas"]}
             revisadas = {nombres[n]: (n, c) for n, c in resumen.items()}
             vig = alertas.vigilancia(con, fecha, config["productos"].get("umbral_descuento", 30), categorias)
-            aviso = alertas.notificar(lista, fecha, categorias, url_panel(), revisadas, vig,
+            # Bicicletas (aviso_agrupado): fuera del correo diario; van en su reporte 2 veces por semana,
+            # salvo las ofertas nuevas de 50%+ que se avisan de inmediato en un correo aparte.
+            diarias, agrupadas = alertas.separar_agrupadas(lista, categorias)
+            aviso = alertas.notificar(diarias, fecha, categorias, url_panel(), revisadas, vig,
                                       solo_nuevas(config, fecha))
+            por_id = {t["id"]: t["nombre"] for t in config["tiendas"]}
+            for grupo, del_grupo in agrupadas.items():
+                inmediatas = alertas.urgentes(del_grupo, categorias)
+                if inmediatas:
+                    titulo = TITULOS_AGRUPADOS.get(grupo, f"Oferta {grupo}")
+                    aviso += f" · {grupo}: " + alertas.enviar_correo(*alertas.correo_urgente(
+                        inmediatas, fecha, categorias, por_id, titulo, url_panel()))
         except Exception as e:  # noqa: BLE001 - un aviso fallido no debe impedir el respaldo
             log.exception("No se pudieron enviar los avisos (revisa GMAIL_USUARIO / GMAIL_CLAVE_APP)")
             aviso = f"ERROR al enviar: {type(e).__name__}: {str(e)[:200]}"
@@ -160,6 +170,52 @@ def cmd_rastrear(args) -> int:
         print(f"  {nombre:<15} {n:>5}{'   <-- revisar' if n == 0 else ''}")
     print(f"\nAlertas de {config['productos'].get('umbral_descuento', 30)}%+: {len(lista)} "
           f"({sum(a.nueva for a in lista)} nuevas). Detalle en data/alertas/{fecha}.md")
+    return 0
+
+
+TITULOS_AGRUPADOS = {"bicicletas": "🚲 Bicicletas"}
+
+
+def cmd_reporte_agrupado(args) -> int:
+    """Reporte de categorías con aviso_agrupado (p. ej. bicicletas) con los precios ya guardados por la
+    revisión diaria: no vuelve a revisar tiendas. Incluye las ofertas de los últimos `--dias` días."""
+    config = cargar_config()
+    todas = config["productos"]["categorias"]
+    cats = {k: v for k, v in todas.items() if v.get("aviso_agrupado") == args.grupo}
+    if not cats:
+        print(f"No hay categorías con aviso_agrupado {args.grupo!r}")
+        return 1
+    con = db.conectar(RUTA_DB)
+    fecha = con.execute("SELECT MAX(fecha) FROM precios").fetchone()[0] or hoy()
+    desde = (datetime.fromisoformat(fecha) - timedelta(days=args.dias - 1)).date().isoformat()
+    marcas = ",".join("?" * len(cats))
+    mejores: dict[str, alertas.Alerta] = {}
+    for f in con.execute(
+            f"""SELECT a.*, p.nombre, p.tienda, p.url, p.categoria FROM alertas a
+                JOIN productos p ON p.id = a.producto_id
+                WHERE a.fecha BETWEEN ? AND ? AND p.categoria IN ({marcas}) ORDER BY a.fecha""",
+            (desde, fecha, *cats)):
+        a = alertas.Alerta(f["producto_id"], f["tipo"], f["descuento"], f["precio"], f["referencia"], f["nombre"],
+                           f["tienda"], f["url"], f["categoria"])
+        if f["producto_id"] not in mejores or a.descuento >= mejores[f["producto_id"]].descuento:
+            mejores[f["producto_id"]] = a
+    nombres = {t["id"]: t["nombre"] for t in config["tiendas"]}
+    revisadas = {nombres.get(t, t): n for t, n in con.execute(
+        f"""SELECT p.tienda, COUNT(*) FROM precios pr JOIN productos p ON p.id = pr.producto_id
+            WHERE pr.fecha = ? AND p.categoria IN ({marcas}) GROUP BY p.tienda""", (fecha, *cats))}
+    titulo = "🚲 Reporte de bicicletas" if args.grupo == "bicicletas" else f"Reporte {args.grupo}"
+    asunto, texto, html = alertas.reporte_grupo(
+        con, fecha, cats, nombres, list(mejores.values()), revisadas, titulo, url_panel(), por_categoria=8,
+        que=f"de {args.grupo}", desde=f"los últimos {args.dias} días")
+    try:
+        aviso = "avisos desactivados" if args.sin_avisos else alertas.enviar_correo(asunto, texto, html)
+    except Exception as e:  # noqa: BLE001
+        aviso = f"ERROR al enviar: {type(e).__name__}: {str(e)[:200]}"
+    (DATOS / f"ESTADO_{args.grupo.upper()}.md").write_text(
+        f"# {titulo}: {fecha} (enviado {datetime.now(ZoneInfo('America/Santiago')):%F %H:%M})\n\n"
+        f"- Correo: {aviso}\n- Ofertas de los últimos {args.dias} días: {len(mejores)}\n\n"
+        + "\n".join(f"- {n}: {c}" for n, c in revisadas.items()) + "\n", encoding="utf-8")
+    print(asunto, "|", aviso)
     return 0
 
 
@@ -304,6 +360,11 @@ def main(argv=None) -> int:
     p.add_argument("grupo")
     p.add_argument("--sin-avisos", action="store_true")
     p.set_defaults(func=cmd_grupo)
+    p = sub.add_parser("reporte-agrupado", help="reporte de categorías con aviso_agrupado (p. ej. bicicletas)")
+    p.add_argument("grupo")
+    p.add_argument("--dias", type=int, default=4, help="ofertas de los últimos N días (por defecto 4)")
+    p.add_argument("--sin-avisos", action="store_true")
+    p.set_defaults(func=cmd_reporte_agrupado)
     sub.add_parser("correo-prueba").set_defaults(func=cmd_correo_prueba)
 
     p = sub.add_parser("demo")

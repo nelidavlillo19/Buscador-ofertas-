@@ -356,3 +356,30 @@ def test_bicicleta_solo_avisa_bien_evaluadas_y_sin_rueditas(tmp_path):
         db.guardar(con, p, "2026-10-14")
     res = alertas.detectar(con, "2026-10-14", 30, 60, cats)
     assert {a.producto_id for a in res} == {"falabella:buena"}
+
+
+def test_bicicletas_fuera_del_correo_diario_y_aviso_inmediato_desde_50():
+    cats = yaml.safe_load((Path(__file__).parent.parent / "config/productos.yaml").read_text())["categorias"]
+    bici40 = alertas.Alerta("f:1", "declarado", 40, 60000, 100000, "Bicicleta Aro 16", "f", "u", "bicicleta_aro16")
+    bici55 = alertas.Alerta("f:2", "declarado", 55, 45000, 100000, "Bicicleta Aro 14", "f", "u", "bicicleta_nino_marcas")
+    vieja = alertas.Alerta("f:3", "declarado", 60, 40000, 100000, "Bicicleta Aro 16", "f", "u", "bicicleta_aro16",
+                           nueva=False)
+    jugo = alertas.Alerta("j:1", "declarado", 35, 1000, 1540, "Jugo naranja", "j", "u", "jugo_naranja")
+    diarias, agrupadas = alertas.separar_agrupadas([bici40, bici55, vieja, jugo], cats)
+    assert diarias == [jugo] and len(agrupadas["bicicletas"]) == 3
+    assert alertas.urgentes(agrupadas["bicicletas"], cats) == [bici55]
+
+
+def test_reporte_agrupado_bicicletas(tmp_path, monkeypatch):
+    import ofertas.__main__ as cli
+    monkeypatch.setattr(cli, "RUTA_DB", tmp_path / "p.sqlite")
+    monkeypatch.setattr(cli, "DATOS", tmp_path)
+    con = db.conectar(tmp_path / "p.sqlite")
+    p = Producto("falabella", "b1", "Bicicleta Aro 16 Niño", "u", 70000, 100000)
+    p.categoria = "bicicleta_aro16"
+    db.guardar(con, p, "2026-11-09")
+    con.execute("INSERT INTO alertas VALUES ('falabella:b1', '2026-11-08', 'declarado', 30, 70000, 100000)")
+    con.commit()
+    assert cli.main(["reporte-agrupado", "bicicletas", "--sin-avisos"]) == 0
+    estado = (tmp_path / "ESTADO_BICICLETAS.md").read_text()
+    assert "Ofertas de los últimos 4 días: 1" in estado

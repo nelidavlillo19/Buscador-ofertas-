@@ -214,6 +214,52 @@ contratos** para trabajar dentro de un ministerio, a honorarios o a contrata (6.
 
 ---
 
+## 6 bis. EtMday 2026 (Emprende tu Mente): cómo aprovecharlo si compras entrada
+
+> No pude abrir etmday.org ni varias notas de prensa desde este entorno, porque la red está restringida.
+> Lo que sigue sale de resúmenes de búsqueda. **Precios, tipos de entrada y la forma de agendar reuniones
+> hay que confirmarlos en el sitio oficial.**
+
+### Qué es y cómo han sido las versiones anteriores
+
+| Edición | Cifras reportadas |
+|---|---|
+| **Orígenes (2007)** | Partió como un "Asado Emprendedor" organizado por la corporación sin fines de lucro Emprende tu Mente, que conecta a emprendedores con líderes corporativos. |
+| **Ediciones hasta 2024** | Más de **45.000 asistentes** por versión. |
+| **2025** (5ª edición, Parque Bicentenario de Vitacura, 3 días) | **56.251 asistentes**, entre 366 y 400 speakers según la fuente, **785 stands de emprendedores**, 348 startups, más de **110.000 conexiones** entre asistentes y **7.550 "matches"** entre startups y fondos de inversión. India fue el país invitado. Hubo presencia fuerte de **BancoEstado** (mentorías y herramientas para pymes) y se entregó el **Premio Emprende**. |
+| **2026** (6ª edición) | **19 al 21 de noviembre**, Parque Bicentenario de Vitacura. La organización proyecta más de **60.000 asistentes de 30 países**, unos 400 speakers y expositores, más de 1.000 startups, **unas 7.000 reuniones uno a uno**, un hub de inversión con fondos regionales, **seis zonas temáticas** y nuevos formatos de pitch. **España** es el país invitado, con pabellón propio, la Cámara de Comercio de España y un espacio de negocios internacionales. Entre los speakers están Ágatha Ruiz de la Prada, Freddy Vega (Platzi) y Alejandro Vázquez (Tiendanube). |
+
+**Lectura:** es un evento masivo, tipo festival, con mucha gente pero poco tiempo por persona. **El valor
+está en las reuniones agendadas y en los pabellones de pymes, banca y Estado, no en las charlas**, que
+suelen quedar grabadas.
+
+### Plan para sacarle provecho (perfil: contadora o auditora, consultora en educación, emprendedora en Curauma)
+
+**Antes (del 10 al 18 de noviembre)**
+1. **Define 3 objetivos medibles.** Por ejemplo: 10 contactos de pymes o startups que necesiten contabilidad o tributación, 3 conversaciones con organismos públicos o bancos (BancoEstado, Sercotec, Corfo), y 2 posibles socios para postular juntos a licitaciones (una consultora o una universidad).
+2. **Revisa en etmday.org** si la entrada incluye el **acceso a la app o plataforma de reuniones** (las 7.000 reuniones uno a uno). Si hay varios tipos de entrada, el que incluye reuniones y networking suele justificar la diferencia de precio. Una entrada solo de acceso general no.
+3. **Agenda reuniones desde ya**, si la plataforma lo permite. Prioriza las **startups en etapa temprana**: no tienen contador interno y necesitan formalización, contabilidad, rendición de fondos Corfo y Sercotec, y preparación para la debida diligencia (*due diligence*) de los fondos de inversión. Esa preparación es tu nicho como auditora.
+4. **Prepara una oferta de una línea y un código QR** a tu LinkedIn o WhatsApp. Por ejemplo: *"Ordeno las finanzas y los impuestos de tu startup para que llegues lista a levantar capital o a rendir tu fondo Corfo"*. Para educación: *"Asesoría en gestión y rendición SEP para colegios y SLEP"*.
+5. **Lleva un paquete de entrada con precio cerrado**, como un diagnóstico tributario de $X o la primera conciliación gratis, para cerrar en el momento y no solo intercambiar tarjetas.
+
+**Durante (del 19 al 21 de noviembre)**
+- **Día 1:** zonas de pymes y de banca o Estado (BancoEstado, Sercotec, Corfo). Pregunta por los fondos de 2027, por los programas que contratan consultoras externas y por los registros de consultores.
+- **Día 2:** hub de inversión y startups. Los fondos pueden derivarte a sus empresas en cartera que necesiten contabilidad o auditoría.
+- **Día 3:** pabellón de España y negocios internacionales (las empresas españolas que llegan a Chile necesitan apoyo contable y tributario local), más zonas de educación o *edtech* si existen entre las seis zonas temáticas.
+- Anota cada contacto en una planilla con tres columnas: necesidad, próximo paso y fecha.
+
+**Después (dentro de las 72 horas siguientes)**
+- Escribe a cada contacto con una propuesta concreta. Publica en LinkedIn un resumen de lo aprendido (eso te da visibilidad como consultora).
+- Mide el retorno: si la entrada costó $X, ¿cuántas reuniones y propuestas salieron de ahí? Esa cifra te dice si conviene volver en 2027 o ir como **expositora**. En 2025 las postulaciones a stands abrieron en **marzo**, así que conviene estar atenta en marzo de 2027.
+
+### ¿Vale la pena la entrada?
+
+**Sí, si** la entrada incluye reuniones agendadas y llevas una oferta concreta para startups y pymes.
+**No, si** es solo para escuchar charlas. Para aprender sirven más los programas gratuitos de Sercotec y
+Mi Barrio Financiero, y las charlas grabadas.
+
+---
+
 ## 7. Ruta sugerida (12 meses)
 
 | Mes | Acción |
@@ -310,3 +356,18 @@ contratos** para trabajar dentro de un ministerio, a honorarios o a contrata (6.
 - [La Tercera — Recorte de 15% en 260 programas](https://latercera.com/nacional/noticia/de-liceos-bicentenario-al-mim-quiroz-tambien-sugirio-recortar-al-menos-un-15-del-presupuesto-de-otros-260-programas)
 - [Ex-Ante — Ajustes del Presupuesto](https://www.ex-ante.cl/presupuesto-cuales-son-los-polemicos-ajustes-de-quiroz-y-las-razones-para-asegurar-que-no-afectan-beneficios-sociales/)
 - [BioBioChile — El Gobierno desestima la auditoría externa internacional](https://www.biobiochile.cl/noticias/nacional/chile/2026/04/05/pese-a-promesa-de-campana-gobierno-finalmente-desestima-auditoria-externa-internacional.shtml)
+
+**EtMday**
+- [Reporte Minero — EtMday 2026](https://www.reporteminero.cl/noticia/noticias/2026/09/etmday-2026-emprende-tu-mente-lanza-encuentro-innovacion)
+- [Reporte Minero — EtMday, hub de innovación en Latinoamérica](https://www.reporteminero.cl/noticia/noticias/2026/05/etmday-chile-hub-innovacion-emprendimiento-latinoamerica)
+- [EtMday — Inicio de la cuenta regresiva 2026](https://etmday.org/noticias/etm-day-2026-emprende-tu-mente-inicia-la-cuenta-regresiva-para-el-lollapalooza-de-los-emprendedores/)
+- [Startups Latam — 60.000 asistentes de 30 países](https://startupslatam.com/etmday-2026-apunta-a-mas-de-60-000-asistentes-de-30-paises-en-su-edicion-de-noviembre-en-santiago-con-espana-como-pais-invitado-de-honor/)
+- [Ecosistema Startup — 60 mil asistentes y 7.000 citas de inversión](https://ecosistemastartup.com/etmday-2026-60-mil-asistentes-y-7-000-citas-de-inversion/)
+- [Rock&Pop — Fechas y detalles 2026](https://www.rockandpop.cl/2026/10/con-espana-como-invitado-de-honor-confirman-fechas-y-detalles-del-masivo-etmday-2026)
+- [Empresa Exterior — España, país invitado](https://empresaexterior.com/espana-pais-invitado-de-honor-en-etmday-2026-para-potenciar-la-conexion-empresarial-con-latinoamerica/)
+- [El Diario de Madrid — Entrevista a Nicolás Uranga](https://www.eldiariodemadrid.es/articulo/entrevistas/nicolas-uranga-etmday-2026-madrid-espana/20261030100734145691.html)
+- [CNN Chile — EtMday 2025 cierra con más de 56 mil asistentes](https://www.cnnchile.com/negocios/etmday-2025-cierra-con-mas-de-56-mil-asistentes-y-consolida-a-chile-como-epicentro-regional-del-emprendimiento/)
+- [CNN Chile — Emprende tu Mente 2025](https://www.cnnchile.com/negocios/emprende-tu-mente-2025-innovacion-conexion-y-sustentabilidad-en-el-corazon-del-emprendimiento-chileno/)
+- [DF — Novedades del ETM 2025](https://www.df.cl/desde-un-robot-tesla-hasta-gastronomia-india-las-novedades-del-etm-2025)
+- [The Clinic — BancoEstado en el EtMday 2025](https://www.theclinic.cl/2025/11/20/bancoestado-aterriza-en-el-etmday-2025-con-herramientas-mentorias-y-un-ecosistema-digital-para-impulsar-a-las-pymes/amp/)
+- [Chócale — Postulación a stands 2025 (marzo)](https://chocale.cl/2025/03/atencion-emprendedores-ya-iniciaron-las-postulaciones-por-stands-en-el-etm-day-2025/)

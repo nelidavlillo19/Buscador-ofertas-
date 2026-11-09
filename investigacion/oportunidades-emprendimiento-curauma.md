@@ -140,12 +140,87 @@ escolar. Pocas ATE ofrecen al mismo tiempo **PME, rendición SEP y PIE y control
 
 ---
 
-## 6. Ruta sugerida (12 meses)
+## 6. Consultoría para ministerios y subsecretarías
+
+Esta sección cubre dos tipos de oportunidad. La primera son las **compras de servicios** que publican los
+ministerios (6.1 a 6.3), donde vendes como consultora o empresa. La segunda son los **cargos o
+contratos** para trabajar dentro de un ministerio, a honorarios o a contrata (6.4).
+
+> **Ojo:** los ejemplos de 2026 que aparecen abajo, en su mayoría **ya cerraron**. Sirven para ver qué
+> compran los ministerios, de qué tamaño y cuándo. Las ofertas vigentes hay que revisarlas a diario en los
+> buscadores de la sección 6.5. No pude conectarme directo a Mercado Público ni a sus agregadores desde
+> este entorno, por lo que no tengo un listado en vivo.
+
+### 6.1 Cómo compran los ministerios (Mercado Público)
+
+| Mecanismo | Monto | Qué significa para ti |
+|---|---|---|
+| **Compra Ágil** | Hasta 100 UTM (unos $6,9 millones) | El **primer llamado está reservado a empresas de menor tamaño**. Pide pocos documentos y basta una cotización. Es la puerta de entrada para asesorías cortas, capacitaciones y revisiones contables. |
+| **Licitación L1** | Menos de 100 UTM | Son procesos cortos, con bases simples. |
+| **Licitación LE** | 100 a 1.000 UTM | Es el tamaño típico de un estudio, una auditoría de un programa o una capacitación regional. |
+| **Licitaciones LP, LQ y LR** | Más de 1.000 UTM | Exigen garantía de seriedad y experiencia demostrable. Para estas conviene postular como **Unión Temporal de Proveedores (UTP)**, junto a otras consultoras o a una universidad. |
+| **Convenio Marco** | Variable | En 2026 se licitó el de **servicios de software y servicios profesionales TI** (ID 2239-2-LR26, cerró el 9 de octubre de 2026). Por ahora **no existe un convenio marco de consultoría general**, así que en tu rubro manda la licitación. |
+| **Trato directo y convenios** | Variable | Los ministerios contratan directamente a universidades. Por ejemplo, la Subsecretaría de Educación Pública tiene contratos de prestación de servicios con la U. de Chile. **Asociarte con una universidad** es otra vía de entrada. |
+
+> Desde diciembre de 2024 rige la nueva Ley de Compras Públicas, que endureció las reglas de conflictos de
+> interés. Si fuiste funcionaria de un servicio, revisa las inhabilidades antes de ofertarle.
+
+### 6.2 Qué compran: ejemplos reales de 2026
+
+| Organismo | Servicio | ID / estado | Lectura |
+|---|---|---|---|
+| **MOP (Servicios Sanitarios Rurales)** | Auditorías contables SSR 2026 en varias regiones | 1391828-4-LP26, unos $150 millones. Cerró el 30 de marzo de 2026. | Hay demanda **recurrente y anual** de auditoría contable en programas del MOP. La de 2027 debería publicarse cerca del 1er trimestre. |
+| **Centros de Educación y Trabajo (CET, Gendarmería, Ministerio de Justicia)** | Asesoría contable y tributaria | Publicada el 6 de octubre, cerró el 21 de octubre de 2026. | Es exactamente tu perfil. Los organismos que venden bienes o servicios (CET, servicios con ingresos propios) necesitan contadores externos. |
+| **Auditoría externa de estados financieros** (organismo comprador no identificado) | Auditoría externa de los períodos 2025 y 2026 | 886182-5-LE26, publicada el 7 de marzo de 2026. | El tamaño LE es alcanzable para una consultora pequeña. |
+| **ChileCompra (Ministerio de Hacienda)** | Consultoría de diseño del Registro de Proveedores, diseño de la certificación de competencias en compras públicas, plan de adopción de la nueva plataforma y valorización económica de sus plataformas | 869591-4-LP26, 869591-8-LP26 y otras. Todas cerradas. | ChileCompra licita **varias consultorías de gestión al año**. Conviene seguir su sección de noticias. |
+| **Subsecretaría de Transportes** | Asesoría técnica para estudios de conservación vial | Cierra el 16 de noviembre de 2026. | No es tu rubro, pero muestra que las subsecretarías licitan asesorías **todo el año**. |
+| **Ministerio de las Culturas** | Producción integral del programa Centex | 1725-18-LE26 | Es un ejemplo de compra ministerial de tamaño LE. |
+
+### 6.3 Otros canales que generan los ministerios
+
+| Canal | Descripción | Estado o acción |
+|---|---|---|
+| **Dipres: evaluación de programas gubernamentales (EPG)** | Los paneles de expertos que evalúan los programas de los ministerios son pagados y se conforman cada año. La cohorte 2026 evaluó 7 programas de 4 ministerios y encontró **debilidades persistentes en la medición de eficiencia y resultados**. | El **24 de septiembre de 2026** se abrió la convocatoria para la cohorte **2027**, con 10 evaluaciones. Para postular hay que estar inscrita y habilitada en el **Registro de Evaluadores** de Dipres (evaluadores.dipres.gob.cl). Si esta convocatoria ya cerró, conviene inscribirse ahora para la siguiente. |
+| **PNUD y Naciones Unidas (proyectos con ministerios)** | El PNUD contrata consultores individuales para proyectos con ministerios, como Educación y Vivienda. Hubo uno en la **V Región**: asesoría a municipios de Valparaíso en planes de reducción del riesgo de desastres, que cerró el 3 de agosto de 2026. | Conviene crear un perfil en **UNGM.org** y en el portal de adquisiciones del PNUD, filtrando por Chile y por "Individual Contractor". |
+| **OEI** (para Mineduc y la Superintendencia de Educación) | La OEI licita por cuenta de organismos de educación chilenos. Por ejemplo, la OEI-LIC-1-26 es un proyecto de la Superintendencia de Educación. | Hay que revisar el portal de licitaciones de oei.int en su sección Chile. |
+| **CPEIP (Mineduc)** | Certifica acciones formativas para docentes. Las orientaciones de certificación 2026 se publicaron en abril. | Si certificas tus cursos en el CPEIP, puedes venderlos a SLEP y sostenedores. Se combina con el Registro ATE de la sección 5. |
+| **Créditos BID y Banco Mundial ejecutados por ministerios** | Las unidades ejecutoras de estos créditos contratan consultores individuales bajo las reglas de cada banco. | Conviene revisar las secciones de "adquisiciones" del ministerio ejecutor y del banco. |
+
+### 6.4 Ofertas para trabajar dentro de los ministerios (honorarios, contrata y ADP)
+
+| Portal | Qué publica | Ejemplos 2026 |
+|---|---|---|
+| **empleospublicos.cl** (Servicio Civil) | Todos los servicios deben publicar ahí sus cargos de planta, contrata y honorarios. Permite crear alertas por profesión, por ejemplo "Contador Auditor". | **SENDA (Ministerio del Interior)**: un profesional de Bienestar y Salud Ocupacional a honorarios de suma alzada, con renta bruta de $2,1 millones, para Contador Auditor o un área de administración. **SENDA**: un profesional de auditoría interna. **Ministerio de Hacienda y sus servicios**, y **Ministerio del Deporte** (hasta unos $2 a $2,7 millones). |
+| **Alta Dirección Pública** (adp.serviciocivil.cl) | Cargos directivos de I y II nivel, como jefaturas de Administración y Finanzas en servicios públicos, y directores de SLEP. | Son concursos permanentes. Convienen si buscas un cargo de jefatura y no consultoría. |
+| **Sitios de transparencia de cada servicio** | Algunas convocatorias a honorarios se publican además en el sitio propio del servicio, como SENDA o Subpesca. | Revisa "Trabaja con nosotros" en las subsecretarías que te interesen. |
+| **Unidades de auditoría interna (red del CAIGG)** | Cada ministerio y servicio tiene una unidad de auditoría interna que sigue las directrices del Consejo de Auditoría Interna General de Gobierno. | Son los cargos más afines a la auditoría. Se publican en empleospublicos.cl. |
+
+> **Honorarios en el Estado:** se emite boleta con **retención de 15,25% (2026)**. El contrato suele ser por
+> 3 a 12 meses, renovable según evaluación. Es compatible con trabajar como consultora independiente,
+> siempre que no le vendas al mismo servicio en que trabajas.
+
+### 6.5 Cómo buscar y no perder las ofertas
+
+1. **mercadopublico.cl:** inscribirse como proveedora y configurar **alertas por rubro**. Los rubros que te sirven son servicios de contabilidad y auditoría, asesoría de gestión, capacitación y educación, y estudios. También se puede filtrar por organismo ("Subsecretaría…", "Ministerio…").
+2. **Agregadores:** todolicitaciones.cl permite filtrar por organismo (por ejemplo, Subsecretaría de Transportes, de Minería, del Trabajo o de Prevención del Delito) y por la categoría *Servicios contables*. También sirve bidsfactory.com. Hay que confirmar siempre en el portal oficial.
+3. **API de Mercado Público:** ChileCompra entrega un ticket gratuito para consultar licitaciones por código, fecha y organismo. **Este mismo repositorio podría revisarla a diario** y enviarte por correo las licitaciones de auditoría, contabilidad y educación de ministerios y subsecretarías, igual que hace hoy con las ofertas de productos.
+4. **Calendario:** el 1er trimestre concentra las auditorías anuales y los planes de compra (cada servicio publica su **Plan Anual de Compras** en Mercado Público, y ahí se ven sus licitaciones futuras). Dipres abre sus paneles en el 2º semestre y los SLEP y municipios publican durante todo el año.
+
+### 6.6 Contexto 2027: presupuesto austero, pero con nicho para ti
+
+- En abril de 2026, Hacienda pidió a los ministerios **descontinuar 142 programas y recortar 15% a otros 260**. El proyecto de Presupuesto 2027 contempla un crecimiento del gasto de solo 1,5%. En abril, el Gobierno también **desistió de una auditoría externa internacional**, alegando falta de recursos.
+- **Qué significa:** habrá menos estudios grandes y más compras pequeñas (Compra Ágil y licitaciones L1 y LE). La austeridad aumenta la demanda de **control de gestión, auditoría de procesos, eficiencia del gasto y evaluación de programas**, justo lo que Dipres detectó como debilidad.
+- **Propuesta de valor sugerida:** "Auditoría y control de gestión para programas públicos y educación": rendición de cuentas, indicadores de eficiencia, preparación para evaluaciones de Dipres y Contraloría, y capacitación de equipos en compras públicas.
+
+---
+
+## 7. Ruta sugerida (12 meses)
 
 | Mes | Acción |
 |---|---|
 | 1–2 | Perfiles en LinkedIn, Workana y Upwork. Inscripción en Mercado Público. Validar en Curauma el reforzamiento escolar y la asesoría contable. |
 | 2–4 | Primeros clientes remotos (asistente virtual financiera) para tener flujo de caja. Ofrecer asesoría tributaria en la temporada de renta (abril). |
+| 1–3 | **Sector público:** inscripción en el Registro de Proveedores y en el Registro de Evaluadores de Dipres, alertas en empleospublicos.cl y perfil en UNGM. Revisar los Planes Anuales de Compra 2027 de los ministerios para anticipar las auditorías del 1er trimestre. |
 | 3–6 | Postular al **Registro ATE**. Participar en Compras Ágiles de municipios y SLEP de la región. |
 | 4–8 | Local o cowork en Curauma: reforzamiento en la tarde y contabilidad en la mañana. Preparar Capital Semilla 2027. |
 | 9–12 | Evaluar el OTEC y cursos online. Medir ingresos por canal y quedarse con los 2 más rentables. |
@@ -209,3 +284,29 @@ escolar. Pocas ATE ofrecen al mismo tiempo **PME, rendición SEP y PIE y control
 - [La Tercera — Más de la mitad de los 70 SLEP en funcionamiento al 2026](https://www.latercera.com/nacional/noticia/educacion-publica-mas-de-la-mitad-de-los-70-slep-que-contempla-la-reforma-estaran-en-funcionamiento-al-2026/)
 - [La Tercera — Contraloría y SLEP Valparaíso](https://www.latercera.com/nacional/noticia/contraloria-detecta-irregularidades-en-slep-de-valparaiso-y-ordena-sumario-por-falencias-en-gestion-de-personal/)
 - [Consejo Evaluador de Educación Pública — Informe anual 2025](https://educacionpublica.gob.cl/wp-content/uploads/2026/03/Informe-Anual-2025-Consejo-Evaluador-del-Sistema-de-Educacion-Publica.pdf)
+
+**Ministerios y subsecretarías**
+- [CGCE — Licitación de auditorías contables SSR 2026 (MOP)](https://cgce.cl/con-cgce-postula-a-la-licitacion-por-auditorias-contables-ssr-2026-en-varias-regiones-del-mop/)
+- [todolicitaciones.cl — Servicios contables](https://www.todolicitaciones.cl/busqueda/licitaciones/producto/categoria/servicios-financieros-pensiones-y-seguros-contabilidad-y-auditorias-servicios-contables)
+- [todolicitaciones.cl — Subsecretaría de Transportes](https://www.todolicitaciones.cl/busqueda/licitaciones/organismo/7007)
+- [todolicitaciones.cl — Subsecretaría del Trabajo](https://www.todolicitaciones.cl/busqueda/licitaciones/organismo/6939)
+- [todolicitaciones.cl — Subsecretaría de Minería](https://www.todolicitaciones.cl/busqueda/licitaciones/organismo/7018)
+- [todolicitaciones.cl — Subsecretaría de Prevención del Delito](https://www.todolicitaciones.cl/busqueda/licitaciones/organismo/1256896)
+- [Bidsfactory — Auditoría externa 2025 y 2026 (886182-5-LE26)](https://bidsfactory.com/en/tenders/servicios-de-auditoria-externa-periodo-2025-y-2026-chile_mercadopublico-886182-5-LE26)
+- [ChileCompra — Consultoría del Registro de Proveedores](https://www.chilecompra.cl/2026/02/participa-en-la-licitacion-para-la-consultoria-de-diseno-de-la-nueva-plataforma-del-registro-de-proveedores-del-estado/)
+- [ChileCompra — Certificación de competencias en compras públicas](https://www.chilecompra.cl/2026/07/participa-de-la-licitacion-para-el-diseno-del-proceso-de-certificacion-de-competencias-en-compras-publicas/)
+- [ChileCompra — Plan de adopción de la nueva plataforma](https://www.chilecompra.cl/2026/08/chilecompra-licita-el-diseno-del-plan-de-adopcion-para-la-nueva-plataforma-de-mercado-publico/)
+- [ChileCompra — Convenio Marco de software y servicios TI (plazo extendido)](https://www.chilecompra.cl/2026/09/aprovecha-la-extension-del-plazo-de-la-licitacion-para-el-nuevo-convenio-marco-de-servicios-de-desarrollo-y-mantencion-de-software/)
+- [Dipres — Evaluación de programas gubernamentales](https://www.dipres.gob.cl/598/w3-article-437434.html)
+- [Dipres — Registro de Evaluadores](https://www.dipres.gob.cl/598/w3-propertyvalue-25186.html)
+- [Diario Estrategia — Dipres abre la convocatoria de EPG 2026](https://www.diarioestrategia.cl/texto-diario/mostrar/5469042/dipres-abre-convocatoria-realizar-7-nuevas-evaluaciones-programas-gubernamentales-2026)
+- [UNGM — PNUD: reducción del riesgo de desastres, Valparaíso](https://www.ungm.org/Public/Notice/308093)
+- [OEI — Términos de referencia OEI-LIC-1-26](https://oei.int/wp-content/uploads/2026/02/terminos-de-referencia-oei-lic-1-26.pdf)
+- [CPEIP — Orientaciones de certificación 2026](https://caf.cpeip.cl/wp-content/uploads/2026/04/ORIENTACIONES-CERTIFICACION-2026.pdf)
+- [SENDA — Convocatoria a honorarios, Bienestar y SO](https://www.senda.gob.cl/wp-content/uploads/2026/01/Convocatoria-Profesional-Bienestar-y-S.O.pdf)
+- [SENDA — Profesional de auditoría interna](https://www.senda.gob.cl/wp-content/uploads/2025/12/Convocatoria-PEP-Profesional-del-Área-de-Auditoría-Interna.pdf)
+- [24horas — Vacantes en el Ministerio de Hacienda y sus servicios](https://www.24horas.cl/te-sirve/empleos/ministerio-de-hacienda-y-servicios-asociados-abren-vacantes-con-sueldos)
+- [24horas — Empleos Públicos en el Mindep](https://www.24horas.cl/te-sirve/empleos/portal-de-empleos-publicos-ofrece-sueldos-de-hasta-2-7-millones-en-el-mindep)
+- [La Tercera — Recorte de 15% en 260 programas](https://latercera.com/nacional/noticia/de-liceos-bicentenario-al-mim-quiroz-tambien-sugirio-recortar-al-menos-un-15-del-presupuesto-de-otros-260-programas)
+- [Ex-Ante — Ajustes del Presupuesto](https://www.ex-ante.cl/presupuesto-cuales-son-los-polemicos-ajustes-de-quiroz-y-las-razones-para-asegurar-que-no-afectan-beneficios-sociales/)
+- [BioBioChile — El Gobierno desestima la auditoría externa internacional](https://www.biobiochile.cl/noticias/nacional/chile/2026/04/05/pese-a-promesa-de-campana-gobierno-finalmente-desestima-auditoria-externa-internacional.shtml)

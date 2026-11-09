@@ -3,6 +3,7 @@
     python -m ofertas probar <tienda>   # diagnostica una tienda (plataforma detectada y resultados)
     python -m ofertas panel             # sólo regenera el panel web
     python -m ofertas demo              # panel con datos simulados para ver cómo se ve
+    python -m ofertas licitaciones      # licitaciones nuevas de consultoría/educación en Mercado Público
 """
 from __future__ import annotations
 
@@ -337,6 +338,26 @@ def cmd_demo(args) -> int:
     return 0
 
 
+def cmd_licitaciones(args) -> int:
+    from . import licitaciones as lic
+    ticket = (os.environ.get("MERCADOPUBLICO_TICKET") or "").strip()
+    if not ticket:
+        print("Falta el secreto MERCADOPUBLICO_TICKET (ver README, sección Licitaciones del Estado)")
+        return 1
+    config = yaml.safe_load((RAIZ / "config" / "licitaciones.yaml").read_text(encoding="utf-8"))
+    fecha = hoy()
+    vigentes, activas = lic.buscar(ticket, config)
+    ruta_vistas = DATOS / "licitaciones_vistas.json"
+    vistas = lic.cargar_vistas(ruta_vistas)
+    nuevas = [x for x in vigentes if x.codigo not in vistas]
+    print(f"{activas} activas revisadas; {len(vigentes)} de interés; {len(nuevas)} nuevas")
+    if nuevas and not args.sin_avisos:
+        print(alertas.enviar_correo(*lic.correo(nuevas, len(vigentes), fecha)))
+    lic.guardar_vistas(ruta_vistas, vistas, vigentes, fecha)
+    (DATOS / "LICITACIONES.md").write_text(lic.estado_markdown(vigentes, fecha, activas), encoding="utf-8")
+    return 0
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(prog="ofertas", description="Buscador de ofertas familiar")
     parser.add_argument("-v", "--verbose", action="store_true")
@@ -366,6 +387,10 @@ def main(argv=None) -> int:
     p.add_argument("--sin-avisos", action="store_true")
     p.set_defaults(func=cmd_reporte_agrupado)
     sub.add_parser("correo-prueba").set_defaults(func=cmd_correo_prueba)
+
+    p = sub.add_parser("licitaciones", help="licitaciones nuevas de consultoría y educación (Mercado Público)")
+    p.add_argument("--sin-avisos", action="store_true")
+    p.set_defaults(func=cmd_licitaciones)
 
     p = sub.add_parser("demo")
     p.add_argument("--dias", type=int, default=90)

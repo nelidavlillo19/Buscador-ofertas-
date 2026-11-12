@@ -1,26 +1,26 @@
-# Última revisión: 2026-11-11
+# Última revisión: 2026-11-12
 
-- Hora: 12:54 (Chile)
-- Ofertas encontradas: 915 (132 nuevas)
-- Avisos: correo enviado (65 ofertas nuevas)
+- Hora: 13:41 (Chile)
+- Ofertas encontradas: 972 (192 nuevas)
+- Avisos: correo enviado (81 ofertas nuevas) · bicicletas: correo enviado
 
 | Tienda | Productos |
 |---|---|
-| Pichintun | 645 |
-| Colloky | 393 |
+| Pichintun | 647 |
+| Colloky | 348 |
 | Uma Baby | 582 |
-| Casa Ideas | 204 |
-| IKEA | 304 |
-| SuperZoo | 216 |
-| Fernapet | 180 |
-| Casa Royal | 57 |
-| H&M | 1210 |
-| Limonada | 568 |
-| Miniso | 233 |
+| Casa Ideas | 205 |
+| IKEA | 300 |
+| SuperZoo | 221 |
+| Fernapet | 181 |
+| Casa Royal | 56 |
+| H&M | 1203 |
+| Limonada | 580 |
+| Miniso | 241 |
 | Roda | 4 |
 | Kugan | 4 |
 | Oxford | 5 |
-| Falabella | 1131 |
+| Falabella | 1112 |
 | Sodimac | 80 |
 | Kuna Foods | 84 |
 | Eaty | 16 |
@@ -28,7 +28,7 @@
 | Cruz Verde | 12 |
 | Salcobrand | 15 |
 | Farmacias Ahumada | 9 |
-| Jumbo | 485 |
+| Jumbo | 475 |
 | Santa Isabel | 0 ⚠️ |
-| Líder | 597 |
+| Líder | 924 |
 | Tottus | 0 ⚠️ |

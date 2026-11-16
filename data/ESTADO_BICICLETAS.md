@@ -1,10 +1,10 @@
-# 🚲 Reporte de bicicletas: 2026-11-12 (enviado 2026-11-12 18:54)
+# 🚲 Reporte de bicicletas: 2026-11-16 (enviado 2026-11-16 20:48)
 
 - Correo: correo enviado
 - Ofertas de los últimos 4 días: 28
 
-- Falabella: 97
+- Falabella: 100
 - Kugan: 4
-- Líder: 57
+- Líder: 60
 - Oxford: 5
-- Roda: 4
+- Roda: 6

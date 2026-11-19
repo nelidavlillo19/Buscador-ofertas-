@@ -103,6 +103,24 @@ a las ~7:17 de Chile, guarda los datos en el repositorio y publica el panel en G
 
 Las alertas "según el historial" empiezan a aparecer cuando cada producto lleva al menos 7 días de precios.
 
+## 🏛️ Licitaciones del Estado (consultoría, auditoría y educación)
+
+De lunes a viernes (~8:10) el workflow [`licitaciones.yml`](.github/workflows/licitaciones.yml) revisa
+las licitaciones activas de **Mercado Público** y avisa por correo **sólo las nuevas** de consultoría,
+auditoría, contabilidad, impuestos y educación publicadas por **ministerios, subsecretarías, SLEP y otros
+servicios** (palabras y organismos en [`config/licitaciones.yaml`](config/licitaciones.yaml)). La lista
+vigente queda en [`data/LICITACIONES.md`](data/LICITACIONES.md).
+
+Para activarlo:
+
+1. Pide el **ticket gratuito** de la API en <https://api.mercadopublico.cl> (opción para solicitar
+   ticket, con tu Clave Única). Llega por correo.
+2. Agrégalo en **Settings → Secrets and variables → Actions → New repository secret** con el nombre
+   `MERCADOPUBLICO_TICKET`. El correo usa los mismos secretos de Gmail de las ofertas.
+3. Pruébalo en **Actions → Licitaciones del Estado → Run workflow**.
+
+En tu computador: `MERCADOPUBLICO_TICKET=... python -m ofertas licitaciones --sin-avisos`.
+
 ## Estructura
 
 ```

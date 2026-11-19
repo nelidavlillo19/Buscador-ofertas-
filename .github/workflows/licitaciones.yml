@@ -1,0 +1,44 @@
+name: Licitaciones del Estado (lunes a viernes)
+
+# Busca en Mercado Público licitaciones nuevas de consultoría, auditoría, impuestos y educación de
+# ministerios, subsecretarías y servicios de educación (config/licitaciones.yaml) y las avisa por correo.
+on:
+  schedule:
+    - cron: "10 11 * * 1-5"   # ~8:10 de Chile en horario de verano (GitHub puede atrasarlo un poco)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: licitaciones
+  cancel-in-progress: false
+
+jobs:
+  licitaciones:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Buscar licitaciones y avisar las nuevas
+        env:
+          MERCADOPUBLICO_TICKET: ${{ secrets.MERCADOPUBLICO_TICKET }}
+          GMAIL_USUARIO: ${{ secrets.GMAIL_USUARIO }}
+          GMAIL_CLAVE_APP: ${{ secrets.GMAIL_CLAVE_APP }}
+          CORREO_DESTINO: ${{ secrets.CORREO_DESTINO }}
+        run: python -m ofertas licitaciones
+      - name: Guardar las licitaciones ya avisadas
+        run: |
+          git config user.name "buscador-ofertas"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/licitaciones_vistas.json data/LICITACIONES.md
+          git diff --cached --quiet || git commit -m "Licitaciones del $(TZ=America/Santiago date '+%F') [skip ci]"
+          git pull --rebase -q origin main
+          git push

@@ -1,0 +1,73 @@
+# Licitaciones de Mercado Público (ChileCompra) que interesan: consultoría, auditoría, impuestos y educación
+# en ministerios, subsecretarías y servicios de educación. Se revisa de lunes a viernes y se avisa por correo
+# sólo cuando aparece una licitación nueva.
+#
+# Requiere el secreto MERCADOPUBLICO_TICKET (ver README, sección "Licitaciones del Estado").
+# Las palabras se comparan sin mayúsculas ni tildes, y basta que una aparezca como parte de una palabra
+# ("auditor" encuentra "auditoría" y "auditores").
+
+# 1) El NOMBRE de la licitación debe tener alguna de estas palabras...
+palabras_clave:
+  - auditor
+  - contab
+  - contable
+  - tribut
+  - impuesto
+  - estados financieros
+  - rendicion de cuentas
+  - control de gestion
+  - consultor
+  - asesor
+  - asistencia tecnica
+  - estudio
+  - evaluacion de programa
+  - diagnostico
+  - capacitacion
+  - formacion docente
+  - pedagog
+  - metodolog
+  - curricul
+  - gestion educa
+  - convivencia escolar
+  - plan de mejoramiento
+
+# 2) ...y ninguna de éstas (obras, insumos y servicios que no son consultoría)
+excluir:
+  - obra civil
+  - construccion
+  - reparacion
+  - mantencion de
+  - suministro
+  - arriendo
+  - vehiculo
+  - alimento
+  - medicamento
+  - estudio de suelo
+  - estudio topografico
+  - estudio de ingenieria
+  - aseo
+  - vigilancia
+  - guardia
+
+# 3) El organismo comprador debe tener alguna de estas palabras en su nombre
+organismos:
+  - ministerio
+  - subsecretaria
+  - servicio local de educacion
+  - direccion de presupuestos
+  - direccion de educacion publica
+  - superintendencia de educacion
+  - agencia de calidad
+  - junta nacional de auxilio escolar
+  - chilecompra
+  - direccion de compras
+  - consejo de auditoria
+  - gendarmeria
+
+# Regiones que se destacan arriba en el correo (las demás igual se muestran, más abajo)
+regiones_destacadas:
+  - Valparaíso
+  - Metropolitana
+
+# Máximo de licitaciones cuyo detalle se consulta por día (la API permite ~10.000 consultas diarias)
+max_detalles: 400
